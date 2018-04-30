@@ -8,6 +8,7 @@ public class RoomFactory : MonoBehaviour
     private Room room;
     public int dimX, dimY;
     public GameObject tileToRend;
+    public GameObject player;
     private Vector2 drawPos;
 
     private void Start()
@@ -55,5 +56,6 @@ public class RoomFactory : MonoBehaviour
             drawPos.x = room.gridPos.x;
             drawPos.y++;
         }
+        Instantiate(player, new Vector2((float)(dimX / 2), (float)(dimY / 2)), Quaternion.identity);
     }
 }
