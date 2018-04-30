@@ -14,9 +14,9 @@ public class RoomFactory : MonoBehaviour
     {
         room = new Room(new Vector2(0, 0), dimX, dimY); //stanza di prova, la dimensione viene impostata da interfaccia unity
         drawPos = room.gridPos;
-        for (int i = 0; i < room.roomDimX; i++)
+        for (int i = 0; i < room.roomDimY; i++)
         {
-            for (int j = 0; j < room.roomDimY ; j++)
+            for (int j = 0; j < room.roomDimX ; j++)
             {
                 TileSpriteSelector mapper = Object.Instantiate(tileToRend, drawPos, Quaternion.identity).GetComponent<TileSpriteSelector>();
                 if (i == 0)
@@ -24,7 +24,7 @@ public class RoomFactory : MonoBehaviour
                     mapper.up = false;
                     mapper.down = true;
                 }
-                else if (i == room.roomDimX - 1)
+                else if (i == room.roomDimY - 1)
                 {
                     mapper.up = true;
                     mapper.down = false;
@@ -40,7 +40,7 @@ public class RoomFactory : MonoBehaviour
                     mapper.left = true;
                     mapper.right = false;
                 }
-                else if (j == room.roomDimY - 1)
+                else if (j == room.roomDimX - 1)
                 {
                     mapper.left = false;
                     mapper.right = true;
