@@ -18,6 +18,7 @@ public class TileSpriteSelector : MonoBehaviour
         floorTile; 
 
     public bool up, down, left, right;
+    public bool door;
     private SpriteRenderer rend;
 
     private void Start()
@@ -28,7 +29,11 @@ public class TileSpriteSelector : MonoBehaviour
 
     void PickSprite()
     {
-        if (up)
+        if (door)
+        {
+            rend.sprite = floorTile;
+        }
+        else if (up)
         {
             if (left)
             {
