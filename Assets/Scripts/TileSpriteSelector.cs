@@ -3,21 +3,46 @@ using UnityEngine;
 
 public class TileSpriteSelector : MonoBehaviour
 {
+    //queste tiles sono tutte relative al pavimento
     public Sprite outerUpLeftCorner,
-        innerUpLeftCorner, 
+        //innerUpLeftCorner, 
         outerDownLeftCorner, 
-        innerDownLeftCorner, 
+        //innerDownLeftCorner, 
         outerUpRightCorner, 
-        innerUpRightCorner, 
+        //innerUpRightCorner, 
         outerDownRightCorner, 
-        innerDownRightCorner, 
-        upWall, 
+        //innerDownRightCorner, 
+        upFloor, 
+        downFloor,
+        leftFloor, 
+        rightFloor, 
+        floorTile;
+
+    //queste tiles sono tutte relative ai muri
+    public Sprite leftWall,
+        rightWall,
+        upWall,
         downWall,
-        leftWall, 
-        rightWall, 
-        floorTile; 
+        upDownWall,
+        leftRightWall,
+        downLeftCorner,
+        downRightCorner,
+        upLeftCorner,
+        upRightCorner,
+        upCorners,
+        downCorners,
+        leftCorners,
+        rightCorners,
+        upDownLeftCorner,
+        upDownRightCorner,
+        downUpRightCorner,
+        downUpLeftCorner,
+        quadCorner;
+
 
     public bool up, down, left, right;
+    
+    //usato momentaneamente per testare i collegamenti tra stanze
     public bool door;
     private SpriteRenderer rend;
 
@@ -45,7 +70,7 @@ public class TileSpriteSelector : MonoBehaviour
             }
             else
             {
-                rend.sprite = upWall;
+                rend.sprite = upFloor;
             }
         }
         else if (down)
@@ -60,16 +85,16 @@ public class TileSpriteSelector : MonoBehaviour
             }
             else
             {
-                rend.sprite = downWall;
+                rend.sprite = downFloor;
             }
         }
         else if (left)
         {
-            rend.sprite = leftWall;
+            rend.sprite = leftFloor;
         }
         else if (right)
         {
-            rend.sprite = rightWall;
+            rend.sprite = rightFloor;
         }
         else
         {

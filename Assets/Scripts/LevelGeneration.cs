@@ -209,7 +209,7 @@ public class LevelGeneration : MonoBehaviour
         }
     }
 
-    //accoglierà RoomFactory
+
     void DrawRoom(Room room)
     {
         Vector2 drawPos = room.gridPos;
@@ -217,6 +217,7 @@ public class LevelGeneration : MonoBehaviour
         {
             for (int j = 0; j < roomSizeX; j++)
             {
+                tileToRend.layer = 0;
                 TileSpriteSelector mapper = Object.Instantiate(tileToRend, drawPos, Quaternion.identity).GetComponent<TileSpriteSelector>();
                 if (i == 0 && j == (roomSizeX / 2) && room.doorBot)
                 {
@@ -271,5 +272,10 @@ public class LevelGeneration : MonoBehaviour
             drawPos.y++;
         }
         //Instantiate(player, new Vector2((float)(roomSizeX / 2), (float)(roomSizeY / 2)), Quaternion.identity);
+    }
+
+    void DrawWalls()
+    {
+
     }
 }
