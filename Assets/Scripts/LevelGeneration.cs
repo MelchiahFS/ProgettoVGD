@@ -15,11 +15,11 @@ public class LevelGeneration : MonoBehaviour
     // Use this for initialization
     void Start()
     {
-        numberOfRooms = Random.Range(10, 30);
+        numberOfRooms = Random.Range(10, 20);
 
         //NOTA: la dimensione della griglia delle stanze sarà il doppio in x e y 
         //in modo che la prima stanza stia al centro della griglia
-        worldSize = new Vector2Int(Random.Range(3, 6), Random.Range(3, 6)); 
+        worldSize = new Vector2Int(Random.Range(5, 7), Random.Range(5, 7)); 
         if (numberOfRooms >= (worldSize.x * 2) * (worldSize.y * 2))
         {
             //se il numero delle stanze eccede il numero delle celle nella griglia allora lo eguaglio a tale numero
@@ -68,7 +68,7 @@ public class LevelGeneration : MonoBehaviour
             
             //NOTA: controllare corrispondenza griglia - posizione stanza effettiva
             //posiziono la stanza nella griglia delle stanze
-            rooms[(checkPos.x / roomSizeX) + gridSizeX, (checkPos.y / roomSizeY) + gridSizeY] = new Room(checkPos);
+            rooms[(checkPos.x / (roomSizeX + 1)) + gridSizeX, (checkPos.y / (roomSizeY + 1)) + gridSizeY] = new Room(checkPos);
             
             
             //inserisco la nuova stanza nella lista delle stanze visitate
@@ -90,20 +90,20 @@ public class LevelGeneration : MonoBehaviour
             if (upDown) //determino se la nuova stanza andrà a destra o a sinistra di quella attuale
             {
                 if (positive)
-                    y += roomSizeY;
+                    y += roomSizeY + 1;
                 else
-                    y -= roomSizeY;
+                    y -= roomSizeY + 1;
             }
             else //determino se sarà sopra o sotto di quella attuale
             {
                 if (positive)
-                    x += roomSizeX;
+                    x += roomSizeX + 1;
                 else
-                    x -= roomSizeX;
+                    x -= roomSizeX + 1;
             }
             checkingPos = new Vector2Int(x, y);
         }//ripeto finché la nuova stanza non sarà dentro la griglia o la nuova posizione non sia diversa da una già occupata
-        while (takenPositions.Contains(checkingPos) || (x / roomSizeX) >= gridSizeX || (x / roomSizeX) < -gridSizeX || (y / roomSizeY) >= gridSizeY || (y / roomSizeY) < -gridSizeY); 
+        while (takenPositions.Contains(checkingPos) || (x / (roomSizeX + 1)) >= gridSizeX || (x / (roomSizeX + 1)) < -gridSizeX || (y / (roomSizeY + 1)) >= gridSizeY || (y / (roomSizeY + 1)) < -gridSizeY); 
         return checkingPos;
     }
 
@@ -128,21 +128,21 @@ public class LevelGeneration : MonoBehaviour
             if (upDown)
             {
                 if (positive)
-                    y += roomSizeY;
+                    y += roomSizeY + 1;
                 else
-                    y -= roomSizeY;
+                    y -= roomSizeY + 1;
             }
             else
             {
                 if (positive)
-                    x += roomSizeX;
+                    x += roomSizeX + 1;
                 else
-                    x -= roomSizeX;
+                    x -= roomSizeX + 1;
             }
             //sceglie dove mettere la nuova stanza rispetto a quella attuale
             checkingPos = new Vector2Int(x, y); 
         }//ripeto finché la nuova stanza non sarà dentro la griglia o la nuova posizione non sia diversa da una già occupata
-        while (takenPositions.Contains(checkingPos) || (x / roomSizeX) >= gridSizeX || (x / roomSizeX) < -gridSizeX || (y / roomSizeY) >= gridSizeY || (y / roomSizeY) < -gridSizeY);
+        while (takenPositions.Contains(checkingPos) || (x / (roomSizeX + 1)) >= gridSizeX || (x / (roomSizeX + 1)) < -gridSizeX || (y / (roomSizeY + 1)) >= gridSizeY || (y / (roomSizeY + 1)) < -gridSizeY);
         if (inc >= 100)
             print("Error: could not find position with only one neighbor");
         return checkingPos;
@@ -153,13 +153,13 @@ public class LevelGeneration : MonoBehaviour
     {
         
         int ret = 0;
-        if (usedPositions.Contains(new Vector2Int(checkingPos.x + roomSizeX, checkingPos.y)))
+        if (usedPositions.Contains(new Vector2Int(checkingPos.x + (roomSizeX + 1), checkingPos.y)))
             ret++;
-        if (usedPositions.Contains(new Vector2Int(checkingPos.x - roomSizeX, checkingPos.y)))
+        if (usedPositions.Contains(new Vector2Int(checkingPos.x - (roomSizeX + 1), checkingPos.y)))
             ret++;
-        if (usedPositions.Contains(new Vector2Int(checkingPos.x, checkingPos.y + roomSizeY)))
+        if (usedPositions.Contains(new Vector2Int(checkingPos.x, checkingPos.y + (roomSizeY + 1))))
             ret++;
-        if (usedPositions.Contains(new Vector2Int(checkingPos.x, checkingPos.y - roomSizeY)))
+        if (usedPositions.Contains(new Vector2Int(checkingPos.x, checkingPos.y - (roomSizeY + 1))))
             ret++;
         return ret;
     }
@@ -274,8 +274,18 @@ public class LevelGeneration : MonoBehaviour
         //Instantiate(player, new Vector2((float)(roomSizeX / 2), (float)(roomSizeY / 2)), Quaternion.identity);
     }
 
+    //disegna i muri delle stanze
     void DrawWalls()
     {
+        for (int i = 0; i < (gridSizeX * 2); i++)
+        {
+            for (int j = 0; j < (gridSizeY * 2); j++)
+            {
+                if (rooms[i,j] != null)
+                {
 
+                }
+            }
+        }
     }
 }
