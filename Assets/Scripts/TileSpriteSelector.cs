@@ -16,7 +16,11 @@ public class TileSpriteSelector : MonoBehaviour
         downFloor,
         leftFloor, 
         rightFloor, 
-        floorTile;
+        floorTile,
+        doorFloorLeft,
+        doorFloorRight,
+        doorFloorUp,
+        doorFloorDown;
 
     //queste tiles sono tutte relative ai muri
     public Sprite leftWall,
@@ -37,26 +41,50 @@ public class TileSpriteSelector : MonoBehaviour
         upDownRightCorner,
         downUpRightCorner,
         downUpLeftCorner,
-        quadCorner;
+        quadCorner,
+        doorWallLeft,
+        doorWallRight,
+        doorWallUp,
+        doorWallDown,
+        innerWallLeft,
+        innerWallCenter,
+        innerWallRight;
 
 
     public bool up, down, left, right;
     
     //usato momentaneamente per testare i collegamenti tra stanze
-    public bool door;
+    public bool doorUp, doorDown, doorLeft, doorRight;
+
+    public bool floor, wall, innerWall;
     private SpriteRenderer rend;
 
     private void Start()
     {
         rend = GetComponent<SpriteRenderer>();
-        PickSprite();
+        if (floor)
+            PickSpriteFloor();
+        else if (wall)
+            PickSpriteWall();
     }
 
-    void PickSprite()
+    void PickSpriteFloor()
     {
-        if (door)
+        if (doorUp)
         {
-            rend.sprite = floorTile;
+            rend.sprite = doorFloorUp;
+        }
+        else if (doorDown)
+        {
+            rend.sprite = doorFloorDown;
+        }
+        else if (doorLeft)
+        {
+            rend.sprite = doorFloorLeft;
+        }
+        else if (doorRight)
+        {
+            rend.sprite = doorFloorRight;
         }
         else if (up)
         {
@@ -101,5 +129,62 @@ public class TileSpriteSelector : MonoBehaviour
             rend.sprite = floorTile;
         }
                 
+    }
+
+    void PickSpriteWall()
+    {
+        if (innerWall)
+        {
+            if (left)
+            {
+                rend.sprite = innerWallLeft;
+            }
+            else if (right)
+            {
+                rend.sprite = innerWallRight;
+            }
+            else
+            {
+                rend.sprite = innerWallCenter;
+            }
+        }
+        else if (up)
+        {
+            if (left)
+            {
+                rend.sprite = upLeftCorner;
+            }
+            else if (right)
+            {
+                rend.sprite = upRightCorner;
+            }
+            else
+            {
+                rend.sprite = upWall;
+            }
+        }
+        else if (down)
+        {
+            if (left)
+            {
+                rend.sprite = downLeftCorner;
+            }
+            else if (right)
+            {
+                rend.sprite = downRightCorner;
+            }
+            else
+            {
+                rend.sprite = downWall;
+            }
+        }
+        else if (left)
+        {
+            rend.sprite = leftWall;
+        }
+        else if (right)
+        {
+            rend.sprite = rightWall;
+        }
     }
 }

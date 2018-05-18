@@ -1650,8 +1650,8 @@ TextureImporter:
         y: 464
         width: 16
         height: 32
-      alignment: 8
-      pivot: {x: 1, y: 0}
+      alignment: 9
+      pivot: {x: 0.5, y: 0.25}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline:
       - - {x: -8, y: 16}
@@ -1668,12 +1668,12 @@ TextureImporter:
       name: dungeon tileset calciumtrice_65
       rect:
         serializedVersion: 2
-        x: 16
+        x: 17
         y: 464
         width: 16
         height: 32
-      alignment: 8
-      pivot: {x: 1, y: 0}
+      alignment: 9
+      pivot: {x: 0.5, y: 0.25}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline:
       - - {x: -8, y: 16}
@@ -1716,8 +1716,8 @@ TextureImporter:
         y: 464
         width: 16
         height: 32
-      alignment: 8
-      pivot: {x: 1, y: 0}
+      alignment: 9
+      pivot: {x: 0.5, y: 0.25}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline:
       - - {x: -8, y: 16}
@@ -1738,8 +1738,8 @@ TextureImporter:
         y: 464
         width: 16
         height: 32
-      alignment: 8
-      pivot: {x: 1, y: 0}
+      alignment: 9
+      pivot: {x: 0.5, y: 0.25}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline:
       - - {x: -8, y: 16}
@@ -1760,8 +1760,8 @@ TextureImporter:
         y: 464
         width: 16
         height: 32
-      alignment: 8
-      pivot: {x: 1, y: 0}
+      alignment: 9
+      pivot: {x: 0.5, y: 0.25}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline:
       - - {x: -8, y: 16}
@@ -1782,8 +1782,8 @@ TextureImporter:
         y: 464
         width: 16
         height: 32
-      alignment: 8
-      pivot: {x: 1, y: 0}
+      alignment: 9
+      pivot: {x: 0.5, y: 0.25}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline:
       - - {x: -8, y: 16}
@@ -1804,8 +1804,8 @@ TextureImporter:
         y: 464
         width: 16
         height: 32
-      alignment: 8
-      pivot: {x: 1, y: 0}
+      alignment: 9
+      pivot: {x: 0.5, y: 0.25}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline:
       - - {x: -8, y: 16}
@@ -1826,8 +1826,8 @@ TextureImporter:
         y: 464
         width: 16
         height: 32
-      alignment: 8
-      pivot: {x: 1, y: 0}
+      alignment: 9
+      pivot: {x: 0.5, y: 0.25}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline:
       - - {x: -8, y: 16}
@@ -3572,8 +3572,8 @@ TextureImporter:
         y: 352
         width: 16
         height: 32
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      alignment: 9
+      pivot: {x: 0.5, y: 0.25}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline:
       - - {x: -8, y: 16}
@@ -3594,8 +3594,8 @@ TextureImporter:
         y: 352
         width: 16
         height: 32
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      alignment: 9
+      pivot: {x: 0.5, y: 0.25}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline:
       - - {x: -8, y: 16}
@@ -3616,8 +3616,8 @@ TextureImporter:
         y: 352
         width: 16
         height: 32
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      alignment: 9
+      pivot: {x: 0.5, y: 0.25}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline:
       - - {x: -8, y: 16}
@@ -3638,8 +3638,8 @@ TextureImporter:
         y: 352
         width: 16
         height: 32
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      alignment: 9
+      pivot: {x: 0.5, y: 0.25}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline:
       - - {x: -8, y: 16}
@@ -3660,8 +3660,8 @@ TextureImporter:
         y: 352
         width: 16
         height: 32
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      alignment: 9
+      pivot: {x: 0.5, y: 0.25}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline:
       - - {x: -8, y: 16}
@@ -3682,8 +3682,8 @@ TextureImporter:
         y: 352
         width: 16
         height: 32
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      alignment: 9
+      pivot: {x: 0.5, y: 0.25}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline:
       - - {x: -8, y: 16}

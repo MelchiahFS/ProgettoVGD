@@ -9,6 +9,7 @@ public class LevelGeneration : MonoBehaviour
     List<Vector2Int> takenPositions = new List<Vector2Int>();
     int gridSizeX, gridSizeY;
     public int roomSizeX = 13, roomSizeY = 13;
+    public int distRoomX = 3, distRoomY = 6;
     private int numberOfRooms;
     public GameObject tileToRend;
 
@@ -68,7 +69,7 @@ public class LevelGeneration : MonoBehaviour
             
             //NOTA: controllare corrispondenza griglia - posizione stanza effettiva
             //posiziono la stanza nella griglia delle stanze
-            rooms[(checkPos.x / (roomSizeX + 1)) + gridSizeX, (checkPos.y / (roomSizeY + 1)) + gridSizeY] = new Room(checkPos);
+            rooms[(checkPos.x / (roomSizeX + distRoomX)) + gridSizeX, (checkPos.y / (roomSizeY + distRoomY)) + gridSizeY] = new Room(checkPos);
             
             
             //inserisco la nuova stanza nella lista delle stanze visitate
@@ -90,20 +91,20 @@ public class LevelGeneration : MonoBehaviour
             if (upDown) //determino se la nuova stanza andrà a destra o a sinistra di quella attuale
             {
                 if (positive)
-                    y += roomSizeY + 1;
+                    y += roomSizeY + distRoomY;
                 else
-                    y -= roomSizeY + 1;
+                    y -= roomSizeY + distRoomY;
             }
             else //determino se sarà sopra o sotto di quella attuale
             {
                 if (positive)
-                    x += roomSizeX + 1;
+                    x += roomSizeX + distRoomX;
                 else
-                    x -= roomSizeX + 1;
+                    x -= roomSizeX + distRoomX;
             }
             checkingPos = new Vector2Int(x, y);
         }//ripeto finché la nuova stanza non sarà dentro la griglia o la nuova posizione non sia diversa da una già occupata
-        while (takenPositions.Contains(checkingPos) || (x / (roomSizeX + 1)) >= gridSizeX || (x / (roomSizeX + 1)) < -gridSizeX || (y / (roomSizeY + 1)) >= gridSizeY || (y / (roomSizeY + 1)) < -gridSizeY); 
+        while (takenPositions.Contains(checkingPos) || (x / (roomSizeX + distRoomX)) >= gridSizeX || (x / (roomSizeX + distRoomX)) < -gridSizeX || (y / (roomSizeY + distRoomY)) >= gridSizeY || (y / (roomSizeY + distRoomY)) < -gridSizeY); 
         return checkingPos;
     }
 
@@ -128,21 +129,21 @@ public class LevelGeneration : MonoBehaviour
             if (upDown)
             {
                 if (positive)
-                    y += roomSizeY + 1;
+                    y += roomSizeY + distRoomY;
                 else
-                    y -= roomSizeY + 1;
+                    y -= roomSizeY + distRoomY;
             }
             else
             {
                 if (positive)
-                    x += roomSizeX + 1;
+                    x += roomSizeX + distRoomX;
                 else
-                    x -= roomSizeX + 1;
+                    x -= roomSizeX + distRoomX;
             }
             //sceglie dove mettere la nuova stanza rispetto a quella attuale
             checkingPos = new Vector2Int(x, y); 
         }//ripeto finché la nuova stanza non sarà dentro la griglia o la nuova posizione non sia diversa da una già occupata
-        while (takenPositions.Contains(checkingPos) || (x / (roomSizeX + 1)) >= gridSizeX || (x / (roomSizeX + 1)) < -gridSizeX || (y / (roomSizeY + 1)) >= gridSizeY || (y / (roomSizeY + 1)) < -gridSizeY);
+        while (takenPositions.Contains(checkingPos) || (x / (roomSizeX + distRoomX)) >= gridSizeX || (x / (roomSizeX + distRoomX)) < -gridSizeX || (y / (roomSizeY + distRoomY)) >= gridSizeY || (y / (roomSizeY + distRoomY)) < -gridSizeY);
         if (inc >= 100)
             print("Error: could not find position with only one neighbor");
         return checkingPos;
@@ -153,13 +154,13 @@ public class LevelGeneration : MonoBehaviour
     {
         
         int ret = 0;
-        if (usedPositions.Contains(new Vector2Int(checkingPos.x + (roomSizeX + 1), checkingPos.y)))
+        if (usedPositions.Contains(new Vector2Int(checkingPos.x + (roomSizeX + distRoomX), checkingPos.y)))
             ret++;
-        if (usedPositions.Contains(new Vector2Int(checkingPos.x - (roomSizeX + 1), checkingPos.y)))
+        if (usedPositions.Contains(new Vector2Int(checkingPos.x - (roomSizeX + distRoomX), checkingPos.y)))
             ret++;
-        if (usedPositions.Contains(new Vector2Int(checkingPos.x, checkingPos.y + (roomSizeY + 1))))
+        if (usedPositions.Contains(new Vector2Int(checkingPos.x, checkingPos.y + (roomSizeY + distRoomY))))
             ret++;
-        if (usedPositions.Contains(new Vector2Int(checkingPos.x, checkingPos.y - (roomSizeY + 1))))
+        if (usedPositions.Contains(new Vector2Int(checkingPos.x, checkingPos.y - (roomSizeY + distRoomY))))
             ret++;
         return ret;
     }
@@ -201,11 +202,11 @@ public class LevelGeneration : MonoBehaviour
     {
         foreach (Room room in rooms) //per ogni stanza nella griglia delle stanze
         {
-            if (room == null) //salto le posizioni inoccupate della griglia
+            if (room != null) //salto le posizioni inoccupate della griglia
             {
-                continue;
-            }
-            DrawRoom(room);
+                DrawRoom(room);
+                DrawWalls(room);
+            } 
         }
     }
 
@@ -219,21 +220,23 @@ public class LevelGeneration : MonoBehaviour
             {
                 tileToRend.layer = 0;
                 TileSpriteSelector mapper = Object.Instantiate(tileToRend, drawPos, Quaternion.identity).GetComponent<TileSpriteSelector>();
+                //mi permette di impostare le tile relative al pavimento
+                mapper.floor = true;
                 if (i == 0 && j == (roomSizeX / 2) && room.doorBot)
                 {
-                    mapper.door = true;
+                    mapper.doorDown = true;
                 }
                 else if (i == (roomSizeY - 1) && j == (roomSizeX / 2) && room.doorTop)
                 {
-                    mapper.door = true;
+                    mapper.doorUp = true;
                 }
                 else if (i == (roomSizeY / 2) && j == 0 && room.doorLeft)
                 {
-                    mapper.door = true;
+                    mapper.doorLeft = true;
                 }
                 else if (i == (roomSizeY / 2) && j == (roomSizeX - 1) && room.doorRight)
                 {
-                    mapper.door = true;
+                    mapper.doorRight = true;
                 }
                 else if (i == 0)
                 {
@@ -275,17 +278,75 @@ public class LevelGeneration : MonoBehaviour
     }
 
     //disegna i muri delle stanze
-    void DrawWalls()
+    void DrawWalls(Room room)
     {
-        for (int i = 0; i < (gridSizeX * 2); i++)
+        Vector2 drawPos = new Vector2(room.gridPos.x - 1, room.gridPos.y - 1);
+        for (int i = 0; i <= roomSizeY + 3; i++)
         {
-            for (int j = 0; j < (gridSizeY * 2); j++)
+            for (int j = 0; j <= roomSizeX + 1; j++)
             {
-                if (rooms[i,j] != null)
+                //tileToRend.layer = 0;
+                if (i == 0 || j == 0 || i == (roomSizeY + 3) || i == (roomSizeY + 1) || (j == roomSizeX + 1))
                 {
+                    TileSpriteSelector mapper = Object.Instantiate(tileToRend, drawPos, Quaternion.identity).GetComponent<TileSpriteSelector>();
 
+                    //mi permette di impostare le tile relative al pavimento
+                    mapper.wall = true;
+                    if (i == 0)
+                    {
+                        mapper.down = true;
+                        mapper.up = false;
+                    }
+                    else if (i == (roomSizeY + 3))
+                    {
+                        mapper.up = true;
+                        mapper.down = false;
+                    }
+                    else
+                    {
+                        mapper.up = false;
+                        mapper.down = false;
+                    }
+
+                    if (j == 0)
+                    {
+                        mapper.left = true;
+                        mapper.right = false;
+                    }
+                    else if (j == 1 && i == roomSizeY + 1)
+                    {
+                        mapper.innerWall = true;
+                        mapper.left = true;
+                        mapper.right = false;
+
+                    }
+                    else if (j < roomSizeX && i == roomSizeY + 1)
+                    {
+                        mapper.innerWall = true;
+                        mapper.left = false;
+                        mapper.right = false;
+                    }
+                    else if (j == roomSizeX && i == roomSizeY + 1)
+                    {
+                        mapper.innerWall = true;
+                        mapper.right = true;
+                        mapper.left = false;
+                    }
+                    else if (j == roomSizeX + 1)
+                    {
+                        mapper.right = true;
+                        mapper.left = false;
+                    }
+                    else
+                    {
+                        mapper.left = false;
+                        mapper.right = false;
+                    }
                 }
+                drawPos.x++;
             }
+            drawPos.x = room.gridPos.x - 1;
+            drawPos.y++;
         }
     }
 }
