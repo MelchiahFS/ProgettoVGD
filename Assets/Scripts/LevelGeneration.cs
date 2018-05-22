@@ -9,9 +9,10 @@ public class LevelGeneration : MonoBehaviour
     List<Vector2Int> takenPositions = new List<Vector2Int>();
     int gridSizeX, gridSizeY;
     public int roomSizeX = 13, roomSizeY = 13;
-    public int distRoomX = 3, distRoomY = 6;
+    private int distRoomX = 3, distRoomY = 6;
     private int numberOfRooms;
     public GameObject tileToRend;
+    public GameObject player;
 
     // Use this for initialization
     void Start()
@@ -285,6 +286,14 @@ public class LevelGeneration : MonoBehaviour
         {
             for (int j = 0; j <= roomSizeX + 1; j++)
             {
+                if (
+                    (((i == 0 && room.doorBot) || ((i == roomSizeY + 1 || i == roomSizeY + 3) && room.doorTop)) && j >= (roomSizeX / 2) && j <= (roomSizeX / 2) + 2) ||
+                    (((j == 0 && room.doorLeft) || (j == roomSizeX + 1 && room.doorRight)) && i >= (roomSizeY / 2) && i <= (roomSizeY / 2) + 4)
+                   )
+                {
+                    drawPos.x++;
+                    continue;
+                }
                 //tileToRend.layer = 0;
                 if (i == 0 || j == 0 || i == (roomSizeY + 3) || i == (roomSizeY + 1) || (j == roomSizeX + 1))
                 {
@@ -313,24 +322,24 @@ public class LevelGeneration : MonoBehaviour
                         mapper.left = true;
                         mapper.right = false;
                     }
-                    else if (j == 1 && i == roomSizeY + 1)
+                    else if ((j == 1 && i == roomSizeY + 1) | (i == roomSizeY + 1 && j == ((roomSizeX + 1) / 2) + 1 && room.doorTop))
                     {
                         mapper.innerWall = true;
                         mapper.left = true;
                         mapper.right = false;
 
                     }
+                    else if ((j == roomSizeX && i == roomSizeY + 1) | (i == roomSizeY + 1 && j == (roomSizeX / 2) && room.doorTop))
+                    {
+                        mapper.innerWall = true;
+                        mapper.right = true;
+                        mapper.left = false;
+                    }
                     else if (j < roomSizeX && i == roomSizeY + 1)
                     {
                         mapper.innerWall = true;
                         mapper.left = false;
                         mapper.right = false;
-                    }
-                    else if (j == roomSizeX && i == roomSizeY + 1)
-                    {
-                        mapper.innerWall = true;
-                        mapper.right = true;
-                        mapper.left = false;
                     }
                     else if (j == roomSizeX + 1)
                     {
@@ -343,6 +352,7 @@ public class LevelGeneration : MonoBehaviour
                         mapper.right = false;
                     }
                 }
+                //aggiungere questo incremento all'eccezione delle tiles adiacenti i muri
                 drawPos.x++;
             }
             drawPos.x = room.gridPos.x - 1;
