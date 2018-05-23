@@ -50,22 +50,38 @@ public class TileSpriteSelector : MonoBehaviour
         innerWallCenter,
         innerWallRight;
 
+    //queste tile sono relative ai passaggi tra le stanze
+    public Sprite innerLeftDownWallCorner,
+        innerLeftUpWallCorner,
+        innerRightDownWallCorner,
+        innerRightUpWallCorner,
+        horizontalPass,
+        verticalPass;
+        
+
 
     public bool up, down, left, right;
     
     //usato momentaneamente per testare i collegamenti tra stanze
     public bool doorUp, doorDown, doorLeft, doorRight;
 
-    public bool floor, wall, innerWall;
+    public bool floor, wall, innerWall, passageHor, passageVer;
     private SpriteRenderer rend;
 
     private void Start()
     {
         rend = GetComponent<SpriteRenderer>();
-        if (floor)
-            PickSpriteFloor();
-        else if (wall)
-            PickSpriteWall();
+        if (passageHor)
+            PickSpriteHorizontalPassage();
+        else if (passageVer)
+            PickSpriteVerticalPassage();
+        else
+        {
+            if (floor)
+                PickSpriteFloor();
+            else if (wall)
+                PickSpriteWall();
+        }
     }
 
     void PickSpriteFloor()
@@ -185,6 +201,95 @@ public class TileSpriteSelector : MonoBehaviour
         else if (right)
         {
             rend.sprite = rightWall;
+        }
+    }
+
+    void PickSpriteHorizontalPassage()
+    {
+        if (wall)
+        {
+            if (up)
+            {
+                if (left)
+                    rend.sprite = innerLeftDownWallCorner;
+                else if (right)
+                    rend.sprite = innerRightDownWallCorner;
+                else
+                    rend.sprite = upWall;
+
+            }
+            else if (down)
+            {
+                if (left)
+                    rend.sprite = innerLeftUpWallCorner;
+                else if (right)
+                    rend.sprite = innerRightUpWallCorner;
+                else
+                    rend.sprite = downWall;
+            }
+        }
+        else if (innerWall)
+        {
+            if (left)
+                rend.sprite = innerWallLeft;
+            else if (right)
+                rend.sprite = innerWallRight;
+            else
+                rend.sprite = innerWallCenter;
+        }
+        else
+            rend.sprite = horizontalPass;
+    }
+
+    void PickSpriteVerticalPassage()
+    {
+        if (wall)
+        {
+            if (left)
+            {
+                if (up)
+                {
+                    rend.sprite = innerRightUpWallCorner;
+                }
+                else if (down)
+                {
+                    rend.sprite = innerRightDownWallCorner;
+                }
+                else
+                {
+                    rend.sprite = leftWall;
+                }
+            }
+            else if (right)
+            {
+                if (up)
+                {
+                    rend.sprite = innerLeftUpWallCorner;
+                }
+                else if (down)
+                {
+                    rend.sprite = innerLeftDownWallCorner;
+                }
+                else
+                {
+                    rend.sprite = rightWall;
+                }
+            }
+        }
+        else if (innerWall)
+        {
+            if (left)
+            {
+                rend.sprite = innerWallRight;
+            }
+            else if (right)
+            {
+                rend.sprite = innerWallLeft;
+            }
+        }
+        else
+        {
+            rend.sprite = verticalPass;
         }
     }
 }

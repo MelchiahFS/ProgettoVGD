@@ -9,7 +9,8 @@ public class LevelGeneration : MonoBehaviour
     List<Vector2Int> takenPositions = new List<Vector2Int>();
     int gridSizeX, gridSizeY;
     public int roomSizeX = 13, roomSizeY = 13;
-    private int distRoomX = 3, distRoomY = 6;
+    private int distRoomX = 3, distRoomY = 5;
+    private int passSizeX = 3, passSizeY = 5;
     private int numberOfRooms;
     public GameObject tileToRend;
     public GameObject player;
@@ -68,7 +69,6 @@ public class LevelGeneration : MonoBehaviour
                 while (NumberOfNeighbors(checkPos, takenPositions) > 1 && iterations < 100);
             }
             
-            //NOTA: controllare corrispondenza griglia - posizione stanza effettiva
             //posiziono la stanza nella griglia delle stanze
             rooms[(checkPos.x / (roomSizeX + distRoomX)) + gridSizeX, (checkPos.y / (roomSizeY + distRoomY)) + gridSizeY] = new Room(checkPos);
             
@@ -150,7 +150,8 @@ public class LevelGeneration : MonoBehaviour
         return checkingPos;
     }
 
-    //controlla il numero di stanze adiacenti a quella corrente e restituisce il numero
+    //controlla il numero di stanze adiacenti a quella corrente e restituisce il numero;
+    //viene usata per la scelta della posizione delle stanze da generare
     int NumberOfNeighbors(Vector2Int checkingPos, List<Vector2Int> usedPositions)
     {
         
@@ -167,7 +168,7 @@ public class LevelGeneration : MonoBehaviour
     }
 
 
-    //NOTA: controllare il ciclo di controllo della griglia e l'effettiva corrispondenza con la posizione della stanza
+    //imposta le variabili booleane corrispondenti alla presenza delle porte per ogni stanza
     void SetRoomDoors()
     {
         for (int x = 0; x < (gridSizeX * 2); x++)
@@ -207,6 +208,7 @@ public class LevelGeneration : MonoBehaviour
             {
                 DrawRoom(room);
                 DrawWalls(room);
+                LinkRooms(room);
             } 
         }
     }
@@ -286,6 +288,7 @@ public class LevelGeneration : MonoBehaviour
         {
             for (int j = 0; j <= roomSizeX + 1; j++)
             {
+                //preparo lo spazio vuoto tra le stanze da collegare (del collegamento si occuperà un'altro metodo
                 if (
                     (((i == 0 && room.doorBot) || ((i == roomSizeY + 1 || i == roomSizeY + 3) && room.doorTop)) && j >= (roomSizeX / 2) && j <= (roomSizeX / 2) + 2) ||
                     (((j == 0 && room.doorLeft) || (j == roomSizeX + 1 && room.doorRight)) && i >= (roomSizeY / 2) && i <= (roomSizeY / 2) + 4)
@@ -352,11 +355,142 @@ public class LevelGeneration : MonoBehaviour
                         mapper.right = false;
                     }
                 }
-                //aggiungere questo incremento all'eccezione delle tiles adiacenti i muri
                 drawPos.x++;
             }
             drawPos.x = room.gridPos.x - 1;
             drawPos.y++;
+        }
+    }
+
+    //per ogni stanza della griglia delle stanze, controllo se ha una porta a destra e sopra
+    //e in caso affermativo disegno il passaggio
+    void LinkRooms(Room room)
+    {
+        Vector2 drawPos;
+        //disegno il passaggio a destra
+        if (room.doorRight)
+        {
+            drawPos = new Vector2(room.gridPos.x + roomSizeX, room.gridPos.y + (roomSizeY / 2) - 1);
+            for (int i = 0; i < passSizeY; i++)
+            {
+                for (int j = 0; j < passSizeX; j++)
+                {
+                    if (i == 3)
+                    {
+                        continue;
+                    }
+                    TileSpriteSelector mapper = Object.Instantiate(tileToRend, drawPos, Quaternion.identity).GetComponent<TileSpriteSelector>();
+
+                    mapper.passageHor = true;
+                    if (i == 0)
+                    {
+                        mapper.wall = true;
+                        mapper.down = true;
+                        mapper.up = false;
+                    }
+                    else if (i == passSizeY - 1)
+                    {
+                        mapper.wall = true;
+                        mapper.up = true;
+                        mapper.down = false;
+                    }
+                    else if (i == 2)
+                    {
+                        mapper.innerWall = true;
+                    }
+                    else
+                    {
+                        mapper.up = false;
+                        mapper.down = false;
+                    }
+
+                    if (j == 0)
+                    {
+                        mapper.left = true;
+                        mapper.right = false;
+                    }
+                    else if (j == passSizeX - 1)
+                    {
+                        mapper.right = true;
+                        mapper.left = false;
+                    }
+                    else
+                    {
+                        mapper.right = false;
+                        mapper.left = false;
+                    }
+                    drawPos.x++;
+                }
+                drawPos.x = room.gridPos.x + roomSizeX;
+                drawPos.y++;
+            }
+        }
+        
+        //disegno il passaggio sopra
+        if (room.doorTop)
+        {
+            drawPos = new Vector2(room.gridPos.x + (roomSizeX / 2) - 1, room.gridPos.y + roomSizeY);
+            for (int i = 0; i < passSizeY; i++)
+            {
+                for (int j = 0; j < passSizeX; j++)
+                {
+                    if (i == 1 && j != 1)
+                    {
+                        drawPos.x++;
+                        continue;
+                    }
+                    TileSpriteSelector mapper = Object.Instantiate(tileToRend, drawPos, Quaternion.identity).GetComponent<TileSpriteSelector>();
+
+                    mapper.passageVer = true;
+
+                    if (j != 1)
+                    {
+                        if (i == 0)
+                        {
+                            mapper.innerWall = true;
+                        }
+                        else
+                        {
+                            mapper.wall = true;
+                        }
+                    }
+
+                    if (i == 0 || i== 2)
+                    {
+                        mapper.down = true;
+                        mapper.up = false;
+                    }
+                    else if (i == passSizeY - 1)
+                    {
+                        mapper.down = false;
+                        mapper.up = true;
+                    }
+                    else
+                    {
+                        mapper.down = false;
+                        mapper.up = false;
+                    }
+
+                    if (j == 0)
+                    {
+                        mapper.left = true;
+                        mapper.right = false;
+                    }
+                    else if (j == passSizeX - 1)
+                    {
+                        mapper.right = true;
+                        mapper.left = false;
+                    }
+                    else
+                    {
+                        mapper.left = false;
+                        mapper.right = false;
+                    }
+                    drawPos.x++;
+                }
+                drawPos.x = room.gridPos.x + (roomSizeX / 2) - 1;
+                drawPos.y++;
+            }
         }
     }
 }
