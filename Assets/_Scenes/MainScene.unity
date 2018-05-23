@@ -2557,7 +2557,7 @@ MonoBehaviour:
   roomSizeX: 13
   roomSizeY: 13
   tileToRend: {fileID: 732782266}
-  player: {fileID: 0}
+  player: {fileID: 1409040648706648, guid: 029b65dc30e5a034b8a47cf952779b6f, type: 2}
 --- !u!4 &474069085
 Transform:
   m_ObjectHideFlags: 0
@@ -2576,3 +2576,28 @@ GameObject:
   m_PrefabParentObject: {fileID: 1670268643928982, guid: a800673336df5704581de24fa172754e,
     type: 2}
   m_PrefabInternal: {fileID: 28655177}
+--- !u!61 &732782270
+BoxCollider2D:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 732782266}
+  m_Enabled: 0
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0, y: 0}
+  m_SpriteTilingProperty:
+    border: {x: 0, y: 0, z: 0, w: 0}
+    pivot: {x: 0, y: 0}
+    oldSize: {x: 0, y: 0}
+    newSize: {x: 0, y: 0}
+    adaptiveTilingThreshold: 0
+    drawMode: 0
+    adaptiveTiling: 0
+  m_AutoTiling: 1
+  serializedVersion: 2
+  m_Size: {x: 1, y: 1}
+  m_EdgeRadius: 0

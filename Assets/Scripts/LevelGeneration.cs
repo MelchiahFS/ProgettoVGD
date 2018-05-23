@@ -14,6 +14,9 @@ public class LevelGeneration : MonoBehaviour
     private int numberOfRooms;
     public GameObject tileToRend;
     public GameObject player;
+    private BoxCollider2D wallCollider;
+    private Rigidbody2D rb2d;
+
 
     // Use this for initialization
     void Start()
@@ -22,7 +25,10 @@ public class LevelGeneration : MonoBehaviour
 
         //NOTA: la dimensione della griglia delle stanze sarà il doppio in x e y 
         //in modo che la prima stanza stia al centro della griglia
-        worldSize = new Vector2Int(Random.Range(5, 7), Random.Range(5, 7)); 
+        worldSize = new Vector2Int(Random.Range(5, 7), Random.Range(5, 7));
+        wallCollider = tileToRend.GetComponent<BoxCollider2D>();
+        wallCollider.size = new Vector2(1, 1);
+        wallCollider.enabled = false;
         if (numberOfRooms >= (worldSize.x * 2) * (worldSize.y * 2))
         {
             //se il numero delle stanze eccede il numero delle celle nella griglia allora lo eguaglio a tale numero
@@ -33,6 +39,7 @@ public class LevelGeneration : MonoBehaviour
         CreateRooms();
         SetRoomDoors();
         DrawMap();
+        Instantiate(player, new Vector2((float)(roomSizeX / 2), (float)(roomSizeY / 2)), Quaternion.identity);
     }
 
     void CreateRooms()
@@ -209,7 +216,7 @@ public class LevelGeneration : MonoBehaviour
                 DrawRoom(room);
                 DrawWalls(room);
                 LinkRooms(room);
-            } 
+            }
         }
     }
 
@@ -221,7 +228,7 @@ public class LevelGeneration : MonoBehaviour
         {
             for (int j = 0; j < roomSizeX; j++)
             {
-                tileToRend.layer = 0;
+                wallCollider.enabled = false;
                 TileSpriteSelector mapper = Object.Instantiate(tileToRend, drawPos, Quaternion.identity).GetComponent<TileSpriteSelector>();
                 //mi permette di impostare le tile relative al pavimento
                 mapper.floor = true;
@@ -277,7 +284,7 @@ public class LevelGeneration : MonoBehaviour
             drawPos.x = room.gridPos.x;
             drawPos.y++;
         }
-        //Instantiate(player, new Vector2((float)(roomSizeX / 2), (float)(roomSizeY / 2)), Quaternion.identity);
+        
     }
 
     //disegna i muri delle stanze
@@ -300,6 +307,17 @@ public class LevelGeneration : MonoBehaviour
                 //tileToRend.layer = 0;
                 if (i == 0 || j == 0 || i == (roomSizeY + 3) || i == (roomSizeY + 1) || (j == roomSizeX + 1))
                 {
+                    wallCollider.enabled = true;
+                    if (i == (roomSizeY + 1) && j > 0 && j <= roomSizeX)
+                    {
+                        wallCollider.size = new Vector2(1, 2);
+                        wallCollider.offset = new Vector2(0, 0.5f);
+                    }
+                    else
+                    {
+                        wallCollider.size = new Vector2(1, 1);
+                        wallCollider.offset = new Vector2(0, 0);
+                    }
                     TileSpriteSelector mapper = Object.Instantiate(tileToRend, drawPos, Quaternion.identity).GetComponent<TileSpriteSelector>();
 
                     //mi permette di impostare le tile relative al pavimento
@@ -379,11 +397,33 @@ public class LevelGeneration : MonoBehaviour
                     {
                         continue;
                     }
+
+                    if (i != 1)
+                    {
+                        wallCollider.enabled = true;
+                        if (i == 2)
+                        {
+                            wallCollider.size = new Vector2(1, 2);
+                            wallCollider.offset = new Vector2(0, 0.5f);
+                        }
+                        else
+                        {
+                            wallCollider.size = new Vector2(1, 1);
+                            wallCollider.offset = new Vector2(0, 0);
+                        }
+                    }
+                    else
+                    {
+                        wallCollider.enabled = false;
+                    }
+
                     TileSpriteSelector mapper = Object.Instantiate(tileToRend, drawPos, Quaternion.identity).GetComponent<TileSpriteSelector>();
 
                     mapper.passageHor = true;
+                    
                     if (i == 0)
                     {
+
                         mapper.wall = true;
                         mapper.down = true;
                         mapper.up = false;
@@ -439,8 +479,28 @@ public class LevelGeneration : MonoBehaviour
                         drawPos.x++;
                         continue;
                     }
-                    TileSpriteSelector mapper = Object.Instantiate(tileToRend, drawPos, Quaternion.identity).GetComponent<TileSpriteSelector>();
+                    
+                    if (j != 1)
+                    {
+                        if (i == 0)
+                        {
+                            wallCollider.size = new Vector2(1, 2);
+                            wallCollider.offset = new Vector2(0, 0.5f);
+                        }
+                        else
+                        {
+                            wallCollider.size = new Vector2(1, 1);
+                            wallCollider.offset = new Vector2(0, 0);
+                        }
+                        wallCollider.enabled = true;
+                    }
+                    else
+                    {
+                        wallCollider.enabled = false;
+                    }
 
+                    //TileSpriteSelector mapper = Object.Instantiate(tileToRend, drawPos, Quaternion.identity).GetComponent<TileSpriteSelector>();
+                    TileSpriteSelector mapper = Object.Instantiate(tileToRend, drawPos, Quaternion.identity).GetComponent<TileSpriteSelector>();
                     mapper.passageVer = true;
 
                     if (j != 1)
