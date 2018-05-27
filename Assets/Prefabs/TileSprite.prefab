@@ -21,6 +21,7 @@ GameObject:
   - component: {fileID: 4986817204169082}
   - component: {fileID: 212329567723278208}
   - component: {fileID: 114181130674528142}
+  - component: {fileID: 61930710135027362}
   m_Layer: 0
   m_Name: TileSprite
   m_TagString: Untagged
@@ -41,6 +42,31 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!61 &61930710135027362
+BoxCollider2D:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1670268643928982}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0, y: 0}
+  m_SpriteTilingProperty:
+    border: {x: 0, y: 0, z: 0, w: 0}
+    pivot: {x: 0, y: 0}
+    oldSize: {x: 0, y: 0}
+    newSize: {x: 0, y: 0}
+    adaptiveTilingThreshold: 0
+    drawMode: 0
+    adaptiveTiling: 0
+  m_AutoTiling: 1
+  serializedVersion: 2
+  m_Size: {x: 1, y: 1}
+  m_EdgeRadius: 0
 --- !u!114 &114181130674528142
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -52,23 +78,70 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cfc7e009d29641f4e8ad6b6ae402f3ca, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  outerUpLeftCorner: {fileID: 0}
-  innerUpLeftCorner: {fileID: 0}
-  outerDownLeftCorner: {fileID: 0}
-  innerDownLeftCorner: {fileID: 0}
-  outerUpRightCorner: {fileID: 0}
-  innerUpRightCorner: {fileID: 0}
-  outerDownRightCorner: {fileID: 0}
-  innerDownRightCorner: {fileID: 0}
-  upWall: {fileID: 0}
-  downWall: {fileID: 0}
-  leftWall: {fileID: 0}
-  rightWall: {fileID: 0}
-  floorTile: {fileID: 0}
+  outerUpLeftCorner: {fileID: 21300142, guid: 23169271a9eddcf4385a397044a86642, type: 3}
+  outerDownLeftCorner: {fileID: 21300146, guid: 23169271a9eddcf4385a397044a86642,
+    type: 3}
+  outerUpRightCorner: {fileID: 21300144, guid: 23169271a9eddcf4385a397044a86642, type: 3}
+  outerDownRightCorner: {fileID: 21300148, guid: 23169271a9eddcf4385a397044a86642,
+    type: 3}
+  upFloor: {fileID: 21300160, guid: 23169271a9eddcf4385a397044a86642, type: 3}
+  downFloor: {fileID: 21300166, guid: 23169271a9eddcf4385a397044a86642, type: 3}
+  leftFloor: {fileID: 21300154, guid: 23169271a9eddcf4385a397044a86642, type: 3}
+  rightFloor: {fileID: 21300172, guid: 23169271a9eddcf4385a397044a86642, type: 3}
+  floorTile: {fileID: 21300264, guid: 23169271a9eddcf4385a397044a86642, type: 3}
+  doorFloorLeft: {fileID: 21300248, guid: 23169271a9eddcf4385a397044a86642, type: 3}
+  doorFloorRight: {fileID: 21300250, guid: 23169271a9eddcf4385a397044a86642, type: 3}
+  doorFloorUp: {fileID: 21300246, guid: 23169271a9eddcf4385a397044a86642, type: 3}
+  doorFloorDown: {fileID: 21300252, guid: 23169271a9eddcf4385a397044a86642, type: 3}
+  leftWall: {fileID: 21300036, guid: 23169271a9eddcf4385a397044a86642, type: 3}
+  rightWall: {fileID: 21300018, guid: 23169271a9eddcf4385a397044a86642, type: 3}
+  upWall: {fileID: 21300030, guid: 23169271a9eddcf4385a397044a86642, type: 3}
+  downWall: {fileID: 21300024, guid: 23169271a9eddcf4385a397044a86642, type: 3}
+  upDownWall: {fileID: 21300052, guid: 23169271a9eddcf4385a397044a86642, type: 3}
+  leftRightWall: {fileID: 21300056, guid: 23169271a9eddcf4385a397044a86642, type: 3}
+  downLeftCorner: {fileID: 21300108, guid: 23169271a9eddcf4385a397044a86642, type: 3}
+  downRightCorner: {fileID: 21300106, guid: 23169271a9eddcf4385a397044a86642, type: 3}
+  upLeftCorner: {fileID: 21300112, guid: 23169271a9eddcf4385a397044a86642, type: 3}
+  upRightCorner: {fileID: 21300110, guid: 23169271a9eddcf4385a397044a86642, type: 3}
+  upCorners: {fileID: 21300114, guid: 23169271a9eddcf4385a397044a86642, type: 3}
+  downCorners: {fileID: 21300120, guid: 23169271a9eddcf4385a397044a86642, type: 3}
+  leftCorners: {fileID: 21300116, guid: 23169271a9eddcf4385a397044a86642, type: 3}
+  rightCorners: {fileID: 21300118, guid: 23169271a9eddcf4385a397044a86642, type: 3}
+  upDownLeftCorner: {fileID: 21300098, guid: 23169271a9eddcf4385a397044a86642, type: 3}
+  upDownRightCorner: {fileID: 21300096, guid: 23169271a9eddcf4385a397044a86642, type: 3}
+  downUpRightCorner: {fileID: 21300100, guid: 23169271a9eddcf4385a397044a86642, type: 3}
+  downUpLeftCorner: {fileID: 21300102, guid: 23169271a9eddcf4385a397044a86642, type: 3}
+  quadCorner: {fileID: 21300104, guid: 23169271a9eddcf4385a397044a86642, type: 3}
+  doorWallLeft: {fileID: 21300010, guid: 23169271a9eddcf4385a397044a86642, type: 3}
+  doorWallRight: {fileID: 21300042, guid: 23169271a9eddcf4385a397044a86642, type: 3}
+  doorWallUp: {fileID: 21300048, guid: 23169271a9eddcf4385a397044a86642, type: 3}
+  doorWallDown: {fileID: 21300044, guid: 23169271a9eddcf4385a397044a86642, type: 3}
+  innerWallLeft: {fileID: 21300122, guid: 23169271a9eddcf4385a397044a86642, type: 3}
+  innerWallCenter: {fileID: 21300124, guid: 23169271a9eddcf4385a397044a86642, type: 3}
+  innerWallRight: {fileID: 21300132, guid: 23169271a9eddcf4385a397044a86642, type: 3}
+  innerLeftDownWallCorner: {fileID: 21300014, guid: 23169271a9eddcf4385a397044a86642,
+    type: 3}
+  innerLeftUpWallCorner: {fileID: 21300010, guid: 23169271a9eddcf4385a397044a86642,
+    type: 3}
+  innerRightDownWallCorner: {fileID: 21300016, guid: 23169271a9eddcf4385a397044a86642,
+    type: 3}
+  innerRightUpWallCorner: {fileID: 21300012, guid: 23169271a9eddcf4385a397044a86642,
+    type: 3}
+  horizontalPass: {fileID: 21300182, guid: 23169271a9eddcf4385a397044a86642, type: 3}
+  verticalPass: {fileID: 21300186, guid: 23169271a9eddcf4385a397044a86642, type: 3}
   up: 0
   down: 0
   left: 0
   right: 0
+  doorUp: 0
+  doorDown: 0
+  doorLeft: 0
+  doorRight: 0
+  floor: 0
+  wall: 0
+  innerWall: 0
+  passageHor: 0
+  passageVer: 0
 --- !u!212 &212329567723278208
 SpriteRenderer:
   m_ObjectHideFlags: 1
