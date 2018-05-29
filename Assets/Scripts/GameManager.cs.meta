@@ -1,13 +1,11 @@
 fileFormatVersion: 2
-guid: 4122badb2145a344a8d17214dca3d4cf
-timeCreated: 1524768150
+guid: 4c8a4204cbc887d4bb4934b09127df45
+timeCreated: 1527592563
 licenseType: Free
 MonoImporter:
   externalObjects: {}
   serializedVersion: 2
-  defaultReferences:
-  - tileToRend: {instanceID: 0}
-  - player: {instanceID: 0}
+  defaultReferences: []
   executionOrder: 0
   icon: {instanceID: 0}
   userData: 

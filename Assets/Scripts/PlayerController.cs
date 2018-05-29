@@ -1,10 +1,12 @@
 ﻿using UnityEngine;
 using System.Collections;
 
+
 public class PlayerController : MonoBehaviour
 {
     private Rigidbody2D rb2d;
     public float speed;
+    private Room[,] rooms;
 
     private void Start()
     {
