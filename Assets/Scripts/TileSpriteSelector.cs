@@ -57,6 +57,10 @@ public class TileSpriteSelector : MonoBehaviour
         innerRightUpWallCorner,
         horizontalPass,
         verticalPass;
+
+    //il passaggio al livello seguente
+    public Sprite stairs;
+    public bool exit;
         
 
 
@@ -151,7 +155,11 @@ public class TileSpriteSelector : MonoBehaviour
     {
         if (innerWall)
         {
-            if (left)
+            if (exit)
+            {
+                rend.sprite = stairs;
+            }
+            else if (left)
             {
                 rend.sprite = innerWallLeft;
             }

@@ -8,6 +8,7 @@ public class Room
     public Vector2Int gridPos; //la posizione della prima tile della stanza (in basso a sinistra)
     public bool bossRoom = false, shopRoom = false, startRoom = false;
     public bool doorTop, doorBot, doorLeft, doorRight; //indica la presenza di porte nella stanza 
+    public bool visited = false;
 
     public Room(Vector2Int _gridPos)
     {

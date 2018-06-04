@@ -2,10 +2,11 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+
 public class LevelGenerator
 {
     Vector2Int worldSize;
-    public Room[,] rooms;
+    private Room[,] rooms;
     List<Vector2Int> takenPositions = new List<Vector2Int>();
     int gridSizeX, gridSizeY;
     private int roomSizeX, roomSizeY;
@@ -18,11 +19,11 @@ public class LevelGenerator
         this.roomSizeY = sizeY;
         
 
-        numberOfRooms = Random.Range(10, 20);
+        numberOfRooms = Random.Range(15, 20);
 
         //NOTA: la dimensione della griglia delle stanze sarà il doppio in x e y 
         //in modo che la prima stanza stia al centro della griglia
-        worldSize = new Vector2Int(Random.Range(5, 7), Random.Range(5, 7));
+        worldSize = new Vector2Int(Random.Range(6, 7), Random.Range(6, 7));
 
         //se il numero delle stanze eccede il numero delle celle nella griglia allora lo eguaglio a tale numero
         if (numberOfRooms >= (worldSize.x * 2) * (worldSize.y * 2))
@@ -34,6 +35,8 @@ public class LevelGenerator
 
         CreateRooms();
         SetRoomDoors();
+        SetBossRoom();
+        SetShopRoom();
     }
 
     private void CreateRooms()
@@ -198,6 +201,50 @@ public class LevelGenerator
                     rooms[x, y].doorRight = (rooms[x + 1, y] != null); // controllo se ci sono stanze a destra
             }
         }
+    }
+
+    void SetBossRoom()
+    {
+        foreach (Room room in rooms)
+        {
+            if (room != null && !room.startRoom && !room.shopRoom && !room.doorTop)
+            {
+                if (AdiacentRooms(room) == 1)
+                {
+                    room.bossRoom = true;
+                    break;
+                }
+            }
+        }
+    }
+
+    void SetShopRoom()
+    {
+        foreach (Room room in rooms)
+        {
+            if (room != null && !room.startRoom && !room.bossRoom)
+            {
+                if (AdiacentRooms(room) == 1)
+                {
+                    room.shopRoom = true;
+                    break;
+                }
+            }
+        }
+    }
+
+    int AdiacentRooms(Room room)
+    {
+        int n = 0;
+        if (room.doorTop)
+            n++;
+        if (room.doorBot)
+            n++;
+        if (room.doorLeft)
+            n++;
+        if (room.doorRight)
+            n++;
+        return n;
     }
 
     public Room[,] Rooms
