@@ -1,10 +1,11 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class LevelManager : MonoBehaviour {
 
-    LevelGenerator lvlGen;
+    LevelGenerator lvlGen = null;
     public int roomSizeX, roomSizeY;
     private int passSizeX = 3, passSizeY = 5;
     private BoxCollider2D wallCollider;
@@ -14,6 +15,8 @@ public class LevelManager : MonoBehaviour {
 
     public void DrawMap()
     {
+        //if (map != null)
+          //  Array.Clear(map, 0, map.Length);
         lvlGen = new LevelGenerator(roomSizeX, roomSizeY);
         map = lvlGen.Rooms;
         wallCollider = tileToRend.GetComponent<BoxCollider2D>();
@@ -48,7 +51,8 @@ public class LevelManager : MonoBehaviour {
             for (int j = 0; j < roomSizeX; j++)
             {
                 wallCollider.enabled = false;
-                TileSpriteSelector mapper = Object.Instantiate(tileToRend, drawPos, Quaternion.identity).GetComponent<TileSpriteSelector>();
+                wallCollider.gameObject.tag = "Floor";
+                TileSpriteSelector mapper = Instantiate(tileToRend, drawPos, Quaternion.identity).GetComponent<TileSpriteSelector>();
                 //mi permette di impostare le tile relative al pavimento
                 mapper.floor = true;
                 if (i == 0 && j == (roomSizeX / 2) && room.doorBot)
@@ -129,10 +133,11 @@ public class LevelManager : MonoBehaviour {
                 {
                     //rendo tangibile il muro
                     wallCollider.enabled = true;
-
+                    wallCollider.gameObject.tag = "Wall";
                     //se è la stanza del boss
                     if (room.bossRoom && i == (roomSizeY + 1) && j == (roomSizeX / 2) + 1)
                     {
+                        wallCollider.gameObject.tag = "Exit";
                         wallCollider.size = new Vector2(1, 1);
                         wallCollider.offset = new Vector2(0, 1);
                     }
@@ -148,7 +153,7 @@ public class LevelManager : MonoBehaviour {
                         wallCollider.size = new Vector2(1, 1);
                         wallCollider.offset = new Vector2(0, 0);
                     }
-                    TileSpriteSelector mapper = Object.Instantiate(tileToRend, drawPos, Quaternion.identity).GetComponent<TileSpriteSelector>();
+                    TileSpriteSelector mapper = Instantiate(tileToRend, drawPos, Quaternion.identity).GetComponent<TileSpriteSelector>();
 
                     //mi permette di impostare le tile relative al pavimento
                     mapper.wall = true;
@@ -237,6 +242,7 @@ public class LevelManager : MonoBehaviour {
                     if (i != 1)
                     {
                         wallCollider.enabled = true;
+                        wallCollider.gameObject.tag = "Wall";
                         if (i == 2)
                         {
                             wallCollider.size = new Vector2(1, 2);
@@ -251,9 +257,10 @@ public class LevelManager : MonoBehaviour {
                     else
                     {
                         wallCollider.enabled = false;
+                        wallCollider.gameObject.tag = "Floor";
                     }
 
-                    TileSpriteSelector mapper = Object.Instantiate(tileToRend, drawPos, Quaternion.identity).GetComponent<TileSpriteSelector>();
+                    TileSpriteSelector mapper = Instantiate(tileToRend, drawPos, Quaternion.identity).GetComponent<TileSpriteSelector>();
 
                     mapper.passageHor = true;
 
@@ -318,6 +325,7 @@ public class LevelManager : MonoBehaviour {
 
                     if (j != 1)
                     {
+                        wallCollider.gameObject.tag = "Wall";
                         if (i == 0)
                         {
                             wallCollider.size = new Vector2(1, 2);
@@ -332,11 +340,12 @@ public class LevelManager : MonoBehaviour {
                     }
                     else
                     {
+                        wallCollider.gameObject.tag = "Floor";
                         wallCollider.enabled = false;
                     }
 
                     //TileSpriteSelector mapper = Object.Instantiate(tileToRend, drawPos, Quaternion.identity).GetComponent<TileSpriteSelector>();
-                    TileSpriteSelector mapper = Object.Instantiate(tileToRend, drawPos, Quaternion.identity).GetComponent<TileSpriteSelector>();
+                    TileSpriteSelector mapper = Instantiate(tileToRend, drawPos, Quaternion.identity).GetComponent<TileSpriteSelector>();
                     mapper.passageVer = true;
 
                     if (j != 1)

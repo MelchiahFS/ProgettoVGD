@@ -12,12 +12,13 @@ public class LevelGenerator
     private int roomSizeX, roomSizeY;
     private int distRoomX = 3, distRoomY = 5;
     private int numberOfRooms;
+    private bool bossIsSet = false, shopIsSet = false;
 
     public LevelGenerator(int sizeX, int sizeY)
     {
         this.roomSizeX = sizeX;
         this.roomSizeY = sizeY;
-        
+
 
         numberOfRooms = Random.Range(15, 20);
 
@@ -33,10 +34,14 @@ public class LevelGenerator
         gridSizeX = worldSize.x;
         gridSizeY = worldSize.y;
 
-        CreateRooms();
-        SetRoomDoors();
-        SetBossRoom();
-        SetShopRoom();
+        //bug fix per forzare la generazione di un livello con le stanze boss e shop
+        while (!bossIsSet || !shopIsSet)
+        {
+            CreateRooms();
+            SetRoomDoors();
+            SetBossRoom();
+            SetShopRoom();
+        }
     }
 
     private void CreateRooms()
@@ -212,6 +217,7 @@ public class LevelGenerator
                 if (AdiacentRooms(room) == 1)
                 {
                     room.bossRoom = true;
+                    bossIsSet = true;
                     break;
                 }
             }
@@ -227,6 +233,7 @@ public class LevelGenerator
                 if (AdiacentRooms(room) == 1)
                 {
                     room.shopRoom = true;
+                    shopIsSet = true;
                     break;
                 }
             }
