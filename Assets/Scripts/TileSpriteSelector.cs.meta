@@ -1,24 +1,55 @@
 fileFormatVersion: 2
 guid: cfc7e009d29641f4e8ad6b6ae402f3ca
-timeCreated: 1524916638
-licenseType: Free
 MonoImporter:
   externalObjects: {}
   serializedVersion: 2
   defaultReferences:
   - outerUpLeftCorner: {instanceID: 0}
-  - innerUpLeftCorner: {instanceID: 0}
   - outerDownLeftCorner: {instanceID: 0}
-  - innerDownLeftCorner: {instanceID: 0}
   - outerUpRightCorner: {instanceID: 0}
-  - innerUpRightCorner: {instanceID: 0}
   - outerDownRightCorner: {instanceID: 0}
-  - innerDownRightCorner: {instanceID: 0}
-  - upWall: {instanceID: 0}
-  - downWall: {instanceID: 0}
+  - upFloor: {instanceID: 0}
+  - downFloor: {instanceID: 0}
+  - leftFloor: {instanceID: 0}
+  - rightFloor: {instanceID: 0}
+  - floorTile: {instanceID: 0}
+  - doorFloorLeft: {instanceID: 0}
+  - doorFloorRight: {instanceID: 0}
+  - doorFloorUp: {instanceID: 0}
+  - doorFloorDown: {instanceID: 0}
   - leftWall: {instanceID: 0}
   - rightWall: {instanceID: 0}
-  - floorTile: {fileID: 21300264, guid: 23169271a9eddcf4385a397044a86642, type: 3}
+  - upWall: {instanceID: 0}
+  - downWall: {instanceID: 0}
+  - upDownWall: {instanceID: 0}
+  - leftRightWall: {instanceID: 0}
+  - downLeftCorner: {instanceID: 0}
+  - downRightCorner: {instanceID: 0}
+  - upLeftCorner: {instanceID: 0}
+  - upRightCorner: {instanceID: 0}
+  - upCorners: {instanceID: 0}
+  - downCorners: {instanceID: 0}
+  - leftCorners: {instanceID: 0}
+  - rightCorners: {instanceID: 0}
+  - upDownLeftCorner: {instanceID: 0}
+  - upDownRightCorner: {instanceID: 0}
+  - downUpRightCorner: {instanceID: 0}
+  - downUpLeftCorner: {instanceID: 0}
+  - quadCorner: {instanceID: 0}
+  - doorWallLeft: {instanceID: 0}
+  - doorWallRight: {instanceID: 0}
+  - doorWallUp: {instanceID: 0}
+  - doorWallDown: {instanceID: 0}
+  - innerWallLeft: {instanceID: 0}
+  - innerWallCenter: {instanceID: 0}
+  - innerWallRight: {instanceID: 0}
+  - innerLeftDownWallCorner: {instanceID: 0}
+  - innerLeftUpWallCorner: {instanceID: 0}
+  - innerRightDownWallCorner: {instanceID: 0}
+  - innerRightUpWallCorner: {instanceID: 0}
+  - horizontalPass: {instanceID: 0}
+  - verticalPass: {instanceID: 0}
+  - stairs: {instanceID: 0}
   executionOrder: 0
   icon: {instanceID: 0}
   userData: 

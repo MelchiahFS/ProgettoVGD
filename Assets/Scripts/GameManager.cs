@@ -6,7 +6,9 @@ using UnityEngine.SceneManagement;
 public class GameManager : MonoBehaviour {
 
     public static GameManager manager = null;
-    private LevelManager lvlManager;
+    public LevelManager lvlManager;
+    private Room actualRoom = null;
+
 
     private void Awake()
     {
@@ -21,13 +23,12 @@ public class GameManager : MonoBehaviour {
         }
         DontDestroyOnLoad(gameObject);
         
-        //InitGame();
     }
 
     void InitGame() {
         lvlManager = GetComponent<LevelManager>();
         lvlManager.DrawMap();
-        lvlManager.InstantiatePlayer();
+        ActualRoom = lvlManager.InstantiatePlayer();
     }
 
     //Esegue OnSceneLoaded dopo che viene caricata la scena
@@ -52,6 +53,41 @@ public class GameManager : MonoBehaviour {
     void Load()
     {
 
+    }
+
+    public void UpdateActualRoom(char room)
+    {
+        if (room == 'u')
+        {
+            lvlManager.ActualPos += new Vector2(0, 1);  
+        }
+        else if (room == 'd')
+        {
+            lvlManager.ActualPos += new Vector2(0, -1);
+        }
+        else if (room == 'l')
+        {
+            lvlManager.ActualPos += new Vector2(-1, 0);
+        }
+        else if (room == 'r')
+        {
+            lvlManager.ActualPos += new Vector2(1, 0);
+        }
+        ActualRoom = lvlManager.map[(int)lvlManager.ActualPos.x, (int)lvlManager.ActualPos.y];
+    }
+
+    public Room ActualRoom
+    {
+        get
+        {
+            return actualRoom;
+        }
+
+        set
+        {
+            actualRoom = value;
+            actualRoom.visited = true;
+        }
     }
 }
 

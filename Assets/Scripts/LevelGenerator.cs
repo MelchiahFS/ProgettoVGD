@@ -10,7 +10,7 @@ public class LevelGenerator
     List<Vector2Int> takenPositions = new List<Vector2Int>();
     int gridSizeX, gridSizeY;
     private int roomSizeX, roomSizeY;
-    private int distRoomX = 3, distRoomY = 5;
+    public int distRoomX = 6, distRoomY = 6;
     private int numberOfRooms;
     private bool bossIsSet = false, shopIsSet = false;
 
@@ -260,5 +260,10 @@ public class LevelGenerator
         {
             return rooms;
         }
+    }
+
+    public Vector2 GetMapSize()
+    {
+        return new Vector2(gridSizeX * 2, gridSizeY * 2);
     }
 }

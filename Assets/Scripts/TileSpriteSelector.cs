@@ -58,6 +58,16 @@ public class TileSpriteSelector : MonoBehaviour
         horizontalPass,
         verticalPass;
 
+    public Sprite closedDoorUp,
+        closedDoorDown,
+        closedDoorLeft,
+        closedDoorRight,
+        openDoorUp,
+        openDoorDown,
+        openDoorLeft,
+        openDoorRight;
+
+
     //il passaggio al livello seguente
     public Sprite stairs;
     public bool exit;

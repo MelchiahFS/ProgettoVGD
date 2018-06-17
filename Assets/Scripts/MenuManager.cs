@@ -8,6 +8,7 @@ public class MenuManager : MonoBehaviour
 	public void NewGameBtn(string newGameLevel)
 	{
 		SceneManager.LoadScene(newGameLevel);
+		return;
 	}
 
 	public void ExitGameBtn()
