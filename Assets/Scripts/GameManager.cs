@@ -8,6 +8,8 @@ public class GameManager : MonoBehaviour {
     public static GameManager manager = null;
     public LevelManager lvlManager;
     private Room actualRoom = null;
+    private Vector2Int actualPos;
+
 
 
     private void Awake()
@@ -25,17 +27,20 @@ public class GameManager : MonoBehaviour {
         
     }
 
-    void InitGame() {
+    void InitGame() 
+    {
         lvlManager = GetComponent<LevelManager>();
         lvlManager.DrawMap();
         ActualRoom = lvlManager.InstantiatePlayer();
+        actualPos = lvlManager.ActualPos;
     }
+
+
 
     //Esegue OnSceneLoaded dopo che viene caricata la scena
     [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.AfterSceneLoad)]
     static public void CallbackInitialization()
     {
-        //register the callback to be called everytime the scene is loaded
         SceneManager.sceneLoaded += OnSceneLoaded;
     }
 
@@ -55,27 +60,29 @@ public class GameManager : MonoBehaviour {
 
     }
 
+    //viene aggiornata la posizione della stanza attuale nella griglia delle stanze
     public void UpdateActualRoom(char room)
     {
         if (room == 'u')
         {
-            lvlManager.ActualPos += new Vector2(0, 1);  
+            actualPos += new Vector2Int(0, 1);  
         }
         else if (room == 'd')
         {
-            lvlManager.ActualPos += new Vector2(0, -1);
+            actualPos += new Vector2Int(0, -1);
         }
         else if (room == 'l')
         {
-            lvlManager.ActualPos += new Vector2(-1, 0);
+            actualPos += new Vector2Int(-1, 0);
         }
         else if (room == 'r')
         {
-            lvlManager.ActualPos += new Vector2(1, 0);
+            actualPos += new Vector2Int(1, 0);
         }
-        ActualRoom = lvlManager.map[(int)lvlManager.ActualPos.x, (int)lvlManager.ActualPos.y];
+        ActualRoom = lvlManager.map[(int)actualPos.x, (int)actualPos.y]; //setto la nuova stanza attuale
     }
 
+    //imposta o restituisce la stanza attuale
     public Room ActualRoom
     {
         get
@@ -89,5 +96,7 @@ public class GameManager : MonoBehaviour {
             actualRoom.visited = true;
         }
     }
+
+    
 }
 

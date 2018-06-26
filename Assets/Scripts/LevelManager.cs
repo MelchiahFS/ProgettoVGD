@@ -14,7 +14,35 @@ public class LevelManager : MonoBehaviour {
     public GameObject player;
     public Room[,] map;
     public Vector2 mapSize;
-    public Vector2 actualPos;
+    public Vector2Int actualPos;
+    public float dim = 0.5f, full = 1, off = 0;
+
+
+    public void LightUpRoom(Room actualRoom)
+    {
+       
+        foreach (GameObject g in actualRoom.roomTiles)
+        {
+            SpriteRenderer s = g.GetComponent<SpriteRenderer>();
+            Color c = s.color;
+            c.a = full;
+            s.color = c;
+        }
+        foreach (List<GameObject> l in actualRoom.passageTiles)
+        {
+            if (l != null)
+            {
+                foreach (GameObject g in l)
+                {
+                    SpriteRenderer s = g.GetComponent<SpriteRenderer>();
+                    Color c = s.color;
+                    c.a = dim;
+                    s.color = c;
+                }
+            }
+        }
+       
+    }
 
     public void DrawMap()
     {
@@ -31,8 +59,8 @@ public class LevelManager : MonoBehaviour {
                 {
 
                     DrawRoom(map[i, j]);
-                    DrawDoors(map[i, j]);
                     DrawWalls(map[i, j]);
+                    DrawDoors(new Vector2Int(i, j));
                     LinkRooms(new Vector2Int(i,j));
                 }
             }
@@ -48,8 +76,9 @@ public class LevelManager : MonoBehaviour {
                 if (map[i, j] != null && map[i, j].startRoom) 
                 {
 
+                    LightUpRoom(map[i, j]);
                     Instantiate(player, new Vector2(map[i, j].gridPos.x + (float)(roomSizeX / 2), map[i, j].gridPos.y + (float)(roomSizeY / 2)), Quaternion.identity);
-                    actualPos = new Vector2(i, j);
+                    ActualPos = new Vector2Int(i, j);
                     return map[i, j];
                 }
             }
@@ -145,14 +174,17 @@ public class LevelManager : MonoBehaviour {
 
     }
 
-    void DrawDoors(Room room)
+
+    void DrawDoors(Vector2Int roomPos)
     {
         Vector2 drawPos;
+        Room room = map[roomPos.x, roomPos.y];
         if (room.doorTop)
         {
             drawPos = new Vector2(room.gridPos.x + roomSizeX / 2, room.gridPos.y + roomSizeY);
             GameObject doorSprite = Instantiate(tileToRend, drawPos, Quaternion.identity) as GameObject;
-            room.doors.Add(doorSprite);
+            room.AddToList(Room.Passage.up, doorSprite);
+            map[roomPos.x, roomPos.y + 1].AddToList(Room.Passage.down, doorSprite);
             doorSprite.tag = "DoorUp";
             doorSprite.layer = LayerMask.NameToLayer("Level");
             TileSpriteSelector mapper = doorSprite.GetComponent<TileSpriteSelector>();
@@ -162,13 +194,13 @@ public class LevelManager : MonoBehaviour {
             doorCollider.size = new Vector2(1, 2);
             doorCollider.offset = new Vector2(0, 0.5f);
             doorCollider.enabled = true;
-
         }
         if (room.doorBot)
         {
             drawPos = new Vector2(room.gridPos.x + roomSizeX / 2, room.gridPos.y - 2);
             GameObject doorSprite = Instantiate(tileToRend, drawPos, Quaternion.identity) as GameObject;
-            room.doors.Add(doorSprite);
+            room.AddToList(Room.Passage.down, doorSprite);
+            map[roomPos.x, roomPos.y - 1].AddToList(Room.Passage.up, doorSprite);
             doorSprite.tag = "DoorDown";
             doorSprite.layer = LayerMask.NameToLayer("Level");
             TileSpriteSelector mapper = doorSprite.GetComponent<TileSpriteSelector>();
@@ -183,7 +215,8 @@ public class LevelManager : MonoBehaviour {
         {
             drawPos = new Vector2(room.gridPos.x, room.gridPos.y + roomSizeY / 2 + 1);
             GameObject doorSprite = Instantiate(tileToRend, drawPos, Quaternion.identity) as GameObject;
-            room.doors.Add(doorSprite);
+            room.AddToList(Room.Passage.left, doorSprite);
+            map[roomPos.x - 1, roomPos.y].AddToList(Room.Passage.right, doorSprite);
             doorSprite.tag = "DoorLeft";
             doorSprite.layer = LayerMask.NameToLayer("Level");
             TileSpriteSelector mapper = doorSprite.GetComponent<TileSpriteSelector>();
@@ -198,7 +231,8 @@ public class LevelManager : MonoBehaviour {
         {
             drawPos = new Vector2(room.gridPos.x + roomSizeX - 1, room.gridPos.y + roomSizeY / 2 + 1);
             GameObject doorSprite = Instantiate(tileToRend, drawPos, Quaternion.identity) as GameObject;
-            room.doors.Add(doorSprite);
+            room.AddToList(Room.Passage.right, doorSprite);
+            map[roomPos.x + 1, roomPos.y].AddToList(Room.Passage.left, doorSprite);
             doorSprite.tag = "DoorRight";
             doorSprite.layer = LayerMask.NameToLayer("Level");
             TileSpriteSelector mapper = doorSprite.GetComponent<TileSpriteSelector>();
@@ -561,7 +595,7 @@ public class LevelManager : MonoBehaviour {
         }
     }
 
-    public Vector2 ActualPos
+    public Vector2Int ActualPos
     {
         get
         {

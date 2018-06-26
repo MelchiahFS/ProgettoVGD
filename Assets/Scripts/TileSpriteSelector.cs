@@ -81,6 +81,7 @@ public class TileSpriteSelector : MonoBehaviour
 
     public bool floor, wall, innerWall, passageHor, passageVer;
     private SpriteRenderer rend;
+    private Color color;
 
     private void Start()
     {
@@ -158,7 +159,6 @@ public class TileSpriteSelector : MonoBehaviour
         {
             rend.sprite = floorTile;
         }
-                
     }
 
     void PickSpriteWall()

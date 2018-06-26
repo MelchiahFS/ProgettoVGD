@@ -9,7 +9,6 @@ public class PlayerController : MonoBehaviour
     public float speed;
     private Room actualRoom = null;
 
-	private SpriteRenderer spriteRenderer;
 	private Animator animator;
     private TileSpriteSelector selector;
 
@@ -122,6 +121,7 @@ public class PlayerController : MonoBehaviour
             actualRoom = GameManager.manager.ActualRoom;
         }
 
+        GameManager.manager.lvlManager.LightUpRoom(actualRoom);
         yield return null;
     }
 
@@ -167,7 +167,6 @@ public class PlayerController : MonoBehaviour
             }
         }
     }
-
     
     public void OnTriggerEnter2D(Collider2D door)
     {
@@ -205,8 +204,6 @@ public class PlayerController : MonoBehaviour
         }
 
     }
-
-
 
     //Apre o chiude le porte
     public void SetRoomDoor(char doorPos, GameObject door)

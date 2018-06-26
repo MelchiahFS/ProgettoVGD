@@ -11,8 +11,7 @@ public class Room
     public bool openUp = false, openDown = false, openLeft = false, openRight = false; //indica se la porta è aperta o no
     public bool visited = false;
     public List<GameObject> roomTiles = null;
-    private List<GameObject>[] passageTiles = null;
-    public List<GameObject> doors = null;
+    public List<GameObject>[] passageTiles = null;
 
     public enum Passage { up, down, left, right};
 
@@ -20,7 +19,6 @@ public class Room
     {
         passageTiles = new List<GameObject>[4];
         roomTiles = new List<GameObject>();
-        doors = new List<GameObject>();
         gridPos = _gridPos;
     }
 
