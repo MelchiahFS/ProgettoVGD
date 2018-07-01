@@ -8,7 +8,7 @@ public class GameManager : MonoBehaviour {
     public static GameManager manager = null;
     public LevelManager lvlManager;
     private Room actualRoom = null;
-    private Vector2Int actualPos;
+    public Vector2Int actualPos;
 
 
 
@@ -79,7 +79,7 @@ public class GameManager : MonoBehaviour {
         {
             actualPos += new Vector2Int(1, 0);
         }
-        ActualRoom = lvlManager.map[(int)actualPos.x, (int)actualPos.y]; //setto la nuova stanza attuale
+        ActualRoom = lvlManager.map[actualPos.x, actualPos.y]; //setto la nuova stanza attuale
     }
 
     //imposta o restituisce la stanza attuale
@@ -93,8 +93,30 @@ public class GameManager : MonoBehaviour {
         set
         {
             actualRoom = value;
-            actualRoom.visited = true;
+            //actualRoom.visited = true;
         }
+    }
+
+    //restituisce la stanza adiacente a quella attuale nella direzione richiesta
+    public Room GetAdiacentRoom(char dir)
+    {
+        if (dir == 'u')
+        {
+            return lvlManager.map[actualPos.x, actualPos.y + 1];
+        }
+        else if (dir == 'd')
+        {
+            return lvlManager.map[actualPos.x, actualPos.y - 1];
+        }
+        else if (dir == 'l')
+        {
+            return lvlManager.map[actualPos.x - 1, actualPos.y];
+        }
+        else if (dir == 'r')
+        {
+            return lvlManager.map[actualPos.x + 1, actualPos.y];
+        }
+        return null;
     }
 
     

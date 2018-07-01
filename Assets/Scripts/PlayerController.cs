@@ -7,7 +7,7 @@ public class PlayerController : MonoBehaviour
 {
     private Rigidbody2D rb2d;
     public float speed;
-    private Room actualRoom = null;
+    private Room actualRoom = null, adiacentRoom = null;
 
 	private Animator animator;
     private TileSpriteSelector selector;
@@ -86,6 +86,7 @@ public class PlayerController : MonoBehaviour
         }        
     }
 
+    //coroutine che esegue ChangeRoom
     IEnumerator UpdateRoom(char c)
     {
         chRoom = true;
@@ -93,6 +94,7 @@ public class PlayerController : MonoBehaviour
         chRoom = false;
     }
 
+    //aggiorna la stanza attuale 
     IEnumerator ChangeRoom(char c)
     {
         if (c == 'd')
@@ -121,7 +123,7 @@ public class PlayerController : MonoBehaviour
             actualRoom = GameManager.manager.ActualRoom;
         }
 
-        GameManager.manager.lvlManager.LightUpRoom(actualRoom);
+        //GameManager.manager.lvlManager.LightUpRoom(actualRoom, true);
         yield return null;
     }
 
@@ -142,6 +144,14 @@ public class PlayerController : MonoBehaviour
                 if (!actualRoom.openUp)
                 {
                     SetRoomDoor('u', other.gameObject);
+                    if (!actualRoom.visited)
+                        GameManager.manager.lvlManager.LightUpRoom(actualRoom, true);
+                    else
+                    {
+                        adiacentRoom = GameManager.manager.GetAdiacentRoom('u');
+                        GameManager.manager.lvlManager.LightUpPassage(adiacentRoom.doorSpriteDown, actualRoom.passageUpTiles, true);
+                    }
+                    
                 }
             }
             else if (other.gameObject.tag == "DoorDown")
@@ -149,6 +159,14 @@ public class PlayerController : MonoBehaviour
                 if (!actualRoom.openDown)
                 {
                     SetRoomDoor('d', other.gameObject);
+                    if (!actualRoom.visited)
+                        GameManager.manager.lvlManager.LightUpRoom(actualRoom, true);
+                    else
+                    {
+                        adiacentRoom = GameManager.manager.GetAdiacentRoom('d');
+                        GameManager.manager.lvlManager.LightUpPassage(adiacentRoom.doorSpriteUp, actualRoom.passageDownTiles, true);
+                    }
+                    
                 }
             }
             else if (other.gameObject.tag == "DoorLeft")
@@ -156,6 +174,14 @@ public class PlayerController : MonoBehaviour
                 if (!actualRoom.openLeft)
                 {
                     SetRoomDoor('l', other.gameObject);
+                    if (!actualRoom.visited)
+                        GameManager.manager.lvlManager.LightUpRoom(actualRoom, true);
+                    else
+                    {
+                        adiacentRoom = GameManager.manager.GetAdiacentRoom('l');
+                        GameManager.manager.lvlManager.LightUpPassage(adiacentRoom.doorSpriteRight, actualRoom.passageLeftTiles, true);
+                    }
+                    
                 }
             }
             else if (other.gameObject.tag == "DoorRight")
@@ -163,42 +189,52 @@ public class PlayerController : MonoBehaviour
                 if (!actualRoom.openRight)
                 {
                     SetRoomDoor('r', other.gameObject);
+                    if (!actualRoom.visited)
+                        GameManager.manager.lvlManager.LightUpRoom(actualRoom, true);
+                    else
+                    {
+                        adiacentRoom = GameManager.manager.GetAdiacentRoom('r');
+                        GameManager.manager.lvlManager.LightUpPassage(adiacentRoom.doorSpriteLeft, actualRoom.passageRightTiles, true);
+                    }
+                    adiacentRoom = GameManager.manager.GetAdiacentRoom('r');
+                    GameManager.manager.lvlManager.LightUpPassage(adiacentRoom.doorSpriteLeft, actualRoom.passageRightTiles, true);
                 }
             }
         }
     }
     
-    public void OnTriggerEnter2D(Collider2D door)
+    //i trigger attivati permettono di aggiornare correttamente la posizione del player nelle stanze
+    public void OnTriggerEnter2D(Collider2D doorTrigger)
     {
-        if (door.gameObject.tag == "innerDoorUp") 
+        if (doorTrigger.gameObject.tag == "innerDoorUp") 
         {
             passUp = false;
         }
-        else if (door.gameObject.tag == "outerDoorUp")
+        else if (doorTrigger.gameObject.tag == "outerDoorUp")
         {
             passUp = true;
         }
-        else if (door.gameObject.tag == "innerDoorDown") 
+        else if (doorTrigger.gameObject.tag == "innerDoorDown") 
         {
             passDown = false;
         }
-        else if (door.gameObject.tag == "outerDoorDown")
+        else if (doorTrigger.gameObject.tag == "outerDoorDown")
         {
              passDown = true;
         }
-        else if (door.gameObject.tag == "innerDoorLeft") 
+        else if (doorTrigger.gameObject.tag == "innerDoorLeft") 
         {
             passLeft = false;
         }
-        else if (door.gameObject.tag == "outerDoorLeft")
+        else if (doorTrigger.gameObject.tag == "outerDoorLeft")
         {
             passLeft = true;
         }
-        else if (door.gameObject.tag == "innerDoorRight") 
+        else if (doorTrigger.gameObject.tag == "innerDoorRight") 
         {
             passRight = false;
         }
-        else if (door.gameObject.tag == "outerDoorRight")
+        else if (doorTrigger.gameObject.tag == "outerDoorRight")
         {
             passRight = true;
         }
