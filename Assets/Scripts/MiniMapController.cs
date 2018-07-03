@@ -4,26 +4,28 @@ using UnityEngine;
 
 public class MiniMapController : MonoBehaviour {
 
-    public static MiniMapController control;
-	
+    public GameObject newRoom, visitedRoom;
+    private Camera minimapCamera;
+    public bool isCameraSet = false;
 
-	void Awake () {
-        if (control == null)
-        {
-            DontDestroyOnLoad(gameObject);
-            control = this;
-        }
-        else if (control != this)
-        {
-            Destroy(gameObject);
-        }
-        DontDestroyOnLoad(gameObject);
 
+    public void SetEnterRoom(Room room)
+    {
+        if (!isCameraSet)
+        {
+            minimapCamera = GetComponentInChildren<Camera>();
+            isCameraSet = true;
+        }
+        room.visitedMapSprite.SetActive(false);
+        room.actualMapSprite.SetActive(true);
+        minimapCamera.transform.position = room.actualMapSprite.transform.position;
 
     }
-	
-	// Update is called once per frame
-	void Update () {
-		
-	}
+
+    public void SetExitRoom(Room room)
+    {
+        room.visitedMapSprite.SetActive(true);
+        room.actualMapSprite.SetActive(false);
+    }
+
 }

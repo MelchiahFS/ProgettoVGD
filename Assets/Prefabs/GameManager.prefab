@@ -11,6 +11,24 @@ Prefab:
   m_ParentPrefab: {fileID: 0}
   m_RootGameObject: {fileID: 1994814517310426}
   m_IsPrefabParent: 1
+--- !u!1 &1283663662844894
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  serializedVersion: 5
+  m_Component:
+  - component: {fileID: 4175449900248498}
+  - component: {fileID: 20677292535790788}
+  - component: {fileID: 124734662387081778}
+  - component: {fileID: 81847156232084298}
+  m_Layer: 0
+  m_Name: MinimapCamera
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
 --- !u!1 &1994814517310426
 GameObject:
   m_ObjectHideFlags: 0
@@ -21,6 +39,7 @@ GameObject:
   - component: {fileID: 4295575434993206}
   - component: {fileID: 114301622576187776}
   - component: {fileID: 114806024649964066}
+  - component: {fileID: 114019715524181224}
   m_Layer: 0
   m_Name: GameManager
   m_TagString: Untagged
@@ -28,6 +47,19 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
+--- !u!4 &4175449900248498
+Transform:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1283663662844894}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 25, y: 6, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 4295575434993206}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &4295575434993206
 Transform:
   m_ObjectHideFlags: 1
@@ -37,10 +69,69 @@ Transform:
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
+  m_Children:
+  - {fileID: 4175449900248498}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!20 &20677292535790788
+Camera:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1283663662844894}
+  m_Enabled: 1
+  serializedVersion: 2
+  m_ClearFlags: 1
+  m_BackGroundColor: {r: 0, g: 0, b: 0, a: 0}
+  m_NormalizedViewPortRect:
+    serializedVersion: 2
+    x: 0
+    y: 0
+    width: 1
+    height: 1
+  near clip plane: -1
+  far clip plane: 1000
+  field of view: 60
+  orthographic: 1
+  orthographic size: 90
+  m_Depth: 0
+  m_CullingMask:
+    serializedVersion: 2
+    m_Bits: 1024
+  m_RenderingPath: -1
+  m_TargetTexture: {fileID: 8400000, guid: a88c6d7d8657aa0498e9f6a44514792e, type: 2}
+  m_TargetDisplay: 0
+  m_TargetEye: 3
+  m_HDR: 1
+  m_AllowMSAA: 1
+  m_AllowDynamicResolution: 0
+  m_ForceIntoRT: 0
+  m_OcclusionCulling: 1
+  m_StereoConvergence: 10
+  m_StereoSeparation: 0.022
+--- !u!81 &81847156232084298
+AudioListener:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1283663662844894}
+  m_Enabled: 1
+--- !u!114 &114019715524181224
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1994814517310426}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6f63b3c0c30bfc94eba20a220a0c2ec3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  newRoom: {fileID: 1898078663905458, guid: fda2d35a2f6582b4fbc19e48860ca61a, type: 2}
+  visitedRoom: {fileID: 1577879277103060, guid: c1231bf2a4d29ea42a0d07c0721ec153,
+    type: 2}
+  isCameraSet: 0
 --- !u!114 &114301622576187776
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -52,6 +143,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4c8a4204cbc887d4bb4934b09127df45, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  lvlManager: {fileID: 0}
+  actualPos: {x: 0, y: 0}
 --- !u!114 &114806024649964066
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -68,3 +161,14 @@ MonoBehaviour:
   tileToRend: {fileID: 1670268643928982, guid: a800673336df5704581de24fa172754e, type: 2}
   player: {fileID: 1977234344992872, guid: 029b65dc30e5a034b8a47cf952779b6f, type: 2}
   mapSize: {x: 0, y: 0}
+  dim: 0.5
+  full: 1
+  off: 0
+  alpha: 0
+--- !u!124 &124734662387081778
+Behaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1283663662844894}
+  m_Enabled: 1

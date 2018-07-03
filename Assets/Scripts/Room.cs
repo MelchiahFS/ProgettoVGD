@@ -17,10 +17,10 @@ public class Room
     public List<GameObject> passageUpTiles = null;
     public List<GameObject> passageDownTiles = null;
     public GameObject doorSpriteUp, doorSpriteDown, doorSpriteLeft, doorSpriteRight;
+    public GameObject actualMapSprite, visitedMapSprite;
 
     public Room(Vector2Int _gridPos)
     {
-        passageTiles = new List<GameObject>[4];
         passageLeftTiles = new List<GameObject>();
         passageRightTiles = new List<GameObject>();
         passageUpTiles = new List<GameObject>();

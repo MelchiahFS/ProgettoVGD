@@ -11,6 +11,7 @@ public class PlayerController : MonoBehaviour
 
 	private Animator animator;
     private TileSpriteSelector selector;
+    private MiniMapController minimap;
 
     private bool passUp = false, passDown = false, passLeft = false, passRight = false;
 
@@ -20,6 +21,7 @@ public class PlayerController : MonoBehaviour
     {
         rb2d = GetComponent<Rigidbody2D>();
         animator = GetComponent<Animator>();
+        minimap = GameManager.manager.GetComponent<MiniMapController>();
         actualRoom = GameManager.manager.ActualRoom;
     }
 	  
@@ -97,6 +99,7 @@ public class PlayerController : MonoBehaviour
     //aggiorna la stanza attuale 
     IEnumerator ChangeRoom(char c)
     {
+        minimap.SetExitRoom(actualRoom);
         if (c == 'd')
         {
             passDown = false;
@@ -122,6 +125,7 @@ public class PlayerController : MonoBehaviour
             GameManager.manager.UpdateActualRoom('r');
             actualRoom = GameManager.manager.ActualRoom;
         }
+        minimap.SetEnterRoom(actualRoom);
 
         //GameManager.manager.lvlManager.LightUpRoom(actualRoom, true);
         yield return null;

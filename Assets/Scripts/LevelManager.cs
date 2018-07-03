@@ -18,13 +18,15 @@ public class LevelManager : MonoBehaviour {
     public float dim = 0.5f, full = 1, off = 0, alpha;
     private Color c;
 
+    private MiniMapController minimap;
+
 
     public void DrawMap()
     {
         lvlGen = new LevelGenerator(roomSizeX, roomSizeY);
         map = lvlGen.Rooms;
         mapSize = lvlGen.GetMapSize();
-
+        minimap = GetComponent<MiniMapController>();
 
         for (int i = 0; i < mapSize.x; i++) //per ogni stanza nella griglia delle stanze
         {
@@ -37,6 +39,7 @@ public class LevelManager : MonoBehaviour {
                     DrawWalls(map[i, j]);
                     LinkRooms(i,j);
                     DrawDoors(i, j);
+                    DrawMinimapSprites(map[i,j]);
                 }
             }
         }
@@ -54,6 +57,7 @@ public class LevelManager : MonoBehaviour {
                     LightUpRoom(map[i, j], true);
                     Instantiate(player, new Vector2(map[i, j].gridPos.x + (float)(roomSizeX / 2), map[i, j].gridPos.y + (float)(roomSizeY / 2)), Quaternion.identity);
                     ActualPos = new Vector2Int(i, j);
+                    minimap.SetEnterRoom(map[i, j]);
                     return map[i, j];
                 }
             }
@@ -681,6 +685,17 @@ public class LevelManager : MonoBehaviour {
         c.a = alpha;
         s.color = c;
     }
+
+    public void DrawMinimapSprites(Room room)
+    {
+        int posX = room.gridPos.x + roomSizeX / 2;
+        int posY = room.gridPos.y + roomSizeY / 2;
+        room.actualMapSprite = Instantiate(minimap.newRoom, new Vector2(posX, posY), Quaternion.identity);
+        room.visitedMapSprite = Instantiate(minimap.visitedRoom, new Vector2(posX, posY), Quaternion.identity);
+        room.actualMapSprite.SetActive(false);
+        room.visitedMapSprite.SetActive(false);
+    }
+
 
     public Vector2Int ActualPos
     {
