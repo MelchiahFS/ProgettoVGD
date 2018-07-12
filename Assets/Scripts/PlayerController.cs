@@ -8,10 +8,10 @@ public class PlayerController : MonoBehaviour
     private Rigidbody2D rb2d;
     public float speed;
     private Room actualRoom = null, adiacentRoom = null;
-
 	private Animator animator;
     private TileSpriteSelector selector;
     private MiniMapController minimap;
+    
 
     private bool passUp = false, passDown = false, passLeft = false, passRight = false;
 
@@ -24,7 +24,7 @@ public class PlayerController : MonoBehaviour
         minimap = GameManager.manager.GetComponent<MiniMapController>();
         actualRoom = GameManager.manager.ActualRoom;
     }
-	  
+	
 	void FixedUpdate()
 	{
 		float x = Input.GetAxisRaw("Horizontal");
@@ -40,27 +40,56 @@ public class PlayerController : MonoBehaviour
             animator.SetBool("MoveRight", true);
             animator.SetBool("Idle", false);
 			animator.SetBool("MoveLeft", false);
+            animator.SetBool("MoveDown", false);
+            animator.SetBool("MoveUp", false);
+
         }
         else
         {
             if (x == 0)
             {
-                animator.SetBool("Idle", true);
-                animator.SetBool("MoveRight", false);
-                animator.SetBool("MoveLeft", false);
+                if (y > 0)
+                {
+                    animator.SetBool("MoveRight", false);
+                    animator.SetBool("Idle", false);
+                    animator.SetBool("MoveLeft", false);
+                    animator.SetBool("MoveDown", false);
+                    animator.SetBool("MoveUp", true);
+                }
+                else
+                {
+                    if (y == 0)
+                    {
+                        animator.SetBool("MoveRight", false);
+                        animator.SetBool("Idle", true);
+                        animator.SetBool("MoveLeft", false);
+                        animator.SetBool("MoveDown", false);
+                        animator.SetBool("MoveUp", false);
+                    }
+                    else
+                    {
+                        animator.SetBool("MoveRight", false);
+                        animator.SetBool("Idle", false);
+                        animator.SetBool("MoveLeft", false);
+                        animator.SetBool("MoveDown", true);
+                        animator.SetBool("MoveUp", false);
+                    }
+                }
             }
             else
             {
+                animator.SetBool("MoveRight", false);
                 animator.SetBool("Idle", false);
                 animator.SetBool("MoveLeft", true);
-                animator.SetBool("MoveRight", false);
+                animator.SetBool("MoveDown", false);
+                animator.SetBool("MoveUp", false);
             }
-
         }
     }
 
     void Update()
     {
+
         if (!chRoom)
         {
             if (passUp && passDown)
@@ -85,11 +114,11 @@ public class PlayerController : MonoBehaviour
                     StartCoroutine(UpdateRoom('r'));
                 }
             }
-        }        
-    }
+        }
+     }
 
-    //coroutine che esegue ChangeRoom
-    IEnumerator UpdateRoom(char c)
+        //coroutine che esegue ChangeRoom
+        IEnumerator UpdateRoom(char c)
     {
         chRoom = true;
         yield return StartCoroutine(ChangeRoom(c));
@@ -328,4 +357,4 @@ public class PlayerController : MonoBehaviour
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex, LoadSceneMode.Single);
     }
 
-}
+    }

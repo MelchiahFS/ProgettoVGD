@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class LevelManager : MonoBehaviour {
 
-    LevelGenerator lvlGen = null;
+    public LevelGenerator lvlGen = null;
     public int roomSizeX, roomSizeY;
     private int horPassSizeX, horPassSizeY, verPassSizeX, verPassSizeY;
     private BoxCollider2D wallCollider;
@@ -26,6 +26,7 @@ public class LevelManager : MonoBehaviour {
         lvlGen = new LevelGenerator(roomSizeX, roomSizeY);
         map = lvlGen.Rooms;
         mapSize = lvlGen.GetMapSize();
+        ActualPos = new Vector2Int((int)mapSize.x / 2, (int)mapSize.y / 2);
         minimap = GetComponent<MiniMapController>();
 
         for (int i = 0; i < mapSize.x; i++) //per ogni stanza nella griglia delle stanze
@@ -56,7 +57,6 @@ public class LevelManager : MonoBehaviour {
 
                     LightUpRoom(map[i, j], true);
                     Instantiate(player, new Vector2(map[i, j].gridPos.x + (float)(roomSizeX / 2), map[i, j].gridPos.y + (float)(roomSizeY / 2)), Quaternion.identity);
-                    ActualPos = new Vector2Int(i, j);
                     minimap.SetEnterRoom(map[i, j]);
                     return map[i, j];
                 }
@@ -690,10 +690,33 @@ public class LevelManager : MonoBehaviour {
     {
         int posX = room.gridPos.x + roomSizeX / 2;
         int posY = room.gridPos.y + roomSizeY / 2;
-        room.actualMapSprite = Instantiate(minimap.newRoom, new Vector2(posX, posY), Quaternion.identity);
-        room.visitedMapSprite = Instantiate(minimap.visitedRoom, new Vector2(posX, posY), Quaternion.identity);
-        room.actualMapSprite.SetActive(false);
-        room.visitedMapSprite.SetActive(false);
+        
+        if (room.bossRoom)
+        {
+            room.actualBossMapSprite = Instantiate(minimap.actualBossRoom, new Vector2(posX, posY), Quaternion.identity);
+            room.visitedBossMapSprite = Instantiate(minimap.visitedBossRoom, new Vector2(posX, posY), Quaternion.identity);
+
+            room.actualBossMapSprite.SetActive(false);
+            room.visitedBossMapSprite.SetActive(false);
+        }
+        else if (room.shopRoom)
+        {
+            room.actualShopMapSprite = Instantiate(minimap.actualShopRoom, new Vector2(posX, posY), Quaternion.identity);
+            room.visitedShopMapSprite = Instantiate(minimap.visitedShopRoom, new Vector2(posX, posY), Quaternion.identity);
+
+            room.actualShopMapSprite.SetActive(false);
+            room.visitedShopMapSprite.SetActive(false);
+        }
+        else
+        {
+            room.actualMapSprite = Instantiate(minimap.actualRoom, new Vector2(posX, posY), Quaternion.identity);
+            room.visitedMapSprite = Instantiate(minimap.visitedRoom, new Vector2(posX, posY), Quaternion.identity);
+            room.unknownMapSprite = Instantiate(minimap.unknownRoom, new Vector2(posX, posY), Quaternion.identity);
+
+            room.unknownMapSprite.SetActive(false);
+            room.actualMapSprite.SetActive(false);
+            room.visitedMapSprite.SetActive(false);
+        }
     }
 
 

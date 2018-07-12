@@ -17,7 +17,7 @@ public class Room
     public List<GameObject> passageUpTiles = null;
     public List<GameObject> passageDownTiles = null;
     public GameObject doorSpriteUp, doorSpriteDown, doorSpriteLeft, doorSpriteRight;
-    public GameObject actualMapSprite, visitedMapSprite;
+    public GameObject actualMapSprite, visitedMapSprite, actualBossMapSprite, visitedBossMapSprite, actualShopMapSprite, visitedShopMapSprite, unknownMapSprite;
 
     public Room(Vector2Int _gridPos)
     {

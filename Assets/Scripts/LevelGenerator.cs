@@ -262,8 +262,8 @@ public class LevelGenerator
         }
     }
 
-    public Vector2 GetMapSize()
+    public Vector2Int GetMapSize()
     {
-        return new Vector2(gridSizeX * 2, gridSizeY * 2);
+        return new Vector2Int(gridSizeX * 2, gridSizeY * 2);
     }
 }

@@ -1,11 +1,11 @@
 fileFormatVersion: 2
 guid: c1fbfb5af530fef469ba6b1c95e38aa8
-timeCreated: 1527454835
-licenseType: Free
 MonoImporter:
   externalObjects: {}
   serializedVersion: 2
-  defaultReferences: []
+  defaultReferences:
+  - healthText: {instanceID: 0}
+  - gameOver: {fileID: 1002920774510010, guid: e5bac19bcfcec1b4fb4fc9c66d92b2c8, type: 2}
   executionOrder: 0
   icon: {instanceID: 0}
   userData: 

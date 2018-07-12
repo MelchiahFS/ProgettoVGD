@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour {
-
+	
     public static GameManager manager = null;
     public LevelManager lvlManager;
     private Room actualRoom = null;
@@ -31,8 +31,9 @@ public class GameManager : MonoBehaviour {
     {
         lvlManager = GetComponent<LevelManager>();
         lvlManager.DrawMap();
-        ActualRoom = lvlManager.InstantiatePlayer();
         actualPos = lvlManager.ActualPos;
+        ActualRoom = lvlManager.InstantiatePlayer();
+
     }
 
 
@@ -93,28 +94,56 @@ public class GameManager : MonoBehaviour {
         set
         {
             actualRoom = value;
-            //actualRoom.visited = true;
         }
     }
 
     //restituisce la stanza adiacente a quella attuale nella direzione richiesta
     public Room GetAdiacentRoom(char dir)
     {
+        Vector2 mapSize = lvlManager.lvlGen.GetMapSize();
         if (dir == 'u')
         {
-            return lvlManager.map[actualPos.x, actualPos.y + 1];
+            if (actualPos.y + 1 <= mapSize.y)
+            {
+                return lvlManager.map[actualPos.x, actualPos.y + 1];
+            }
+            else
+            {
+                return null;
+            }
         }
         else if (dir == 'd')
         {
-            return lvlManager.map[actualPos.x, actualPos.y - 1];
+            if (actualPos.y - 1 >= 0)
+            {
+                return lvlManager.map[actualPos.x, actualPos.y - 1];
+            }
+            else
+            {
+                return null;
+            }
         }
         else if (dir == 'l')
         {
-            return lvlManager.map[actualPos.x - 1, actualPos.y];
+            if (actualPos.x - 1 >= 0)
+            {
+                return lvlManager.map[actualPos.x - 1, actualPos.y];
+            }
+            else
+            {
+                return null;
+            }
         }
         else if (dir == 'r')
         {
-            return lvlManager.map[actualPos.x + 1, actualPos.y];
+            if (actualPos.x + 1 <= mapSize.x)
+            {
+                return lvlManager.map[actualPos.x + 1, actualPos.y];
+            }
+            else
+            {
+                return null;
+            }
         }
         return null;
     }
