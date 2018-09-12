@@ -170,10 +170,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a6366acc3de5f9d43b9873fb7d67b7b2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  roomSizeX: 13
-  roomSizeY: 13
+  roomSizeX: 15
+  roomSizeY: 15
   tileToRend: {fileID: 1670268643928982, guid: a800673336df5704581de24fa172754e, type: 2}
-  player: {fileID: 1977234344992872, guid: 029b65dc30e5a034b8a47cf952779b6f, type: 2}
+  player: {fileID: 1977234344992872, guid: 30dd07f186c230543871ded22121cffe, type: 2}
   mapSize: {x: 0, y: 0}
   dim: 0.5
   full: 1

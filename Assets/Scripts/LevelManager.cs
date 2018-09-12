@@ -10,6 +10,7 @@ public class LevelManager : MonoBehaviour {
     private int horPassSizeX, horPassSizeY, verPassSizeX, verPassSizeY;
     private BoxCollider2D wallCollider;
     private BoxCollider2D doorCollider;
+    private BoxCollider2D obsCollider;
     public GameObject tileToRend;
     public GameObject player;
     public Room[,] map;
@@ -40,9 +41,39 @@ public class LevelManager : MonoBehaviour {
                     DrawWalls(map[i, j]);
                     LinkRooms(i,j);
                     DrawDoors(i, j);
+                    if (!map[i,j].bossRoom && !map[i,j].shopRoom && !map[i,j].startRoom)
+                        DrawObstacles(i, j);
                     DrawMinimapSprites(map[i,j]);
                 }
             }
+        }
+    }
+
+    void DrawObstacles(int x, int y)
+    {
+        Room room = map[x, y];
+        Vector2 drawPos = room.gridPos;
+        for (int i = 0; i < roomSizeY; i++)
+        {
+            for (int j = 0; j < roomSizeX; j++)
+            {
+                if (room.obsLayout[i, j] == 1)
+                {
+                    GameObject obsSprite = Instantiate(tileToRend, drawPos, Quaternion.identity) as GameObject;
+                    obsSprite.tag = "Obstacle";
+                    obsSprite.layer = LayerMask.NameToLayer("ObstacleLayer");
+                    TileSpriteSelector mapper = obsSprite.GetComponent<TileSpriteSelector>();
+                    SpriteRenderer rend = obsSprite.GetComponent<SpriteRenderer>();
+                    rend.sprite = mapper.obstacles;
+                    rend.sortingOrder = 1;
+                    obsCollider = obsSprite.GetComponent<BoxCollider2D>();
+                    obsCollider.enabled = true;
+                    room.roomTiles.Add(obsSprite);
+                }
+                drawPos.x++;
+            }
+            drawPos.x = room.gridPos.x;
+            drawPos.y++;
         }
     }
 
@@ -594,7 +625,6 @@ public class LevelManager : MonoBehaviour {
             doorCollider.enabled = true;
         }
     }
-
 
     //illumina le stanze
     public void LightUpRoom(Room actualRoom, bool light)

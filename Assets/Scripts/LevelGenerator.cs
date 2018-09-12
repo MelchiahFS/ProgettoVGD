@@ -21,11 +21,13 @@ public class LevelGenerator
 
 
         numberOfRooms = Random.Range(15, 20);
+        //numberOfRooms = 16;
 
         //NOTA: la dimensione della griglia delle stanze sarà il doppio in x e y 
         //in modo che la prima stanza stia al centro della griglia
         worldSize = new Vector2Int(Random.Range(6, 7), Random.Range(6, 7));
-
+        //worldSize = new Vector2Int(2,2);
+        
         //se il numero delle stanze eccede il numero delle celle nella griglia allora lo eguaglio a tale numero
         if (numberOfRooms >= (worldSize.x * 2) * (worldSize.y * 2))
         {
@@ -51,6 +53,7 @@ public class LevelGenerator
         //crea una stanza al centro della griglia
         rooms[gridSizeX, gridSizeY] = new Room(Vector2Int.zero);
         rooms[gridSizeX, gridSizeY].startRoom = true;
+        rooms[gridSizeX, gridSizeY].enemyCounter = 0;
         //inserisce nella lista delle posizioni visitate la posizione della stanza attuale
         takenPositions.Insert(0, Vector2Int.zero);
         Vector2Int checkPos = Vector2Int.zero;
@@ -76,7 +79,7 @@ public class LevelGenerator
                     checkPos = SelectiveNewPosition();
                     iterations++;
                 }//ripeto finché non trovo una stanza che abbia al massimo una stanza adiacente
-                while (NumberOfNeighbors(checkPos, takenPositions) > 1 && iterations < 100);
+                while (NumberOfNeighbors(checkPos, takenPositions) > 1 && iterations < 50);
             }
 
             //posiziono la stanza nella griglia delle stanze
@@ -116,6 +119,7 @@ public class LevelGenerator
             checkingPos = new Vector2Int(x, y);
         }//ripeto finché la nuova stanza non sarà dentro la griglia o la nuova posizione non sia diversa da una già occupata
         while (takenPositions.Contains(checkingPos) || (x / (roomSizeX + distRoomX)) >= gridSizeX || (x / (roomSizeX + distRoomX)) < -gridSizeX || (y / (roomSizeY + distRoomY)) >= gridSizeY || (y / (roomSizeY + distRoomY)) < -gridSizeY);
+        
         return checkingPos;
     }
 
@@ -132,7 +136,7 @@ public class LevelGenerator
                 index = Mathf.RoundToInt(Random.value * (takenPositions.Count - 1));
                 inc++;
             }//controlla finché non trova una stanza che ha una sola stanza adiacente
-            while (NumberOfNeighbors(takenPositions[index], takenPositions) > 1 && inc < 100);
+            while (NumberOfNeighbors(takenPositions[index], takenPositions) > 1 && inc < 50);
             x = (int)takenPositions[index].x;
             y = (int)takenPositions[index].y;
             bool upDown = (Random.value < 0.5f);
@@ -155,6 +159,7 @@ public class LevelGenerator
             checkingPos = new Vector2Int(x, y);
         }//ripeto finché la nuova stanza non sarà dentro la griglia o la nuova posizione non sia diversa da una già occupata
         while (takenPositions.Contains(checkingPos) || (x / (roomSizeX + distRoomX)) >= gridSizeX || (x / (roomSizeX + distRoomX)) < -gridSizeX || (y / (roomSizeY + distRoomY)) >= gridSizeY || (y / (roomSizeY + distRoomY)) < -gridSizeY);
+        
         return checkingPos;
     }
 
@@ -217,6 +222,7 @@ public class LevelGenerator
                 if (AdiacentRooms(room) == 1)
                 {
                     room.bossRoom = true;
+                    room.enemyCounter = 1;
                     bossIsSet = true;
                     break;
                 }
@@ -233,6 +239,7 @@ public class LevelGenerator
                 if (AdiacentRooms(room) == 1)
                 {
                     room.shopRoom = true;
+                    room.enemyCounter = 0;
                     shopIsSet = true;
                     break;
                 }

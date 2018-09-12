@@ -11,18 +11,22 @@ public class PlayerController : MonoBehaviour
 	private Animator animator;
     private TileSpriteSelector selector;
     private MiniMapController minimap;
+    private int roomSizeX, roomSizeY;
+    private GameObject hitbox;
     
-
     private bool passUp = false, passDown = false, passLeft = false, passRight = false;
 
     bool setDoor = false, chRoom = false;
 
     private void Start()
     {
+        hitbox = this.transform.Find("Hitbox").gameObject;
         rb2d = GetComponent<Rigidbody2D>();
         animator = GetComponent<Animator>();
         minimap = GameManager.manager.GetComponent<MiniMapController>();
         actualRoom = GameManager.manager.ActualRoom;
+        roomSizeX = GameManager.manager.lvlManager.roomSizeX;
+        roomSizeY = GameManager.manager.lvlManager.roomSizeY;
     }
 	
 	void FixedUpdate()
@@ -35,56 +39,47 @@ public class PlayerController : MonoBehaviour
 
 	    rb2d.velocity = movement * speed;
 
-        if (x > 0)
+        if (x == 0 && y == 0)
+        {
+            animator.SetBool("MoveRight", false);
+            animator.SetBool("Idle", true);
+            animator.SetBool("MoveLeft", false);
+            animator.SetBool("MoveDown", false);
+            animator.SetBool("MoveUp", false);
+        }
+        else if (y == 0 && x > 0)
         {
             animator.SetBool("MoveRight", true);
             animator.SetBool("Idle", false);
-			animator.SetBool("MoveLeft", false);
+            animator.SetBool("MoveLeft", false);
             animator.SetBool("MoveDown", false);
             animator.SetBool("MoveUp", false);
-
         }
-        else
+        else if (y == 0 && x < 0)
         {
-            if (x == 0)
-            {
-                if (y > 0)
-                {
-                    animator.SetBool("MoveRight", false);
-                    animator.SetBool("Idle", false);
-                    animator.SetBool("MoveLeft", false);
-                    animator.SetBool("MoveDown", false);
-                    animator.SetBool("MoveUp", true);
-                }
-                else
-                {
-                    if (y == 0)
-                    {
-                        animator.SetBool("MoveRight", false);
-                        animator.SetBool("Idle", true);
-                        animator.SetBool("MoveLeft", false);
-                        animator.SetBool("MoveDown", false);
-                        animator.SetBool("MoveUp", false);
-                    }
-                    else
-                    {
-                        animator.SetBool("MoveRight", false);
-                        animator.SetBool("Idle", false);
-                        animator.SetBool("MoveLeft", false);
-                        animator.SetBool("MoveDown", true);
-                        animator.SetBool("MoveUp", false);
-                    }
-                }
-            }
-            else
-            {
-                animator.SetBool("MoveRight", false);
-                animator.SetBool("Idle", false);
-                animator.SetBool("MoveLeft", true);
-                animator.SetBool("MoveDown", false);
-                animator.SetBool("MoveUp", false);
-            }
+            animator.SetBool("MoveRight", false);
+            animator.SetBool("Idle", false);
+            animator.SetBool("MoveLeft", true);
+            animator.SetBool("MoveDown", false);
+            animator.SetBool("MoveUp", false);
         }
+        else if (y > 0)
+        {
+            animator.SetBool("MoveRight", false);
+            animator.SetBool("Idle", false);
+            animator.SetBool("MoveLeft", false);
+            animator.SetBool("MoveDown", false);
+            animator.SetBool("MoveUp", true);
+        }
+        else if (y < 0)
+        {
+            animator.SetBool("MoveRight", false);
+            animator.SetBool("Idle", false);
+            animator.SetBool("MoveLeft", false);
+            animator.SetBool("MoveDown", true);
+            animator.SetBool("MoveUp", false);
+        }
+        
     }
 
     void Update()
@@ -114,11 +109,27 @@ public class PlayerController : MonoBehaviour
                     StartCoroutine(UpdateRoom('r'));
                 }
             }
+            //se ci sono nemici nella stanza attuale e le porte non sono chiuse
+            if (actualRoom.enemyCounter > 0 && !actualRoom.locked) 
+            {
+                //se il player è effettivamente dentro la stanza allora sigillo la stanza
+                if (transform.position.x > actualRoom.gridPos.x && transform.position.x < (actualRoom.gridPos.x + roomSizeX)
+                    && transform.position.y > actualRoom.gridPos.y && transform.position.y < (actualRoom.gridPos.y + roomSizeY))
+                {
+                    LockRoom(actualRoom);
+                }
+            }
+            //se non ci sono più nemici sblocco le porte della stanza
+            else if (actualRoom.enemyCounter == 0)
+            {
+                actualRoom.locked = false;
+            }
+            
         }
      }
 
-        //coroutine che esegue ChangeRoom
-        IEnumerator UpdateRoom(char c)
+    //coroutine che esegue ChangeRoom
+    IEnumerator UpdateRoom(char c)
     {
         chRoom = true;
         yield return StartCoroutine(ChangeRoom(c));
@@ -170,7 +181,7 @@ public class PlayerController : MonoBehaviour
             Invoke("Restart", 2);
         }
 
-        if (!setDoor && !chRoom)
+        if (!setDoor && !chRoom && !actualRoom.locked)
         {
             if (other.gameObject.tag == "DoorUp")
             {
@@ -236,8 +247,9 @@ public class PlayerController : MonoBehaviour
         }
     }
     
-    //i trigger attivati permettono di aggiornare correttamente la posizione del player nelle stanze
-    public void OnTriggerEnter2D(Collider2D doorTrigger)
+    //i trigger attivati permettono di aggiornare correttamente la posizione del player nelle stanze;
+    //inoltre permettono di decidere il momento in cui intrappolare il player nelle stanze e spawnare i nemici
+    private void OnTriggerEnter2D(Collider2D doorTrigger)
     {
         if (doorTrigger.gameObject.tag == "innerDoorUp") 
         {
@@ -271,6 +283,30 @@ public class PlayerController : MonoBehaviour
         {
             passRight = true;
         }
+
+    }
+
+    //controlla quale porta è stata aperta per entrare nella stanza e la richiude,
+    //sigillando poi tutte le stanze finché restano nemici vivi nella stanza
+    private void LockRoom(Room room)
+    {
+        if (actualRoom.openUp)
+        {
+            SetRoomDoor('u', actualRoom.doorSpriteUp);
+        }
+        if (actualRoom.openDown)
+        {
+            SetRoomDoor('d', actualRoom.doorSpriteDown);
+        }
+        if (actualRoom.openLeft)
+        {
+            SetRoomDoor('l', actualRoom.doorSpriteLeft);
+        }
+        if (actualRoom.openRight)
+        {
+            SetRoomDoor('r', actualRoom.doorSpriteRight);
+        }
+        actualRoom.locked = true;
 
     }
 
@@ -357,4 +393,4 @@ public class PlayerController : MonoBehaviour
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex, LoadSceneMode.Single);
     }
 
-    }
+}

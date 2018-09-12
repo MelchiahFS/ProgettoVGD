@@ -9,7 +9,7 @@ public class Room
     public bool bossRoom = false, shopRoom = false, startRoom = false;
     public bool doorTop, doorBot, doorLeft, doorRight; //indica la presenza di porte nella stanza 
     public bool openUp = false, openDown = false, openLeft = false, openRight = false; //indica se la porta è aperta o no
-    public bool visited = false;
+    public bool visited = false, locked = false;
     public List<GameObject> roomTiles = null;
     public List<GameObject>[] passageTiles = null;
     public List<GameObject> passageLeftTiles = null;
@@ -19,14 +19,23 @@ public class Room
     public GameObject doorSpriteUp, doorSpriteDown, doorSpriteLeft, doorSpriteRight;
     public GameObject actualMapSprite, visitedMapSprite, actualBossMapSprite, visitedBossMapSprite, actualShopMapSprite, visitedShopMapSprite, unknownMapSprite;
 
+    public int[,] obsLayout;
+    public int obsNumber;
+    public int enemyCounter;
+
+
+
     public Room(Vector2Int _gridPos)
     {
+
+        obsLayout = ObstacleLayout.GetRandomLayout();
         passageLeftTiles = new List<GameObject>();
         passageRightTiles = new List<GameObject>();
         passageUpTiles = new List<GameObject>();
         passageDownTiles = new List<GameObject>();
         roomTiles = new List<GameObject>();
         gridPos = _gridPos;
+        enemyCounter = 3;
     }
 
 }

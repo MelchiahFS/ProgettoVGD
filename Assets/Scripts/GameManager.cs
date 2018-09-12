@@ -103,7 +103,7 @@ public class GameManager : MonoBehaviour {
         Vector2 mapSize = lvlManager.lvlGen.GetMapSize();
         if (dir == 'u')
         {
-            if (actualPos.y + 1 <= mapSize.y)
+            if (actualPos.y + 1 < mapSize.y)
             {
                 return lvlManager.map[actualPos.x, actualPos.y + 1];
             }
@@ -136,7 +136,7 @@ public class GameManager : MonoBehaviour {
         }
         else if (dir == 'r')
         {
-            if (actualPos.x + 1 <= mapSize.x)
+            if (actualPos.x + 1 < mapSize.x)
             {
                 return lvlManager.map[actualPos.x + 1, actualPos.y];
             }

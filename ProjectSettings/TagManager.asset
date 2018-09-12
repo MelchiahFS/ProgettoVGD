@@ -19,6 +19,9 @@ TagManager:
   - outerDoorRight
   - outerDoorUp
   - outerDoorDown
+  - Obstacle
+  - playerHitbox
+  - enemyHitbox
   layers:
   - Default
   - TransparentFX
@@ -32,7 +35,7 @@ TagManager:
   - 
   - MiniMap
   - Level
-  - 
+  - ObstacleLayer
   - 
   - 
   - 
