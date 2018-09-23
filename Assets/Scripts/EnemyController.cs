@@ -4,7 +4,8 @@ using UnityEngine;
 
 public class EnemyController : MonoBehaviour {
 
-	// Use this for initialization
+	
+    // Use this for initialization
 	void Start () {
 		
 	}
@@ -13,4 +14,5 @@ public class EnemyController : MonoBehaviour {
 	void Update () {
 		
 	}
+
 }

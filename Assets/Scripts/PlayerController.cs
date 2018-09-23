@@ -13,6 +13,7 @@ public class PlayerController : MonoBehaviour
     private MiniMapController minimap;
     private int roomSizeX, roomSizeY;
     private GameObject hitbox;
+    private GameObject weapon;
     
     private bool passUp = false, passDown = false, passLeft = false, passRight = false;
 
@@ -20,7 +21,7 @@ public class PlayerController : MonoBehaviour
 
     private void Start()
     {
-        hitbox = this.transform.Find("Hitbox").gameObject;
+        hitbox = gameObject.transform.Find("Hitbox").gameObject;
         rb2d = GetComponent<Rigidbody2D>();
         animator = GetComponent<Animator>();
         minimap = GameManager.manager.GetComponent<MiniMapController>();
@@ -31,9 +32,9 @@ public class PlayerController : MonoBehaviour
 	
 	void FixedUpdate()
 	{
-		float x = Input.GetAxisRaw("Horizontal");
+		float x = Input.GetAxisRaw("CustomHorizontal");
 		
-	    float y = Input.GetAxisRaw("Vertical");
+	    float y = Input.GetAxisRaw("CustomVertical");
 
 	    Vector2 movement = new Vector2(x, y);
 
@@ -79,7 +80,28 @@ public class PlayerController : MonoBehaviour
             animator.SetBool("MoveDown", true);
             animator.SetBool("MoveUp", false);
         }
-        
+
+        if (Input.GetKeyDown("up"))
+        {
+            animator.SetBool("SlashUp", true);
+            animator.SetBool("Idle", false);
+        }
+        else if (Input.GetKeyDown("down"))
+        {
+            animator.SetBool("SlashDown", true);
+            animator.SetBool("Idle", false);
+        }
+        else if (Input.GetKeyDown("left"))
+        {
+            animator.SetBool("SlashLeft", true);
+            animator.SetBool("Idle", false);
+        }
+        else if (Input.GetKeyDown("right"))
+        {
+            animator.SetBool("SlashRight", true);
+            animator.SetBool("Idle", false);
+        }
+
     }
 
     void Update()
@@ -249,40 +271,44 @@ public class PlayerController : MonoBehaviour
     
     //i trigger attivati permettono di aggiornare correttamente la posizione del player nelle stanze;
     //inoltre permettono di decidere il momento in cui intrappolare il player nelle stanze e spawnare i nemici
-    private void OnTriggerEnter2D(Collider2D doorTrigger)
+    private void OnTriggerEnter2D(Collider2D trigger)
     {
-        if (doorTrigger.gameObject.tag == "innerDoorUp") 
+        if (trigger.gameObject.tag == "innerDoorUp") 
         {
             passUp = false;
         }
-        else if (doorTrigger.gameObject.tag == "outerDoorUp")
+        else if (trigger.gameObject.tag == "outerDoorUp")
         {
             passUp = true;
         }
-        else if (doorTrigger.gameObject.tag == "innerDoorDown") 
+        else if (trigger.gameObject.tag == "innerDoorDown") 
         {
             passDown = false;
         }
-        else if (doorTrigger.gameObject.tag == "outerDoorDown")
+        else if (trigger.gameObject.tag == "outerDoorDown")
         {
              passDown = true;
         }
-        else if (doorTrigger.gameObject.tag == "innerDoorLeft") 
+        else if (trigger.gameObject.tag == "innerDoorLeft") 
         {
             passLeft = false;
         }
-        else if (doorTrigger.gameObject.tag == "outerDoorLeft")
+        else if (trigger.gameObject.tag == "outerDoorLeft")
         {
             passLeft = true;
         }
-        else if (doorTrigger.gameObject.tag == "innerDoorRight") 
+        else if (trigger.gameObject.tag == "innerDoorRight") 
         {
             passRight = false;
         }
-        else if (doorTrigger.gameObject.tag == "outerDoorRight")
+        else if (trigger.gameObject.tag == "outerDoorRight")
         {
             passRight = true;
         }
+        /*else if (trigger.gameObject.tag == "weapon")
+        {
+            PickWeapon(trigger.gameObject);
+        }*/
 
     }
 
@@ -392,5 +418,10 @@ public class PlayerController : MonoBehaviour
         //Ricarica l'unica scena esistente con modalità Single, per eliminare la scena precedente
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex, LoadSceneMode.Single);
     }
+
+    /*private void PickWeapon(GameObject weapon)
+    {
+
+    }*/
 
 }

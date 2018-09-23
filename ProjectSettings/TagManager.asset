@@ -22,6 +22,10 @@ TagManager:
   - Obstacle
   - playerHitbox
   - enemyHitbox
+  - slashLeft
+  - slashRight
+  - slashUp
+  - slashDown
   layers:
   - Default
   - TransparentFX
