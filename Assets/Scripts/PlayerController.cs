@@ -14,6 +14,8 @@ public class PlayerController : MonoBehaviour
     private int roomSizeX, roomSizeY;
     private GameObject hitbox;
     private GameObject weapon;
+    private PlayerHealth ph;
+    private float faceX, faceY;
     
     private bool passUp = false, passDown = false, passLeft = false, passRight = false;
 
@@ -22,6 +24,7 @@ public class PlayerController : MonoBehaviour
 
     private void Start()
     {
+        ph = GetComponent<PlayerHealth>();
         hitbox = gameObject.transform.Find("Hitbox").gameObject;
         rb2d = GetComponent<Rigidbody2D>();
         animator = GetComponent<Animator>();
@@ -38,15 +41,30 @@ public class PlayerController : MonoBehaviour
 		
 	    y = Input.GetAxisRaw("CustomVertical");
 
+        
 	    Vector2 movement = new Vector2(x, y);
 
-	    rb2d.velocity = movement * speed;
+        if (!ph.isAttacking)
+            rb2d.velocity = movement * speed;
+        else
+            rb2d.velocity = movement * 0;
 
     }
 
     void Update()
     {
-        if (x == 0 && y == 0)
+        if (x != 0)
+            faceX = 1.0f * Mathf.Sign(x);
+        else
+            faceX = x;
+        if (y != 0)
+            faceY = 1.0f * Mathf.Sign(y);
+        else
+            faceY = y;
+
+        animator.SetFloat("FaceX", faceX);
+        animator.SetFloat("FaceY", faceY);
+        /*if (x == 0 && y == 0)
         {
             animator.SetBool("MoveRight", false);
             animator.SetBool("Idle", true);
@@ -110,64 +128,9 @@ public class PlayerController : MonoBehaviour
             animator.SetBool("SlashRight", false);
             animator.SetBool("SlashUp", false);
             animator.SetBool("SlashDown", false);
-        }
+        }*/
 
-        if (Input.GetKeyDown("up"))
-        {
-            animator.SetBool("SlashUp", true);
-            animator.SetBool("Idle", false);
-            animator.SetBool("SlashLeft", false);
-            animator.SetBool("SlashRight", false);
-            animator.SetBool("SlashDown", false);
 
-            animator.SetBool("MoveRight", false);
-            animator.SetBool("Idle", false);
-            animator.SetBool("MoveLeft", false);
-            animator.SetBool("MoveDown", false);
-            animator.SetBool("MoveUp", false);
-        }
-        else if (Input.GetKeyDown("down"))
-        {
-            animator.SetBool("SlashDown", true);
-            animator.SetBool("Idle", false);
-            animator.SetBool("SlashLeft", false);
-            animator.SetBool("SlashRight", false);
-            animator.SetBool("SlashUp", false);
-
-            animator.SetBool("MoveRight", false);
-            animator.SetBool("Idle", false);
-            animator.SetBool("MoveLeft", false);
-            animator.SetBool("MoveDown", false);
-            animator.SetBool("MoveUp", false);
-        }
-        else if (Input.GetKeyDown("left"))
-        {
-            animator.SetBool("SlashLeft", true);
-            animator.SetBool("Idle", false);
-            animator.SetBool("SlashRight", false);
-            animator.SetBool("SlashUp", false);
-            animator.SetBool("SlashDown", false);
-
-            animator.SetBool("MoveRight", false);
-            animator.SetBool("Idle", false);
-            animator.SetBool("MoveLeft", false);
-            animator.SetBool("MoveDown", false);
-            animator.SetBool("MoveUp", false);
-        }
-        else if (Input.GetKeyDown("right"))
-        {
-            animator.SetBool("SlashRight", true);
-            animator.SetBool("Idle", false);
-            animator.SetBool("SlashLeft", false);
-            animator.SetBool("SlashUp", false);
-            animator.SetBool("SlashDown", false);
-
-            animator.SetBool("MoveRight", false);
-            animator.SetBool("Idle", false);
-            animator.SetBool("MoveLeft", false);
-            animator.SetBool("MoveDown", false);
-            animator.SetBool("MoveUp", false);
-        }
 
         if (!chRoom)
         {
