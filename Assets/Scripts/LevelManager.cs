@@ -6,6 +6,7 @@ using UnityEngine;
 public class LevelManager : MonoBehaviour {
 
     public LevelGenerator lvlGen = null;
+    private static System.Random rnd = new System.Random();
     public int roomSizeX, roomSizeY;
     private int horPassSizeX, horPassSizeY, verPassSizeX, verPassSizeY;
     private BoxCollider2D wallCollider;
@@ -13,6 +14,7 @@ public class LevelManager : MonoBehaviour {
     private BoxCollider2D obsCollider;
     public GameObject tileToRend;
     public GameObject player;
+    public GameObject enemy;
     public Room[,] map;
     public Vector2 mapSize;
     private Vector2Int actualPos;
@@ -42,7 +44,11 @@ public class LevelManager : MonoBehaviour {
                     LinkRooms(i,j);
                     DrawDoors(i, j);
                     if (!map[i,j].bossRoom && !map[i,j].shopRoom && !map[i,j].startRoom)
+                    {
                         DrawObstacles(i, j);
+                        InstantiateEnemies(i, j);
+                    }
+
                     DrawMinimapSprites(map[i,j]);
                 }
             }
@@ -74,6 +80,33 @@ public class LevelManager : MonoBehaviour {
             }
             drawPos.x = room.gridPos.x;
             drawPos.y++;
+        }
+    }
+
+    void InstantiateEnemies(int x, int y)
+    {
+        Room room = map[x, y];
+        Vector2 drawPos = room.gridPos;
+        int enemyPosition;
+        for (int i = 0; i < roomSizeY; i++)
+        {
+            for (int j = 0; j < roomSizeX; j++)
+            {
+                if (room.obsLayout[i, j] == 2)
+                {
+                    room.spawnPoints.Add(drawPos);
+                }
+                drawPos.x++;
+            }
+            drawPos.x = room.gridPos.x;
+            drawPos.y++;
+        }
+
+        for (int c = 0; c < room.enemyCounter; c++)
+        {
+            enemyPosition = rnd.Next(0, room.spawnPoints.Count - 1);
+            Instantiate(enemy, room.spawnPoints[enemyPosition], Quaternion.identity);
+            room.spawnPoints.RemoveAt(enemyPosition);
         }
     }
 
@@ -748,7 +781,6 @@ public class LevelManager : MonoBehaviour {
             room.visitedMapSprite.SetActive(false);
         }
     }
-
 
     public Vector2Int ActualPos
     {

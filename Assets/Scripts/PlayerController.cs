@@ -25,7 +25,6 @@ public class PlayerController : MonoBehaviour
     private void Start()
     {
         ph = GetComponent<PlayerHealth>();
-        hitbox = gameObject.transform.Find("Hitbox").gameObject;
         rb2d = GetComponent<Rigidbody2D>();
         animator = GetComponent<Animator>();
         minimap = GameManager.manager.GetComponent<MiniMapController>();
@@ -44,6 +43,7 @@ public class PlayerController : MonoBehaviour
         
 	    Vector2 movement = new Vector2(x, y);
 
+        //se il player attacca non può muoversi
         if (!ph.isAttacking)
             rb2d.velocity = movement * speed;
         else
@@ -64,73 +64,6 @@ public class PlayerController : MonoBehaviour
 
         animator.SetFloat("FaceX", faceX);
         animator.SetFloat("FaceY", faceY);
-        /*if (x == 0 && y == 0)
-        {
-            animator.SetBool("MoveRight", false);
-            animator.SetBool("Idle", true);
-            animator.SetBool("MoveLeft", false);
-            animator.SetBool("MoveDown", false);
-            animator.SetBool("MoveUp", false);
-
-            animator.SetBool("SlashLeft", false);
-            animator.SetBool("SlashRight", false);
-            animator.SetBool("SlashUp", false);
-            animator.SetBool("SlashDown", false);
-        }
-        else if (y == 0 && x > 0)
-        {
-            animator.SetBool("MoveRight", true);
-            animator.SetBool("Idle", false);
-            animator.SetBool("MoveLeft", false);
-            animator.SetBool("MoveDown", false);
-            animator.SetBool("MoveUp", false);
-
-            animator.SetBool("SlashLeft", false);
-            animator.SetBool("SlashRight", false);
-            animator.SetBool("SlashUp", false);
-            animator.SetBool("SlashDown", false);
-        }
-        else if (y == 0 && x < 0)
-        {
-            animator.SetBool("MoveRight", false);
-            animator.SetBool("Idle", false);
-            animator.SetBool("MoveLeft", true);
-            animator.SetBool("MoveDown", false);
-            animator.SetBool("MoveUp", false);
-
-            animator.SetBool("SlashLeft", false);
-            animator.SetBool("SlashRight", false);
-            animator.SetBool("SlashUp", false);
-            animator.SetBool("SlashDown", false);
-        }
-        else if (y > 0)
-        {
-            animator.SetBool("MoveRight", false);
-            animator.SetBool("Idle", false);
-            animator.SetBool("MoveLeft", false);
-            animator.SetBool("MoveDown", false);
-            animator.SetBool("MoveUp", true);
-
-            animator.SetBool("SlashLeft", false);
-            animator.SetBool("SlashRight", false);
-            animator.SetBool("SlashUp", false);
-            animator.SetBool("SlashDown", false);
-        }
-        else if (y < 0)
-        {
-            animator.SetBool("MoveRight", false);
-            animator.SetBool("Idle", false);
-            animator.SetBool("MoveLeft", false);
-            animator.SetBool("MoveDown", true);
-            animator.SetBool("MoveUp", false);
-
-            animator.SetBool("SlashLeft", false);
-            animator.SetBool("SlashRight", false);
-            animator.SetBool("SlashUp", false);
-            animator.SetBool("SlashDown", false);
-        }*/
-
-
 
         if (!chRoom)
         {
@@ -435,6 +368,12 @@ public class PlayerController : MonoBehaviour
             }
         }
         setDoor = false;
+    }
+
+    //aggiorna il counter dei nemici; quando è a zero le porte si sbloccano
+    public void DecreaseEnemyCounter()
+    {
+        actualRoom.enemyCounter--;
     }
 
     //Ricarica la scena

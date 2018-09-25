@@ -9,9 +9,10 @@ public class PlayerHealth : MonoBehaviour {
     private float invTimer = 0;
     private float attackDuration = 0.5f;
     private float attackTimer = 0;
-    private float meleeDamage = 3f;
+    private int meleeDamage = 30;
     private float invincibilityTime = 3f; //periodo di invulnerabilità dopo aver ricevuto danno
     private PlayerController pc;
+    private EnemyHealth eh;
     private Animator animator;
     Collider2D[] hitObjects;
     public bool isAttacking = false;
@@ -71,11 +72,14 @@ public class PlayerHealth : MonoBehaviour {
 
             if (hitObjects != null)
             {
+                Debug.Log(hitObjects.Length);
                 foreach (Collider2D el in hitObjects)
                 {
-                    if (el.gameObject.tag != "Player")
+                    if (el.gameObject.tag == "Enemy" && el.isTrigger)
                     {
-                        el.SendMessage("TakeDamage", meleeDamage, SendMessageOptions.DontRequireReceiver);
+                        Debug.Log("enemy found!");
+                        eh = el.gameObject.GetComponent<EnemyHealth>();
+                        eh.TakeDamage(meleeDamage);
                     }
                 }
                 hitObjects = null;
@@ -91,7 +95,8 @@ public class PlayerHealth : MonoBehaviour {
         if (invTimer > invincibilityTime)
         {
             invTimer = 0;
-            currentHealth -= amount; 
+            currentHealth -= amount;
+            Debug.Log("player health: " + currentHealth);
             if (currentHealth <= 0)
                 PlayerDeath();
         }
