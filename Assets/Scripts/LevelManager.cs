@@ -69,9 +69,10 @@ public class LevelManager : MonoBehaviour {
                 {
                     GameObject obsSprite = Instantiate(tileToRend, drawPos, Quaternion.identity) as GameObject;
                     obsSprite.tag = "Obstacle";
-                    obsSprite.layer = LayerMask.NameToLayer("ObstacleLayer");
+                    //obsSprite.layer = LayerMask.NameToLayer("ObstacleLayer");
                     TileSpriteSelector mapper = obsSprite.GetComponent<TileSpriteSelector>();
                     SpriteRenderer rend = obsSprite.GetComponent<SpriteRenderer>();
+                    rend.sortingLayerName = "Obstacles";
                     rend.sprite = mapper.obstacles;
                     rend.sortingOrder = 1;
                     obsCollider = obsSprite.GetComponent<BoxCollider2D>();
@@ -111,6 +112,7 @@ public class LevelManager : MonoBehaviour {
 
             //imposto i nemici come trasparenti, per poi fare un effetto di fade-in quando verranno attivati
             SpriteRenderer enemyRenderer = enemy.GetComponent<SpriteRenderer>();
+            enemyRenderer.sortingLayerName = "Characters";
 
             Color color = enemyRenderer.color;
             color.a = 0;
@@ -134,6 +136,7 @@ public class LevelManager : MonoBehaviour {
 
                     LightUpRoom(map[i, j], true);
                     Instantiate(playerPrefab, new Vector2(map[i, j].gridPos.x + (float)(roomSizeX / 2), map[i, j].gridPos.y + (float)(roomSizeY / 2)), Quaternion.identity);
+                    playerPrefab.GetComponent<SpriteRenderer>().sortingLayerName = "Characters";
                     minimap.SetEnterRoom(map[i, j]);
                     return map[i, j];
                 }
@@ -156,6 +159,8 @@ public class LevelManager : MonoBehaviour {
                 
                 GameObject roomTile = Instantiate(tileToRend, drawPos, Quaternion.identity) as GameObject;
                 TileSpriteSelector mapper = roomTile.GetComponent<TileSpriteSelector>();
+                SpriteRenderer rend = roomTile.GetComponent<SpriteRenderer>();
+                rend.sortingLayerName = "Ground";
                 room.roomTiles.Add(roomTile);
 
                 //mi permette di impostare le tile relative al pavimento
@@ -278,6 +283,8 @@ public class LevelManager : MonoBehaviour {
 
                     GameObject roomTile = Instantiate(tileToRend, drawPos, Quaternion.identity) as GameObject;
                     TileSpriteSelector mapper = roomTile.GetComponent<TileSpriteSelector>();
+                    SpriteRenderer rend = roomTile.GetComponent<SpriteRenderer>();
+                    rend.sortingLayerName = "Ground";
                     room.roomTiles.Add(roomTile);
 
                     //mi permette di impostare le tile relative al pavimento
@@ -510,6 +517,9 @@ public class LevelManager : MonoBehaviour {
 
                     GameObject passTile = Instantiate(tileToRend, drawPos, Quaternion.identity) as GameObject;
                     TileSpriteSelector mapper = passTile.GetComponent<TileSpriteSelector>();
+                    SpriteRenderer rend = passTile.GetComponent<SpriteRenderer>();
+                    rend.sortingLayerName = "Ground";
+
                     if (i == 0 || (i == 2 && j != 1))
                     {
                         room.roomTiles.Add(passTile);
@@ -612,9 +622,10 @@ public class LevelManager : MonoBehaviour {
             GameObject doorSprite = Instantiate(tileToRend, drawPos, Quaternion.identity) as GameObject;
             room.doorSpriteUp = doorSprite;
             doorSprite.tag = "DoorUp";
-            doorSprite.layer = LayerMask.NameToLayer("Level");
+            //doorSprite.layer = LayerMask.NameToLayer("Level");
             TileSpriteSelector mapper = doorSprite.GetComponent<TileSpriteSelector>();
             SpriteRenderer rend = doorSprite.GetComponent<SpriteRenderer>();
+            rend.sortingLayerName = "Doors";
             rend.sprite = mapper.closedDoorUp;
             rend.sortingOrder = 1;
             doorCollider = doorSprite.GetComponent<BoxCollider2D>();
@@ -628,9 +639,10 @@ public class LevelManager : MonoBehaviour {
             GameObject doorSprite = Instantiate(tileToRend, drawPos, Quaternion.identity) as GameObject;
             room.doorSpriteDown = doorSprite;
             doorSprite.tag = "DoorDown";
-            doorSprite.layer = LayerMask.NameToLayer("Level");
+            //doorSprite.layer = LayerMask.NameToLayer("Level");
             TileSpriteSelector mapper = doorSprite.GetComponent<TileSpriteSelector>();
             SpriteRenderer rend = doorSprite.GetComponent<SpriteRenderer>();
+            rend.sortingLayerName = "Doors";
             rend.sprite = mapper.closedDoorDown;
             rend.sortingOrder = 1;
             doorCollider = doorSprite.GetComponent<BoxCollider2D>();
@@ -644,9 +656,10 @@ public class LevelManager : MonoBehaviour {
             GameObject doorSprite = Instantiate(tileToRend, drawPos, Quaternion.identity) as GameObject;
             room.doorSpriteLeft = doorSprite;
             doorSprite.tag = "DoorLeft";
-            doorSprite.layer = LayerMask.NameToLayer("Level");
+            //doorSprite.layer = LayerMask.NameToLayer("Level");
             TileSpriteSelector mapper = doorSprite.GetComponent<TileSpriteSelector>();
             SpriteRenderer rend = doorSprite.GetComponent<SpriteRenderer>();
+            rend.sortingLayerName = "Doors";
             rend.sprite = mapper.closedDoorLeft;
             rend.sortingOrder = 1;
             doorCollider = doorSprite.GetComponent<BoxCollider2D>();
@@ -660,9 +673,10 @@ public class LevelManager : MonoBehaviour {
             GameObject doorSprite = Instantiate(tileToRend, drawPos, Quaternion.identity) as GameObject;
             room.doorSpriteRight = doorSprite;
             doorSprite.tag = "DoorRight";
-            doorSprite.layer = LayerMask.NameToLayer("Level");
+            //doorSprite.layer = LayerMask.NameToLayer("Level");
             TileSpriteSelector mapper = doorSprite.GetComponent<TileSpriteSelector>();
             SpriteRenderer rend = doorSprite.GetComponent<SpriteRenderer>();
+            rend.sortingLayerName = "Doors";
             rend.sprite = mapper.closedDoorRight;
             rend.sortingOrder = 1;
             doorCollider = doorSprite.GetComponent<BoxCollider2D>();

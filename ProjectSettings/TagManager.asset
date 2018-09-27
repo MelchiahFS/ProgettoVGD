@@ -20,12 +20,15 @@ TagManager:
   - outerDoorUp
   - outerDoorDown
   - Obstacle
-  - playerHitbox
-  - enemyHitbox
+  - PlayerHitbox
+  - EnemyHitbox
   - slashLeft
   - slashRight
   - slashUp
   - slashDown
+  - WalkCollider
+  - Enemy
+  - Undefined
   layers:
   - Default
   - TransparentFX
@@ -62,4 +65,16 @@ TagManager:
   m_SortingLayers:
   - name: Default
     uniqueID: 0
+    locked: 0
+  - name: Ground
+    uniqueID: 3520258481
+    locked: 0
+  - name: Doors
+    uniqueID: 4259971229
+    locked: 0
+  - name: Obstacles
+    uniqueID: 1259401129
+    locked: 0
+  - name: Characters
+    uniqueID: 1450854929
     locked: 0
