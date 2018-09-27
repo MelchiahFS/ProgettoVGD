@@ -95,6 +95,7 @@ public class PlayerHealth : MonoBehaviour {
         if (invTimer > invincibilityTime)
         {
             invTimer = 0;
+            StartCoroutine(Flash(GetComponent<SpriteRenderer>()));
             currentHealth -= amount;
             Debug.Log("player health: " + currentHealth);
             if (currentHealth <= 0)
@@ -106,5 +107,20 @@ public class PlayerHealth : MonoBehaviour {
     private void PlayerDeath()
     {
         pc.enabled = false;
+    }
+
+    //crea un effetto flash quando il player viene colpito
+    private IEnumerator Flash(SpriteRenderer r)
+    {
+        Color c1 = r.color, c2 = r.color;
+        c2.a = 0;
+        while (invTimer < invincibilityTime)
+        {
+            r.color = c2;
+            yield return new WaitForSeconds(0.1f);
+            r.color = c1;
+            yield return new WaitForSeconds(0.1f);
+        }
+        yield break;
     }
 }

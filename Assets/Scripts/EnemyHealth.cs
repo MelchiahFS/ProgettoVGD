@@ -37,6 +37,7 @@ public class EnemyHealth : MonoBehaviour {
     public void TakeDamage(int amount)
     {
         currentHealth -= amount;
+        StartCoroutine(Flash(gameObject.GetComponent<SpriteRenderer>()));
         Debug.Log("enemy takes damage");
         if (currentHealth <= 0)
         {
@@ -44,5 +45,15 @@ public class EnemyHealth : MonoBehaviour {
             Destroy(gameObject);
         }
             
+    }
+
+    //crea un effetto flash quando il player viene colpito
+    private IEnumerator Flash(SpriteRenderer r)
+    {
+        Color c = r.color;
+        r.color = Color.white;
+        yield return new WaitForSeconds(0.1f);
+        r.color = c;
+        yield break;
     }
 }
