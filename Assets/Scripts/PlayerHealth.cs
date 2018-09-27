@@ -44,28 +44,28 @@ public class PlayerHealth : MonoBehaviour {
                 animator.Play("SlashUp");
                 isAttacking = true;
                 attackTimer = 0;
-                hitObjects = Physics2D.OverlapCircleAll(transform.position + new Vector3(0, 1, 0), 1f);
+                hitObjects = Physics2D.OverlapCircleAll(transform.position + new Vector3(0, 0.5f, 0), 1f);
             }
             else if (Input.GetKeyDown("down"))
             {
                 animator.Play("SlashDown");
                 isAttacking = true;
                 attackTimer = 0;
-                hitObjects = Physics2D.OverlapCircleAll(transform.position + new Vector3(0, -1, 0), 1f);
+                hitObjects = Physics2D.OverlapCircleAll(transform.position + new Vector3(0, -0.5f, 0), 1f);
             }
             else if (Input.GetKeyDown("left"))
             {
                 animator.Play("SlashLeft");
                 isAttacking = true;
                 attackTimer = 0;
-                hitObjects = Physics2D.OverlapCircleAll(transform.position + new Vector3(-1, 0, 0), 1f);
+                hitObjects = Physics2D.OverlapCircleAll(transform.position + new Vector3(-0.5f, 0, 0), 1f);
             }
             else if (Input.GetKeyDown("right"))
             {
                 animator.Play("SlashRight");
                 isAttacking = true;
                 attackTimer = 0;
-                hitObjects = Physics2D.OverlapCircleAll(transform.position + new Vector3(1, 0, 0), 1f);
+                hitObjects = Physics2D.OverlapCircleAll(transform.position + new Vector3(0.5f, 0, 0), 1f);
             }
 
 

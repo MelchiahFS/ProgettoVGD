@@ -22,6 +22,8 @@ public class PlayerController : MonoBehaviour
     bool setDoor = false, chRoom = false;
     float x, y;
 
+    public float fadeTime = 0.3f;
+
     private void Start()
     {
         ph = GetComponent<PlayerHealth>();
@@ -97,6 +99,12 @@ public class PlayerController : MonoBehaviour
                     && transform.position.y > actualRoom.gridPos.y && transform.position.y < (actualRoom.gridPos.y + roomSizeY))
                 {
                     LockRoom(actualRoom);
+                    foreach (GameObject g in actualRoom.enemies)
+                    {
+                        g.SetActive(true);
+                        StartCoroutine(GameManager.manager.lvlManager.FadeIn(g.GetComponent<SpriteRenderer>(), fadeTime));
+                        
+                    }
                 }
             }
             //se non ci sono più nemici sblocco le porte della stanza
@@ -147,7 +155,6 @@ public class PlayerController : MonoBehaviour
         }
         minimap.SetEnterRoom(actualRoom);
 
-        //GameManager.manager.lvlManager.LightUpRoom(actualRoom, true);
         yield return null;
     }
 
@@ -161,19 +168,26 @@ public class PlayerController : MonoBehaviour
             Invoke("Restart", 2);
         }
 
+        //se non è in atto un cambio di stanza e la stanza non è sigillata
         if (!setDoor && !chRoom && !actualRoom.locked)
         {
             if (other.gameObject.tag == "DoorUp")
             {
+                //se la porta non è ancora aperta
                 if (!actualRoom.openUp)
                 {
+                    //allora la apro
                     SetRoomDoor('u', other.gameObject);
+                    //se la stanza attuale non è ancora stata visitata la illumino (entro in una stanza nuova)
                     if (!actualRoom.visited)
                         GameManager.manager.lvlManager.LightUpRoom(actualRoom, true);
+                    //altrimenti sto uscendo dalla stanza e recupero le info sulla stanza successiva
                     else
                     {
                         adiacentRoom = GameManager.manager.GetAdiacentRoom('u');
-                        GameManager.manager.lvlManager.LightUpPassage(adiacentRoom.doorSpriteDown, actualRoom.passageUpTiles, true);
+                        //se non ho ancora visitato la stanza successiva allora illumino il passaggio che la collega alla stanza attuale
+                        if (!adiacentRoom.visited)
+                            GameManager.manager.lvlManager.LightUpPassage(adiacentRoom.doorSpriteDown, actualRoom.passageUpTiles, true);
                     }
                     
                 }
@@ -290,7 +304,7 @@ public class PlayerController : MonoBehaviour
         {
             SetRoomDoor('r', actualRoom.doorSpriteRight);
         }
-        actualRoom.locked = true;
+        actualRoom.locked = true; //finché resta vero le porte non possono essere aperte
 
     }
 

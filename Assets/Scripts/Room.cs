@@ -19,6 +19,7 @@ public class Room
     public List<Vector2> spawnPoints = null;
     public GameObject doorSpriteUp, doorSpriteDown, doorSpriteLeft, doorSpriteRight;
     public GameObject actualMapSprite, visitedMapSprite, actualBossMapSprite, visitedBossMapSprite, actualShopMapSprite, visitedShopMapSprite, unknownMapSprite;
+    public List<GameObject> enemies = null;
 
     public int[,] obsLayout;
     public int obsNumber;
@@ -36,6 +37,7 @@ public class Room
         passageDownTiles = new List<GameObject>();
         roomTiles = new List<GameObject>();
         spawnPoints = new List<Vector2>();
+        enemies = new List<GameObject>();
         gridPos = _gridPos;
         enemyCounter = 3;
     }

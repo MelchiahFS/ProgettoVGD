@@ -13,13 +13,15 @@ public class LevelManager : MonoBehaviour {
     private BoxCollider2D doorCollider;
     private BoxCollider2D obsCollider;
     public GameObject tileToRend;
-    public GameObject player;
-    public GameObject enemy;
+    public GameObject playerPrefab;
+    public GameObject enemyPrefab;
     public Room[,] map;
     public Vector2 mapSize;
     private Vector2Int actualPos;
     public float dim = 0.5f, full = 1, off = 0, alpha;
     private Color c;
+
+    float fadeTime = 0.8f;
 
     private MiniMapController minimap;
 
@@ -105,7 +107,18 @@ public class LevelManager : MonoBehaviour {
         for (int c = 0; c < room.enemyCounter; c++)
         {
             enemyPosition = rnd.Next(0, room.spawnPoints.Count - 1);
-            Instantiate(enemy, room.spawnPoints[enemyPosition], Quaternion.identity);
+            GameObject enemy = Instantiate(enemyPrefab, room.spawnPoints[enemyPosition], Quaternion.identity) as GameObject;
+
+            //imposto i nemici come trasparenti, per poi fare un effetto di fade-in quando verranno attivati
+            SpriteRenderer enemyRenderer = enemy.GetComponent<SpriteRenderer>();
+
+            Color color = enemyRenderer.color;
+            color.a = 0;
+            enemyRenderer.color = color;
+
+
+            room.enemies.Add(enemy);
+            enemy.SetActive(false);
             room.spawnPoints.RemoveAt(enemyPosition);
         }
     }
@@ -120,7 +133,7 @@ public class LevelManager : MonoBehaviour {
                 {
 
                     LightUpRoom(map[i, j], true);
-                    Instantiate(player, new Vector2(map[i, j].gridPos.x + (float)(roomSizeX / 2), map[i, j].gridPos.y + (float)(roomSizeY / 2)), Quaternion.identity);
+                    Instantiate(playerPrefab, new Vector2(map[i, j].gridPos.x + (float)(roomSizeX / 2), map[i, j].gridPos.y + (float)(roomSizeY / 2)), Quaternion.identity);
                     minimap.SetEnterRoom(map[i, j]);
                     return map[i, j];
                 }
@@ -662,7 +675,6 @@ public class LevelManager : MonoBehaviour {
     //illumina le stanze
     public void LightUpRoom(Room actualRoom, bool light)
     {
-        SpriteRenderer s = null;
         if (light)
         {
             alpha = full;
@@ -673,55 +685,31 @@ public class LevelManager : MonoBehaviour {
         }
         foreach (GameObject g in actualRoom.roomTiles)
         {
-            s = g.GetComponent<SpriteRenderer>();
-            c = s.color;
-            c.a = alpha;
-            s.color = c;
+            SpriteRenderer s = g.GetComponent<SpriteRenderer>();
+            StartCoroutine(FadeIn(s, fadeTime));
         }
         if (actualRoom.doorSpriteUp != null)
         {
-            s = actualRoom.doorSpriteUp.GetComponent<SpriteRenderer>();
-            c = s.color;
-            c.a = alpha;
-            s.color = c;
+            SpriteRenderer s = actualRoom.doorSpriteUp.GetComponent<SpriteRenderer>();
+            StartCoroutine(FadeIn(s, fadeTime));
         }
         if (actualRoom.doorSpriteDown != null)
         {
-            s = actualRoom.doorSpriteDown.GetComponent<SpriteRenderer>();
-            c = s.color;
-            c.a = alpha;
-            s.color = c;
+            SpriteRenderer s = actualRoom.doorSpriteDown.GetComponent<SpriteRenderer>();
+            StartCoroutine(FadeIn(s, fadeTime));
         }
         if (actualRoom.doorSpriteLeft != null)
         {
-            s = actualRoom.doorSpriteLeft.GetComponent<SpriteRenderer>();
-            c = s.color;
-            c.a = alpha;
-            s.color = c;
+            SpriteRenderer s = actualRoom.doorSpriteLeft.GetComponent<SpriteRenderer>();
+            StartCoroutine(FadeIn(s, fadeTime));
         }
         if (actualRoom.doorSpriteRight != null)
         {
-            s = actualRoom.doorSpriteRight.GetComponent<SpriteRenderer>();
-            c = s.color;
-            c.a = alpha;
-            s.color = c;
+            SpriteRenderer s = actualRoom.doorSpriteRight.GetComponent<SpriteRenderer>();
+            StartCoroutine(FadeIn(s, fadeTime));
         }
 
         actualRoom.visited = true;
-        /*foreach (List<GameObject> l in actualRoom.passageTiles)
-        {
-            if (l != null)
-            {
-                foreach (GameObject g in l)
-                {
-                    SpriteRenderer s = g.GetComponent<SpriteRenderer>();
-                    c = s.color;
-                    c.a = full;
-                    s.color = c;
-                }
-            }
-        }*/
-
     }
 
     //illumina i passaggi tra le stanze
@@ -739,14 +727,11 @@ public class LevelManager : MonoBehaviour {
         foreach (GameObject g in passage)
         {
             s = g.GetComponent<SpriteRenderer>();
-            c = s.color;
-            c.a = alpha;
-            s.color = c;
+            StartCoroutine(FadeIn(s, fadeTime));
         }
         s = door.GetComponent<SpriteRenderer>();
-        c = s.color;
-        c.a = alpha;
-        s.color = c;
+        StartCoroutine(FadeIn(s, fadeTime));
+
     }
 
     public void DrawMinimapSprites(Room room)
@@ -792,5 +777,24 @@ public class LevelManager : MonoBehaviour {
         {
             actualPos = value;
         }
+    }
+
+    public IEnumerator FadeIn(SpriteRenderer s, float fadeTime)
+    {
+        Color c = s.color;
+        float rate = 1 / fadeTime;
+        while (c.a < 1)
+        {
+            //è necessario controllare che non sia null altrimenti Unity dà errore
+            if (s != null)
+            {
+                c.a += Time.deltaTime * rate;
+                s.color = c;
+                yield return 0;
+            }
+            else
+                yield break;
+        }
+        yield break;
     }
 }
