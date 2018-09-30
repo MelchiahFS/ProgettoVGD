@@ -148,6 +148,17 @@ public class GameManager : MonoBehaviour {
         return null;
     }
 
-    
+    //Ricarica la scena
+    private void Restart()
+    {
+        //Ricarica l'unica scena esistente con modalità Single, per eliminare la scena precedente
+        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex, LoadSceneMode.Single);
+    }
+
+    private void ReturnToMenu()
+    {
+        SceneManager.LoadScene("Menu", LoadSceneMode.Single);
+    }
+
 }
 

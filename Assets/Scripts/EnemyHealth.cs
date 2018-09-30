@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class EnemyHealth : MonoBehaviour {
 
@@ -10,13 +11,17 @@ public class EnemyHealth : MonoBehaviour {
     private GameObject player;
     private PlayerHealth playerHealth;
     private PlayerController playerController;
+    public Slider slider;
 	
         
     // Use this for initialization
 	void Start () {
         player = GameObject.FindGameObjectWithTag("Player");
         playerHealth = player.GetComponent<PlayerHealth>();
-
+        //slider = GetComponentInChildren<Slider>();
+        slider.minValue = 0;
+        slider.maxValue = startingHealth;
+        slider.value = startingHealth;
         currentHealth = startingHealth;
     }
 	
@@ -37,6 +42,7 @@ public class EnemyHealth : MonoBehaviour {
     public void TakeDamage(int amount)
     {
         currentHealth -= amount;
+        slider.value -= amount;
         StartCoroutine(Flash(gameObject.GetComponent<SpriteRenderer>()));
         Debug.Log("enemy takes damage");
         if (currentHealth <= 0)

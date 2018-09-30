@@ -46,7 +46,7 @@ public class PlayerController : MonoBehaviour
 	    Vector2 movement = new Vector2(x, y);
 
         //se il player attacca non può muoversi
-        if (!ph.isAttacking)
+        if (!ph.isAttacking && !ph.isDead)
             rb2d.velocity = movement * speed;
         else
             rb2d.velocity = movement * 0;
@@ -165,7 +165,7 @@ public class PlayerController : MonoBehaviour
         if (other.gameObject.tag == "Exit")
         {
             //Invoco la funzione restart con delay di due secondi
-            Invoke("Restart", 2);
+            GameManager.manager.Invoke("Restart", 2);
         }
 
         //se non è in atto un cambio di stanza e la stanza non è sigillata
@@ -390,12 +390,7 @@ public class PlayerController : MonoBehaviour
         actualRoom.enemyCounter--;
     }
 
-    //Ricarica la scena
-    private void Restart()
-    {
-        //Ricarica l'unica scena esistente con modalità Single, per eliminare la scena precedente
-        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex, LoadSceneMode.Single);
-    }
+
 
     /*private void PickWeapon(GameObject weapon)
     {

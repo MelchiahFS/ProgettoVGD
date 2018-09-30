@@ -78,3 +78,6 @@ TagManager:
   - name: Characters
     uniqueID: 1450854929
     locked: 0
+  - name: HUD
+    uniqueID: 441023965
+    locked: 0
