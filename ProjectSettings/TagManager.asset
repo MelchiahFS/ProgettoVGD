@@ -39,10 +39,10 @@ TagManager:
   - 
   - 
   - 
-  - 
+  - ObstacleLayer
   - MiniMap
   - Level
-  - ObstacleLayer
+  - 
   - 
   - 
   - 

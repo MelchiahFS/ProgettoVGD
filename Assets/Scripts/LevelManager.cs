@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Pathfinding;
 
 public class LevelManager : MonoBehaviour {
 
@@ -50,11 +51,13 @@ public class LevelManager : MonoBehaviour {
                         DrawObstacles(i, j);
                         InstantiateEnemies(i, j);
                     }
-
+                    CreateGridGraphs(map[i,j]);
                     DrawMinimapSprites(map[i,j]);
                 }
             }
         }
+        //esegue una scansione di tutti i GridGraph
+        AstarPath.active.Scan();
     }
 
     void DrawObstacles(int x, int y)
@@ -69,7 +72,10 @@ public class LevelManager : MonoBehaviour {
                 {
                     GameObject obsSprite = Instantiate(tileToRend, drawPos, Quaternion.identity) as GameObject;
                     obsSprite.tag = "Obstacle";
-                    //obsSprite.layer = LayerMask.NameToLayer("ObstacleLayer");
+
+                    //imposto questo layer per il sistema di pathfinding
+                    obsSprite.layer = LayerMask.NameToLayer("ObstacleLayer");
+
                     TileSpriteSelector mapper = obsSprite.GetComponent<TileSpriteSelector>();
                     SpriteRenderer rend = obsSprite.GetComponent<SpriteRenderer>();
                     rend.sortingLayerName = "Obstacles";
@@ -281,11 +287,14 @@ public class LevelManager : MonoBehaviour {
                         wallCollider.offset = new Vector2(0, 0);
                     }
 
-                    GameObject roomTile = Instantiate(tileToRend, drawPos, Quaternion.identity) as GameObject;
-                    TileSpriteSelector mapper = roomTile.GetComponent<TileSpriteSelector>();
-                    SpriteRenderer rend = roomTile.GetComponent<SpriteRenderer>();
+                    GameObject wallTile = Instantiate(tileToRend, drawPos, Quaternion.identity) as GameObject;
+
+                    wallTile.layer = LayerMask.NameToLayer("ObstacleLayer");
+
+                    TileSpriteSelector mapper = wallTile.GetComponent<TileSpriteSelector>();
+                    SpriteRenderer rend = wallTile.GetComponent<SpriteRenderer>();
                     rend.sortingLayerName = "Ground";
-                    room.roomTiles.Add(roomTile);
+                    room.roomTiles.Add(wallTile);
 
                     //mi permette di impostare le tile relative al pavimento
                     mapper.wall = true;
@@ -399,6 +408,9 @@ public class LevelManager : MonoBehaviour {
                     }
 
                     GameObject passTile = Instantiate(tileToRend, drawPos, Quaternion.identity) as GameObject;
+
+                    passTile.layer = LayerMask.NameToLayer("ObstacleLayer");
+
                     TileSpriteSelector mapper = passTile.GetComponent<TileSpriteSelector>();
                     if (j == 0)
                         room.roomTiles.Add(passTile);
@@ -516,6 +528,9 @@ public class LevelManager : MonoBehaviour {
                     }
 
                     GameObject passTile = Instantiate(tileToRend, drawPos, Quaternion.identity) as GameObject;
+
+                    passTile.layer = LayerMask.NameToLayer("ObstacleLayer");
+
                     TileSpriteSelector mapper = passTile.GetComponent<TileSpriteSelector>();
                     SpriteRenderer rend = passTile.GetComponent<SpriteRenderer>();
                     rend.sortingLayerName = "Ground";
@@ -622,7 +637,9 @@ public class LevelManager : MonoBehaviour {
             GameObject doorSprite = Instantiate(tileToRend, drawPos, Quaternion.identity) as GameObject;
             room.doorSpriteUp = doorSprite;
             doorSprite.tag = "DoorUp";
-            //doorSprite.layer = LayerMask.NameToLayer("Level");
+
+            doorSprite.layer = LayerMask.NameToLayer("ObstacleLayer");
+
             TileSpriteSelector mapper = doorSprite.GetComponent<TileSpriteSelector>();
             SpriteRenderer rend = doorSprite.GetComponent<SpriteRenderer>();
             rend.sortingLayerName = "Doors";
@@ -639,7 +656,9 @@ public class LevelManager : MonoBehaviour {
             GameObject doorSprite = Instantiate(tileToRend, drawPos, Quaternion.identity) as GameObject;
             room.doorSpriteDown = doorSprite;
             doorSprite.tag = "DoorDown";
-            //doorSprite.layer = LayerMask.NameToLayer("Level");
+
+            doorSprite.layer = LayerMask.NameToLayer("TransparentFX");
+
             TileSpriteSelector mapper = doorSprite.GetComponent<TileSpriteSelector>();
             SpriteRenderer rend = doorSprite.GetComponent<SpriteRenderer>();
             rend.sortingLayerName = "Doors";
@@ -656,7 +675,9 @@ public class LevelManager : MonoBehaviour {
             GameObject doorSprite = Instantiate(tileToRend, drawPos, Quaternion.identity) as GameObject;
             room.doorSpriteLeft = doorSprite;
             doorSprite.tag = "DoorLeft";
-            //doorSprite.layer = LayerMask.NameToLayer("Level");
+
+            doorSprite.layer = LayerMask.NameToLayer("TransparentFX");
+
             TileSpriteSelector mapper = doorSprite.GetComponent<TileSpriteSelector>();
             SpriteRenderer rend = doorSprite.GetComponent<SpriteRenderer>();
             rend.sortingLayerName = "Doors";
@@ -673,7 +694,9 @@ public class LevelManager : MonoBehaviour {
             GameObject doorSprite = Instantiate(tileToRend, drawPos, Quaternion.identity) as GameObject;
             room.doorSpriteRight = doorSprite;
             doorSprite.tag = "DoorRight";
-            //doorSprite.layer = LayerMask.NameToLayer("Level");
+
+            doorSprite.layer = LayerMask.NameToLayer("TransparentFX");
+
             TileSpriteSelector mapper = doorSprite.GetComponent<TileSpriteSelector>();
             SpriteRenderer rend = doorSprite.GetComponent<SpriteRenderer>();
             rend.sortingLayerName = "Doors";
@@ -791,6 +814,28 @@ public class LevelManager : MonoBehaviour {
         {
             actualPos = value;
         }
+    }
+
+    private void CreateGridGraphs(Room room)
+    {
+        AstarData data = AstarPath.active.data;
+        // This creates a Grid Graph
+        GridGraph gg = data.AddGraph(typeof(GridGraph)) as GridGraph;
+
+        // Setup a grid graph with some values
+        int width = (roomSizeX + 2) * 2;
+        int depth = (roomSizeY + 4) * 2;
+        float nodeSize = 0.5f;
+
+        //gg.center = new Vector3(room.gridPos.x + (roomSizeX / 2), room.gridPos.y + (roomSizeY / 2), 0);
+        gg.center = new Vector3(room.gridPos.x + roomSizeX / 2, room.gridPos.y + roomSizeY / 2 + 1, 0);
+        gg.rotation = new Vector3(-90, 0, 0);
+        gg.collision.diameter = 0.5f;
+        gg.collision.mask = LayerMask.GetMask("ObstacleLayer");
+        gg.collision.use2D = true; 
+
+        // Updates internal size from the above values
+        gg.SetDimensions(width, depth, nodeSize);
     }
 
     public IEnumerator FadeIn(SpriteRenderer s, float fadeTime)
