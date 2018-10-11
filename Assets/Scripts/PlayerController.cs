@@ -102,8 +102,8 @@ public class PlayerController : MonoBehaviour
                     foreach (GameObject g in actualRoom.enemies)
                     {
                         g.SetActive(true);
-                        StartCoroutine(GameManager.manager.lvlManager.FadeIn(g.GetComponent<SpriteRenderer>(), fadeTime));
-                        
+                        StartCoroutine(GameManager.manager.lvlManager.FadeIn(g.GetComponent<SpriteRenderer>(), fadeTime));          
+                        //StartCoroutine(GameManager.manager.lvlManager.FadeIn(g.GetComponentInChildren<SpriteRenderer>(), fadeTime));AAAAAAAAAAAAAAAA
                     }
                 }
             }

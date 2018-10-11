@@ -15,7 +15,7 @@ public class LevelManager : MonoBehaviour {
     private BoxCollider2D obsCollider;
     public GameObject tileToRend;
     public GameObject playerPrefab;
-    public GameObject enemyPrefab;
+    public List<GameObject> enemyPrefabs;
     public Room[,] map;
     public Vector2 mapSize;
     private Vector2Int actualPos;
@@ -96,7 +96,10 @@ public class LevelManager : MonoBehaviour {
     {
         Room room = map[x, y];
         Vector2 drawPos = room.gridPos;
-        int enemyPosition;
+        int enemyPosition, enemyType;
+
+        
+
         for (int i = 0; i < roomSizeY; i++)
         {
             for (int j = 0; j < roomSizeX; j++)
@@ -113,22 +116,31 @@ public class LevelManager : MonoBehaviour {
 
         for (int c = 0; c < room.enemyCounter; c++)
         {
-            enemyPosition = rnd.Next(0, room.spawnPoints.Count - 1);
-            GameObject enemy = Instantiate(enemyPrefab, room.spawnPoints[enemyPosition], Quaternion.identity) as GameObject;
+            //scelgo casualmente uno tra gli spawn point disponibili
+            enemyPosition = rnd.Next(0, room.spawnPoints.Count);
 
-            //imposto i nemici come trasparenti, per poi fare un effetto di fade-in quando verranno attivati
+            //scelgo casualmente il tipo di nemico da istanziare
+            enemyType = rnd.Next(0, enemyPrefabs.Count);
+
+            GameObject enemy = Instantiate(enemyPrefabs[enemyType], room.spawnPoints[enemyPosition], Quaternion.identity) as GameObject;
+
+            //imposto il sorting layer dei nemici
             SpriteRenderer enemyRenderer = enemy.GetComponent<SpriteRenderer>();
             enemyRenderer.sortingLayerName = "Characters";
 
+            //imposto i nemici come trasparenti, per poi fare un effetto di fade-in quando verranno attivati 
             Color color = enemyRenderer.color;
             color.a = 0;
             enemyRenderer.color = color;
 
-
+            //aggiungo il nemico alla lista dei nemici per stanza attuale
             room.enemies.Add(enemy);
+
             enemy.SetActive(false);
+            //rimuovo lo spawn point dalla lista di quelli disponinili per la stanza attuale
             room.spawnPoints.RemoveAt(enemyPosition);
         }
+        
     }
 
     public Room InstantiatePlayer()
@@ -164,6 +176,7 @@ public class LevelManager : MonoBehaviour {
                 wallCollider.gameObject.tag = "Floor";
                 
                 GameObject roomTile = Instantiate(tileToRend, drawPos, Quaternion.identity) as GameObject;
+                roomTile.layer = LayerMask.NameToLayer("Ground");
                 TileSpriteSelector mapper = roomTile.GetComponent<TileSpriteSelector>();
                 SpriteRenderer rend = roomTile.GetComponent<SpriteRenderer>();
                 rend.sortingLayerName = "Ground";
@@ -289,7 +302,7 @@ public class LevelManager : MonoBehaviour {
 
                     GameObject wallTile = Instantiate(tileToRend, drawPos, Quaternion.identity) as GameObject;
 
-                    wallTile.layer = LayerMask.NameToLayer("ObstacleLayer");
+                    wallTile.layer = LayerMask.NameToLayer("Walls");
 
                     TileSpriteSelector mapper = wallTile.GetComponent<TileSpriteSelector>();
                     SpriteRenderer rend = wallTile.GetComponent<SpriteRenderer>();
@@ -409,7 +422,8 @@ public class LevelManager : MonoBehaviour {
 
                     GameObject passTile = Instantiate(tileToRend, drawPos, Quaternion.identity) as GameObject;
 
-                    passTile.layer = LayerMask.NameToLayer("ObstacleLayer");
+                    if (passTile.tag == "Wall")
+                        passTile.layer = LayerMask.NameToLayer("Walls");
 
                     TileSpriteSelector mapper = passTile.GetComponent<TileSpriteSelector>();
                     if (j == 0)
@@ -529,7 +543,8 @@ public class LevelManager : MonoBehaviour {
 
                     GameObject passTile = Instantiate(tileToRend, drawPos, Quaternion.identity) as GameObject;
 
-                    passTile.layer = LayerMask.NameToLayer("ObstacleLayer");
+                    if (passTile.tag == "Wall")
+                        passTile.layer = LayerMask.NameToLayer("Walls");
 
                     TileSpriteSelector mapper = passTile.GetComponent<TileSpriteSelector>();
                     SpriteRenderer rend = passTile.GetComponent<SpriteRenderer>();
@@ -823,16 +838,17 @@ public class LevelManager : MonoBehaviour {
         GridGraph gg = data.AddGraph(typeof(GridGraph)) as GridGraph;
 
         // Setup a grid graph with some values
-        int width = (roomSizeX + 2) * 2;
-        int depth = (roomSizeY + 4) * 2;
-        float nodeSize = 0.5f;
+        int width = (roomSizeX + 2) * 4;
+        int depth = (roomSizeY + 4) * 4;
+        float nodeSize = 0.25f;
 
         //gg.center = new Vector3(room.gridPos.x + (roomSizeX / 2), room.gridPos.y + (roomSizeY / 2), 0);
         gg.center = new Vector3(room.gridPos.x + roomSizeX / 2, room.gridPos.y + roomSizeY / 2 + 1, 0);
         gg.rotation = new Vector3(-90, 0, 0);
-        gg.collision.diameter = 0.5f;
+        gg.collision.diameter = 1f;
         gg.collision.mask = LayerMask.GetMask("ObstacleLayer");
-        gg.collision.use2D = true; 
+        gg.collision.use2D = true;
+        gg.cutCorners = false;
 
         // Updates internal size from the above values
         gg.SetDimensions(width, depth, nodeSize);

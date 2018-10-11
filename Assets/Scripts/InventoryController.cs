@@ -61,16 +61,23 @@ public class InventoryController : MonoBehaviour {
 
     public void Resume()
     {
-        Inventory.SetActive(false);
-        Time.timeScale = 1f;
-        GameIsPaused = false;
+        if(Inventory != null)
+        {
+            Inventory.SetActive(false);
+            Time.timeScale = 1f;
+            GameIsPaused = false;
+        }
     }
+        
 
     public void Pause()
     {
-        Inventory.SetActive(true);
-        Time.timeScale = 0f;
-        GameIsPaused = true;
+        if (Inventory != null)
+        {
+            Inventory.SetActive(true);
+            Time.timeScale = 0f;
+            GameIsPaused = true;
+        }
     }
 
     public void EliminateSlot(GameObject slot)

@@ -38,12 +38,12 @@ TagManager:
   - UI
   - 
   - 
-  - 
+  - Walls
   - ObstacleLayer
   - MiniMap
   - Level
-  - 
-  - 
+  - Ground
+  - Flying
   - 
   - 
   - 

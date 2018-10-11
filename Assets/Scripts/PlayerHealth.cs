@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class PlayerHealth : MonoBehaviour {
 
-    private int startingHealth = 100;
+    private int startingHealth = 10000;
     private int currentHealth;
     private float invTimer = 0;
     private float attackDuration = 0.5f;
