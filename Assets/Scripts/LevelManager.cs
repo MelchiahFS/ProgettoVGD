@@ -171,99 +171,98 @@ public class LevelManager : MonoBehaviour {
         {
             for (int j = 0; j < roomSizeX; j++)
             {
-                wallCollider = tileToRend.GetComponent<BoxCollider2D>();
-                wallCollider.enabled = false;
-                wallCollider.gameObject.tag = "Floor";
-                
                 GameObject roomTile = Instantiate(tileToRend, drawPos, Quaternion.identity) as GameObject;
+
+                wallCollider = roomTile.GetComponent<BoxCollider2D>();
+                wallCollider.enabled = false;
+
+                roomTile.tag = "Floor";
                 roomTile.layer = LayerMask.NameToLayer("Ground");
                 TileSpriteSelector mapper = roomTile.GetComponent<TileSpriteSelector>();
                 SpriteRenderer rend = roomTile.GetComponent<SpriteRenderer>();
                 rend.sortingLayerName = "Ground";
                 room.roomTiles.Add(roomTile);
 
-                //mi permette di impostare le tile relative al pavimento
-                mapper.floor = true;
                 if (i == 0 && j == (roomSizeX / 2) && room.doorBot)
                 {
-                    mapper.doorDown = true;
-                    BoxCollider2D doorTrigger = roomTile.GetComponent<BoxCollider2D>();
                     roomTile.tag = "innerDoorDown";
-                    doorTrigger.isTrigger = true;
-                    doorTrigger.enabled = true;
+
+                    wallCollider.enabled = true;
+                    wallCollider.isTrigger = true;
+
+                    rend.sprite = mapper.doorFloorDown;
                 }
                 else if (i == (roomSizeY - 1) && j == (roomSizeX / 2) && room.doorTop)
                 {
-                    mapper.doorUp = true;
-                    BoxCollider2D doorTrigger = roomTile.GetComponent<BoxCollider2D>();
                     roomTile.tag = "innerDoorUp";
-                    doorTrigger.isTrigger = true;
-                    doorTrigger.enabled = true;
+
+                    wallCollider.enabled = true;
+                    wallCollider.isTrigger = true;
+
+                    rend.sprite = mapper.doorFloorUp;
                 }
                 else if (i == (roomSizeY / 2) && j == 0 && room.doorLeft)
                 {
-                    mapper.doorLeft = true;
-                    BoxCollider2D doorTrigger = roomTile.GetComponent<BoxCollider2D>();
                     roomTile.tag = "innerDoorLeft";
-                    doorTrigger.isTrigger = true;
-                    doorTrigger.enabled = true;
+
+                    wallCollider.enabled = true;
+                    wallCollider.isTrigger = true;
+                    
+                    rend.sprite = mapper.doorFloorLeft;
                 }
                 else if (i == (roomSizeY / 2) && j == (roomSizeX - 1) && room.doorRight)
                 {
-                    mapper.doorRight = true;
-                    BoxCollider2D doorTrigger = roomTile.GetComponent<BoxCollider2D>();
                     roomTile.tag = "innerDoorRight";
-                    doorTrigger.isTrigger = true;
-                    doorTrigger.enabled = true;
+
+                    wallCollider.enabled = true;
+                    wallCollider.isTrigger = true;
+
+                    rend.sprite = mapper.doorFloorRight;
                 }
                 else if (i == 0)
                 {
-                    mapper.up = false;
-                    mapper.down = true;
+                    if (j == 0)
+                        rend.sprite = mapper.outerDownLeftCorner;
+                    else if (j == roomSizeX - 1)
+                        rend.sprite = mapper.outerDownRightCorner;
+                    else
+                        rend.sprite = mapper.downFloor;
                 }
                 else if (i == roomSizeY - 1)
                 {
-                    mapper.up = true;
-                    mapper.down = false;
+                    if (j == 0)
+                        rend.sprite = mapper.outerUpLeftCorner;
+                    else if (j == roomSizeX - 1)
+                        rend.sprite = mapper.outerUpRightCorner;
+                    else
+                        rend.sprite = mapper.upFloor;
                 }
                 else
                 {
-                    mapper.up = false;
-                    mapper.down = false;
-                }
-
-                if (j == 0)
-                {
-                    mapper.left = true;
-                    mapper.right = false;
-                }
-                else if (j == roomSizeX - 1)
-                {
-                    mapper.left = false;
-                    mapper.right = true;
-                }
-                else
-                {
-                    mapper.left = false;
-                    mapper.right = false;
+                    if (j == 0)
+                        rend.sprite = mapper.leftFloor;
+                    else if (j == roomSizeX - 1)
+                        rend.sprite = mapper.rightFloor;
+                    else
+                        rend.sprite = mapper.floorTile;
                 }
                 drawPos.x++;
+
             }
             drawPos.x = room.gridPos.x;
             drawPos.y++;
         }
-
     }
 
     //disegna i muri delle stanze e ne imposta i collider
     void DrawWalls(Room room)
     {
         Vector2 drawPos = new Vector2(room.gridPos.x - 1, room.gridPos.y - 1);
-        for (int i = 0; i <= roomSizeY + 3; i++)
+        for (int i = 0; i < roomSizeY + 4; i++) //altezza stanza + muro basso (1) + muro alto (3)
         {
-            for (int j = 0; j <= roomSizeX + 1; j++)
+            for (int j = 0; j < roomSizeX + 2; j++) //lunghezza stanza + muro sinistra (1) + muro destra (1)
             {
-                //preparo lo spazio vuoto tra le stanze da collegare (del collegamento si occuperà un'altro metodo
+                //preparo lo spazio vuoto tra le stanze da collegare (del collegamento si occuperà un'altro metodo)
                 if (
                     (((i == 0 && room.doorBot) || ((i == roomSizeY + 1 || i == roomSizeY + 3) && room.doorTop)) && j >= (roomSizeX / 2) && j <= (roomSizeX / 2) + 2) ||
                     (((j == 0 && room.doorLeft) || (j == roomSizeX + 1 && room.doorRight)) && i >= (roomSizeY / 2) && i <= (roomSizeY / 2) + 4)
@@ -276,97 +275,98 @@ public class LevelManager : MonoBehaviour {
                 //se l'indice è relativo a uno dei muri istanzio la tile
                 if (i == 0 || j == 0 || i == (roomSizeY + 3) || i == (roomSizeY + 1) || (j == roomSizeX + 1))
                 {
-                    //rendo tangibile il muro
-                    wallCollider = tileToRend.GetComponent<BoxCollider2D>();
-                    wallCollider.enabled = true;
-                    wallCollider.gameObject.tag = "Wall";
-                    //se è la stanza del boss
-                    if (room.bossRoom && i == (roomSizeY + 1) && j == (roomSizeX / 2) + 1)
-                    {
-                        wallCollider.gameObject.tag = "Exit";
-                        wallCollider.size = new Vector2(1, 1);
-                        wallCollider.offset = new Vector2(0, 1);
-                    }
-                    //se il muro è quello frontale
-                    else if (i == (roomSizeY + 1) && j > 0 && j <= roomSizeX)
-                    {
-                        wallCollider.size = new Vector2(1, 2);
-                        wallCollider.offset = new Vector2(0, 0.5f);
-                    }
-                    //se è il muro esterno/laterale
-                    else
-                    {
-                        wallCollider.size = new Vector2(1, 1);
-                        wallCollider.offset = new Vector2(0, 0);
-                    }
+                    
 
                     GameObject wallTile = Instantiate(tileToRend, drawPos, Quaternion.identity) as GameObject;
-
+                    wallTile.tag = "Wall";
                     wallTile.layer = LayerMask.NameToLayer("Walls");
+
+                    //rendo tangibile il muro
+                    wallCollider = wallTile.GetComponent<BoxCollider2D>();
+                    wallCollider.enabled = true;
 
                     TileSpriteSelector mapper = wallTile.GetComponent<TileSpriteSelector>();
                     SpriteRenderer rend = wallTile.GetComponent<SpriteRenderer>();
                     rend.sortingLayerName = "Ground";
                     room.roomTiles.Add(wallTile);
 
-                    //mi permette di impostare le tile relative al pavimento
-                    mapper.wall = true;
+                    //se è la stanza del boss creo l'uscita
+                    if (room.bossRoom && i == (roomSizeY + 1) && j == (roomSizeX / 2) + 1)
+                    {
+                        wallTile.tag = "Exit";
+                        rend.sprite = mapper.stairs;
+                        wallCollider.size = new Vector2(1, 1);
+                        wallCollider.offset = new Vector2(0, 1);
+                    }
+                    //se il muro è quello frontale
+                    else if (i == roomSizeY + 1)
+                    {
+                        if (j > 0 && j <= roomSizeX)
+                        {
+                            if (j > 1 && j < roomSizeX)
+                                rend.sprite = mapper.innerWallCenter;
+                            else if (j == 1)
+                                rend.sprite = mapper.innerWallLeft;
+                            else if (j == roomSizeX)
+                                rend.sprite = mapper.innerWallRight;
 
-                    if (i == 0)
-                    {
-                        mapper.down = true;
-                        mapper.up = false;
+                            wallCollider.size = new Vector2(1, 2);
+                            wallCollider.offset = new Vector2(0, 0.5f);
+                        }
+                        else
+                        {
+                            if (j == 0)
+                                rend.sprite = mapper.leftWall;
+                            else if (j == roomSizeX + 1)
+                                rend.sprite = mapper.rightWall;
+                        
+                            wallCollider.size = new Vector2(1, 1);
+                            wallCollider.offset = new Vector2(0, 0);
+                        }
                     }
-                    else if (i == (roomSizeY + 3))
+                        
+                    else if (i == roomSizeY + 3)
                     {
-                        mapper.up = true;
-                        mapper.down = false;
-                    }
-                    else
-                    {
-                        mapper.up = false;
-                        mapper.down = false;
-                    }
+                        if (j > 0 && j <= roomSizeX)
+                            rend.sprite = mapper.upWall;
+                        else if (j == 0)
+                            rend.sprite = mapper.upLeftCorner;
+                        else if (j == roomSizeX + 1)
+                            rend.sprite = mapper.upRightCorner;
 
-                    if (j == 0)
-                    {
-                        mapper.left = true;
-                        mapper.right = false;
+                        if (j >= 0 && j <= roomSizeX + 1)
+                        {
+                            wallCollider.size = new Vector2(1, 1);
+                            wallCollider.offset = new Vector2(0, 0);
+                        }
                     }
-                    else if ((j == 1 && i == roomSizeY + 1) || (i == roomSizeY + 1 && j == ((roomSizeX + 1) / 2) + 1 && room.doorTop))
+                    else if (i == 0)
                     {
-                        mapper.innerWall = true;
-                        mapper.left = true;
-                        mapper.right = false;
+                        if (j > 0 && j <= roomSizeX)
+                            rend.sprite = mapper.downWall;
+                        else if (j == 0)
+                            rend.sprite = mapper.downLeftCorner;
+                        else if (j == roomSizeX + 1)
+                            rend.sprite = mapper.downRightCorner;
 
+                        if (j >= 0 && j <= roomSizeX + 1)
+                        {
+                            wallCollider.size = new Vector2(1, 1);
+                            wallCollider.offset = new Vector2(0, 0);
+                        }
                     }
-                    else if ((j == roomSizeX && i == roomSizeY + 1) || (i == roomSizeY + 1 && j == (roomSizeX / 2) && room.doorTop))
+                    else if (j == 0)
                     {
-                        mapper.innerWall = true;
-                        mapper.right = true;
-                        mapper.left = false;
-                    }
-                    else if (room.bossRoom && i == roomSizeY + 1 && j == ((roomSizeX + 1) / 2))
-                    {
-                        mapper.innerWall = true;
-                        mapper.exit = true;
-                    }
-                    else if (j < roomSizeX && i == roomSizeY + 1)
-                    {
-                        mapper.innerWall = true;
-                        mapper.left = false;
-                        mapper.right = false;
+                        rend.sprite = mapper.leftWall;
+                        wallCollider.size = new Vector2(1, 1);
+                        wallCollider.offset = new Vector2(0, 0);
                     }
                     else if (j == roomSizeX + 1)
                     {
-                        mapper.right = true;
-                        mapper.left = false;
-                    }
-                    else
-                    {
-                        mapper.left = false;
-                        mapper.right = false;
-                    }
+                        rend.sprite = mapper.rightWall;
+                        wallCollider.size = new Vector2(1, 1);
+                        wallCollider.offset = new Vector2(0, 0);
+                    }                    
                 }
                 drawPos.x++;
             }
@@ -375,8 +375,7 @@ public class LevelManager : MonoBehaviour {
         }
     }
 
-    //per ogni stanza della griglia delle stanze, controllo se ha una porta a destra e sopra
-    //e in caso affermativo disegno il passaggio
+    //per ogni stanza della griglia delle stanze, controllo se ha una porta a destra e sopra, e in caso affermativo disegno il passaggio
     void LinkRooms(int x, int y)
     {
         horPassSizeX = lvlGen.distRoomX;
@@ -385,6 +384,7 @@ public class LevelManager : MonoBehaviour {
         verPassSizeX = 3;
         Room room = map[x, y];
         Vector2 drawPos;
+        
         //disegno il passaggio a destra
         if (room.doorRight)
         {
@@ -393,39 +393,19 @@ public class LevelManager : MonoBehaviour {
             {
                 for (int j = 0; j < horPassSizeX; j++)
                 {
+                    //la tile del muro di sopra è il doppio in altezza delle altre: per disegnarlo viene considerata solo la riga sotto (i == 2)
                     if (i == 3)
                     {
                         continue;
                     }
 
-                    wallCollider = tileToRend.GetComponent<BoxCollider2D>();
-                    if (i != 1)
-                    {
-                        wallCollider.enabled = true;
-                        wallCollider.gameObject.tag = "Wall";
-                        if (i == 2)
-                        {
-                            wallCollider.size = new Vector2(1, 2);
-                            wallCollider.offset = new Vector2(0, 0.5f);
-                        }
-                        else
-                        {
-                            wallCollider.size = new Vector2(1, 1);
-                            wallCollider.offset = new Vector2(0, 0);
-                        }
-                    }
-                    else
-                    {
-                        wallCollider.enabled = false;
-                        wallCollider.gameObject.tag = "Floor";
-                    }
-
                     GameObject passTile = Instantiate(tileToRend, drawPos, Quaternion.identity) as GameObject;
-
-                    if (passTile.tag == "Wall")
-                        passTile.layer = LayerMask.NameToLayer("Walls");
+                    wallCollider = passTile.GetComponent<BoxCollider2D>();
 
                     TileSpriteSelector mapper = passTile.GetComponent<TileSpriteSelector>();
+                    SpriteRenderer rend = passTile.GetComponent<SpriteRenderer>();
+
+                    //aggiorno le liste delle tiles del passaggio delle due stanze che lo condividono
                     if (j == 0)
                         room.roomTiles.Add(passTile);
                     else if (j == horPassSizeX - 1)
@@ -435,76 +415,90 @@ public class LevelManager : MonoBehaviour {
                         room.passageRightTiles.Add(passTile);
                         map[x + 1, y].passageLeftTiles.Add(passTile);
                     }
+
+
+                    if (i != 1)
+                    {
+                        wallCollider.enabled = true;
+
+                        passTile.tag = "Wall";
+                        passTile.layer = LayerMask.NameToLayer("Walls");
+
+                        if (i == 0)
+                        {
+                            if (j > 0 && j < horPassSizeX - 1)
+                                rend.sprite = mapper.downWall;
+                            else if (j == 0)
+                                rend.sprite = mapper.innerLeftUpWallCorner;
+                            else if (j == horPassSizeX - 1)
+                                rend.sprite = mapper.innerRightUpWallCorner;
+
+                            wallCollider.size = new Vector2(1, 1);
+                            wallCollider.offset = new Vector2(0, 0);
+                        }
+                        else if (i == 2)
+                        {
+                            if (j > 0 && j < horPassSizeX - 1)
+                                rend.sprite = mapper.innerWallCenter;
+                            else if (j == 0)
+                                rend.sprite = mapper.innerWallLeft;
+                            else if (j == horPassSizeX - 1)
+                                rend.sprite = mapper.innerWallRight;
+
+                            wallCollider.size = new Vector2(1, 2);
+                            wallCollider.offset = new Vector2(0, 0.5f);
+                        }
+                        else if (i == horPassSizeY - 1)
+                        {
+                            if (j > 0 && j < horPassSizeX - 1)
+                                rend.sprite = mapper.upWall;
+                            else if (j == 0)
+                                rend.sprite = mapper.innerLeftDownWallCorner;
+                            else if (j == horPassSizeX - 1)
+                                rend.sprite = mapper.innerRightDownWallCorner;
+
+                            wallCollider.size = new Vector2(1, 1);
+                            wallCollider.offset = new Vector2(0, 0);
+                        }
+                    }
+                    //imposto i trigger per gli ingressi al corridoio
+                    else
+                    {
                         
-                    
-                    mapper.passageHor = true;
+                        passTile.layer = LayerMask.NameToLayer("Ground");
+                        rend.sprite = mapper.horizontalPass;
 
-                    if (i == 0)
-                    {
-
-                        mapper.wall = true;
-                        mapper.down = true;
-                        mapper.up = false;
+                        if (j == 0)
+                        { 
+                            //trigger per la porta di sinistra del corridoio
+                            passTile.tag = "outerDoorRight";
+                            wallCollider.enabled = true;
+                            wallCollider.isTrigger = true;
+                            wallCollider.size = new Vector2(1.3f, 1);
+                            wallCollider.offset = new Vector2(1, 0);
+                        }
+                        else if (j == horPassSizeX - 1)
+                        {
+                            //trigger per la porta di destra del corridoio
+                            passTile.tag = "outerDoorLeft";
+                            wallCollider.enabled = true;
+                            wallCollider.isTrigger = true;
+                            wallCollider.size = new Vector2(1.3f, 1);
+                            wallCollider.offset = new Vector2(-1, 0);
+                        }
+                        else
+                        {
+                            wallCollider.enabled = false;
+                            passTile.tag = "Floor";
+                        }
                     }
-                    else if (i == horPassSizeY - 1)
-                    {
-                        mapper.wall = true;
-                        mapper.up = true;
-                        mapper.down = false;
-                    }
-                    else if (i == 2)
-                    {
-                        mapper.innerWall = true;
-                    }
-                    else
-                    {
-                        mapper.up = false;
-                        mapper.down = false;
-                    }
-
-                    if (j == 0)
-                    {
-                        mapper.left = true;
-                        mapper.right = false;
-                    }
-                    else if (j == horPassSizeX - 1)
-                    {
-                        mapper.right = true;
-                        mapper.left = false;
-                    }
-                    else
-                    {
-                        mapper.right = false;
-                        mapper.left = false;
-                    }
-
-                    if (i == 1 && j == 0)
-                    {
-                        //trigger per la porta di sinistra del corridoio
-                        BoxCollider2D doorTrigger = passTile.GetComponent<BoxCollider2D>();
-                        passTile.tag = "outerDoorRight";
-                        doorTrigger.size = new Vector2(1.3f, 1);
-                        doorTrigger.offset = new Vector2(1, 0);
-                        doorTrigger.isTrigger = true;
-                        doorTrigger.enabled = true;
-                    }
-                    if (i == 1 && j == horPassSizeX - 1)
-                    {
-                        //trigger per la porta di destra del corridoio
-                        BoxCollider2D doorTrigger = passTile.GetComponent<BoxCollider2D>();
-                        passTile.tag = "outerDoorLeft";
-                        doorTrigger.size = new Vector2(1.3f, 1);
-                        doorTrigger.offset = new Vector2(-1, 0);
-                        doorTrigger.isTrigger = true;
-                        doorTrigger.enabled = true;
-                    }
+                    rend.sortingLayerName = "Ground";
                     drawPos.x++;
                 }
                 drawPos.x = room.gridPos.x + roomSizeX;
                 drawPos.y++;
             }
         }
-
         //disegno il passaggio sopra
         if (room.doorTop)
         {
@@ -513,132 +507,134 @@ public class LevelManager : MonoBehaviour {
             {
                 for (int j = 0; j < verPassSizeX; j++)
                 {
+                    //il muro ha altezza doppia, perciò per disegnarlo considero solo la prima riga (i == 0)
                     if (i == 1 && j != 1)
                     {
                         drawPos.x++;
                         continue;
                     }
 
-                    wallCollider = tileToRend.GetComponent<BoxCollider2D>();
-                    if (j != 1)
-                    {
-                        wallCollider.gameObject.tag = "Wall";
-                        if (i == 0)
-                        {
-                            wallCollider.size = new Vector2(1, 2);
-                            wallCollider.offset = new Vector2(0, 0.5f);
-                        }
-                        else
-                        {
-                            wallCollider.size = new Vector2(1, 1);
-                            wallCollider.offset = new Vector2(0, 0);
-                        }
-                        wallCollider.enabled = true;
-                    }
-                    else
-                    {
-                        wallCollider.gameObject.tag = "Floor";
-                        wallCollider.enabled = false;
-                    }
-
                     GameObject passTile = Instantiate(tileToRend, drawPos, Quaternion.identity) as GameObject;
-
-                    if (passTile.tag == "Wall")
-                        passTile.layer = LayerMask.NameToLayer("Walls");
+                    wallCollider = passTile.GetComponent<BoxCollider2D>();
 
                     TileSpriteSelector mapper = passTile.GetComponent<TileSpriteSelector>();
                     SpriteRenderer rend = passTile.GetComponent<SpriteRenderer>();
-                    rend.sortingLayerName = "Ground";
 
+                    //aggiorno le liste delle tiles del passaggio delle due stanze che lo condividono
                     if (i == 0 || (i == 2 && j != 1))
-                    {
                         room.roomTiles.Add(passTile);
-                    }
                     else if (i == verPassSizeY - 1)
-                    {
                         map[x, y + 1].roomTiles.Add(passTile);
-                    }
                     else
                     {
                         room.passageUpTiles.Add(passTile);
                         map[x, y + 1].passageDownTiles.Add(passTile);
                     }
 
-
-
-                    mapper.passageVer = true;
-
                     if (j != 1)
                     {
-                        if (i == 0)
+                        wallCollider.enabled = true;
+
+                        passTile.tag = "Wall";
+                        passTile.layer = LayerMask.NameToLayer("Walls");
+                        if (j == 0)
                         {
-                            mapper.innerWall = true;
+                            if (i > 2 && i < verPassSizeY - 1)
+                            {
+                                rend.sprite = mapper.leftWall;
+                                wallCollider.size = new Vector2(1, 1);
+                                wallCollider.offset = new Vector2(0, 0);
+                            }
+                            else if (i == 0)
+                            {
+                                rend.sprite = mapper.innerWallRight;
+                                wallCollider.size = new Vector2(1, 2);
+                                wallCollider.offset = new Vector2(0, 0.5f);
+                            }
+                            else if (i == 2)
+                            {
+                                rend.sprite = mapper.innerRightDownWallCorner;
+                                wallCollider.size = new Vector2(1, 1);
+                                wallCollider.offset = new Vector2(0, 0);
+                            }
+                            else if (i == verPassSizeY - 1)
+                            {
+                                rend.sprite = mapper.innerRightUpWallCorner;
+                                wallCollider.size = new Vector2(1, 1);
+                                wallCollider.offset = new Vector2(0, 0);
+                            }
+
                         }
                         else
                         {
-                            mapper.wall = true;
+                            if (i > 2 && i < verPassSizeY - 1)
+                            {
+                                rend.sprite = mapper.rightWall;
+                                wallCollider.size = new Vector2(1, 1);
+                                wallCollider.offset = new Vector2(0, 0);
+                            }
+                            else if (i == 0)
+                            {
+                                rend.sprite = mapper.innerWallLeft;
+                                wallCollider.size = new Vector2(1, 2);
+                                wallCollider.offset = new Vector2(0, 0.5f);
+                            }
+                            else if (i == 2)
+                            {
+                                rend.sprite = mapper.innerLeftDownWallCorner;
+                                wallCollider.size = new Vector2(1, 1);
+                                wallCollider.offset = new Vector2(0, 0);
+                            }
+                            else if (i == verPassSizeY - 1)
+                            {
+                                rend.sprite = mapper.innerLeftUpWallCorner;
+                                wallCollider.size = new Vector2(1, 1);
+                                wallCollider.offset = new Vector2(0, 0);
+                            }
+                        }    
+                    }
+                    else
+                    {
+                        passTile.layer = LayerMask.NameToLayer("Ground");
+                        rend.sprite = mapper.verticalPass;
+
+                        if (i == 2)
+                        {
+                            //trigger per la porta di sotto del corridoio
+
+                            wallCollider.size = new Vector2(1, 1);
+                            wallCollider.offset = new Vector2(0, -0.5f);
+                            passTile.tag = "outerDoorUp";
+
+                            wallCollider.enabled = true;
+                            wallCollider.isTrigger = true;
                         }
-                    }
+                        else if (i == 3)
+                        {
+                            //trigger per la porta di sopra del corridoio
 
-                    if (i == 0 || i == 2)
-                    {
-                        mapper.down = true;
-                        mapper.up = false;
-                    }
-                    else if (i == verPassSizeY - 1)
-                    {
-                        mapper.down = false;
-                        mapper.up = true;
-                    }
-                    else
-                    {
-                        mapper.down = false;
-                        mapper.up = false;
-                    }
+                            wallCollider.size = new Vector2(1, 1);
+                            wallCollider.offset = new Vector2(0, 0.5f);
+                            passTile.tag = "outerDoorDown";
 
-                    if (j == 0)
-                    {
-                        mapper.left = true;
-                        mapper.right = false;
+                            wallCollider.enabled = true;
+                            wallCollider.isTrigger = true;
+                        }
+                        else
+                        {
+                            wallCollider.enabled = false;
+                            passTile.tag = "Floor";
+                        }
+                        
                     }
-                    else if (j == verPassSizeX - 1)
-                    {
-                        mapper.right = true;
-                        mapper.left = false;
-                    }
-                    else
-                    {
-                        mapper.left = false;
-                        mapper.right = false;
-                    }
-
-                    if (i == 2 && j == 1)
-                    {
-                        //trigger per la porta di sotto del corridoio
-                        BoxCollider2D doorTrigger = passTile.GetComponent<BoxCollider2D>();
-                        doorTrigger.size = new Vector2(1, 1);
-                        doorTrigger.offset = new Vector2(0, -0.5f);
-                        passTile.tag = "outerDoorUp";
-                        doorTrigger.isTrigger = true;
-                        doorTrigger.enabled = true;
-                    }
-                    if (i == 3 && j == 1)
-                    {
-                        //trigger per la porta di sopra del corridoio
-                        BoxCollider2D doorTrigger = passTile.GetComponent<BoxCollider2D>();
-                        doorTrigger.size = new Vector2(1, 1);
-                        doorTrigger.offset = new Vector2(0, 0.5f);
-                        passTile.tag = "outerDoorDown";
-                        doorTrigger.isTrigger = true;
-                        doorTrigger.enabled = true;
-                    }
-
+                    rend.sortingLayerName = "Ground";
                     drawPos.x++;
                 }
                 drawPos.x = room.gridPos.x + (roomSizeX / 2) - 1;
                 drawPos.y++;
             }
         }
+
     }
 
     //disegna le porte delle stanze e ne imposta i collider
@@ -672,7 +668,7 @@ public class LevelManager : MonoBehaviour {
             room.doorSpriteDown = doorSprite;
             doorSprite.tag = "DoorDown";
 
-            doorSprite.layer = LayerMask.NameToLayer("TransparentFX");
+            doorSprite.layer = LayerMask.NameToLayer("ObstacleLayer");
 
             TileSpriteSelector mapper = doorSprite.GetComponent<TileSpriteSelector>();
             SpriteRenderer rend = doorSprite.GetComponent<SpriteRenderer>();
@@ -691,7 +687,7 @@ public class LevelManager : MonoBehaviour {
             room.doorSpriteLeft = doorSprite;
             doorSprite.tag = "DoorLeft";
 
-            doorSprite.layer = LayerMask.NameToLayer("TransparentFX");
+            doorSprite.layer = LayerMask.NameToLayer("ObstacleLayer");
 
             TileSpriteSelector mapper = doorSprite.GetComponent<TileSpriteSelector>();
             SpriteRenderer rend = doorSprite.GetComponent<SpriteRenderer>();
@@ -710,7 +706,7 @@ public class LevelManager : MonoBehaviour {
             room.doorSpriteRight = doorSprite;
             doorSprite.tag = "DoorRight";
 
-            doorSprite.layer = LayerMask.NameToLayer("TransparentFX");
+            doorSprite.layer = LayerMask.NameToLayer("ObstacleLayer"); 
 
             TileSpriteSelector mapper = doorSprite.GetComponent<TileSpriteSelector>();
             SpriteRenderer rend = doorSprite.GetComponent<SpriteRenderer>();
@@ -842,7 +838,6 @@ public class LevelManager : MonoBehaviour {
         int depth = (roomSizeY + 4) * 4;
         float nodeSize = 0.25f;
 
-        //gg.center = new Vector3(room.gridPos.x + (roomSizeX / 2), room.gridPos.y + (roomSizeY / 2), 0);
         gg.center = new Vector3(room.gridPos.x + roomSizeX / 2, room.gridPos.y + roomSizeY / 2 + 1, 0);
         gg.rotation = new Vector3(-90, 0, 0);
         gg.collision.diameter = 1f;

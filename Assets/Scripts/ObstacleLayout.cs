@@ -6,7 +6,6 @@ using UnityEngine;
 [System.Serializable]
 public static class ObstacleLayout
 {
-    private static int[,] thisLayout;
     private static int randomNumber;
     private static System.Random rnd = new System.Random();
 

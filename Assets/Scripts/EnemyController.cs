@@ -7,20 +7,14 @@ public class EnemyController : MonoBehaviour {
 
     private SpriteRenderer playerRend, enemyRend;
     private GameObject player;
+
     private AStarAI astar;
 
-    // Movement speed in units/sec.
-    public float speed = 1.0F;
+    public float speed = 1.0F; //velocità in unità al secondo
 
-    // Time when the movement started.
-    private float startTime;
-
-    // Total distance between the markers.
-    private float journeyLength;
-
-    // Use this for initialization
     void Start ()
     {
+        gameObject.tag = "Enemy";
         player = GameObject.FindGameObjectWithTag("Player");
         enemyRend = GetComponent<SpriteRenderer>();
         playerRend = player.GetComponent<SpriteRenderer>();
@@ -30,12 +24,15 @@ public class EnemyController : MonoBehaviour {
         //se c'è il componente AStarAI imposto lo script per il pathfinding 
         if (astar != null)
         {
+            astar.speed = speed;
+
             foreach (Collider2D collider in GetComponents<Collider2D>())
             {
+                //cerco il collider ai piedi del nemico e lo uso come starting point del percorso
                 if (!collider.isTrigger)
                 {
-                    astar.startPathOffset = collider.offset.y * GetComponent<RectTransform>().localScale.y;
-                    Debug.Log("offset = " + collider.offset.y);
+                    astar.startPathOffset = collider.offset.y * transform.localScale.y;
+                    //Debug.Log("offset = " + collider.offset.y);
                     break;
                 }
             }

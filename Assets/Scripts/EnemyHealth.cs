@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
+[RequireComponent(typeof(AnchorHealthBar))]
 public class EnemyHealth : MonoBehaviour {
 
     public int damage = 10;
@@ -11,25 +12,21 @@ public class EnemyHealth : MonoBehaviour {
     private GameObject player;
     private PlayerHealth playerHealth;
     private PlayerController playerController;
-    public Slider slider;
-	
+    private Slider slider;
         
-    // Use this for initialization
-	void Start () {
+
+	void Start ()
+    {
         player = GameObject.FindGameObjectWithTag("Player");
+
         playerHealth = player.GetComponent<PlayerHealth>();
-        //slider = GetComponentInChildren<Slider>();
+        slider = GetComponentInChildren<Slider>();
         slider.minValue = 0;
         slider.maxValue = startingHealth;
         slider.value = startingHealth;
         currentHealth = startingHealth;
     }
 	
-	// Update is called once per frame
-	void Update ()
-    {
-		
-	}
 
     void OnCollisionEnter2D(Collision2D collision)
     {
