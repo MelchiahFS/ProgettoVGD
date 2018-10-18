@@ -3,7 +3,7 @@ using System.Collections;
 using UnityEngine.SceneManagement;
 
 
-public class PlayerController : MonoBehaviour
+public class PlayerController : SceneObject
 {
     private Rigidbody2D rb2d;
     public float speed;
@@ -33,7 +33,6 @@ public class PlayerController : MonoBehaviour
         actualRoom = GameManager.manager.ActualRoom;
         roomSizeX = GameManager.manager.lvlManager.roomSizeX;
         roomSizeY = GameManager.manager.lvlManager.roomSizeY;
-        
     }
 	
 	void FixedUpdate()
@@ -127,6 +126,10 @@ public class PlayerController : MonoBehaviour
     //aggiorna la stanza attuale 
     IEnumerator ChangeRoom(char c)
     {
+        //rimuovo il player dalla lista dei nemici
+        actualRoom.enemies.Remove(gameObject);
+
+        //imposto l'immagine corretta nella minimappa per la stanza lasciata
         minimap.SetExitRoom(actualRoom);
         if (c == 'd')
         {
@@ -153,6 +156,13 @@ public class PlayerController : MonoBehaviour
             GameManager.manager.UpdateActualRoom('r');
             actualRoom = GameManager.manager.ActualRoom;
         }
+
+        //aggiorno la stanza attuale per il corretto rendering dei character
+        GetComponent<SortRenderingOrder>().actualRoom = actualRoom;
+        //aggiungo il player alla lista dei nemici della nuova stanza
+        actualRoom.enemies.Add(gameObject);
+
+        //imposto l'immagine corretta nella minimappa per la nuova stanza
         minimap.SetEnterRoom(actualRoom);
 
         yield return null;
@@ -389,12 +399,5 @@ public class PlayerController : MonoBehaviour
     {
         actualRoom.enemyCounter--;
     }
-
-
-
-    /*private void PickWeapon(GameObject weapon)
-    {
-
-    }*/
 
 }

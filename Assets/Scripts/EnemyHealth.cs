@@ -44,7 +44,12 @@ public class EnemyHealth : MonoBehaviour {
         Debug.Log("enemy takes damage");
         if (currentHealth <= 0)
         {
-            playerHealth.SendMessage("DecreaseEnemyCounter"); //intercettata da PlayerController
+            //decrementa il counter dei nemici ancora vivi per la stanza attuale (intercettata da PlayerController)
+            playerHealth.SendMessage("DecreaseEnemyCounter"); 
+
+            //elimino il nemico dalla lista dei nemici per la stanza attuale, poi lo elimino dalla scena
+            Room actualRoom = GameManager.manager.ActualRoom;
+            actualRoom.enemies.Remove(gameObject);
             Destroy(gameObject);
         }
             

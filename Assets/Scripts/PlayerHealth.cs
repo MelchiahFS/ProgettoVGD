@@ -99,8 +99,8 @@ public class PlayerHealth : MonoBehaviour {
             Debug.Log("player health: " + currentHealth);
             if (currentHealth <= 0)
                 PlayerDeath();
-            else
-                StartCoroutine(Flash(GetComponent<SpriteRenderer>()));
+            //else
+            //    StartCoroutine(Flash(GetComponent<SpriteRenderer>()));
         }
         
     }

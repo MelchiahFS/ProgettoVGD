@@ -80,7 +80,7 @@ public class LevelManager : MonoBehaviour {
                     SpriteRenderer rend = obsSprite.GetComponent<SpriteRenderer>();
                     rend.sortingLayerName = "Obstacles";
                     rend.sprite = mapper.obstacles;
-                    rend.sortingOrder = 1;
+                    //rend.sortingOrder = 1;
                     obsCollider = obsSprite.GetComponent<BoxCollider2D>();
                     obsCollider.enabled = true;
                     room.roomTiles.Add(obsSprite);
