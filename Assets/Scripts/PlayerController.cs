@@ -33,6 +33,7 @@ public class PlayerController : SceneObject
         actualRoom = GameManager.manager.ActualRoom;
         roomSizeX = GameManager.manager.lvlManager.roomSizeX;
         roomSizeY = GameManager.manager.lvlManager.roomSizeY;
+        SetRealOffset(gameObject);
     }
 	
 	void FixedUpdate()

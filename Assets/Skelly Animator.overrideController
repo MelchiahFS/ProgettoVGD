@@ -1,0 +1,18 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!221 &22100000
+AnimatorOverrideController:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_Name: Skelly Animator
+  m_Controller: {fileID: 9100000, guid: 9798b82709138c7469575264bb6ada29, type: 2}
+  m_Clips:
+  - m_OriginalClip: {fileID: 7400000, guid: 47de8795108974657a3afd4ddebc32d9, type: 2}
+    m_OverrideClip: {fileID: 7400000, guid: 8cdcc12e8e4d0eb4d8e35e646e00fa87, type: 2}
+  - m_OriginalClip: {fileID: 7400000, guid: e716395d37bad4e9facbb1a793e38180, type: 2}
+    m_OverrideClip: {fileID: 7400000, guid: bc1926af7507713469a5e95153a84dd8, type: 2}
+  - m_OriginalClip: {fileID: 7400000, guid: e64977105fd194f44be5bac80bec19df, type: 2}
+    m_OverrideClip: {fileID: 7400000, guid: b61797fabe6ea17498105eb93e50bd53, type: 2}
+  - m_OriginalClip: {fileID: 7400000, guid: 9e15be95d1d58480884656fc32ff494a, type: 2}
+    m_OverrideClip: {fileID: 7400000, guid: c8b666d0b4f27474ca0992ab4f6a1cdb, type: 2}

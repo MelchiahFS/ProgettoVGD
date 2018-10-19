@@ -128,7 +128,7 @@ GameObject:
   - component: {fileID: 114618288593087624}
   - component: {fileID: 114210715504258844}
   m_Layer: 0
-  m_Name: Enemy
+  m_Name: Evil Clone
   m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -141,7 +141,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1977234344992872}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -264, y: 0.99999994, z: 0}
+  m_LocalPosition: {x: -2.29, y: -6.22, z: 0}
   m_LocalScale: {x: 2.5, y: 2.5, z: 1}
   m_Children:
   - {fileID: 224418225405960876}
@@ -207,7 +207,7 @@ Animator:
   m_GameObject: {fileID: 1977234344992872}
   m_Enabled: 1
   m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: 960d04671ed8746429fc595059ed2632, type: 2}
+  m_Controller: {fileID: 22100000, guid: bfb4f21b1fe61cf418661a2968ed0ef3, type: 2}
   m_CullingMode: 0
   m_UpdateMode: 0
   m_ApplyRootMotion: 0

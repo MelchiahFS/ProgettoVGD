@@ -36,13 +36,14 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4071076160594170}
-  - component: {fileID: 212558739993414176}
-  - component: {fileID: 114652167954313650}
-  - component: {fileID: 114840539057509840}
-  - component: {fileID: 95970096142636296}
   - component: {fileID: 50022462946931678}
   - component: {fileID: 70747883395697550}
   - component: {fileID: 70483472749069946}
+  - component: {fileID: 212558739993414176}
+  - component: {fileID: 95970096142636296}
+  - component: {fileID: 114652167954313650}
+  - component: {fileID: 114840539057509840}
+  - component: {fileID: 114295191629637332}
   m_Layer: 0
   m_Name: Player
   m_TagString: Player
@@ -185,6 +186,52 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
+--- !u!114 &114295191629637332
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1977234344992872}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f806d6d5870d89f43b7d488c5520e20e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  actualRoom:
+    gridPos: {x: 0, y: 0}
+    bossRoom: 0
+    shopRoom: 0
+    startRoom: 0
+    doorTop: 0
+    doorBot: 0
+    doorLeft: 0
+    doorRight: 0
+    openUp: 0
+    openDown: 0
+    openLeft: 0
+    openRight: 0
+    visited: 0
+    locked: 0
+    roomTiles: []
+    passageLeftTiles: []
+    passageRightTiles: []
+    passageUpTiles: []
+    passageDownTiles: []
+    spawnPoints: []
+    doorSpriteUp: {fileID: 0}
+    doorSpriteDown: {fileID: 0}
+    doorSpriteLeft: {fileID: 0}
+    doorSpriteRight: {fileID: 0}
+    actualMapSprite: {fileID: 0}
+    visitedMapSprite: {fileID: 0}
+    actualBossMapSprite: {fileID: 0}
+    visitedBossMapSprite: {fileID: 0}
+    actualShopMapSprite: {fileID: 0}
+    visitedShopMapSprite: {fileID: 0}
+    unknownMapSprite: {fileID: 0}
+    enemies: []
+    obsNumber: 0
+    enemyCounter: 0
 --- !u!114 &114652167954313650
 MonoBehaviour:
   m_ObjectHideFlags: 1

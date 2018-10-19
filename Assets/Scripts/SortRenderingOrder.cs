@@ -6,7 +6,8 @@ public class SortRenderingOrder : MonoBehaviour {
 
     public Room actualRoom;
     private float offsetA, offsetB;
-	void Update ()
+
+    void Update ()
     {
 
         actualRoom.enemies.Sort(delegate (GameObject a, GameObject b)
