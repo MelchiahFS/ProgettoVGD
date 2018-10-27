@@ -11,12 +11,12 @@ public class StatsController : MonoBehaviour {
     // Use this for initialization
     void Start ()
     {
-        heart1 = GameObject.Find("heart1");
-        heart2 = GameObject.Find("heart2");
-        heart3 = GameObject.Find("heart3");
-        heart1.SetActive(true);
-        heart2.SetActive(true);
-        heart3.SetActive(true);
+        //heart1 = GameObject.Find("heart1");
+        //heart2 = GameObject.Find("heart2");
+        //heart3 = GameObject.Find("heart3");
+        //heart1.SetActive(true);
+        //heart2.SetActive(true);
+        //heart3.SetActive(true);
     }
 	
 	// Update is called once per frame

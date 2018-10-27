@@ -222,7 +222,7 @@ public class LevelGenerator
                 if (AdiacentRooms(room) == 1)
                 {
                     room.bossRoom = true;
-                    room.enemyCounter = 1;
+                    room.enemyCounter = 0; //da modificare per includere il boss
                     bossIsSet = true;
                     break;
                 }

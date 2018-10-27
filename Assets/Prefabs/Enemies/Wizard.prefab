@@ -122,6 +122,10 @@ GameObject:
   - component: {fileID: 58160682871373430}
   - component: {fileID: 70824378506427440}
   - component: {fileID: 50777974881875290}
+  - component: {fileID: 114064302859680276}
+  - component: {fileID: 114255472386462260}
+  - component: {fileID: 114169465419234638}
+  - component: {fileID: 114122919963735306}
   m_Layer: 0
   m_Name: Wizard
   m_TagString: Untagged
@@ -211,6 +215,35 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
+--- !u!114 &114064302859680276
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1989323480189764}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 66ac3906636fe2b429310ae620d58524, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &114122919963735306
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1989323480189764}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4ea3f9a739b9916478f05b5260f05498, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  bouncing: 0
+  charging: 0
+  following: 0
+  hybridWandering: 0
+  pureWandering: 0
+  delayedMovement: 0
+  flying: 0
 --- !u!114 &114145770300773478
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -259,6 +292,58 @@ MonoBehaviour:
       m_Calls: []
     m_TypeName: UnityEngine.UI.Slider+SliderEvent, UnityEngine.UI, Version=1.0.0.0,
       Culture=neutral, PublicKeyToken=null
+--- !u!114 &114169465419234638
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1989323480189764}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ba94f62108f94a8459265c07bff0016d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  actualRoom:
+    gridPos: {x: 0, y: 0}
+    bossRoom: 0
+    shopRoom: 0
+    startRoom: 0
+    doorTop: 0
+    doorBot: 0
+    doorLeft: 0
+    doorRight: 0
+    openUp: 0
+    openDown: 0
+    openLeft: 0
+    openRight: 0
+    visited: 0
+    locked: 0
+    roomTiles: []
+    passageLeftTiles: []
+    passageRightTiles: []
+    passageUpTiles: []
+    passageDownTiles: []
+    spawnPoints: []
+    freePositions: []
+    doorSpriteUp: {fileID: 0}
+    doorSpriteDown: {fileID: 0}
+    doorSpriteLeft: {fileID: 0}
+    doorSpriteRight: {fileID: 0}
+    actualMapSprite: {fileID: 0}
+    visitedMapSprite: {fileID: 0}
+    actualBossMapSprite: {fileID: 0}
+    visitedBossMapSprite: {fileID: 0}
+    actualShopMapSprite: {fileID: 0}
+    visitedShopMapSprite: {fileID: 0}
+    unknownMapSprite: {fileID: 0}
+    enemies: []
+    obsNumber: 0
+    enemyCounter: 0
+  astar: {fileID: 0}
+  changeTargetTime: 3
+  chargeTime: 3
+  playerDistance: 5
+  speed: 0
 --- !u!114 &114206292674461116
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -286,6 +371,19 @@ MonoBehaviour:
   m_FillAmount: 1
   m_FillClockwise: 1
   m_FillOrigin: 0
+--- !u!114 &114255472386462260
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1989323480189764}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 902f73bcd2d05db44ba6b7a0ce17d2d1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  damage: 10
+  startingHealth: 50
 --- !u!114 &114295627346264256
 MonoBehaviour:
   m_ObjectHideFlags: 1

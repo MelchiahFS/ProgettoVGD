@@ -17,6 +17,7 @@ public class Room
     public List<GameObject> passageUpTiles = null;
     public List<GameObject> passageDownTiles = null;
     public List<Vector2> spawnPoints = null;
+    public List<Vector2> freePositions = null;
     public GameObject doorSpriteUp, doorSpriteDown, doorSpriteLeft, doorSpriteRight;
     public GameObject actualMapSprite, visitedMapSprite, actualBossMapSprite, visitedBossMapSprite, actualShopMapSprite, visitedShopMapSprite, unknownMapSprite;
     public List<GameObject> enemies = null;
@@ -37,6 +38,7 @@ public class Room
         passageDownTiles = new List<GameObject>();
         roomTiles = new List<GameObject>();
         spawnPoints = new List<Vector2>();
+        freePositions = new List<Vector2>();
         enemies = new List<GameObject>();
         gridPos = _gridPos;
         enemyCounter = 3;

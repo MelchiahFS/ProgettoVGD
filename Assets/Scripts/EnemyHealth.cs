@@ -7,7 +7,7 @@ using UnityEngine.UI;
 public class EnemyHealth : MonoBehaviour {
 
     public int damage = 10;
-    private int startingHealth = 50;
+    public int startingHealth = 50;
     private int currentHealth;
     private GameObject player;
     private PlayerHealth playerHealth;

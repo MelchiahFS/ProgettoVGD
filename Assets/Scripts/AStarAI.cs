@@ -3,19 +3,22 @@
 // This line should always be present at the top of scripts which use pathfinding
 using Pathfinding;
 
+[RequireComponent(typeof(Seeker))]
 public class AStarAI : MonoBehaviour
 {
-    public Transform targetPosition;
+    private Transform targetPositionTransform;
+    private Vector2 targetPositionVector3;
+    private bool useTransform;
 
     private Vector3 start, end;
 
-    public float startPathOffset;
+    private float startPathOffset;
 
     private Seeker seeker;
 
     public Path path;
 
-    public float speed = 2;
+    private float speed = 2;
 
     public float nextWaypointDistance = 3;
 
@@ -60,15 +63,14 @@ public class AStarAI : MonoBehaviour
 
         if (Time.time > lastRepath + repathRate && seeker.IsDone())
         {
-            lastRepath = Time.time;
-           
-            //CalculatePathRequestEndpoints(out start, out end);
-
+            lastRepath = Time.time;          
 
             // Start a new path to the targetPosition, call the the OnPathComplete function
             // when the path has been calculated (which may take a few frames depending on the complexity)
-            //seeker.StartPath(transform.position, targetPosition, OnPathComplete);
-            seeker.StartPath(start, targetPosition.position, OnPathComplete);
+            if (useTransform)
+                seeker.StartPath(start, targetPositionTransform.position, OnPathComplete);
+            else
+                seeker.StartPath(start, targetPositionVector3, OnPathComplete);
         }
 
         if (path == null)
@@ -129,20 +131,29 @@ public class AStarAI : MonoBehaviour
         transform.position += velocity * Time.deltaTime;
     }
 
-
-
-    public virtual Vector3 GetFeetPosition()
+    //permette di seguire una posizione fissa (per i nemici che si muovono verso direzioni casuali)
+    public void SetTarget(bool isTransform, Vector3 target)
     {
-        //return tr.TransformPoint(controller.center) - Vector3.up * controller.height * 0.5F;
-        return transform.position - new Vector3(0, 0.5f, 0);
+        targetPositionVector3 = target;
+        useTransform = isTransform;
+    }
+
+    //permette di seguire un bersaglio mobile (di solito il player)
+    public void SetTarget(bool isTransform, Transform target)
+    {
+        targetPositionTransform = target;
+        useTransform = isTransform;
+    }
+
+    public void SetSpeed(float enemySpeed)
+    {
+        speed = enemySpeed;
+    }
+
+    public void SetStartPathOffset(float offset)
+    {
+        startPathOffset = offset;
     }
 
 
-
-    //OK
-    protected virtual void CalculatePathRequestEndpoints(out Vector3 start, out Vector3 end)
-    {
-        start = GetFeetPosition();
-        end = targetPosition.position;
-    }
 }

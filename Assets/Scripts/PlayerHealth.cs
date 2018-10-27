@@ -1,21 +1,22 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class PlayerHealth : MonoBehaviour {
 
-    private int startingHealth = 10000;
+    private int startingHealth = 100;
     private int currentHealth;
     private float invTimer = 0;
     private float attackDuration = 0.5f;
     private float attackTimer = 0;
     private int meleeDamage = 30;
     private float invincibilityTime = 2f; //periodo di invulnerabilità dopo aver ricevuto danno
-    private PlayerController pc;
     private EnemyHealth eh;
     private Animator animator;
     Collider2D[] hitObjects;
     public bool isAttacking = false, isDead = false;
+    private Slider slider;
 
 
 
@@ -24,9 +25,13 @@ public class PlayerHealth : MonoBehaviour {
     void Start ()
     {
         animator = GetComponent<Animator>();
-        pc = GetComponent<PlayerController>();
         currentHealth = startingHealth;
-	}
+        slider = GetComponentInChildren<Slider>();
+        slider.minValue = 0;
+        slider.maxValue = startingHealth;
+        slider.value = startingHealth;
+        currentHealth = startingHealth;
+    }
 
     // Update is called once per frame
     void Update()
@@ -95,6 +100,7 @@ public class PlayerHealth : MonoBehaviour {
         if (invTimer > invincibilityTime)
         {
             invTimer = 0;
+            slider.value -= amount;
             currentHealth -= amount;
             Debug.Log("player health: " + currentHealth);
             if (currentHealth <= 0)

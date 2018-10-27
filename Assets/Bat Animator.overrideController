@@ -5,14 +5,14 @@ AnimatorOverrideController:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
-  m_Name: Anubis Animator
+  m_Name: Bat Animator
   m_Controller: {fileID: 9100000, guid: 9798b82709138c7469575264bb6ada29, type: 2}
   m_Clips:
   - m_OriginalClip: {fileID: 7400000, guid: 47de8795108974657a3afd4ddebc32d9, type: 2}
-    m_OverrideClip: {fileID: 7400000, guid: 7a4e9c4276d91ae4aa2b95140ecd6081, type: 2}
+    m_OverrideClip: {fileID: 7400000, guid: 5f1496de163fc09458d3edcfc068d28d, type: 2}
   - m_OriginalClip: {fileID: 7400000, guid: e716395d37bad4e9facbb1a793e38180, type: 2}
-    m_OverrideClip: {fileID: 7400000, guid: 5ed39cab3d50a05409cb3f2521ecd04f, type: 2}
+    m_OverrideClip: {fileID: 7400000, guid: 625680c8c4ebe9b44ab6cd598fbe6746, type: 2}
   - m_OriginalClip: {fileID: 7400000, guid: e64977105fd194f44be5bac80bec19df, type: 2}
-    m_OverrideClip: {fileID: 7400000, guid: 078490445c33f6e4a81f01ad85636308, type: 2}
+    m_OverrideClip: {fileID: 7400000, guid: de74bc4a07ad2434280c7590bdfeb466, type: 2}
   - m_OriginalClip: {fileID: 7400000, guid: 9e15be95d1d58480884656fc32ff494a, type: 2}
-    m_OverrideClip: {fileID: 7400000, guid: cc47b368d9eb89a4f85674c3fe36982a, type: 2}
+    m_OverrideClip: {fileID: 7400000, guid: 2af6d9b54245dd24da44e8d575834eb2, type: 2}

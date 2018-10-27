@@ -29,6 +29,9 @@ TagManager:
   - WalkCollider
   - Enemy
   - Undefined
+  - InventarioA
+  - Healthbar
+  - SliderH
   layers:
   - Default
   - TransparentFX

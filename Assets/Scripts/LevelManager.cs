@@ -80,7 +80,6 @@ public class LevelManager : MonoBehaviour {
                     SpriteRenderer rend = obsSprite.GetComponent<SpriteRenderer>();
                     rend.sortingLayerName = "Obstacles";
                     rend.sprite = mapper.obstacles;
-                    //rend.sortingOrder = 1;
                     obsCollider = obsSprite.GetComponent<BoxCollider2D>();
                     obsCollider.enabled = true;
                     room.roomTiles.Add(obsSprite);
@@ -98,15 +97,20 @@ public class LevelManager : MonoBehaviour {
         Vector2 drawPos = room.gridPos;
         int enemyPosition, enemyType;
 
-        
-
         for (int i = 0; i < roomSizeY; i++)
         {
             for (int j = 0; j < roomSizeX; j++)
             {
+                //aggiorno la lista degli spawn point
                 if (room.obsLayout[i, j] == 2)
                 {
                     room.spawnPoints.Add(drawPos);
+                }
+
+                //aggiorno la lista delle posizioni prive di ostacoli
+                if(room.obsLayout[i, j] == 0)
+                {
+                    room.freePositions.Add(drawPos);
                 }
                 drawPos.x++;
             }
@@ -116,7 +120,7 @@ public class LevelManager : MonoBehaviour {
 
         for (int c = 0; c < room.enemyCounter; c++)
         {
-            //scelgo casualmente uno tra gli spawn point disponibili
+            //scelgo casualmente uno tra gli spawn point disponibili (sceglie da 0 a X - 1)
             enemyPosition = rnd.Next(0, room.spawnPoints.Count);
 
             //scelgo casualmente il tipo di nemico da istanziare
@@ -649,7 +653,7 @@ public class LevelManager : MonoBehaviour {
             room.doorSpriteUp = doorSprite;
             doorSprite.tag = "DoorUp";
 
-            doorSprite.layer = LayerMask.NameToLayer("ObstacleLayer");
+            doorSprite.layer = LayerMask.NameToLayer("Doors");
 
             TileSpriteSelector mapper = doorSprite.GetComponent<TileSpriteSelector>();
             SpriteRenderer rend = doorSprite.GetComponent<SpriteRenderer>();
@@ -668,7 +672,7 @@ public class LevelManager : MonoBehaviour {
             room.doorSpriteDown = doorSprite;
             doorSprite.tag = "DoorDown";
 
-            doorSprite.layer = LayerMask.NameToLayer("ObstacleLayer");
+            doorSprite.layer = LayerMask.NameToLayer("Doors");
 
             TileSpriteSelector mapper = doorSprite.GetComponent<TileSpriteSelector>();
             SpriteRenderer rend = doorSprite.GetComponent<SpriteRenderer>();
@@ -687,7 +691,7 @@ public class LevelManager : MonoBehaviour {
             room.doorSpriteLeft = doorSprite;
             doorSprite.tag = "DoorLeft";
 
-            doorSprite.layer = LayerMask.NameToLayer("ObstacleLayer");
+            doorSprite.layer = LayerMask.NameToLayer("Doors");
 
             TileSpriteSelector mapper = doorSprite.GetComponent<TileSpriteSelector>();
             SpriteRenderer rend = doorSprite.GetComponent<SpriteRenderer>();
@@ -706,7 +710,7 @@ public class LevelManager : MonoBehaviour {
             room.doorSpriteRight = doorSprite;
             doorSprite.tag = "DoorRight";
 
-            doorSprite.layer = LayerMask.NameToLayer("ObstacleLayer"); 
+            doorSprite.layer = LayerMask.NameToLayer("Doors");
 
             TileSpriteSelector mapper = doorSprite.GetComponent<TileSpriteSelector>();
             SpriteRenderer rend = doorSprite.GetComponent<SpriteRenderer>();

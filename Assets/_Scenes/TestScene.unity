@@ -236,6 +236,16 @@ Prefab:
       propertyPath: m_RootOrder
       value: 11
       objectReference: {fileID: 0}
+    - target: {fileID: 114849818172653854, guid: f15440b19a111eb4a9e5e38beb937930,
+        type: 2}
+      propertyPath: hybridWandering
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 114514250786768122, guid: f15440b19a111eb4a9e5e38beb937930,
+        type: 2}
+      propertyPath: speed
+      value: 2
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: f15440b19a111eb4a9e5e38beb937930, type: 2}
   m_IsPrefabAsset: 0
@@ -523,12 +533,6 @@ Prefab:
       propertyPath: m_RootOrder
       value: 9
       objectReference: {fileID: 0}
-    - target: {fileID: 95322307014179478, guid: 073e51dd5edb50e4e932cd4153b7aee5,
-        type: 2}
-      propertyPath: m_Controller
-      value: 
-      objectReference: {fileID: 22100000, guid: 117ddcbefa7638c4a80800999054e5d2,
-        type: 2}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 073e51dd5edb50e4e932cd4153b7aee5, type: 2}
   m_IsPrefabAsset: 0
@@ -823,12 +827,6 @@ Prefab:
       propertyPath: m_RootOrder
       value: 7
       objectReference: {fileID: 0}
-    - target: {fileID: 95484483744406202, guid: 567238edf6d56234b81a6168fe3860c3,
-        type: 2}
-      propertyPath: m_Controller
-      value: 
-      objectReference: {fileID: 22100000, guid: 7e01f404ed3949545b0f22f36a6a0376,
-        type: 2}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 567238edf6d56234b81a6168fe3860c3, type: 2}
   m_IsPrefabAsset: 0

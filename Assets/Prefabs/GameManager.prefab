@@ -173,12 +173,10 @@ MonoBehaviour:
   roomSizeX: 15
   roomSizeY: 15
   tileToRend: {fileID: 1670268643928982, guid: a800673336df5704581de24fa172754e, type: 2}
-  playerPrefab: {fileID: 1977234344992872, guid: 30dd07f186c230543871ded22121cffe,
+  playerPrefab: {fileID: 1442177113414884, guid: 4e6105cbd97a97b45b2ee45940214ebd,
     type: 2}
   enemyPrefabs:
-  - {fileID: 1977234344992872, guid: 8a436d67804acd748939a6d46bcd151d, type: 2}
-  - {fileID: 1183940118386976, guid: 6bd695610acadb54cbc881d65742d829, type: 2}
-  - {fileID: 1187874225654786, guid: 598597453257e604b806eae3f6504331, type: 2}
+  - {fileID: 1657694557353790, guid: 4f789c3676c997c4a82008503d400d99, type: 2}
   mapSize: {x: 0, y: 0}
   dim: 0.5
   full: 1
