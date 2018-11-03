@@ -41,7 +41,7 @@ public class Room
         freePositions = new List<Vector2>();
         enemies = new List<GameObject>();
         gridPos = _gridPos;
-        enemyCounter = 3;
+        enemyCounter = 1;
     }
 
 }

@@ -308,11 +308,20 @@ public class LevelManager : MonoBehaviour {
                         if (j > 0 && j <= roomSizeX)
                         {
                             if (j > 1 && j < roomSizeX)
+                            {
+                                wallTile.layer = LayerMask.NameToLayer("InnerWalls");
                                 rend.sprite = mapper.innerWallCenter;
+                            }                                
                             else if (j == 1)
+                            {
+                                wallTile.layer = LayerMask.NameToLayer("InnerWalls");
                                 rend.sprite = mapper.innerWallLeft;
+                            }                                
                             else if (j == roomSizeX)
+                            {
+                                wallTile.layer = LayerMask.NameToLayer("InnerWalls");
                                 rend.sprite = mapper.innerWallRight;
+                            }    
 
                             wallCollider.size = new Vector2(1, 2);
                             wallCollider.offset = new Vector2(0, 0.5f);
@@ -551,6 +560,7 @@ public class LevelManager : MonoBehaviour {
                             }
                             else if (i == 0)
                             {
+                                passTile.layer = LayerMask.NameToLayer("InnerWalls");
                                 rend.sprite = mapper.innerWallRight;
                                 wallCollider.size = new Vector2(1, 2);
                                 wallCollider.offset = new Vector2(0, 0.5f);
@@ -579,6 +589,7 @@ public class LevelManager : MonoBehaviour {
                             }
                             else if (i == 0)
                             {
+                                passTile.layer = LayerMask.NameToLayer("InnerWalls");
                                 rend.sprite = mapper.innerWallLeft;
                                 wallCollider.size = new Vector2(1, 2);
                                 wallCollider.offset = new Vector2(0, 0.5f);

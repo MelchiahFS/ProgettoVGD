@@ -484,12 +484,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4ea3f9a739b9916478f05b5260f05498, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  bouncing: 0
-  charging: 0
-  following: 0
-  hybridWandering: 0
-  pureWandering: 0
-  delayedMovement: 0
+  movementType: 2
   flying: 0
 --- !u!114 &114932649815122404
 MonoBehaviour:

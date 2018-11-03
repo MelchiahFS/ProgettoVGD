@@ -275,9 +275,9 @@ MonoBehaviour:
     enemyCounter: 0
   astar: {fileID: 0}
   changeTargetTime: 3
-  chargeTime: 3
-  playerDistance: 5
-  speed: 1.5
+  chargeTime: 2
+  playerDistance: 3
+  speed: 2.5
 --- !u!114 &114151374465273070
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -398,12 +398,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4ea3f9a739b9916478f05b5260f05498, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  bouncing: 0
-  charging: 1
-  following: 0
-  hybridWandering: 0
-  pureWandering: 0
-  delayedMovement: 0
+  movementType: 0
   flying: 1
 --- !u!114 &114729550065689808
 MonoBehaviour:
@@ -481,7 +476,7 @@ SpriteRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 1450854929
-  m_SortingLayer: 4
+  m_SortingLayer: 5
   m_SortingOrder: 0
   m_Sprite: {fileID: 21300036, guid: 3f0075624916ecb419a95fd36fd9d049, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}

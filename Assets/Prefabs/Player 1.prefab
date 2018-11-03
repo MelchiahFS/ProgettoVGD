@@ -108,10 +108,11 @@ GameObject:
   - component: {fileID: 212455153181854898}
   - component: {fileID: 95136282705921936}
   - component: {fileID: 114155564463447144}
+  - component: {fileID: 114115509432975244}
   - component: {fileID: 114021284255895372}
   - component: {fileID: 114493512334971518}
   m_Layer: 0
-  m_Name: Player
+  m_Name: Player 1
   m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -284,7 +285,21 @@ MonoBehaviour:
   currentHealth: 0
   isAttacking: 0
   isDead: 0
-  weaponPrefab: {fileID: 1050744808864214, guid: eba7aae4477961c4cb64d2afa153e452,
+  weaponPrefab: {fileID: 0}
+--- !u!114 &114115509432975244
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1442177113414884}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ee8c36803a2da0c4292b0d0250108be6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  healthBar: {fileID: 224509136382909610, guid: 8d90b4c8061077542a6f43745c8cb951,
+    type: 2}
+  healthFill: {fileID: 114205959403685026, guid: 66e4ccc35ce24fa4daa67ee06088ea2e,
     type: 2}
 --- !u!114 &114155564463447144
 MonoBehaviour:

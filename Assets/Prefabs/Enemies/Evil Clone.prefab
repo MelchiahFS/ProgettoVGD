@@ -287,8 +287,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e4b6f8c26cbcc6d45abb0a0cbfb4f2d5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  startPathOffset: 0
-  speed: 2
   nextWaypointDistance: 1
   repathRate: 0.5
   reachedEndOfPath: 0
@@ -351,12 +349,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4ea3f9a739b9916478f05b5260f05498, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  bouncing: 0
-  charging: 0
-  following: 1
-  hybridWandering: 0
-  pureWandering: 0
-  delayedMovement: 0
+  movementType: 1
   flying: 0
 --- !u!114 &114618288593087624
 MonoBehaviour:

@@ -32,6 +32,7 @@ TagManager:
   - InventarioA
   - Healthbar
   - SliderH
+  - Bullet
   layers:
   - Default
   - TransparentFX
@@ -47,10 +48,10 @@ TagManager:
   - Level
   - Ground
   - Flying
-  - 
-  - 
-  - 
-  - 
+  - Doors
+  - Items
+  - Bullets
+  - InnerWalls
   - 
   - 
   - 
@@ -78,8 +79,14 @@ TagManager:
   - name: Obstacles
     uniqueID: 1259401129
     locked: 0
+  - name: Items
+    uniqueID: 113263907
+    locked: 0
   - name: Characters
     uniqueID: 1450854929
+    locked: 0
+  - name: Bullets
+    uniqueID: 2688354637
     locked: 0
   - name: HUD
     uniqueID: 441023965

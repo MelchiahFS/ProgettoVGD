@@ -6,13 +6,15 @@ using UnityEngine;
 public class EnemyController : SceneObject
 {
 
+    public enum MovementType { charging, following, hybridWandering, pureWandering };
+    public MovementType movementType;
     private GameObject player;
     private float posX, posY;
     private Vector3 lastFramePosition, movementDirection;
     private Animator animator;
     
-    public bool bouncing, charging; //questi pattern non fanno uso di AI
-    public bool following, hybridWandering, pureWandering, delayedMovement; //questi pattern fanno uso o potrebbero far uso di AI
+    //public bool bouncing, charging; //questi pattern non fanno uso di AI
+    //public bool following, hybridWandering, pureWandering, delayedMovement; //questi pattern fanno uso o potrebbero far uso di AI
     public bool flying; //indica se il nemico vola o no (ossia se è necessario l'algoritmo di pathfinding o no per seguire il target)
     private MovementPattern mp;
     
@@ -57,22 +59,22 @@ public class EnemyController : SceneObject
         }
 
 
-        if (following)
+        if (movementType == MovementType.following)
         {
             if (flying)
                 mp.Follow(player.transform.position);
             else
                 mp.FollowAI(player.transform, true);
         }
-        else if (pureWandering)
+        else if (movementType == MovementType.pureWandering)
         {
             mp.Wander(flying);
         }
-        else if (hybridWandering)
+        else if (movementType == MovementType.hybridWandering)
         {
             mp.WanderAndLock(flying);
         }
-        else if (charging)
+        else if (movementType == MovementType.charging)
         {
             mp.Charge();
         }

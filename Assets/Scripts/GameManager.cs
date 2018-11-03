@@ -158,6 +158,8 @@ public class GameManager : MonoBehaviour {
     private void ReturnToMenu()
     {
         SceneManager.LoadScene("Menu", LoadSceneMode.Single);
+        SceneManager.UnloadSceneAsync("MainScene");
+        
     }
 
 }
