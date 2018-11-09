@@ -7,8 +7,8 @@ using UnityEngine.UI;
 public class EnemyHealth : MonoBehaviour {
 
     public int damage = 10;
-    public int startingHealth = 50;
-    private int currentHealth;
+    public float startingHealth = 50;
+    private float currentHealth;
     private GameObject player;
     private PlayerHealth playerHealth;
     private PlayerController playerController;
@@ -36,7 +36,7 @@ public class EnemyHealth : MonoBehaviour {
         }
     }
 
-    public void TakeDamage(int amount)
+    public void TakeDamage(float amount)
     {
         currentHealth -= amount;
         slider.value -= amount;

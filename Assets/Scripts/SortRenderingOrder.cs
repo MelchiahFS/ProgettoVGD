@@ -12,8 +12,8 @@ public class SortRenderingOrder : MonoBehaviour {
 
         actualRoom.enemies.Sort(delegate (GameObject a, GameObject b)
         {
-            offsetA = a.GetComponent<SceneObject>().RealOffset;
-            offsetB = b.GetComponent<SceneObject>().RealOffset;
+            offsetA = a.GetComponent<Character>().RealOffset;
+            offsetB = b.GetComponent<Character>().RealOffset;
 
             if (a.transform.position.y + offsetA < b.transform.position.y + offsetB)
                 return 1;

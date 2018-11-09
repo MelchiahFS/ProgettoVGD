@@ -26,7 +26,7 @@ public class LevelManager : MonoBehaviour {
 
     private MiniMapController minimap;
 
-
+    //Si occupa di disegnare la mappa di gioco
     public void DrawMap()
     {
         lvlGen = new LevelGenerator(roomSizeX, roomSizeY);
@@ -60,6 +60,7 @@ public class LevelManager : MonoBehaviour {
         AstarPath.active.Scan();
     }
 
+    //Istanzia gli ostacoli nelle stanze
     void DrawObstacles(int x, int y)
     {
         Room room = map[x, y];
@@ -91,6 +92,7 @@ public class LevelManager : MonoBehaviour {
         }
     }
 
+    //Istanzia i nemici nelle stanze
     void InstantiateEnemies(int x, int y)
     {
         Room room = map[x, y];
@@ -147,6 +149,7 @@ public class LevelManager : MonoBehaviour {
         
     }
 
+    //Istanzia il player nella stanza di partenza
     public Room InstantiatePlayer()
     {
         for (int i = 0; i < mapSize.x; i++) 
@@ -167,7 +170,7 @@ public class LevelManager : MonoBehaviour {
         return null;
     }
 
-    //disegna il pavimento delle stanze
+    //Disegna il pavimento delle stanze
     void DrawRoom(Room room)
     {
         Vector2 drawPos = room.gridPos;
@@ -258,7 +261,7 @@ public class LevelManager : MonoBehaviour {
         }
     }
 
-    //disegna i muri delle stanze e ne imposta i collider
+    //Disegna i muri delle stanze e ne imposta i collider
     void DrawWalls(Room room)
     {
         Vector2 drawPos = new Vector2(room.gridPos.x - 1, room.gridPos.y - 1);
@@ -388,7 +391,7 @@ public class LevelManager : MonoBehaviour {
         }
     }
 
-    //per ogni stanza della griglia delle stanze, controllo se ha una porta a destra e sopra, e in caso affermativo disegno il passaggio
+    //Per ogni stanza della mappa, controlla se ha una porta a destra e sopra, e in caso affermativo disegna il passaggio
     void LinkRooms(int x, int y)
     {
         horPassSizeX = lvlGen.distRoomX;
@@ -652,7 +655,7 @@ public class LevelManager : MonoBehaviour {
 
     }
 
-    //disegna le porte delle stanze e ne imposta i collider
+    //Disegna le porte delle stanze e ne imposta i collider
     void DrawDoors(int x, int y)
     {
         Vector2 drawPos;
@@ -735,7 +738,7 @@ public class LevelManager : MonoBehaviour {
         }
     }
 
-    //illumina le stanze
+    //Illumina le stanze al loro accesso
     public void LightUpRoom(Room actualRoom, bool light)
     {
         if (light)
@@ -775,7 +778,7 @@ public class LevelManager : MonoBehaviour {
         actualRoom.visited = true;
     }
 
-    //illumina i passaggi tra le stanze
+    //Illumina i passaggi tra le stanze al loro accesso
     public void LightUpPassage(GameObject door, List<GameObject> passage, bool light)
     {
         SpriteRenderer s = null;
@@ -797,6 +800,7 @@ public class LevelManager : MonoBehaviour {
 
     }
 
+    //Istanzia le sprite usate dalla minimappa per rappresentare la mappa di gioco
     public void DrawMinimapSprites(Room room)
     {
         int posX = room.gridPos.x + roomSizeX / 2;
@@ -830,6 +834,7 @@ public class LevelManager : MonoBehaviour {
         }
     }
 
+    //Tiene la posizione attuale nella mappa
     public Vector2Int ActualPos
     {
         get
@@ -842,6 +847,7 @@ public class LevelManager : MonoBehaviour {
         }
     }
 
+    //Crea i GridGraph necessari alla IA dei nemici
     private void CreateGridGraphs(Room room)
     {
         AstarData data = AstarPath.active.data;
@@ -864,6 +870,7 @@ public class LevelManager : MonoBehaviour {
         gg.SetDimensions(width, depth, nodeSize);
     }
 
+    //Crea un effetto di FadeIn; usato da LightUpRoom e LightUpPassage
     public IEnumerator FadeIn(SpriteRenderer s, float fadeTime)
     {
         Color c = s.color;

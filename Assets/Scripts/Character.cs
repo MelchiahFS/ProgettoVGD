@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class SceneObject : MonoBehaviour
+public class Character : MonoBehaviour
 {
     private float realOffset;
 
@@ -14,9 +14,6 @@ public class SceneObject : MonoBehaviour
             if (!collider.isTrigger)
             {
                 RealOffset = collider.offset.y * transform.localScale.y;
-                Debug.Log("collider.offset " + collider.offset.y);
-                Debug.Log("transform.localScale.y " + transform.localScale.y);
-
                 break;
             }
         }

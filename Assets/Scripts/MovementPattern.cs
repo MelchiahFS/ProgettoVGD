@@ -39,6 +39,7 @@ public class MovementPattern : MonoBehaviour {
         controller = GetComponent<EnemyController>();
     }
 
+    //Usata dai nemici che volano per raggiungere il target
     public void Follow(Vector3 pos)
     {
         if (running)
@@ -49,6 +50,8 @@ public class MovementPattern : MonoBehaviour {
         transform.position = Vector2.MoveTowards(transform.position, pos, customSpeed * Time.deltaTime);
     }
 
+    //Usata dai nemici che non volano per seguire un target statico
+    //isTransform viene usato da AStarAI per determinare se seguire il player o una posizione statica
     public void FollowAI(Vector2 pos, bool isTransform)
     {
         if (!followingTarget)
@@ -61,6 +64,8 @@ public class MovementPattern : MonoBehaviour {
         
     }
 
+    //Usata dai nemici che non volano per seguire un target in movimento
+    //isTransform viene usato da AStarAI per determinare se seguire il player o una posizione statica
     public void FollowAI(Transform pos, bool isTransform)
     {
         if (!followingPlayer)
@@ -73,6 +78,7 @@ public class MovementPattern : MonoBehaviour {
         
     }
 
+    //Genera un movimento casuale dei nemici
     public void Wander(bool flying)
     {
         timeCounter += Time.deltaTime;
@@ -92,6 +98,7 @@ public class MovementPattern : MonoBehaviour {
             FollowAI(randomPosition, false);
     }
 
+    //Genera un movimento casuale dei nemici, ma se il player entra nel loro range, questi lo inseguono
     public void WanderAndLock(bool flying)
     {
         if (!lockPlayer)
@@ -128,6 +135,7 @@ public class MovementPattern : MonoBehaviour {
         }
     }
 
+    //I nemici si avvicinano al player e raggiunta una certa distanza, lo caricano in linea retta
     public void Charge()
     {
         if (!chargingPlayer)
@@ -138,6 +146,7 @@ public class MovementPattern : MonoBehaviour {
             {
                 chargingPlayer = true; 
             }
+            //altrimenti mi avvicino normalmente
             else
             {
                 Follow(player.transform.position);
@@ -150,6 +159,7 @@ public class MovementPattern : MonoBehaviour {
             timeCounter += Time.deltaTime;
             if (!running)
             {   
+                //se ho finito il tempo di caricamento, parto in carica verso il player
                 if (timeCounter >= chargeTime)
                 {
                     straightLine = transform.position + (player.transform.position - transform.position) * 20;
@@ -168,6 +178,8 @@ public class MovementPattern : MonoBehaviour {
 
     }
 
+
+    //permette al RagingSkull di terminare la sua carica solo quando sbatte col muro o le porte
     void OnCollisionEnter2D(Collision2D collision)
     {
         if ((collision.gameObject.layer == LayerMask.NameToLayer("Walls")) ||

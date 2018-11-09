@@ -3,7 +3,7 @@ using System.Collections;
 using UnityEngine.SceneManagement;
 
 
-public class PlayerController : SceneObject
+public class PlayerController : Character
 {
     private Rigidbody2D rb2d;
     public float speed;
@@ -13,8 +13,8 @@ public class PlayerController : SceneObject
     private MiniMapController minimap;
     private int roomSizeX, roomSizeY;
     private GameObject hitbox;
-    private GameObject weapon;
     private PlayerHealth ph;
+    private Weapon weapon;
     private float faceX, faceY;
     
     private bool passUp = false, passDown = false, passLeft = false, passRight = false;
@@ -27,6 +27,7 @@ public class PlayerController : SceneObject
     private void Start()
     {
         ph = GetComponent<PlayerHealth>();
+        weapon = GetComponentInChildren<Weapon>();
         rb2d = GetComponent<Rigidbody2D>();
         animator = GetComponent<Animator>();
         minimap = GameManager.manager.GetComponent<MiniMapController>();
@@ -46,7 +47,7 @@ public class PlayerController : SceneObject
 	    Vector2 movement = new Vector2(x, y);
 
         //se il player attacca non può muoversi
-        if (!ph.isAttacking && !ph.isDead)
+        if (!weapon.isAttacking && !ph.isDead)
             rb2d.velocity = movement * speed;
         else
             rb2d.velocity = movement * 0;
@@ -288,10 +289,7 @@ public class PlayerController : SceneObject
         {
             passRight = true;
         }
-        /*else if (trigger.gameObject.tag == "weapon")
-        {
-            PickWeapon(trigger.gameObject);
-        }*/
+
 
     }
 

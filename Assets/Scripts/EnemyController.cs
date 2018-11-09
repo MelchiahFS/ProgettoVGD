@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [RequireComponent(typeof(MovementPattern))]
-public class EnemyController : SceneObject
+public class EnemyController : Character
 {
 
     public enum MovementType { charging, following, hybridWandering, pureWandering };
