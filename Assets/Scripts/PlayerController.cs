@@ -56,6 +56,7 @@ public class PlayerController : Character
 
     void Update()
     {
+        //registro i valori di spostamento sugli assi del player
         if (x != 0)
             faceX = 1.0f * Mathf.Sign(x);
         else
@@ -65,6 +66,7 @@ public class PlayerController : Character
         else
             faceY = y;
 
+        //imposto i valori nel blend tree relativo all'animazione di movimento 
         animator.SetFloat("FaceX", faceX);
         animator.SetFloat("FaceY", faceY);
 
@@ -104,7 +106,6 @@ public class PlayerController : Character
                     {
                         g.SetActive(true);
                         StartCoroutine(GameManager.manager.lvlManager.FadeIn(g.GetComponent<SpriteRenderer>(), fadeTime));          
-                        //StartCoroutine(GameManager.manager.lvlManager.FadeIn(g.GetComponentInChildren<SpriteRenderer>(), fadeTime));AAAAAAAAAAAAAAAA
                     }
                 }
             }

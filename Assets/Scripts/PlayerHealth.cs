@@ -27,8 +27,6 @@ public class PlayerHealth : MonoBehaviour {
         slider.maxValue = startingHealth;
         slider.value = startingHealth;
         currentHealth = startingHealth;
-
-        //actualWeapon = GetComponentInChildren<Weapon>();
         playerColor = GetComponent<SpriteRenderer>().color;
     }
 

@@ -6,8 +6,17 @@ using UnityEngine;
 public class WeaponGenerator : MonoBehaviour {
 
     private static System.Random rnd = new System.Random((int)DateTime.Now.Ticks);
+    //minimo e massimo danno (per meele e ranged), range, fire rate e shot speed
     public float minMeeleDmg, maxMeeleDmg, minRangedDmg, maxRangedDmg, minRng, maxRng, minFR, maxFR, minSP, maxSP;
     private Array enumValues;
+    private List<Item> consumables;
+
+    void Start()
+    {
+        consumables = new List<Item>();
+        consumables.Add(Resources.Load<Item>("Items/Scroll of Health"));
+        Debug.Log(consumables[0].itemDescription);
+    }
 
     public void InstantiateWeapon(Vector3 pos)
     {

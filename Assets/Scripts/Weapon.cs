@@ -14,9 +14,10 @@ public class Weapon : MonoBehaviour {
     public GameObject bulletPrefab;
     private BulletController bulletStats;
     Collider2D[] hitObjects;
-    public bool isAttacking;
+    public bool isAttacking = false, isShooting = false;
     //private int meleeDamage = 30;
     private float attackDuration = 0.5f;
+    private float shootTimer = 0;
     private float attackTimer = 0;
     public List<ItemStats> weaponsStats; //contiene le informazioni delle armi in possesso
     private ItemStats actualWeapon;
@@ -32,10 +33,11 @@ public class Weapon : MonoBehaviour {
         //si potrebber creare uno scriptableObject per le armi iniziali 
         ItemStats meele = new ItemStats(ItemStats.ItemType.weapon, ItemStats.WeaponType.meele, 15);
         weaponsStats.Add(meele);
-        ItemStats ranged = new ItemStats(ItemStats.ItemType.weapon, ItemStats.WeaponType.ranged, ItemStats.FireType.single, 3, 7, 3, 5.1f);
+        ItemStats ranged = new ItemStats(ItemStats.ItemType.weapon, ItemStats.WeaponType.ranged, ItemStats.FireType.single, 3, 7, 0.5f, 5.5f);
         weaponsStats.Add(ranged);
         actualWeapon = weaponsStats[0]; //l'arma predefinita è l'arma meele base
         attackTimer = attackDuration;
+        shootTimer = actualWeapon.fireRate;
     }
 
     void Update()
@@ -55,28 +57,56 @@ public class Weapon : MonoBehaviour {
 
         if (actualWeapon != null)
         {
+            if (actualWeapon.weaponType == ItemStats.WeaponType.meele)
+            {
+                if (Input.GetKeyDown("up"))
+                {
+                    Attack("up", transform.position);
+                }
+                else if (Input.GetKeyDown("down"))
+                {
+                    Attack("down", transform.position);
 
-            if (Input.GetKeyDown("up"))
-            {
-                Attack("up", transform.position);
-            }
-            else if (Input.GetKeyDown("down"))
-            {
-                Attack("down", transform.position);
+                }
+                else if (Input.GetKeyDown("left"))
+                {
+                    Attack("left", transform.position);
 
+                }
+                else if (Input.GetKeyDown("right"))
+                {
+                    Attack("right", transform.position);
+                }
             }
-            else if (Input.GetKeyDown("left"))
+            else
             {
-                Attack("left", transform.position);
+                if (Input.GetKey("up"))
+                {
+                    Attack("up", transform.position);
+                }
+                else if (Input.GetKey("down"))
+                {
+                    Attack("down", transform.position);
 
+                }
+                else if (Input.GetKey("left"))
+                {
+                    Attack("left", transform.position);
+
+                }
+                else if (Input.GetKey("right"))
+                {
+                    Attack("right", transform.position);
+                }
             }
-            else if (Input.GetKeyDown("right"))
-            {
-                Attack("right", transform.position);
-            }
+
         }
 
         attackTimer += Time.deltaTime;
+        shootTimer += Time.deltaTime;
+        if (actualWeapon.weaponType == ItemStats.WeaponType.ranged && shootTimer >= actualWeapon.fireRate)
+            isShooting = false;
+
         if (attackTimer >= attackDuration)
             isAttacking = false;
     }
@@ -95,7 +125,12 @@ public class Weapon : MonoBehaviour {
                 }   
                 break;
             case ItemStats.WeaponType.ranged:
-                Shoot(direction, playerPos);
+                if (shootTimer >= actualWeapon.fireRate)
+                {
+                    isShooting = true;
+                    shootTimer = 0;
+                    Shoot(direction, playerPos);
+                }
                 break;
         }
     }
@@ -105,30 +140,30 @@ public class Weapon : MonoBehaviour {
     {
         if (direction.Equals("left"))
         {
-            GameObject bullet = Instantiate(bulletPrefab, playerPos + Vector3.left, Quaternion.identity) as GameObject;
+            GameObject bullet = Instantiate(bulletPrefab, playerPos + new Vector3(-0.5f, -0.25f, 0), Quaternion.identity) as GameObject;
             bulletStats = bullet.GetComponent<BulletController>();
-            bulletStats.SetStats(actualWeapon.damage, bulletSpriteLR);
+            bulletStats.SetStats(actualWeapon.damage, actualWeapon.range, bulletSpriteLR);
             bullet.GetComponent<Rigidbody2D>().velocity = -bullet.transform.right * actualWeapon.shotSpeed;
         }
         else if (direction.Equals("right"))
         {
-            GameObject bullet = Instantiate(bulletPrefab, playerPos + Vector3.right, Quaternion.identity) as GameObject;
+            GameObject bullet = Instantiate(bulletPrefab, playerPos + new Vector3(0.5f, -0.25f, 0), Quaternion.identity) as GameObject;
             bulletStats = bullet.GetComponent<BulletController>();
-            bulletStats.SetStats(actualWeapon.damage, bulletSpriteLR);
+            bulletStats.SetStats(actualWeapon.damage, actualWeapon.range, bulletSpriteLR);
             bullet.GetComponent<Rigidbody2D>().velocity = bullet.transform.right * actualWeapon.shotSpeed;
         }
         else if (direction.Equals("up"))
         {
-            GameObject bullet = Instantiate(bulletPrefab, playerPos + Vector3.up, Quaternion.identity) as GameObject;
+            GameObject bullet = Instantiate(bulletPrefab, playerPos + new Vector3(0, 0.75f, 0), Quaternion.identity) as GameObject;
             bulletStats = bullet.GetComponent<BulletController>();
-            bulletStats.SetStats(actualWeapon.damage, bulletSpriteUD);
+            bulletStats.SetStats(actualWeapon.damage, actualWeapon.range, bulletSpriteUD);
             bullet.GetComponent<Rigidbody2D>().velocity = bullet.transform.up * actualWeapon.shotSpeed;
         }
         else if (direction.Equals("down"))
         {
-            GameObject bullet = Instantiate(bulletPrefab, playerPos + Vector3.down, Quaternion.identity) as GameObject;
+            GameObject bullet = Instantiate(bulletPrefab, playerPos + new Vector3(0, -0.5f, 0), Quaternion.identity) as GameObject;
             bulletStats = bullet.GetComponent<BulletController>();
-            bulletStats.SetStats(actualWeapon.damage, bulletSpriteUD);
+            bulletStats.SetStats(actualWeapon.damage, actualWeapon.range, bulletSpriteUD);
             bullet.GetComponent<Rigidbody2D>().velocity = -bullet.transform.up * actualWeapon.shotSpeed;
         }
     }
