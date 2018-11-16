@@ -140,30 +140,30 @@ public class Weapon : MonoBehaviour {
     {
         if (direction.Equals("left"))
         {
-            GameObject bullet = Instantiate(bulletPrefab, playerPos + new Vector3(-0.5f, -0.25f, 0), Quaternion.identity) as GameObject;
+            GameObject bullet = Instantiate(bulletPrefab, playerPos + new Vector3(-0.5f, -0.3f, 0), Quaternion.identity) as GameObject;
             bulletStats = bullet.GetComponent<BulletController>();
-            bulletStats.SetStats(actualWeapon.damage, actualWeapon.range, bulletSpriteLR);
+            bulletStats.SetStats(actualWeapon.damage, actualWeapon.range, bulletSpriteLR, transform.position);
             bullet.GetComponent<Rigidbody2D>().velocity = -bullet.transform.right * actualWeapon.shotSpeed;
         }
         else if (direction.Equals("right"))
         {
-            GameObject bullet = Instantiate(bulletPrefab, playerPos + new Vector3(0.5f, -0.25f, 0), Quaternion.identity) as GameObject;
+            GameObject bullet = Instantiate(bulletPrefab, playerPos + new Vector3(0.5f, -0.3f, 0), Quaternion.identity) as GameObject;
             bulletStats = bullet.GetComponent<BulletController>();
-            bulletStats.SetStats(actualWeapon.damage, actualWeapon.range, bulletSpriteLR);
+            bulletStats.SetStats(actualWeapon.damage, actualWeapon.range, bulletSpriteLR, transform.position);
             bullet.GetComponent<Rigidbody2D>().velocity = bullet.transform.right * actualWeapon.shotSpeed;
         }
         else if (direction.Equals("up"))
         {
             GameObject bullet = Instantiate(bulletPrefab, playerPos + new Vector3(0, 0.75f, 0), Quaternion.identity) as GameObject;
             bulletStats = bullet.GetComponent<BulletController>();
-            bulletStats.SetStats(actualWeapon.damage, actualWeapon.range, bulletSpriteUD);
+            bulletStats.SetStats(actualWeapon.damage, actualWeapon.range, bulletSpriteUD, transform.position);
             bullet.GetComponent<Rigidbody2D>().velocity = bullet.transform.up * actualWeapon.shotSpeed;
         }
         else if (direction.Equals("down"))
         {
             GameObject bullet = Instantiate(bulletPrefab, playerPos + new Vector3(0, -0.5f, 0), Quaternion.identity) as GameObject;
             bulletStats = bullet.GetComponent<BulletController>();
-            bulletStats.SetStats(actualWeapon.damage, actualWeapon.range, bulletSpriteUD);
+            bulletStats.SetStats(actualWeapon.damage, actualWeapon.range, bulletSpriteUD, transform.position);
             bullet.GetComponent<Rigidbody2D>().velocity = -bullet.transform.up * actualWeapon.shotSpeed;
         }
     }

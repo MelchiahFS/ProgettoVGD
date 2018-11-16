@@ -12,7 +12,7 @@ public class BulletController : MonoBehaviour {
 
     private float destroyTimer = 0;
     private Animator anim;
-    private Transform playerTransform;
+    private Vector3 playerPosition;
 
     private float posX, posY;
     private Vector3 movementDirection, lastFramePosition;
@@ -22,7 +22,6 @@ public class BulletController : MonoBehaviour {
     {
         rb = GetComponent<Rigidbody2D>();
         anim = GetComponent<Animator>();
-        playerTransform = GameObject.FindGameObjectWithTag("Player").transform;
         lastFramePosition = transform.position;
     }
 
@@ -42,22 +41,23 @@ public class BulletController : MonoBehaviour {
 
         if (destroyTimer > 8)
         {
-            anim.Play("Bullet explosion");
             rb.velocity = Vector2.zero;
+            anim.Play("Bullet explosion");
         }
-            
-        if (Vector3.Distance(playerTransform.position, transform.position) > range)
+
+        if (Vector3.Distance(playerPosition, transform.position) > range)
         {
-            anim.Play("Bullet explosion");
             rb.velocity = Vector2.zero;
+            anim.Play("Bullet explosion");
         }
-            
+
     }
 
-    public void SetStats(float damage, float range, Sprite bulletSprite)
+    public void SetStats(float damage, float range, Sprite bulletSprite, Vector3 playerPosition)
     {
         this.damage = damage;
         this.range = range;
+        this.playerPosition = playerPosition;
         rend = GetComponent<SpriteRenderer>();
         rend.sprite = bulletSprite;
     }
@@ -69,14 +69,14 @@ public class BulletController : MonoBehaviour {
             if (coll.isTrigger)
             {
                 coll.gameObject.SendMessage("TakeDamage", damage);
-                anim.Play("Bullet explosion");
                 rb.velocity = Vector2.zero;
+                anim.Play("Bullet explosion");
             }               
         }
         else if (coll.gameObject.tag != "Player" && coll.gameObject.tag != "DoorUp")
         {
-            anim.Play("Bullet explosion");
             rb.velocity = Vector2.zero;
+            anim.Play("Bullet explosion");
         }
             
     }
@@ -85,13 +85,13 @@ public class BulletController : MonoBehaviour {
     {
         if (coll.gameObject.tag == "DoorUp")
         {
-            anim.Play("Bullet explosion");
             rb.velocity = Vector2.zero;
+            anim.Play("Bullet explosion");
         }
             
     }
 
-    //Viene chiamata da un animation event alla fine dell'animazione Bullet explosion
+    //Viene chiamata da un animation event alla fine dhooell'animazione Bullet explosion
     public void BulletDestruction()
     {
         Destroy(gameObject);
