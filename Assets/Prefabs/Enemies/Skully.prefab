@@ -30,6 +30,7 @@ GameObject:
   - component: {fileID: 114616939017426934}
   - component: {fileID: 114573085099983820}
   - component: {fileID: 114953995613397962}
+  - component: {fileID: 114461221465856350}
   m_Layer: 0
   m_Name: Skully
   m_TagString: Untagged
@@ -323,6 +324,24 @@ MonoBehaviour:
   chargeTime: 3
   playerDistance: 5
   speed: 1
+--- !u!114 &114461221465856350
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1094114174459840}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 862fcf25ea86ad2478823419fab59c34, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  shotSpeed: 4
+  fireRate: 1.5
+  damage: 5
+  range: 4
+  bulletPrefab: {fileID: 1388309921085098, guid: baf262c6dfd82d8488e5c12aa4fb31de,
+    type: 2}
+  sprite: {fileID: 21300168, guid: b6de52fa87112f54d9be52f959e16fca, type: 3}
 --- !u!114 &114550864863587160
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -518,7 +537,7 @@ SpriteRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 1450854929
-  m_SortingLayer: 4
+  m_SortingLayer: 5
   m_SortingOrder: 0
   m_Sprite: {fileID: 21300000, guid: 5e6b926ce21c0be44baba28f3aab7557, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}

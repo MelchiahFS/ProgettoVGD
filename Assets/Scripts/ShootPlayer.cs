@@ -26,7 +26,7 @@ public class ShootPlayer : MonoBehaviour {
             if (counter >= fireRate)
             {
                 Vector3 direction = playerTransform.position - transform.position;
-                GameObject bullet = Instantiate(bulletPrefab, transform.position + direction.normalized / 2 + new Vector3(0,-0.25f,0), Quaternion.identity) as GameObject;
+                GameObject bullet = Instantiate(bulletPrefab, transform.position + direction.normalized / 2 + new Vector3(0,-0.3f,0), Quaternion.identity) as GameObject;
                 rb = bullet.GetComponent<Rigidbody2D>();
                 rb.velocity = direction.normalized * shotSpeed;
                 enemyBullet = bullet.GetComponent<EnemyBullet>();
