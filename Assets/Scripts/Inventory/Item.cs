@@ -12,8 +12,10 @@ public class Item : ScriptableObject {
     public Sprite icon;
     //public enum Type { Default, Weapon, Consumable }
     //public Type type = Type.Default;
+    public int currentStack = 1;
+    public int maxStack = 1;
 
-    public ItemStats.ItemType type;
+    public ItemStats.ItemType type = ItemStats.ItemType.basic ;
     public ItemStats.ConsumableType consumableType;
 
 }

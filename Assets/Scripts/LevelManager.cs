@@ -13,6 +13,7 @@ public class LevelManager : MonoBehaviour {
     private BoxCollider2D wallCollider;
     private BoxCollider2D doorCollider;
     private BoxCollider2D obsCollider;
+    private BoxCollider2D groundTrigger;
     public GameObject tileToRend;
     public GameObject playerPrefab;
     public List<GameObject> enemyPrefabs;
@@ -192,36 +193,40 @@ public class LevelManager : MonoBehaviour {
                 if (i == 0 && j == (roomSizeX / 2) && room.doorBot)
                 {
                     roomTile.tag = "innerDoorDown";
-
-                    wallCollider = roomTile.AddComponent(typeof(BoxCollider2D)) as BoxCollider2D;
-                    wallCollider.isTrigger = true;
+                    roomTile.AddComponent(typeof(TileTrigger));
+                    groundTrigger = roomTile.AddComponent(typeof(BoxCollider2D)) as BoxCollider2D;
+                    groundTrigger.size = new Vector2(1, 1);
+                    groundTrigger.isTrigger = true;
 
                     rend.sprite = mapper.doorFloorDown;
                 }
                 else if (i == (roomSizeY - 1) && j == (roomSizeX / 2) && room.doorTop)
                 {
                     roomTile.tag = "innerDoorUp";
-
-                    wallCollider = roomTile.AddComponent(typeof(BoxCollider2D)) as BoxCollider2D;
-                    wallCollider.isTrigger = true;
+                    roomTile.AddComponent(typeof(TileTrigger));
+                    groundTrigger = roomTile.AddComponent(typeof(BoxCollider2D)) as BoxCollider2D;
+                    groundTrigger.size = new Vector2(1, 1);
+                    groundTrigger.isTrigger = true;
 
                     rend.sprite = mapper.doorFloorUp;
                 }
                 else if (i == (roomSizeY / 2) && j == 0 && room.doorLeft)
                 {
                     roomTile.tag = "innerDoorLeft";
-
-                    wallCollider = roomTile.AddComponent(typeof(BoxCollider2D)) as BoxCollider2D;
-                    wallCollider.isTrigger = true;
+                    roomTile.AddComponent(typeof(TileTrigger));
+                    groundTrigger = roomTile.AddComponent(typeof(BoxCollider2D)) as BoxCollider2D;
+                    groundTrigger.size = new Vector2(1, 1);
+                    groundTrigger.isTrigger = true;
                     
                     rend.sprite = mapper.doorFloorLeft;
                 }
                 else if (i == (roomSizeY / 2) && j == (roomSizeX - 1) && room.doorRight)
                 {
                     roomTile.tag = "innerDoorRight";
-
-                    wallCollider = roomTile.AddComponent(typeof(BoxCollider2D)) as BoxCollider2D;
-                    wallCollider.isTrigger = true;
+                    roomTile.AddComponent(typeof(TileTrigger));
+                    groundTrigger = roomTile.AddComponent(typeof(BoxCollider2D)) as BoxCollider2D;
+                    groundTrigger.size = new Vector2(1, 1);
+                    groundTrigger.isTrigger = true;
 
                     rend.sprite = mapper.doorFloorRight;
                 }
@@ -478,7 +483,7 @@ public class LevelManager : MonoBehaviour {
                         { 
                             //trigger per la porta di sinistra del corridoio
                             passTile.tag = "outerDoorRight";
-
+                            passTile.AddComponent(typeof(TileTrigger));
                             wallCollider = passTile.AddComponent(typeof(BoxCollider2D)) as BoxCollider2D;
                             wallCollider.isTrigger = true;
                             wallCollider.size = new Vector2(1.3f, 1);
@@ -488,7 +493,7 @@ public class LevelManager : MonoBehaviour {
                         {
                             //trigger per la porta di destra del corridoio
                             passTile.tag = "outerDoorLeft";
-
+                            passTile.AddComponent(typeof(TileTrigger));
                             wallCollider = passTile.AddComponent(typeof(BoxCollider2D)) as BoxCollider2D;
                             wallCollider.isTrigger = true;
                             wallCollider.size = new Vector2(1.3f, 1);
@@ -608,7 +613,7 @@ public class LevelManager : MonoBehaviour {
                             wallCollider.size = new Vector2(1, 1);
                             wallCollider.offset = new Vector2(0, -0.5f);
                             passTile.tag = "outerDoorUp";
-                            
+                            passTile.AddComponent(typeof(TileTrigger));
                             wallCollider.isTrigger = true;
                         }
                         else if (i == 3)
@@ -619,7 +624,7 @@ public class LevelManager : MonoBehaviour {
                             wallCollider.size = new Vector2(1, 1);
                             wallCollider.offset = new Vector2(0, 0.5f);
                             passTile.tag = "outerDoorDown";
-                            
+                            passTile.AddComponent(typeof(TileTrigger));
                             wallCollider.isTrigger = true;
                         }
                         else

@@ -14,6 +14,9 @@ public class Character : MonoBehaviour
             if (!collider.isTrigger)
             {
                 RealOffset = collider.offset.y * transform.localScale.y;
+                Debug.Log("collider.offset " + collider.offset.y);
+                Debug.Log("transform.localScale.y " + transform.localScale.y);
+
                 break;
             }
         }

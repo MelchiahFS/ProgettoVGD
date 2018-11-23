@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.EventSystems;
 
 public class PauseMenu : MonoBehaviour {
 
@@ -10,9 +11,15 @@ public class PauseMenu : MonoBehaviour {
 	public GameObject pauseMenuUI;
     public GameObject inventoryUI;
     public Inventory item;
+    public GameObject button;
 
-	// Update is called once per frame
-	void Update () {
+    public void Start()
+    {
+
+    }
+
+    // Update is called once per frame
+    void Update () {
         if (Input.GetKeyDown(KeyCode.Escape))
 		{
 			if (GameIsPaused)
@@ -43,7 +50,7 @@ public class PauseMenu : MonoBehaviour {
 		pauseMenuUI.SetActive(true);
 		Time.timeScale = 0f;
 		GameIsPaused = true;
-	}
+    }
 
     public void ResumeI()
     {
@@ -57,6 +64,7 @@ public class PauseMenu : MonoBehaviour {
         inventoryUI.SetActive(true);
         Time.timeScale = 0f;
         GameIsPaused = true;
+        EventSystem.current.SetSelectedGameObject(button);
     }
 
 

@@ -14,5 +14,5 @@ MonoBehaviour:
   itemName: Scroll of Health
   itemDescription: Restores some Health
   icon: {fileID: 0}
-  type: 0
+  type: 4
   consumableType: 0

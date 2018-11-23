@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class ItemStats {
 
-    public enum ItemType { weapon, consumable, statBooster }; //il tipo di oggetto
+    public enum ItemType { emptyslot, basic, weapon, consumable, statBooster }; //il tipo di oggetto
     public enum ConsumableType { hpUp, potion, scroll };
     public enum WeaponType { meele, ranged }; //il tipo di arma
     public enum FireType { single, multiple, burst, charge }; //se weaponType è ranged allora viene controllato il tipo di fuoco

@@ -6,16 +6,31 @@ using UnityEngine.UI;
 public class Inventory : MonoBehaviour {
 
     public static Inventory instance;
+
     public Item[] itemList = new Item[20];
     public InventorySlot[] inventorySlots = new InventorySlot[20];
 
+    public Item emptySlot;
+
     private bool Add(Item item)
     {
-        for(int i = 0; i < itemList.Length; i++)
+        for (int i = 0; i < itemList.Length; i++)
         {
-            if(itemList[i] == null)
+            if(itemList[i].itemName == item.itemName)
             {
-                itemList[i] = item;
+                if(itemList[i].currentStack < itemList[i].maxStack)
+                {
+                    itemList[i].currentStack++;
+                    UpdateSlotUI();
+                    return true;
+                }
+            }
+        }
+            for (int i = 0; i < itemList.Length; i++)
+        {
+            if(itemList[i].type == ItemStats.ItemType.emptyslot)
+            {
+                JsonUtility.FromJsonOverwrite(JsonUtility.ToJson(item), itemList[i]);
                 return true;
             }
         }
@@ -41,6 +56,15 @@ public class Inventory : MonoBehaviour {
     private void Start()
     {
         UpdateSlotUI();
+        ResetAllSlots();
+    }
+
+    private void ResetAllSlots()
+    {
+        for(int i = 0; i < itemList.Length; i++)
+        {
+            JsonUtility.FromJsonOverwrite(JsonUtility.ToJson(emptySlot), itemList[i]);
+        }
     }
 
     public void UpdateSlotUI()
@@ -59,4 +83,5 @@ public class Inventory : MonoBehaviour {
             UpdateSlotUI();
         }
     }
+
 }
