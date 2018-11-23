@@ -6,7 +6,7 @@ using UnityEngine;
 public class EnemyController : Character
 {
 
-    public enum MovementType { charging, following, hybridWandering, pureWandering };
+    public enum MovementType { charging, following, hybridWandering, pureWandering, bouncing };
     public MovementType movementType;
     private GameObject player;
     private float posX, posY;
@@ -78,8 +78,12 @@ public class EnemyController : Character
         {
             mp.Charge();
         }
-
+        else if (movementType == MovementType.bouncing)
+        {
+            mp.Bounce();
+        }
 
     }
+
 
 }

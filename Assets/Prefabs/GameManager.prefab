@@ -176,8 +176,6 @@ MonoBehaviour:
   playerPrefab: {fileID: 1120037798620234, guid: 4e6105cbd97a97b45b2ee45940214ebd,
     type: 2}
   enemyPrefabs:
-  - {fileID: 1977234344992872, guid: 8a436d67804acd748939a6d46bcd151d, type: 2}
-  - {fileID: 1094114174459840, guid: d4a5e867391dce04abdbf56f4c67b0ee, type: 2}
   - {fileID: 1657694557353790, guid: 4f789c3676c997c4a82008503d400d99, type: 2}
   mapSize: {x: 0, y: 0}
   dim: 0.5

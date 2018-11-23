@@ -32,12 +32,10 @@ public class RoomChange : MonoBehaviour {
                 if (transform.localPosition.y < actualRoom.gridPos.y)
                 {
                     StartCoroutine(UpdateRoom('d'));
-                    Debug.Log("Vado giu");
                 }
                 else if (transform.position.y > (actualRoom.gridPos.y + GameManager.manager.lvlManager.roomSizeY))
                 {
                     StartCoroutine(UpdateRoom('u'));
-                    Debug.Log("Vado su");
                 }
             }
             else if (passLeft && passRight)
@@ -45,12 +43,10 @@ public class RoomChange : MonoBehaviour {
                 if (transform.position.x < actualRoom.gridPos.x)
                 {
                     StartCoroutine(UpdateRoom('l'));
-                    Debug.Log("Vado sx");
                 }
                 else if (transform.position.x > (actualRoom.gridPos.x + GameManager.manager.lvlManager.roomSizeX))
                 {
                     StartCoroutine(UpdateRoom('r'));
-                    Debug.Log("Vado dx");
                 }
             }
             //se ci sono nemici nella stanza attuale e le porte non sono chiuse

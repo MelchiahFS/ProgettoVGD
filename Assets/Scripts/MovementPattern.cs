@@ -23,9 +23,13 @@ public class MovementPattern : MonoBehaviour {
     public float speed; //velocità in unità al secondo
     private float customSpeed; 
 
-    private bool lockPlayer = false, chargingPlayer = false, running = false, followingPlayer = false, followingTarget = false;
+    private bool lockPlayer = false, chargingPlayer = false, running = false, followingPlayer = false, followingTarget = false, bounceDir = false;
+    private bool u = false, d = false, l = false, r = false;
     private Vector3 playerPosition;
-    private Vector3 randomPosition, straightLine, direction;
+    private Vector3 randomPosition, straightLine;
+    Vector3 randDir;
+    Vector3[] dirs = new Vector3[] { new Vector3(1, 1, 0), new Vector3(1, -1, 0), new Vector3(-1, -1, 0), new Vector3(-1, 1, 0), };
+    RaycastHit2D hitLeft, hitRight, hitUp, hitDown;
     private float distance;
     
     
@@ -140,7 +144,6 @@ public class MovementPattern : MonoBehaviour {
     {
         if (!chargingPlayer)
         {
-
             //se entro nel raggio d'azione del player, carico il player
             if (Vector3.Distance(transform.position, player.transform.position) <= playerDistance)
             {
@@ -151,7 +154,6 @@ public class MovementPattern : MonoBehaviour {
             {
                 Follow(player.transform.position);
             }
-
         }
 
         if (chargingPlayer)
@@ -164,31 +166,119 @@ public class MovementPattern : MonoBehaviour {
                 {
                     straightLine = transform.position + (player.transform.position - transform.position) * 20;
                     running = true;
-                }
-                               
+                }             
             }
             
             if (running)
             {
                 Follow(straightLine);
             }
-
         }
-
-
     }
 
+    public void Bounce()
+    {
+        if (!bounceDir)
+        {
+            randDir = dirs[rnd.Next(dirs.Length)];
+            bounceDir = true;
+        }
+        if (u || d)
+        {
+            randDir.y = -randDir.y;
+            u = false;
+            d = false;
+        }
+        else if (l || r)
+        {
+            randDir.x = -randDir.x;
+            l = false;
+            r = false;
+        }
+        GetComponent<Rigidbody2D>().velocity = randDir * speed;
+    }
 
     //permette al RagingSkull di terminare la sua carica solo quando sbatte col muro o le porte
     void OnCollisionEnter2D(Collision2D collision)
     {
-        if ((collision.gameObject.layer == LayerMask.NameToLayer("Walls")) ||
+        if (controller.movementType == EnemyController.MovementType.charging)
+        {
+            if ((collision.gameObject.layer == LayerMask.NameToLayer("Walls")) ||
             (collision.gameObject.layer == LayerMask.NameToLayer("InnerWalls")) ||
             (collision.gameObject.layer == LayerMask.NameToLayer("Doors")))
+            {
+                running = false;
+                chargingPlayer = false;
+                timeCounter = 0;
+            }
+        }
+        else if (controller.movementType == EnemyController.MovementType.bouncing)
         {
-            running = false;
-            chargingPlayer = false;
-            timeCounter = 0;
+            hitUp = Physics2D.Raycast(transform.position + new Vector3(0, GetComponent<Character>().RealOffset, 0), Vector3.up);
+            hitDown = Physics2D.Raycast(transform.position + new Vector3(0, GetComponent<Character>().RealOffset, 0), Vector3.down);
+            hitLeft = Physics2D.Raycast(transform.position + new Vector3(0, GetComponent<Character>().RealOffset, 0), Vector3.left);
+            hitRight = Physics2D.Raycast(transform.position + new Vector3(0, GetComponent<Character>().RealOffset, 0), Vector3.right);
+
+            
+            if (hitUp.distance < hitDown.distance)
+            {
+                if (hitUp.distance < hitLeft.distance)
+                {
+                    if (hitUp.distance <= hitRight.distance)
+                    {
+                        //Debug.Log("su " + hitUp.collider.tag);
+                        u = true;
+                    }
+                    else
+                    {
+                        //Debug.Log("destra " + hitRight.collider.tag);
+                        r = true;
+                    }
+                }
+                else
+                {
+                    if (hitLeft.distance <= hitRight.distance)
+                    {
+                        //Debug.Log("sinistra " + hitLeft.collider.tag);
+                        l = true;
+                    }
+                    else
+                    {
+                        //Debug.Log("destra " + hitRight.collider.tag);
+                        r = true;
+                    }
+                }
+            }
+            else
+            {
+                if (hitDown.distance < hitLeft.distance)
+                {
+                    if (hitDown.distance <= hitRight.distance)
+                    {
+                        //Debug.Log("giu " + hitDown.collider.tag);
+                        d = true;
+                    }
+                    else
+                    {
+                        //Debug.Log("destra " + hitRight.collider.tag);
+                        r = true;
+                    }
+                }
+                else
+                {
+                    if (hitLeft.distance <= hitRight.distance)
+                    {
+                        //Debug.Log("sinistra " + hitLeft.collider.tag);
+                        l = true;
+                    }
+                    else
+                    {
+                        //Debug.Log("destra " + hitRight.collider.tag);
+                        r = true;
+                    }
+                }
+            }
+             
         }
     }
 
