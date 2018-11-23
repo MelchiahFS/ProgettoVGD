@@ -224,6 +224,11 @@ public static class ObstacleLayout
         return obs[randomNumber];
     }
 
+    public static int[,] GetLayoutZero()
+    {
+        return obs[0];
+    }
+
 }
     
 

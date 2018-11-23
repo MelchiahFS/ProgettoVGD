@@ -94,6 +94,8 @@ public class BulletController : MonoBehaviour {
     //Viene chiamata da un animation event alla fine dhooell'animazione Bullet explosion
     public void BulletDestruction()
     {
+        Room actualRoom = GameManager.manager.ActualRoom;
+        actualRoom.toSort.Remove(gameObject);
         Destroy(gameObject);
     }
 

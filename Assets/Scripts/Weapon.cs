@@ -12,6 +12,7 @@ public class Weapon : MonoBehaviour {
     public Sprite bulletSpriteUD, bulletSpriteLR;
     private SpriteRenderer bulletRend;
     public GameObject bulletPrefab;
+    public GameObject bullet;
     private BulletController bulletStats;
     Collider2D[] hitObjects;
     public bool isAttacking = false, isShooting = false;
@@ -21,6 +22,7 @@ public class Weapon : MonoBehaviour {
     private float attackTimer = 0;
     public List<ItemStats> weaponsStats; //contiene le informazioni delle armi in possesso
     private ItemStats actualWeapon;
+    private Room actualRoom;
 
     private Animator animator;
 
@@ -140,32 +142,35 @@ public class Weapon : MonoBehaviour {
     {
         if (direction.Equals("left"))
         {
-            GameObject bullet = Instantiate(bulletPrefab, playerPos + new Vector3(-0.5f, -0.3f, 0), Quaternion.identity) as GameObject;
+            bullet = Instantiate(bulletPrefab, playerPos + new Vector3(-0.5f, -0.3f, 0), Quaternion.identity) as GameObject;
             bulletStats = bullet.GetComponent<BulletController>();
             bulletStats.SetStats(actualWeapon.damage, actualWeapon.range, bulletSpriteLR, transform.position);
             bullet.GetComponent<Rigidbody2D>().velocity = -bullet.transform.right * actualWeapon.shotSpeed;
         }
         else if (direction.Equals("right"))
         {
-            GameObject bullet = Instantiate(bulletPrefab, playerPos + new Vector3(0.5f, -0.3f, 0), Quaternion.identity) as GameObject;
+            bullet = Instantiate(bulletPrefab, playerPos + new Vector3(0.5f, -0.3f, 0), Quaternion.identity) as GameObject;
             bulletStats = bullet.GetComponent<BulletController>();
             bulletStats.SetStats(actualWeapon.damage, actualWeapon.range, bulletSpriteLR, transform.position);
             bullet.GetComponent<Rigidbody2D>().velocity = bullet.transform.right * actualWeapon.shotSpeed;
         }
         else if (direction.Equals("up"))
         {
-            GameObject bullet = Instantiate(bulletPrefab, playerPos + new Vector3(0, 0.75f, 0), Quaternion.identity) as GameObject;
+            bullet = Instantiate(bulletPrefab, playerPos + new Vector3(0, 0.75f, 0), Quaternion.identity) as GameObject;
             bulletStats = bullet.GetComponent<BulletController>();
             bulletStats.SetStats(actualWeapon.damage, actualWeapon.range, bulletSpriteUD, transform.position);
             bullet.GetComponent<Rigidbody2D>().velocity = bullet.transform.up * actualWeapon.shotSpeed;
         }
         else if (direction.Equals("down"))
         {
-            GameObject bullet = Instantiate(bulletPrefab, playerPos + new Vector3(0, -0.5f, 0), Quaternion.identity) as GameObject;
+            bullet = Instantiate(bulletPrefab, playerPos + new Vector3(0, -0.5f, 0), Quaternion.identity) as GameObject;
             bulletStats = bullet.GetComponent<BulletController>();
             bulletStats.SetStats(actualWeapon.damage, actualWeapon.range, bulletSpriteUD, transform.position);
             bullet.GetComponent<Rigidbody2D>().velocity = -bullet.transform.up * actualWeapon.shotSpeed;
         }
+
+        actualRoom = GameManager.manager.ActualRoom;
+        actualRoom.toSort.Add(bullet);
     }
 
 
@@ -200,7 +205,14 @@ public class Weapon : MonoBehaviour {
             foreach (Collider2D coll in hitObjects)
             {
                 if (coll.gameObject.tag == "Enemy" && coll.isTrigger)
-                    coll.gameObject.GetComponent<EnemyHealth>().TakeDamage(actualWeapon.damage);
+                {
+                    Vector3 dir = coll.gameObject.transform.position - transform.position;
+                    if (Physics2D.Raycast(transform.position, dir).collider.tag == "Enemy")
+                    {
+                        coll.gameObject.GetComponent<EnemyHealth>().TakeDamage(actualWeapon.damage);
+                    }
+                }
+                    
             }
             hitObjects = null;
         }

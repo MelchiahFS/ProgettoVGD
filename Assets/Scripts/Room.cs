@@ -21,6 +21,7 @@ public class Room
     public GameObject doorSpriteUp, doorSpriteDown, doorSpriteLeft, doorSpriteRight;
     public GameObject actualMapSprite, visitedMapSprite, actualBossMapSprite, visitedBossMapSprite, actualShopMapSprite, visitedShopMapSprite, unknownMapSprite;
     public List<GameObject> enemies = null;
+    public List<GameObject> toSort = null;
 
     public int[,] obsLayout;
     public int obsNumber;
@@ -32,6 +33,8 @@ public class Room
     {
 
         obsLayout = ObstacleLayout.GetRandomLayout();
+        //obsLayout = ObstacleLayout.GetLayoutZero();
+
         passageLeftTiles = new List<GameObject>();
         passageRightTiles = new List<GameObject>();
         passageUpTiles = new List<GameObject>();
@@ -40,8 +43,9 @@ public class Room
         spawnPoints = new List<Vector2>();
         freePositions = new List<Vector2>();
         enemies = new List<GameObject>();
+        toSort = new List<GameObject>();
         gridPos = _gridPos;
-        enemyCounter = 1;
+        enemyCounter = 3;
     }
 
 }

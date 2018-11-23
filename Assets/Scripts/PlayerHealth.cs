@@ -5,7 +5,7 @@ using UnityEngine.UI;
 
 public class PlayerHealth : MonoBehaviour {
 
-    private int startingHealth = 100;
+    private int startingHealth = 300;
     public int currentHealth;
     private float invTimer = 0;
     private float invincibilityTime = 2f; //periodo di invulnerabilità dopo aver ricevuto danno
@@ -47,8 +47,8 @@ public class PlayerHealth : MonoBehaviour {
             Debug.Log("player health: " + currentHealth);
             if (currentHealth <= 0)
                 PlayerDeath();
-            else
-                StartCoroutine(Flash(playerColor, GetComponent<SpriteRenderer>()));
+            //else
+            //    StartCoroutine(Flash(playerColor, GetComponent<SpriteRenderer>()));
         }
 
     }
@@ -69,9 +69,9 @@ public class PlayerHealth : MonoBehaviour {
         while (invTimer < invincibilityTime)
         {
             r.color = c2;
-            yield return new WaitForSeconds(0.05f);
+            yield return new WaitForSeconds(0.04f);
             r.color = c1;
-            yield return new WaitForSeconds(0.05f);
+            yield return new WaitForSeconds(0.04f);
         }
         yield break;
     }

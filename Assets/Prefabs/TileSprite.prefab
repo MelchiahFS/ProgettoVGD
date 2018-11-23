@@ -21,7 +21,6 @@ GameObject:
   - component: {fileID: 4986817204169082}
   - component: {fileID: 212329567723278208}
   - component: {fileID: 114181130674528142}
-  - component: {fileID: 61930710135027362}
   m_Layer: 0
   m_Name: TileSprite
   m_TagString: Wall
@@ -42,31 +41,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!61 &61930710135027362
-BoxCollider2D:
-  m_ObjectHideFlags: 1
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1670268643928982}
-  m_Enabled: 1
-  m_Density: 1
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_UsedByEffector: 0
-  m_UsedByComposite: 0
-  m_Offset: {x: 0, y: 0}
-  m_SpriteTilingProperty:
-    border: {x: 0, y: 0, z: 0, w: 0}
-    pivot: {x: 0, y: 0}
-    oldSize: {x: 0, y: 0}
-    newSize: {x: 0, y: 0}
-    adaptiveTilingThreshold: 0
-    drawMode: 0
-    adaptiveTiling: 0
-  m_AutoTiling: 1
-  serializedVersion: 2
-  m_Size: {x: 1, y: 1}
-  m_EdgeRadius: 0
 --- !u!114 &114181130674528142
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -139,20 +113,6 @@ MonoBehaviour:
   openDoorRight: {fileID: 21300302, guid: 23169271a9eddcf4385a397044a86642, type: 3}
   obstacles: {fileID: 21300046, guid: 1d9b6b3dde254cd4c8c604c65bf7850b, type: 3}
   stairs: {fileID: 21300138, guid: 23169271a9eddcf4385a397044a86642, type: 3}
-  exit: 0
-  up: 0
-  down: 0
-  left: 0
-  right: 0
-  doorUp: 0
-  doorDown: 0
-  doorLeft: 0
-  doorRight: 0
-  floor: 0
-  wall: 0
-  innerWall: 0
-  passageHor: 0
-  passageVer: 0
 --- !u!212 &212329567723278208
 SpriteRenderer:
   m_ObjectHideFlags: 1

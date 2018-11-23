@@ -317,6 +317,7 @@ MonoBehaviour:
     visitedShopMapSprite: {fileID: 0}
     unknownMapSprite: {fileID: 0}
     enemies: []
+    toSort: []
     obsNumber: 0
     enemyCounter: 0
   astar: {fileID: 0}

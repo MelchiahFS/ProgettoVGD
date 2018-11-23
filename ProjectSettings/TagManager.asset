@@ -52,9 +52,9 @@ TagManager:
   - Items
   - Bullets
   - InnerWalls
-  - 
-  - 
-  - 
+  - Enemies
+  - Player
+  - EnemyBullets
   - 
   - 
   - 

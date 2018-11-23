@@ -33,7 +33,6 @@ public class GameManager : MonoBehaviour {
         lvlManager.DrawMap();
         actualPos = lvlManager.ActualPos;
         ActualRoom = lvlManager.InstantiatePlayer();
-
     }
 
 

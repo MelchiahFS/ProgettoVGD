@@ -11,6 +11,8 @@ public class ShootPlayer : MonoBehaviour {
     public GameObject bulletPrefab;
     private Rigidbody2D rb;
     public Sprite sprite;
+    private RaycastHit2D hit;
+    private Room actualRoom;
 
 	void Start ()
     {
@@ -25,14 +27,38 @@ public class ShootPlayer : MonoBehaviour {
         {
             if (counter >= fireRate)
             {
-                Vector3 direction = playerTransform.position - transform.position;
-                GameObject bullet = Instantiate(bulletPrefab, transform.position + direction.normalized / 2 + new Vector3(0,-0.3f,0), Quaternion.identity) as GameObject;
-                rb = bullet.GetComponent<Rigidbody2D>();
-                rb.velocity = direction.normalized * shotSpeed;
-                enemyBullet = bullet.GetComponent<EnemyBullet>();
-                enemyBullet.SetStats(damage, range, sprite, transform.position);
 
-                counter = 0;
+                Vector3 centerPoint = transform.position + new Vector3(0, GetComponent<EnemyController>().RealOffset, 0);
+                Vector3 direction = playerTransform.position - centerPoint;
+                Vector3 shotStartPoint = centerPoint + direction.normalized / 2;
+
+                //Debug.DrawRay(shotStartPoint, direction, Color.white);
+
+                hit = Physics2D.Raycast(shotStartPoint, direction, range, ~LayerMask.GetMask("Enemy"));
+                if (hit.collider != null)
+                {
+                    if (hit.collider.gameObject.tag == "Player")
+                    {
+                        GameObject bullet = Instantiate(bulletPrefab, shotStartPoint, Quaternion.identity) as GameObject;
+                        rb = bullet.GetComponent<Rigidbody2D>();
+                        rb.velocity = direction.normalized * shotSpeed;
+                        enemyBullet = bullet.GetComponent<EnemyBullet>();
+                        enemyBullet.SetStats(damage, range, sprite, transform.position);
+
+                        actualRoom = GameManager.manager.ActualRoom;
+                        actualRoom.toSort.Add(bullet);
+
+                        counter = 0;
+                    }
+                    //else if (hit.collider.gameObject.tag == "Enemy")
+                    //{
+                    //    Debug.Log("yay");
+                    //}
+                }
+                else
+                {
+                    Debug.Log("boh");
+                }
             }
         }
 

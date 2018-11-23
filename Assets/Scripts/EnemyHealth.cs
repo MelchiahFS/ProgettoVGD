@@ -28,7 +28,7 @@ public class EnemyHealth : MonoBehaviour {
     }
 	
 
-    void OnCollisionEnter2D(Collision2D collision)
+    void OnCollisionStay2D(Collision2D collision)
     {
         if (collision.gameObject.tag == "Player")
         {
@@ -50,6 +50,7 @@ public class EnemyHealth : MonoBehaviour {
             //elimino il nemico dalla lista dei nemici per la stanza attuale, poi lo elimino dalla scena
             Room actualRoom = GameManager.manager.ActualRoom;
             actualRoom.enemies.Remove(gameObject);
+            actualRoom.toSort.Remove(gameObject);
             Destroy(gameObject);
         }
             

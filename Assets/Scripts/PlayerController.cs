@@ -162,8 +162,9 @@ public class PlayerController : Character
 
         //aggiorno la stanza attuale per il corretto rendering dei character
         GetComponent<SortRenderingOrder>().actualRoom = actualRoom;
-        //aggiungo il player alla lista dei nemici della nuova stanza
-        actualRoom.enemies.Add(gameObject);
+        
+        //aggiungo il player alla lista degli oggetti da ordinare della nuova stanza
+        actualRoom.toSort.Add(gameObject);
 
         //imposto l'immagine corretta nella minimappa per la nuova stanza
         minimap.SetEnterRoom(actualRoom);

@@ -16,7 +16,7 @@ public class ShootCircle : MonoBehaviour {
     private Rigidbody2D rb;
     public Sprite sprite;
     private int index;
-
+    private Room actualRoom;
 
     void Start ()
     {
@@ -28,11 +28,14 @@ public class ShootCircle : MonoBehaviour {
     { 
         if (counter >= fireRate)
         {
-            GameObject bullet = Instantiate(bulletPrefab, transform.position + directions[index].normalized / 2, Quaternion.identity) as GameObject;
+            GameObject bullet = Instantiate(bulletPrefab, transform.position + new Vector3(0, GetComponent<EnemyController>().RealOffset, 0) + directions[index].normalized / 2, Quaternion.identity) as GameObject;
             rb = bullet.GetComponent<Rigidbody2D>();
             rb.velocity = directions[index].normalized * shotSpeed;
             enemyBullet = bullet.GetComponent<EnemyBullet>();
             enemyBullet.SetStats(damage, range, sprite, transform.position);
+
+            actualRoom = GameManager.manager.ActualRoom;
+            actualRoom.toSort.Add(bullet);
 
             counter = 0;
             index++;

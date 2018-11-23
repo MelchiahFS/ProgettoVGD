@@ -5,27 +5,34 @@ using UnityEngine;
 public class SortRenderingOrder : MonoBehaviour {
 
     public Room actualRoom;
-    private float offsetA, offsetB;
+    private float posA, posB;
 
     void Update ()
     {
 
-        actualRoom.enemies.Sort(delegate (GameObject a, GameObject b)
+        actualRoom.toSort.Sort(delegate (GameObject a, GameObject b)
         {
-            offsetA = a.GetComponent<Character>().RealOffset;
-            offsetB = b.GetComponent<Character>().RealOffset;
+            if (a.GetComponent<Character>() != null)
+                posA = a.GetComponent<Character>().RealOffset + a.transform.position.y;
+            else
+                posA = a.transform.position.y + 0.1f;
 
-            if (a.transform.position.y + offsetA < b.transform.position.y + offsetB)
+            if (b.GetComponent<Character>() != null)
+                posB = b.GetComponent<Character>().RealOffset + b.transform.position.y;
+            else
+                posB = b.transform.position.y + 0.1f;
+
+            if (posA < posB)
                 return 1;
-            else if (a.transform.position.y + offsetA == b.transform.position.y + offsetB)
+            else if (posA == posB)
                 return 0;
             else
                 return -1;
         });
 
-        for (int i = 0; i < actualRoom.enemies.Count; i++)
+        for (int i = 0; i < actualRoom.toSort.Count; i++)
         {
-            actualRoom.enemies[i].GetComponent<SpriteRenderer>().sortingOrder = i;
+            actualRoom.toSort[i].GetComponent<SpriteRenderer>().sortingOrder = i;
         }
     }
 

@@ -465,6 +465,7 @@ MonoBehaviour:
     visitedShopMapSprite: {fileID: 0}
     unknownMapSprite: {fileID: 0}
     enemies: []
+    toSort: []
     obsNumber: 0
     enemyCounter: 0
   astar: {fileID: 0}
@@ -518,7 +519,7 @@ SpriteRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 1450854929
-  m_SortingLayer: 4
+  m_SortingLayer: 5
   m_SortingOrder: 0
   m_Sprite: {fileID: 21300000, guid: 6ab4292cda5aa6a41b07a9983cdc4ef6, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}

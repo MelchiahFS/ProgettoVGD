@@ -278,10 +278,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   shotSpeed: 4
-  fireRate: 3
+  fireRate: 1.5
   damage: 5
   range: 5
-  distance: 5
+  distance: 8
   bulletPrefab: {fileID: 1388309921085098, guid: baf262c6dfd82d8488e5c12aa4fb31de,
     type: 2}
   sprite: {fileID: 21300084, guid: b6de52fa87112f54d9be52f959e16fca, type: 3}
@@ -482,6 +482,7 @@ MonoBehaviour:
     visitedShopMapSprite: {fileID: 0}
     unknownMapSprite: {fileID: 0}
     enemies: []
+    toSort: []
     obsNumber: 0
     enemyCounter: 0
   astar: {fileID: 0}
