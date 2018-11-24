@@ -12,13 +12,10 @@ public class EnemyController : Character
     private float posX, posY;
     private Vector3 lastFramePosition, movementDirection;
     private Animator animator;
-    
-    //public bool bouncing, charging; //questi pattern non fanno uso di AI
-    //public bool following, hybridWandering, pureWandering, delayedMovement; //questi pattern fanno uso o potrebbero far uso di AI
     public bool flying; //indica se il nemico vola o no (ossia se è necessario l'algoritmo di pathfinding o no per seguire il target)
     private MovementPattern mp;
     
-    //DA FARE: delayedMovement, bouncing;
+    //DA FARE: delayedMovement;
 
         
 

@@ -77,6 +77,7 @@ GameObject:
   - component: {fileID: 114110763270152874}
   - component: {fileID: 114290983285626748}
   - component: {fileID: 114108187918681890}
+  - component: {fileID: 114245326603291090}
   m_Layer: 0
   m_Name: Dead Lich
   m_TagString: Enemy
@@ -313,7 +314,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e4b6f8c26cbcc6d45abb0a0cbfb4f2d5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  nextWaypointDistance: 3
+  nextWaypointDistance: 1
   repathRate: 0.5
   reachedEndOfPath: 0
 --- !u!114 &114110763270152874
@@ -327,8 +328,27 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4ea3f9a739b9916478f05b5260f05498, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  movementType: 0
+  movementType: 2
   flying: 0
+--- !u!114 &114245326603291090
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1374860435433176}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1f57443f1de3af34a8c6774fb6f03966, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  shotSpeed: 4
+  fireRate: 2
+  damage: 8
+  range: 5
+  distance: 4
+  bulletPrefab: {fileID: 1388309921085098, guid: baf262c6dfd82d8488e5c12aa4fb31de,
+    type: 2}
+  sprite: {fileID: 21300552, guid: b6de52fa87112f54d9be52f959e16fca, type: 3}
 --- !u!114 &114290983285626748
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -433,8 +453,8 @@ MonoBehaviour:
   astar: {fileID: 0}
   changeTargetTime: 3
   chargeTime: 3
-  playerDistance: 5
-  speed: 0
+  playerDistance: 8
+  speed: 1.5
 --- !u!114 &114607315469001346
 MonoBehaviour:
   m_ObjectHideFlags: 1

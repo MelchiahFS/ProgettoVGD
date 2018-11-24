@@ -12,7 +12,7 @@ public class Weapon : MonoBehaviour {
     public Sprite bulletSpriteUD, bulletSpriteLR;
     private SpriteRenderer bulletRend;
     public GameObject bulletPrefab;
-    public GameObject bullet;
+    public GameObject bullet, straightBullet, diagBullet1, diagBullet2;
     private BulletController bulletStats;
     Collider2D[] hitObjects;
     public bool isAttacking = false, isShooting = false;
@@ -35,7 +35,7 @@ public class Weapon : MonoBehaviour {
         //si potrebber creare uno scriptableObject per le armi iniziali 
         ItemStats meele = new ItemStats(ItemStats.ItemType.weapon, ItemStats.WeaponType.meele, 15);
         weaponsStats.Add(meele);
-        ItemStats ranged = new ItemStats(ItemStats.ItemType.weapon, ItemStats.WeaponType.ranged, ItemStats.FireType.single, 3, 7, 0.5f, 5.5f);
+        ItemStats ranged = new ItemStats(ItemStats.ItemType.weapon, ItemStats.WeaponType.ranged, ItemStats.FireType.multiple, 3, 7, 0.5f, 5.5f);
         weaponsStats.Add(ranged);
         actualWeapon = weaponsStats[0]; //l'arma predefinita è l'arma meele base
         attackTimer = attackDuration;
@@ -140,37 +140,108 @@ public class Weapon : MonoBehaviour {
     //Arma da fuoco a sparo singolo
     public void Shoot(string direction, Vector3 playerPos)
     {
-        if (direction.Equals("left"))
+        switch (actualWeapon.fireType)
         {
-            bullet = Instantiate(bulletPrefab, playerPos + new Vector3(-0.5f, -0.3f, 0), Quaternion.identity) as GameObject;
-            bulletStats = bullet.GetComponent<BulletController>();
-            bulletStats.SetStats(actualWeapon.damage, actualWeapon.range, bulletSpriteLR, transform.position);
-            bullet.GetComponent<Rigidbody2D>().velocity = -bullet.transform.right * actualWeapon.shotSpeed;
-        }
-        else if (direction.Equals("right"))
-        {
-            bullet = Instantiate(bulletPrefab, playerPos + new Vector3(0.5f, -0.3f, 0), Quaternion.identity) as GameObject;
-            bulletStats = bullet.GetComponent<BulletController>();
-            bulletStats.SetStats(actualWeapon.damage, actualWeapon.range, bulletSpriteLR, transform.position);
-            bullet.GetComponent<Rigidbody2D>().velocity = bullet.transform.right * actualWeapon.shotSpeed;
-        }
-        else if (direction.Equals("up"))
-        {
-            bullet = Instantiate(bulletPrefab, playerPos + new Vector3(0, 0.75f, 0), Quaternion.identity) as GameObject;
-            bulletStats = bullet.GetComponent<BulletController>();
-            bulletStats.SetStats(actualWeapon.damage, actualWeapon.range, bulletSpriteUD, transform.position);
-            bullet.GetComponent<Rigidbody2D>().velocity = bullet.transform.up * actualWeapon.shotSpeed;
-        }
-        else if (direction.Equals("down"))
-        {
-            bullet = Instantiate(bulletPrefab, playerPos + new Vector3(0, -0.5f, 0), Quaternion.identity) as GameObject;
-            bulletStats = bullet.GetComponent<BulletController>();
-            bulletStats.SetStats(actualWeapon.damage, actualWeapon.range, bulletSpriteUD, transform.position);
-            bullet.GetComponent<Rigidbody2D>().velocity = -bullet.transform.up * actualWeapon.shotSpeed;
-        }
+            case ItemStats.FireType.single:
+                if (direction.Equals("left"))
+                {
+                    bullet = Instantiate(bulletPrefab, playerPos + new Vector3(-0.5f, -0.3f, 0), Quaternion.identity) as GameObject;
+                    bulletStats = bullet.GetComponent<BulletController>();
+                    bulletStats.SetStats(actualWeapon.damage, actualWeapon.range, bulletSpriteLR, transform.position);
+                    bullet.GetComponent<Rigidbody2D>().velocity = -bullet.transform.right * actualWeapon.shotSpeed;
+                }
+                else if (direction.Equals("right"))
+                {
+                    bullet = Instantiate(bulletPrefab, playerPos + new Vector3(0.5f, -0.3f, 0), Quaternion.identity) as GameObject;
+                    bulletStats = bullet.GetComponent<BulletController>();
+                    bulletStats.SetStats(actualWeapon.damage, actualWeapon.range, bulletSpriteLR, transform.position);
+                    bullet.GetComponent<Rigidbody2D>().velocity = bullet.transform.right * actualWeapon.shotSpeed;
+                }
+                else if (direction.Equals("up"))
+                {
+                    bullet = Instantiate(bulletPrefab, playerPos + new Vector3(0, 0.75f, 0), Quaternion.identity) as GameObject;
+                    bulletStats = bullet.GetComponent<BulletController>();
+                    bulletStats.SetStats(actualWeapon.damage, actualWeapon.range, bulletSpriteUD, transform.position);
+                    bullet.GetComponent<Rigidbody2D>().velocity = bullet.transform.up * actualWeapon.shotSpeed;
+                }
+                else if (direction.Equals("down"))
+                {
+                    bullet = Instantiate(bulletPrefab, playerPos + new Vector3(0, -0.5f, 0), Quaternion.identity) as GameObject;
+                    bulletStats = bullet.GetComponent<BulletController>();
+                    bulletStats.SetStats(actualWeapon.damage, actualWeapon.range, bulletSpriteUD, transform.position);
+                    bullet.GetComponent<Rigidbody2D>().velocity = -bullet.transform.up * actualWeapon.shotSpeed;
+                }
+                actualRoom = GameManager.manager.ActualRoom;
+                actualRoom.toSort.Add(bullet);
+                break;
 
-        actualRoom = GameManager.manager.ActualRoom;
-        actualRoom.toSort.Add(bullet);
+            case ItemStats.FireType.multiple:
+                if (direction.Equals("left"))
+                {
+                    straightBullet = Instantiate(bulletPrefab, playerPos + new Vector3(-0.5f, -0.3f, 0), Quaternion.identity) as GameObject;
+                    straightBullet.GetComponent<BulletController>().SetStats(actualWeapon.damage, actualWeapon.range, bulletSpriteLR, transform.position);
+                    straightBullet.GetComponent<Rigidbody2D>().velocity = -straightBullet.transform.right * actualWeapon.shotSpeed;
+
+                    diagBullet1 = Instantiate(bulletPrefab, playerPos + new Vector3(-0.5f, -0.3f, 0), Quaternion.identity) as GameObject;
+                    diagBullet1.GetComponent<BulletController>().SetStats(actualWeapon.damage, actualWeapon.range, bulletSpriteLR, transform.position);
+                    diagBullet1.GetComponent<Rigidbody2D>().velocity = new Vector2(-1, 0.3f) * actualWeapon.shotSpeed;
+
+                    diagBullet2 = Instantiate(bulletPrefab, playerPos + new Vector3(-0.5f, -0.3f, 0), Quaternion.identity) as GameObject;
+                    diagBullet2.GetComponent<BulletController>().SetStats(actualWeapon.damage, actualWeapon.range, bulletSpriteLR, transform.position);
+                    diagBullet2.GetComponent<Rigidbody2D>().velocity = new Vector2(-1, -0.3f) * actualWeapon.shotSpeed;
+                }
+                else if (direction.Equals("right"))
+                {
+                    straightBullet = Instantiate(bulletPrefab, playerPos + new Vector3(0.5f, -0.3f, 0), Quaternion.identity) as GameObject;
+                    straightBullet.GetComponent<BulletController>().SetStats(actualWeapon.damage, actualWeapon.range, bulletSpriteLR, transform.position);
+                    straightBullet.GetComponent<Rigidbody2D>().velocity = straightBullet.transform.right * actualWeapon.shotSpeed;
+
+                    diagBullet1 = Instantiate(bulletPrefab, playerPos + new Vector3(0.5f, -0.3f, 0), Quaternion.identity) as GameObject;
+                    diagBullet1.GetComponent<BulletController>().SetStats(actualWeapon.damage, actualWeapon.range, bulletSpriteLR, transform.position);
+                    diagBullet1.GetComponent<Rigidbody2D>().velocity = new Vector2(1, 0.3f) * actualWeapon.shotSpeed;
+
+                    diagBullet2 = Instantiate(bulletPrefab, playerPos + new Vector3(0.5f, -0.3f, 0), Quaternion.identity) as GameObject;
+                    diagBullet2.GetComponent<BulletController>().SetStats(actualWeapon.damage, actualWeapon.range, bulletSpriteLR, transform.position);
+                    diagBullet2.GetComponent<Rigidbody2D>().velocity = new Vector2(1, -0.3f) * actualWeapon.shotSpeed;
+                }
+                else if (direction.Equals("up"))
+                {
+                    straightBullet = Instantiate(bulletPrefab, playerPos + new Vector3(0, 0.75f, 0), Quaternion.identity) as GameObject;
+                    straightBullet.GetComponent<BulletController>().SetStats(actualWeapon.damage, actualWeapon.range, bulletSpriteLR, transform.position);
+                    straightBullet.GetComponent<Rigidbody2D>().velocity = straightBullet.transform.up * actualWeapon.shotSpeed;
+
+                    diagBullet1 = Instantiate(bulletPrefab, playerPos + new Vector3(0, 0.75f, 0), Quaternion.identity) as GameObject;
+                    diagBullet1.GetComponent<BulletController>().SetStats(actualWeapon.damage, actualWeapon.range, bulletSpriteLR, transform.position);
+                    diagBullet1.GetComponent<Rigidbody2D>().velocity = new Vector2(-0.3f, 1) * actualWeapon.shotSpeed;
+
+                    diagBullet2 = Instantiate(bulletPrefab, playerPos + new Vector3(0, 0.75f, 0), Quaternion.identity) as GameObject;
+                    diagBullet2.GetComponent<BulletController>().SetStats(actualWeapon.damage, actualWeapon.range, bulletSpriteLR, transform.position);
+                    diagBullet2.GetComponent<Rigidbody2D>().velocity = new Vector2(0.3f, 1) * actualWeapon.shotSpeed;
+                }
+                else if (direction.Equals("down"))
+                {
+                    straightBullet = Instantiate(bulletPrefab, playerPos + new Vector3(0, -0.5f, 0), Quaternion.identity) as GameObject;
+                    straightBullet.GetComponent<BulletController>().SetStats(actualWeapon.damage, actualWeapon.range, bulletSpriteLR, transform.position);
+                    straightBullet.GetComponent<Rigidbody2D>().velocity = -straightBullet.transform.up * actualWeapon.shotSpeed;
+
+                    diagBullet1 = Instantiate(bulletPrefab, playerPos + new Vector3(0, -0.5f, 0), Quaternion.identity) as GameObject;
+                    diagBullet1.GetComponent<BulletController>().SetStats(actualWeapon.damage, actualWeapon.range, bulletSpriteLR, transform.position);
+                    diagBullet1.GetComponent<Rigidbody2D>().velocity = new Vector2(-0.3f, -1) * actualWeapon.shotSpeed;
+
+                    diagBullet2 = Instantiate(bulletPrefab, playerPos + new Vector3(0, -0.5f, 0), Quaternion.identity) as GameObject;
+                    diagBullet2.GetComponent<BulletController>().SetStats(actualWeapon.damage, actualWeapon.range, bulletSpriteLR, transform.position);
+                    diagBullet2.GetComponent<Rigidbody2D>().velocity = new Vector2(0.3f, -1) * actualWeapon.shotSpeed;
+                }
+
+                actualRoom = GameManager.manager.ActualRoom;
+                actualRoom.toSort.Add(straightBullet);
+                actualRoom.toSort.Add(diagBullet1);
+                actualRoom.toSort.Add(diagBullet2);
+                break;
+        }
+        
+
+        
     }
 
 
@@ -207,7 +278,8 @@ public class Weapon : MonoBehaviour {
                 if (coll.gameObject.tag == "Enemy" && coll.isTrigger)
                 {
                     Vector3 dir = coll.gameObject.transform.position - transform.position;
-                    if (Physics2D.Raycast(transform.position, dir).collider.tag == "Enemy")
+                    RaycastHit2D hit = Physics2D.Raycast(transform.position, dir);
+                    if (hit.collider.tag == "Enemy")
                     {
                         coll.gameObject.GetComponent<EnemyHealth>().TakeDamage(actualWeapon.damage);
                     }

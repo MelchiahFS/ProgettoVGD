@@ -45,7 +45,7 @@ public class Room
         enemies = new List<GameObject>();
         toSort = new List<GameObject>();
         gridPos = _gridPos;
-        enemyCounter = 7;
+        enemyCounter = 1;
     }
 
 }
