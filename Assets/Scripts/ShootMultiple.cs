@@ -34,10 +34,7 @@ public class ShootMultiple : MonoBehaviour {
 
                 
                 Vector3 direction2 = Quaternion.AngleAxis(-30, Vector3.forward) * direction1;
-                Vector3 direction3 = Quaternion.AngleAxis(30, Vector3.forward) * direction1;
-                
-
-                //Debug.DrawRay(shotStartPoint, direction, Color.white);
+                Vector3 direction3 = Quaternion.AngleAxis(30, Vector3.forward) * direction1;                
 
                 hit = Physics2D.Raycast(shotStartPoint, direction1, range, ~LayerMask.GetMask("Enemy"));
                 if (hit.collider != null)
@@ -63,14 +60,6 @@ public class ShootMultiple : MonoBehaviour {
 
                         counter = 0;
                     }
-                    //else if (hit.collider.gameObject.tag == "Enemy")
-                    //{
-                    //    Debug.Log("yay");
-                    //}
-                }
-                else
-                {
-                    Debug.Log("boh");
                 }
             }
         }

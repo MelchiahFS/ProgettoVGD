@@ -14,12 +14,8 @@ public class EnemyController : Character
     private Animator animator;
     public bool flying; //indica se il nemico vola o no (ossia se è necessario l'algoritmo di pathfinding o no per seguire il target)
     private MovementPattern mp;
-    
-    //DA FARE: delayedMovement;
 
         
-
-
     void Start()
     {
         mp = GetComponent<MovementPattern>();

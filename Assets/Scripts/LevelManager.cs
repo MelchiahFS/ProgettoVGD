@@ -486,8 +486,8 @@ public class LevelManager : MonoBehaviour {
                             passTile.AddComponent(typeof(TileTrigger));
                             wallCollider = passTile.AddComponent(typeof(BoxCollider2D)) as BoxCollider2D;
                             wallCollider.isTrigger = true;
-                            wallCollider.size = new Vector2(1.3f, 1);
-                            wallCollider.offset = new Vector2(1, 0);
+                            wallCollider.size = new Vector2(1, 1);
+                            wallCollider.offset = new Vector2(1.1f, 0);
                         }
                         else if (j == horPassSizeX - 1)
                         {
@@ -496,8 +496,8 @@ public class LevelManager : MonoBehaviour {
                             passTile.AddComponent(typeof(TileTrigger));
                             wallCollider = passTile.AddComponent(typeof(BoxCollider2D)) as BoxCollider2D;
                             wallCollider.isTrigger = true;
-                            wallCollider.size = new Vector2(1.3f, 1);
-                            wallCollider.offset = new Vector2(-1, 0);
+                            wallCollider.size = new Vector2(1, 1);
+                            wallCollider.offset = new Vector2(-1.1f, 0);
                         }
                         else
                         {

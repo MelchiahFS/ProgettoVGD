@@ -7,17 +7,11 @@ public class PlayerController : Character
 {
     private Rigidbody2D rb2d;
     public float speed;
-    private Room actualRoom = null, adiacentRoom = null;
 	private Animator animator;
-    private int roomSizeX, roomSizeY;
     private GameObject hitbox;
     private PlayerHealth ph;
     private Weapon weapon;
     private float faceX, faceY;
-    
-    private bool passUp = false, passDown = false, passLeft = false, passRight = false;
-
-    bool setDoor = false, chRoom = false;
     float x, y;
 
     public float fadeTime = 0.3f;
@@ -28,9 +22,6 @@ public class PlayerController : Character
         weapon = GetComponentInChildren<Weapon>();
         rb2d = GetComponent<Rigidbody2D>();
         animator = GetComponent<Animator>();
-        actualRoom = GameManager.manager.ActualRoom;
-        roomSizeX = GameManager.manager.lvlManager.roomSizeX;
-        roomSizeY = GameManager.manager.lvlManager.roomSizeY;
         SetRealOffset(gameObject);
     }
 	

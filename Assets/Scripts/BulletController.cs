@@ -8,15 +8,18 @@ public class BulletController : MonoBehaviour {
     private float shotSpeed;
     private float range;
     private Vector3 direction;
-    private SpriteRenderer rend;
 
     private float destroyTimer = 0;
     private Animator anim;
     private Vector3 playerPosition;
 
     private float posX, posY;
-    private Vector3 movementDirection, lastFramePosition;
+    public Vector3 movementDirection;
+    private Vector3 lastFramePosition;
     private Rigidbody2D rb;
+
+    private ItemStats.BulletType bulletType;
+    public GameObject secondaryBullet;
 
     void Start()
     {
@@ -53,13 +56,12 @@ public class BulletController : MonoBehaviour {
 
     }
 
-    public void SetStats(float damage, float range, Sprite bulletSprite, Vector3 playerPosition)
+    public void SetStats(float damage, float range, Vector3 playerPosition, ItemStats.BulletType bType)
     {
         this.damage = damage;
         this.range = range;
         this.playerPosition = playerPosition;
-        rend = GetComponent<SpriteRenderer>();
-        rend.sprite = bulletSprite;
+        bulletType = bType;
     }
 
     void OnTriggerEnter2D(Collider2D coll)
@@ -91,12 +93,21 @@ public class BulletController : MonoBehaviour {
             
     }
 
-    //Viene chiamata da un animation event alla fine dhooell'animazione Bullet explosion
+    //Viene chiamata da un animation event alla fine dell'animazione Bullet explosion
     public void BulletDestruction()
     {
         Room actualRoom = GameManager.manager.ActualRoom;
         actualRoom.toSort.Remove(gameObject);
         Destroy(gameObject);
+
+    }
+
+    public void BulletSplit()
+    {
+        if (bulletType == ItemStats.BulletType.split)
+        {
+            GameObject.Find("EquippedWeapon").SendMessage("SplitBullet", transform.position);
+        }
     }
 
 }

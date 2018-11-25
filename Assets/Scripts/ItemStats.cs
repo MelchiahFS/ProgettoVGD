@@ -7,12 +7,14 @@ public class ItemStats {
     public enum ItemType { emptyslot, basic, weapon, consumable, statBooster }; //il tipo di oggetto
     public enum ConsumableType { hpUp, potion, scroll };
     public enum WeaponType { meele, ranged }; //il tipo di arma
-    public enum FireType { single, multiple, burst, charge }; //se weaponType è ranged allora viene controllato il tipo di fuoco
+    public enum FireType { single, multiple, splitShot, charge }; //se weaponType è ranged allora viene controllato il tipo di fuoco
+    public enum BulletType { normal, split };
 
     public ItemType itemType;
     public ConsumableType consumableType;
     public WeaponType weaponType;
     public FireType fireType;
+    public BulletType bulletType;
 
     public float damage;
     public float range;
@@ -25,11 +27,12 @@ public class ItemStats {
     public ItemStats() { }
 
     //usato per creare specifiche armi ranged
-    public ItemStats(ItemType iType, WeaponType wType, FireType fType, float damage, float range, float fireRate, float shotSpeed)
+    public ItemStats(ItemType iType, WeaponType wType, FireType fType, BulletType bType, float damage, float range, float fireRate, float shotSpeed)
     {
         itemType = iType;
         weaponType = wType;
         fireType = fType;
+        bulletType = bType;
         this.damage = damage;
         this.range = range;
         this.fireRate = fireRate;

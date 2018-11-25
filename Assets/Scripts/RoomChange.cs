@@ -11,7 +11,7 @@ public class RoomChange : MonoBehaviour {
 
     public bool passUp = false, passDown = false, passLeft = false, passRight = false;
 
-    bool setDoor = false, chRoom = false;
+    bool chRoom = false;
 
     public float fadeTime = 0.3f;
 
@@ -49,12 +49,13 @@ public class RoomChange : MonoBehaviour {
                     StartCoroutine(UpdateRoom('r'));
                 }
             }
-            //se ci sono nemici nella stanza attuale e le porte non sono chiuse
-            if (actualRoom.enemyCounter > 0 && !actualRoom.locked)
+
+            //se il player è effettivamente dentro la stanza
+            if (transform.position.x > actualRoom.gridPos.x && transform.position.x < (actualRoom.gridPos.x + roomSizeX)
+                && transform.position.y > actualRoom.gridPos.y && transform.position.y < (actualRoom.gridPos.y + roomSizeY))
             {
-                //se il player è effettivamente dentro la stanza allora sigillo la stanza
-                if (transform.position.x > actualRoom.gridPos.x && transform.position.x < (actualRoom.gridPos.x + roomSizeX)
-                    && transform.position.y > actualRoom.gridPos.y && transform.position.y < (actualRoom.gridPos.y + roomSizeY))
+                //se ci sono nemici nella stanza attuale e le porte non sono chiuse allora sigillo la stanza
+                if (actualRoom.enemyCounter > 0 && !actualRoom.locked)
                 {
                     LockRoom(actualRoom);
                     foreach (GameObject g in actualRoom.enemies)
@@ -65,8 +66,9 @@ public class RoomChange : MonoBehaviour {
                 }
             }
             //se non ci sono più nemici sblocco le porte della stanza
-            else if (actualRoom.enemyCounter == 0)
+            if (actualRoom.enemyCounter == 0)
             {
+                //Debug.Log("sblocco porte");
                 actualRoom.locked = false;
             }
 
@@ -84,8 +86,8 @@ public class RoomChange : MonoBehaviour {
     //aggiorna la stanza attuale 
     IEnumerator ChangeRoom(char c)
     {
-        //rimuovo il player dalla lista dei scene object della stanza attuale
-        actualRoom.toSort.Remove(gameObject);
+        //rimuovo tutti i gameObject dalla lista dei scene object della stanza attuale
+        actualRoom.toSort.Clear();
 
         //imposto l'immagine corretta nella minimappa per la stanza lasciata
         minimap.SetExitRoom(actualRoom);
@@ -127,6 +129,7 @@ public class RoomChange : MonoBehaviour {
         yield return null;
     }
 
+
     private void OnCollisionEnter2D(Collision2D other)
     {
         //Se l'oggetto con cui il player ha sbattuto è l'uscita
@@ -135,9 +138,12 @@ public class RoomChange : MonoBehaviour {
             //Invoco la funzione restart con delay di due secondi
             GameManager.manager.Invoke("Restart", 2);
         }
+    }
 
+    private void OnCollisionStay2D(Collision2D other)
+    {
         //se non è in atto un cambio di stanza e la stanza non è sigillata
-        if (!setDoor && !chRoom && !actualRoom.locked)
+        if (!chRoom && !actualRoom.locked)
         {
             if (other.gameObject.tag == "DoorUp")
             {
@@ -236,7 +242,6 @@ public class RoomChange : MonoBehaviour {
     //Apre o chiude le porte
     public void SetRoomDoor(char doorPos, GameObject door)
     {
-        setDoor = true;
         if (doorPos == 'u')
         {
             if (actualRoom.openUp)
@@ -306,12 +311,12 @@ public class RoomChange : MonoBehaviour {
                 actualRoom.openRight = true;
             }
         }
-        setDoor = false;
     }
 
     //aggiorna il counter dei nemici; quando è a zero le porte si sbloccano
     public void DecreaseEnemyCounter()
     {
+        if (actualRoom.enemyCounter > 0)
         actualRoom.enemyCounter--;
     }
 }
