@@ -14,31 +14,18 @@ public class BulletController : MonoBehaviour {
     private Vector3 playerPosition;
 
     private float posX, posY;
-    public Vector3 movementDirection;
-    private Vector3 lastFramePosition;
     private Rigidbody2D rb;
 
     private ItemStats.BulletType bulletType;
-    public GameObject secondaryBullet;
 
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
         anim = GetComponent<Animator>();
-        lastFramePosition = transform.position;
     }
 
     void Update()
     {
-        movementDirection = transform.position - lastFramePosition;
-
-        posX = movementDirection.x;
-        posY = movementDirection.y;
-
-        anim.SetFloat("PosX", posX);
-        anim.SetFloat("PosY", posY);
-
-        lastFramePosition = transform.position;
 
         destroyTimer += Time.deltaTime;
 
@@ -102,6 +89,7 @@ public class BulletController : MonoBehaviour {
 
     }
 
+    //Viene chiamata da un animation event all'inizio dell'animazione Bullet explosion
     public void BulletSplit()
     {
         if (bulletType == ItemStats.BulletType.split)

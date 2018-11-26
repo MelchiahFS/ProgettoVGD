@@ -278,7 +278,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   shotSpeed: 4
-  fireRate: 1.5
+  fireRate: 0.5
   damage: 5
   range: 5
   distance: 8
@@ -384,6 +384,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   damage: 10
   startingHealth: 50
+  hitColor: {fileID: 2100000, guid: af4c9394002c4d84fb2f48fc93c94540, type: 2}
 --- !u!114 &114649483691793948
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -542,7 +543,7 @@ SpriteRenderer:
   m_SortingLayer: 7
   m_SortingOrder: 2
   m_Sprite: {fileID: 21300028, guid: 549a6f9125ee5432cb6acbc83f4bc732, type: 3}
-  m_Color: {r: 0.8962264, g: 0, b: 0, a: 1}
+  m_Color: {r: 1, g: 0, b: 0, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0

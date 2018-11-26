@@ -278,6 +278,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   damage: 10
   startingHealth: 50
+  hitColor: {fileID: 2100000, guid: af4c9394002c4d84fb2f48fc93c94540, type: 2}
 --- !u!114 &114240941119734976
 MonoBehaviour:
   m_ObjectHideFlags: 1

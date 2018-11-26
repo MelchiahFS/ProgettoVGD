@@ -21,7 +21,7 @@ public class MovementPattern : MonoBehaviour {
     public float chargeTime = 3; //tempo di caricamento della carica verso il nemico
     public float playerDistance = 5; //la distanza entro il quale il nemico inizia a seguire il player
     public float speed; //velocità in unità al secondo
-    private float customSpeed; 
+    private float customSpeed;
 
     private bool lockPlayer = false, chargingPlayer = false, running = false, followingPlayer = false, followingTarget = false, bounceDir = false;
     private bool u = false, d = false, l = false, r = false;
@@ -30,7 +30,7 @@ public class MovementPattern : MonoBehaviour {
     Vector3 randDir;
     Vector3[] dirs = new Vector3[] { new Vector3(1, 1, 0), new Vector3(1, -1, 0), new Vector3(-1, -1, 0), new Vector3(-1, 1, 0), };
     RaycastHit2D hitLeft, hitRight, hitUp, hitDown;
-    private float distance;
+    
     
     
     // Use this for initialization

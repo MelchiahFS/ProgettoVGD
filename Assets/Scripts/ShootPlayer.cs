@@ -50,14 +50,6 @@ public class ShootPlayer : MonoBehaviour {
 
                         counter = 0;
                     }
-                    //else if (hit.collider.gameObject.tag == "Enemy")
-                    //{
-                    //    Debug.Log("yay");
-                    //}
-                }
-                else
-                {
-                    Debug.Log("boh");
                 }
             }
         }
