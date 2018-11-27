@@ -88,7 +88,7 @@ public class MovementPattern : MonoBehaviour {
         timeCounter += Time.deltaTime;
 
         //se è scaduto il tempo di cambio posizione oppure ho raggiunto la posizione, scelgo una nuova posizione
-        if (timeCounter >= changeTargetTime || Vector3.Distance(transform.position, randomPosition) == 0)
+        if (timeCounter >= changeTargetTime || astar.reachedEndOfPath || Vector3.Distance(transform.position, randomPosition) == 0)
         {
             followingTarget = false;
             randomPosition = actualRoom.freePositions[rnd.Next(actualRoom.freePositions.Count)];

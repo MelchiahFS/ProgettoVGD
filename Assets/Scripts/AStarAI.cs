@@ -8,7 +8,7 @@ public class AStarAI : MonoBehaviour
 {
     private Transform targetPositionTransform;
     private Vector2 targetPositionVector3;
-    private bool useTransform;
+    private bool useTransform, setPath = false;
 
     private Vector3 start, end;
 
@@ -63,14 +63,19 @@ public class AStarAI : MonoBehaviour
 
         if (Time.time > lastRepath + repathRate && seeker.IsDone())
         {
-            lastRepath = Time.time;          
+            lastRepath = Time.time;
 
             // Start a new path to the targetPosition, call the the OnPathComplete function
             // when the path has been calculated (which may take a few frames depending on the complexity)
-            if (useTransform)
-                seeker.StartPath(start, targetPositionTransform.position, OnPathComplete);
-            else
-                seeker.StartPath(start, targetPositionVector3, OnPathComplete);
+            if (!setPath)
+            {
+                if (useTransform)
+                    seeker.StartPath(start, targetPositionTransform.position, OnPathComplete);
+                else
+                    seeker.StartPath(start, targetPositionVector3, OnPathComplete);
+                setPath = true;
+            }
+            
         }
 
         if (path == null)
@@ -127,13 +132,13 @@ public class AStarAI : MonoBehaviour
         // Multiply the direction by our desired speed to get a velocity
         Vector3 velocity = dir * speed * speedFactor;
 
-
         transform.position += velocity * Time.deltaTime;
     }
 
     //permette di seguire una posizione fissa (per i nemici che si muovono verso direzioni casuali)
     public void SetTarget(bool isTransform, Vector3 target)
     {
+        setPath = false;
         targetPositionVector3 = target;
         useTransform = isTransform;
     }
@@ -141,6 +146,7 @@ public class AStarAI : MonoBehaviour
     //permette di seguire un bersaglio mobile (di solito il player)
     public void SetTarget(bool isTransform, Transform target)
     {
+        setPath = false;
         targetPositionTransform = target;
         useTransform = isTransform;
     }

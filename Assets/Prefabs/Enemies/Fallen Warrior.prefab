@@ -80,6 +80,7 @@ GameObject:
   - component: {fileID: 114984209671270218}
   - component: {fileID: 114240941119734976}
   - component: {fileID: 114370181302143378}
+  - component: {fileID: 114222992685637934}
   m_Layer: 0
   m_Name: Fallen Warrior
   m_TagString: Untagged
@@ -265,6 +266,24 @@ MonoBehaviour:
       m_Calls: []
     m_TypeName: UnityEngine.UI.Slider+SliderEvent, UnityEngine.UI, Version=1.0.0.0,
       Culture=neutral, PublicKeyToken=null
+--- !u!114 &114222992685637934
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1602896735857674}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 646818c838cc8e24eba0a8b91701d263, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  shotSpeed: 8
+  fireRate: 1
+  damage: 10
+  range: 6
+  bulletPrefab: {fileID: 1388309921085098, guid: baf262c6dfd82d8488e5c12aa4fb31de,
+    type: 2}
+  sprite: {fileID: 21300580, guid: b6de52fa87112f54d9be52f959e16fca, type: 3}
 --- !u!114 &114232011992709686
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -332,7 +351,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e4b6f8c26cbcc6d45abb0a0cbfb4f2d5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  nextWaypointDistance: 3
+  nextWaypointDistance: 1
   repathRate: 0.5
   reachedEndOfPath: 0
 --- !u!114 &114394256400977520
@@ -414,7 +433,7 @@ MonoBehaviour:
   changeTargetTime: 3
   chargeTime: 3
   playerDistance: 5
-  speed: 0
+  speed: 4
 --- !u!114 &114479707434505530
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -485,7 +504,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4ea3f9a739b9916478f05b5260f05498, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  movementType: 0
+  movementType: 3
   flying: 0
 --- !u!212 &212152459913257418
 SpriteRenderer:
