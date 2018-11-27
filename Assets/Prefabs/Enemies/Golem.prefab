@@ -46,6 +46,7 @@ GameObject:
   - component: {fileID: 114349034158434668}
   - component: {fileID: 114735479675984226}
   - component: {fileID: 114979858962933862}
+  - component: {fileID: 114002697633206558}
   m_Layer: 0
   m_Name: Golem
   m_TagString: Untagged
@@ -217,6 +218,27 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
+--- !u!114 &114002697633206558
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1125126555228332}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 83f227a455b8da6439f47282298b414b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  shotSpeed: 7
+  timeBetweenBursts: 5
+  bulletNumber: 5
+  fireRate: 0.3
+  damage: 3
+  range: 7
+  distance: 5
+  bulletPrefab: {fileID: 1388309921085098, guid: baf262c6dfd82d8488e5c12aa4fb31de,
+    type: 2}
+  sprite: {fileID: 21300066, guid: b6de52fa87112f54d9be52f959e16fca, type: 3}
 --- !u!114 &114105432209409100
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -303,7 +325,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4ea3f9a739b9916478f05b5260f05498, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  movementType: 0
+  movementType: 3
   flying: 0
 --- !u!114 &114538503426662288
 MonoBehaviour:
@@ -384,7 +406,7 @@ MonoBehaviour:
   changeTargetTime: 3
   chargeTime: 3
   playerDistance: 5
-  speed: 0
+  speed: 2
 --- !u!114 &114695396276331220
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -484,7 +506,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e4b6f8c26cbcc6d45abb0a0cbfb4f2d5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  nextWaypointDistance: 3
+  nextWaypointDistance: 1
   repathRate: 0.5
   reachedEndOfPath: 0
 --- !u!212 &212031058780173900

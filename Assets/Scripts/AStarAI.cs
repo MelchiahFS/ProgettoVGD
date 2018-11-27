@@ -8,7 +8,7 @@ public class AStarAI : MonoBehaviour
 {
     private Transform targetPositionTransform;
     private Vector2 targetPositionVector3;
-    private bool useTransform, setPath = false;
+    private bool useTransform;
 
     private Vector3 start, end;
 
@@ -67,14 +67,13 @@ public class AStarAI : MonoBehaviour
 
             // Start a new path to the targetPosition, call the the OnPathComplete function
             // when the path has been calculated (which may take a few frames depending on the complexity)
-            if (!setPath)
-            {
+            
                 if (useTransform)
                     seeker.StartPath(start, targetPositionTransform.position, OnPathComplete);
                 else
                     seeker.StartPath(start, targetPositionVector3, OnPathComplete);
-                setPath = true;
-            }
+                
+            
             
         }
 
@@ -138,7 +137,6 @@ public class AStarAI : MonoBehaviour
     //permette di seguire una posizione fissa (per i nemici che si muovono verso direzioni casuali)
     public void SetTarget(bool isTransform, Vector3 target)
     {
-        setPath = false;
         targetPositionVector3 = target;
         useTransform = isTransform;
     }
@@ -146,7 +144,6 @@ public class AStarAI : MonoBehaviour
     //permette di seguire un bersaglio mobile (di solito il player)
     public void SetTarget(bool isTransform, Transform target)
     {
-        setPath = false;
         targetPositionTransform = target;
         useTransform = isTransform;
     }
