@@ -5,16 +5,28 @@ using UnityEngine;
 public class AnchorHealthBar : MonoBehaviour {
 
 
-    RectTransform thisRT, healthBarRT, sliderRT;
-    Vector3 hbLocalScale, parentLocalScale;
-    GameObject healthBar, slider;
+    private RectTransform rect, healthBarRT, sliderRT;
+    private Vector3 hbLocalScale, parentLocalScale;
+    public GameObject healthBar;
+
+    [System.NonSerialized]
+    public GameObject slider, fire, slow, poison;
+    private GameObject go;
+
+    void Awake()
+    {
+        go = Instantiate(healthBar, transform) as GameObject;
+        go.name = healthBar.name;
+        go.transform.SetParent(transform, false);
+
+    }
 
     void Start ()
     {
-        healthBar = transform.Find("HealthBar").gameObject;
-        slider = healthBar.transform.Find("Slider").gameObject;
+        
+        slider = go.transform.Find("Slider").gameObject;
 
-        healthBarRT = healthBar.GetComponent<RectTransform>();
+        healthBarRT = go.GetComponent<RectTransform>();
         sliderRT = slider.GetComponent<RectTransform>();
 
         //posiziono la barra sopra la testa del nemico
@@ -37,6 +49,32 @@ public class AnchorHealthBar : MonoBehaviour {
         hbLocalScale.y /= parentLocalScale.y;
         hbLocalScale.z /= parentLocalScale.z;
         healthBarRT.localScale = hbLocalScale;
+
+
+        fire = go.transform.Find("Fire").gameObject;
+        rect = fire.GetComponent<RectTransform>();
+        rect.anchorMin = new Vector2(0.5f, 1);
+        rect.anchorMax = new Vector2(0.5f, 1);
+        rect.anchoredPosition = new Vector3(-40, -30, 0);
+        rect.sizeDelta = new Vector2(40, 60);
+        fire.GetComponent<SpriteRenderer>().enabled = false;
+
+        slow = go.transform.Find("Slow").gameObject;
+        rect = slow.GetComponent<RectTransform>();
+        rect.anchorMin = new Vector2(0.5f, 1);
+        rect.anchorMax = new Vector2(0.5f, 1);
+        rect.anchoredPosition = new Vector3(0, -30, 0);
+        rect.sizeDelta = new Vector2(40, 60);
+        slow.GetComponent<SpriteRenderer>().enabled = false;
+
+        poison = go.transform.Find("Poison").gameObject;
+        rect = poison.GetComponent<RectTransform>();
+        rect.anchorMin = new Vector2(0.5f, 1);
+        rect.anchorMax = new Vector2(0.5f, 1);
+        rect.anchoredPosition = new Vector3(40, -30, 0);
+        rect.sizeDelta = new Vector2(40, 60);
+        poison.GetComponent<SpriteRenderer>().enabled = false;
+
 
     }
 

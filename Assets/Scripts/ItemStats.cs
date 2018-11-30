@@ -7,8 +7,8 @@ public class ItemStats {
     public enum ItemType { emptyslot, basic, weapon, consumable, statBooster }; //il tipo di oggetto
     public enum ConsumableType { hpUp, potion, scroll };
     public enum WeaponType { meele, ranged }; //il tipo di arma
-    public enum FireType { single, multiple, splitShot, bidirectional, burst }; //se weaponType è ranged allora viene controllato il tipo di fuoco
-    public enum BulletType { normal, split };
+    public enum FireType { single, multiple, splitShot, bidirectional, burst }; //se l'arma è ranged allora viene controllato il tipo di fuoco
+    public enum BulletType { normal, split, poisonous, slowing, burning };
 
     public ItemType itemType;
     public ConsumableType consumableType;

@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class BulletController : MonoBehaviour {
 
-    private float damage;
+    public float damage;
     private float shotSpeed;
     private float range;
     private Vector3 direction;
@@ -58,6 +58,8 @@ public class BulletController : MonoBehaviour {
             if (coll.isTrigger)
             {
                 coll.gameObject.SendMessage("TakeDamage", damage);
+                if (bulletType != ItemStats.BulletType.normal)
+                    coll.gameObject.SendMessage("ApplyModifier", bulletType);
                 rb.velocity = Vector2.zero;
                 anim.Play("Bullet explosion");
             }               

@@ -12,28 +12,49 @@ public class EnemyHealth : MonoBehaviour {
     private GameObject player;
     private PlayerHealth playerHealth;
     private PlayerController playerController;
-    private SpriteRenderer rend;
+    private SpriteRenderer rend, f, s, p;
     private Slider slider;
+    private AStarAI astar;
     public Material hitColor;
     private Material defaultMaterial;
-    private Color color;
+    private Color normalColor;
     private float fadeTime = 2f;
-    private bool isFlashing = false;
-        
+    private bool dying = false, isFlashing = false, poisoned = false, burning = false, slowed = false, contact = false;
+    private int tickNumber = 5;
+    private float slowDownTime = 5, poisonDamageRate = 1, poisonDamage = 3, fireDamageRate = 0.5f, fireDamage = 3, fireContact = 1.5f;
+    private float counter = 0, speed;
+    private Coroutine flashCO, slowCO, poisonCO, burnCO;
 
 	void Start ()
     {
         player = GameObject.FindGameObjectWithTag("Player");
-
+        astar = GetComponent<AStarAI>();
         playerHealth = player.GetComponent<PlayerHealth>();
         rend = GetComponent<SpriteRenderer>();
-        color = rend.color;
         defaultMaterial = rend.material;
         slider = GetComponentInChildren<Slider>();
         slider.minValue = 0;
         slider.maxValue = startingHealth;
         slider.value = startingHealth;
         currentHealth = startingHealth;
+        foreach (SpriteRenderer r in GetComponentsInChildren<SpriteRenderer>())
+        {
+            if (r.gameObject.name == "Fire")
+                f = r;
+            else if (r.gameObject.name == "Slow")
+                s = r;
+            else if (r.gameObject.name == "Poison")
+                p = r;
+        }
+
+    }
+
+    void Update()
+    {
+        if (contact)
+        {
+            counter += Time.deltaTime;
+        }
     }
 	
 
@@ -42,6 +63,24 @@ public class EnemyHealth : MonoBehaviour {
         if (collision.gameObject.tag == "Player")
         {
             playerHealth.TakeDamage(damage);
+        }
+        else if (collision.gameObject.tag == "Enemy" && burning)
+        {
+            contact = true;
+            if (counter >= fireContact)
+            {
+                counter = 0;
+                collision.gameObject.GetComponent<EnemyHealth>().ApplyModifier(ItemStats.BulletType.burning);
+            }
+        }
+    }
+
+    void OnCollisionExit2D(Collision2D collision)
+    {
+        if (collision.gameObject.tag == "Enemy" && burning)
+        {
+            contact = false;
+            counter = 0;
         }
     }
 
@@ -57,29 +96,9 @@ public class EnemyHealth : MonoBehaviour {
         {
             currentHealth -= amount;
             slider.value -= amount;
-            DeathAnimation();
+            StartCoroutine(Die());
         }
             
-    }
-
-    //crea un effetto flash quando il player viene colpito
-    private IEnumerator Flash()
-    {
-        isFlashing = true;
-        rend.color = Color.white;
-        rend.material = hitColor;
-        yield return new WaitForSeconds(0.1f);
-
-        rend.material = defaultMaterial;
-        color.a = 1;
-        rend.color = color;
-        isFlashing = false;
-        yield break;
-    }
-
-    private void DeathAnimation()
-    {
-        StartCoroutine(Die());
     }
 
     private IEnumerator Die()
@@ -93,7 +112,15 @@ public class EnemyHealth : MonoBehaviour {
             yield return 0;
         }
 
-        Destroy(transform.Find("HealthBar").gameObject);
+        if (slowed)
+            StopCoroutine(slowCO);
+        if (poisoned)
+            StopCoroutine(poisonCO);
+        if (burning)
+            StopCoroutine(burnCO);
+
+
+        Destroy(transform.Find("EnemyHealthBar").gameObject);
         GetComponent<Animator>().speed = 0;
         Destroy(GetComponent<AStarAI>());
         if (GetComponent<ShootPlayer>() != null)
@@ -102,6 +129,10 @@ public class EnemyHealth : MonoBehaviour {
             Destroy(GetComponent<ShootCircle>());
         if (GetComponent<ShootMultiple>() != null)
             Destroy(GetComponent<ShootMultiple>());
+        if (GetComponent<ShootBurst>() != null)
+            Destroy(GetComponent<ShootBurst>());
+        if (GetComponent<ShootBidirectional>() != null)
+            Destroy(GetComponent<ShootBidirectional>());
         foreach (Collider2D coll in GetComponents<Collider2D>())
         {
             coll.enabled = false;
@@ -126,5 +157,98 @@ public class EnemyHealth : MonoBehaviour {
         actualRoom.toSort.Remove(gameObject);
         Destroy(gameObject);
         yield break;
+    }
+
+    //crea un effetto flash quando il player viene colpito
+    private IEnumerator Flash()
+    {
+        while (isFlashing)
+            yield return 0;
+
+        Color c = rend.color;
+        isFlashing = true;
+
+        rend.color = Color.white;
+        rend.material = hitColor;
+        yield return new WaitForSeconds(0.1f);
+
+        rend.material = defaultMaterial;
+        c.a = 1;
+        rend.color = c;
+
+        isFlashing = false;
+        yield break;
+    }
+
+    private IEnumerator SlowDown()
+    {
+        //while (isFlashing)
+        //    yield return 0;
+
+        slowed = true;
+        s.enabled = true;
+
+        speed = GetComponent<MovementPattern>().speed;
+        astar.SetSpeed(1);
+        yield return new WaitForSeconds(slowDownTime);
+
+        counter = 0;
+        astar.SetSpeed(speed);
+
+        s.enabled = false;
+        slowed = false;
+        yield break;
+    }
+
+    private IEnumerator Poisoned()
+    {
+        poisoned = true;
+        p.enabled = true;
+
+        for (int i = 0; i < tickNumber; i++)
+        {
+            yield return new WaitForSeconds(poisonDamageRate);
+            TakeDamage(poisonDamage);
+        }
+
+        p.enabled = false;
+        poisoned = false;
+        yield break;
+    }
+
+    private IEnumerator Burn()
+    {
+        burning = true;
+        f.enabled = true;
+
+        for (int i = 0; i < tickNumber; i++)
+        {
+            yield return new WaitForSeconds(fireDamageRate);
+            TakeDamage(fireDamage);
+        }
+
+        f.enabled = false;
+        burning = false;
+        yield break;
+
+    }
+
+    public void ApplyModifier(ItemStats.BulletType bullet)
+    {
+        if (bullet == ItemStats.BulletType.poisonous)
+        {
+            if (!poisoned)
+                poisonCO = StartCoroutine(Poisoned());
+        }
+        else if (bullet == ItemStats.BulletType.slowing)
+        {
+            if (!slowed)
+                slowCO = StartCoroutine(SlowDown());
+        }
+        else if (bullet == ItemStats.BulletType.burning)
+        {
+            if (!burning)
+                burnCO = StartCoroutine(Burn());
+        }
     }
 }

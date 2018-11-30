@@ -225,28 +225,16 @@ public class MovementPattern : MonoBehaviour {
                 if (hitUp.distance < hitLeft.distance)
                 {
                     if (hitUp.distance <= hitRight.distance)
-                    {
-                        //Debug.Log("su " + hitUp.collider.tag);
                         u = true;
-                    }
                     else
-                    {
-                        //Debug.Log("destra " + hitRight.collider.tag);
                         r = true;
-                    }
                 }
                 else
                 {
                     if (hitLeft.distance <= hitRight.distance)
-                    {
-                        //Debug.Log("sinistra " + hitLeft.collider.tag);
                         l = true;
-                    }
                     else
-                    {
-                        //Debug.Log("destra " + hitRight.collider.tag);
                         r = true;
-                    }
                 }
             }
             else
@@ -254,28 +242,16 @@ public class MovementPattern : MonoBehaviour {
                 if (hitDown.distance < hitLeft.distance)
                 {
                     if (hitDown.distance <= hitRight.distance)
-                    {
-                        //Debug.Log("giu " + hitDown.collider.tag);
                         d = true;
-                    }
                     else
-                    {
-                        //Debug.Log("destra " + hitRight.collider.tag);
                         r = true;
-                    }
                 }
                 else
                 {
                     if (hitLeft.distance <= hitRight.distance)
-                    {
-                        //Debug.Log("sinistra " + hitLeft.collider.tag);
                         l = true;
-                    }
                     else
-                    {
-                        //Debug.Log("destra " + hitRight.collider.tag);
                         r = true;
-                    }
                 }
             }
              

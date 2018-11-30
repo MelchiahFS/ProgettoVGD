@@ -17,6 +17,7 @@ public class Weapon : MonoBehaviour {
     public List<ItemStats> weaponsStats; //contiene le informazioni delle armi in possesso
     private ItemStats actualWeapon;
     private Room actualRoom;
+    private int i = 0;
 
     private Animator animator;
 
@@ -27,11 +28,20 @@ public class Weapon : MonoBehaviour {
         weaponsStats = new List<ItemStats>();
 
         //si potrebber creare uno scriptableObject per le armi iniziali 
-        //ItemStats meele = new ItemStats(ItemStats.ItemType.weapon, ItemStats.WeaponType.meele, 15);
-        ItemStats meele = new ItemStats(ItemStats.ItemType.weapon, ItemStats.WeaponType.ranged, ItemStats.FireType.multiple, ItemStats.BulletType.normal, 3, 7, 0.5f, 5.5f);
+        ItemStats meele = new ItemStats(ItemStats.ItemType.weapon, ItemStats.WeaponType.meele, 15);
         weaponsStats.Add(meele);
-        ItemStats ranged = new ItemStats(ItemStats.ItemType.weapon, ItemStats.WeaponType.ranged, ItemStats.FireType.bidirectional, ItemStats.BulletType.split, 3, 7, 0.5f, 5.5f);
+        ItemStats ranged = new ItemStats(ItemStats.ItemType.weapon, ItemStats.WeaponType.ranged, ItemStats.FireType.multiple, ItemStats.BulletType.normal, 3, 7, 0.5f, 5.5f);
         weaponsStats.Add(ranged);
+        ItemStats ranged2 = new ItemStats(ItemStats.ItemType.weapon, ItemStats.WeaponType.ranged, ItemStats.FireType.single, ItemStats.BulletType.split, 3, 7, 0.5f, 5.5f);
+        weaponsStats.Add(ranged2);
+        ItemStats ranged3 = new ItemStats(ItemStats.ItemType.weapon, ItemStats.WeaponType.ranged, ItemStats.FireType.bidirectional, ItemStats.BulletType.normal, 3, 7, 0.5f, 5.5f);
+        weaponsStats.Add(ranged3);
+        ItemStats ranged4 = new ItemStats(ItemStats.ItemType.weapon, ItemStats.WeaponType.ranged, ItemStats.FireType.single, ItemStats.BulletType.slowing, 3, 7, 0.5f, 5.5f);
+        weaponsStats.Add(ranged4);
+        ItemStats ranged5 = new ItemStats(ItemStats.ItemType.weapon, ItemStats.WeaponType.ranged, ItemStats.FireType.single, ItemStats.BulletType.poisonous, 3, 7, 0.5f, 5.5f);
+        weaponsStats.Add(ranged5);
+        ItemStats ranged6 = new ItemStats(ItemStats.ItemType.weapon, ItemStats.WeaponType.ranged, ItemStats.FireType.single, ItemStats.BulletType.burning, 3, 7, 0.5f, 5.5f);
+        weaponsStats.Add(ranged6);
         actualWeapon = weaponsStats[0]; //l'arma predefinita è l'arma meele base
         attackTimer = attackDuration;
         shootTimer = actualWeapon.fireRate;
@@ -41,13 +51,17 @@ public class Weapon : MonoBehaviour {
     {
         if (Input.GetKeyDown(KeyCode.Alpha1))
         {
-            if (weaponsStats[0] != null)
-                actualWeapon = weaponsStats[0];
-        }
-        else if (Input.GetKeyDown(KeyCode.Alpha2))
-        {
-            if (weaponsStats[1] != null)
-                actualWeapon = weaponsStats[1];
+            if (weaponsStats[i % weaponsStats.Count] != null)
+            {
+                actualWeapon = weaponsStats[i % weaponsStats.Count];
+                if (actualWeapon.weaponType == ItemStats.WeaponType.meele)
+                    Debug.Log(actualWeapon.weaponType.ToString());
+                else
+                    Debug.Log(actualWeapon.fireType.ToString() + ", " + actualWeapon.bulletType.ToString());
+                i++;
+            }
+                
+            
         }
 
         if (actualWeapon != null)
@@ -326,7 +340,6 @@ public class Weapon : MonoBehaviour {
 
         if (hitObjects != null)
         {
-            Debug.Log(hitObjects.Length);
             foreach (Collider2D coll in hitObjects)
             {
                 if (coll.gameObject.tag == "Enemy" && coll.isTrigger)

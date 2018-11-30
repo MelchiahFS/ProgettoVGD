@@ -15,7 +15,6 @@ public class WeaponGenerator : MonoBehaviour {
     {
         consumables = new List<Item>();
         consumables.Add(Resources.Load<Item>("Items/Scroll of Health"));
-        Debug.Log(consumables[0].itemDescription);
     }
 
     public void InstantiateWeapon(Vector3 pos)
