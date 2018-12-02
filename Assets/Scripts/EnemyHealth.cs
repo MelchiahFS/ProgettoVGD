@@ -18,12 +18,13 @@ public class EnemyHealth : MonoBehaviour {
     public Material hitColor;
     private Material defaultMaterial;
     private Color normalColor;
-    private float fadeTime = 2f;
+    private float fadeTime = 1.5f;
     private bool dying = false, isFlashing = false, poisoned = false, burning = false, slowed = false, contact = false;
     private int tickNumber = 5;
     private float slowDownTime = 5, poisonDamageRate = 1, poisonDamage = 3, fireDamageRate = 0.5f, fireDamage = 3, fireContact = 1.5f;
     private float counter = 0, speed;
     private Coroutine flashCO, slowCO, poisonCO, burnCO;
+    private GameObject hb;
 
 	void Start ()
     {
@@ -32,6 +33,7 @@ public class EnemyHealth : MonoBehaviour {
         playerHealth = player.GetComponent<PlayerHealth>();
         rend = GetComponent<SpriteRenderer>();
         defaultMaterial = rend.material;
+        hb = transform.Find("EnemyHealthBar").gameObject;
         slider = GetComponentInChildren<Slider>();
         slider.minValue = 0;
         slider.maxValue = startingHealth;
@@ -120,7 +122,7 @@ public class EnemyHealth : MonoBehaviour {
             StopCoroutine(burnCO);
 
 
-        Destroy(transform.Find("EnemyHealthBar").gameObject);
+        Destroy(hb);
         GetComponent<Animator>().speed = 0;
         Destroy(GetComponent<AStarAI>());
         if (GetComponent<ShootPlayer>() != null)

@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System;
 
 public class BulletController : MonoBehaviour {
 
@@ -12,11 +13,14 @@ public class BulletController : MonoBehaviour {
     private float destroyTimer = 0;
     private Animator anim;
     private Vector3 playerPosition;
+    private ItemStats weapon;
 
     private float posX, posY;
     private Rigidbody2D rb;
 
     private ItemStats.BulletType bulletType;
+
+    private System.Random rand = new System.Random((int)DateTime.Now.Ticks);
 
     void Start()
     {
@@ -35,7 +39,7 @@ public class BulletController : MonoBehaviour {
             anim.Play("Bullet explosion");
         }
 
-        if (Vector3.Distance(playerPosition, transform.position) > range)
+        if (Vector3.Distance(playerPosition, transform.position) > weapon.range)
         {
             rb.velocity = Vector2.zero;
             anim.Play("Bullet explosion");
@@ -43,24 +47,26 @@ public class BulletController : MonoBehaviour {
 
     }
 
-    public void SetStats(float damage, float range, Vector3 playerPosition, ItemStats.BulletType bType)
+
+    public void SetStats(ItemStats weapon, Vector3 playerPosition)
     {
-        this.damage = damage;
-        this.range = range;
+        this.weapon = weapon;
         this.playerPosition = playerPosition;
-        bulletType = bType;
     }
 
     void OnTriggerEnter2D(Collider2D coll)
     {
-        GetComponent<Collider2D>().enabled = false;
         if (coll.gameObject.tag == "Enemy")
         {
             if (coll.isTrigger)
             {
+                GetComponent<Collider2D>().enabled = false;
                 coll.gameObject.SendMessage("TakeDamage", damage);
-                if (bulletType != ItemStats.BulletType.normal)
-                    coll.gameObject.SendMessage("ApplyModifier", bulletType);
+                if (weapon.bulletType != ItemStats.BulletType.normal)
+                {
+                    if (rand.Next(0, 5) == 0)
+                        coll.gameObject.SendMessage("ApplyModifier", bulletType);
+                }
                 rb.velocity = Vector2.zero;
                 anim.Play("Bullet explosion");
             }               
@@ -96,9 +102,9 @@ public class BulletController : MonoBehaviour {
     //Viene chiamata da un animation event all'inizio dell'animazione Bullet explosion
     public void BulletSplit()
     {
-        if (bulletType == ItemStats.BulletType.split)
+        if (weapon.fireType == ItemStats.FireType.splitShot)
         {
-            GameObject.Find("EquippedWeapon").SendMessage("SplitBullet", transform.position);
+            GameObject.Find("EquippedWeapon").GetComponent<Weapon>().SplitBullet(weapon, transform.position);
         }
     }
 

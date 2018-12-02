@@ -32,7 +32,7 @@ public class Weapon : MonoBehaviour {
         weaponsStats.Add(meele);
         ItemStats ranged = new ItemStats(ItemStats.ItemType.weapon, ItemStats.WeaponType.ranged, ItemStats.FireType.multiple, ItemStats.BulletType.normal, 3, 7, 0.5f, 5.5f);
         weaponsStats.Add(ranged);
-        ItemStats ranged2 = new ItemStats(ItemStats.ItemType.weapon, ItemStats.WeaponType.ranged, ItemStats.FireType.single, ItemStats.BulletType.split, 3, 7, 0.5f, 5.5f);
+        ItemStats ranged2 = new ItemStats(ItemStats.ItemType.weapon, ItemStats.WeaponType.ranged, ItemStats.FireType.splitShot, ItemStats.BulletType.slowing, 3, 7, 0.5f, 5.5f);
         weaponsStats.Add(ranged2);
         ItemStats ranged3 = new ItemStats(ItemStats.ItemType.weapon, ItemStats.WeaponType.ranged, ItemStats.FireType.bidirectional, ItemStats.BulletType.normal, 3, 7, 0.5f, 5.5f);
         weaponsStats.Add(ranged3);
@@ -150,13 +150,14 @@ public class Weapon : MonoBehaviour {
         switch (actualWeapon.fireType)
         {
             case ItemStats.FireType.single:
+            case ItemStats.FireType.splitShot:
                 if (direction.Equals("left"))
                 {
                     Quaternion rot = Quaternion.AngleAxis(90, Vector3.forward);
                     Vector3 dir = rot * Vector3.up;
                     bullet = Instantiate(bulletPrefab, playerPos + new Vector3(-0.5f, -0.3f, 0), rot) as GameObject;
                     bulletStats = bullet.GetComponent<BulletController>();
-                    bulletStats.SetStats(actualWeapon.damage, actualWeapon.range, transform.position, actualWeapon.bulletType);
+                    bulletStats.SetStats(actualWeapon, transform.position);
                     bullet.GetComponent<Rigidbody2D>().velocity = dir.normalized * actualWeapon.shotSpeed;
                 }
                 else if (direction.Equals("right"))
@@ -165,21 +166,21 @@ public class Weapon : MonoBehaviour {
                     Vector3 dir = rot * Vector3.up;
                     bullet = Instantiate(bulletPrefab, playerPos + new Vector3(0.5f, -0.3f, 0), rot) as GameObject;
                     bulletStats = bullet.GetComponent<BulletController>();
-                    bulletStats.SetStats(actualWeapon.damage, actualWeapon.range, transform.position, actualWeapon.bulletType);
+                    bulletStats.SetStats(actualWeapon, transform.position);
                     bullet.GetComponent<Rigidbody2D>().velocity = dir.normalized * actualWeapon.shotSpeed;
                 }
                 else if (direction.Equals("up"))
                 {
                     bullet = Instantiate(bulletPrefab, playerPos + new Vector3(0, 0.75f, 0), Quaternion.identity) as GameObject;
                     bulletStats = bullet.GetComponent<BulletController>();
-                    bulletStats.SetStats(actualWeapon.damage, actualWeapon.range, transform.position, actualWeapon.bulletType);
+                    bulletStats.SetStats(actualWeapon, transform.position);
                     bullet.GetComponent<Rigidbody2D>().velocity = bullet.transform.up * actualWeapon.shotSpeed;
                 }
                 else if (direction.Equals("down"))
                 {
                     bullet = Instantiate(bulletPrefab, playerPos + new Vector3(0, -0.5f, 0), Quaternion.identity) as GameObject;
                     bulletStats = bullet.GetComponent<BulletController>();
-                    bulletStats.SetStats(actualWeapon.damage, actualWeapon.range, transform.position, actualWeapon.bulletType);
+                    bulletStats.SetStats(actualWeapon, transform.position);
                     bullet.GetComponent<Rigidbody2D>().velocity = -bullet.transform.up * actualWeapon.shotSpeed;
                 }
                 actualRoom = GameManager.manager.ActualRoom;
@@ -197,15 +198,15 @@ public class Weapon : MonoBehaviour {
                     Vector3 dir3 = rot3 * Vector3.up;
 
                     straightBullet = Instantiate(bulletPrefab, playerPos + new Vector3(-0.5f, -0.3f, 0), rot1) as GameObject;
-                    straightBullet.GetComponent<BulletController>().SetStats(actualWeapon.damage, actualWeapon.range, transform.position, actualWeapon.bulletType);
+                    straightBullet.GetComponent<BulletController>().SetStats(actualWeapon, transform.position);
                     straightBullet.GetComponent<Rigidbody2D>().velocity = dir1.normalized * actualWeapon.shotSpeed;
 
                     diagBullet1 = Instantiate(bulletPrefab, playerPos + new Vector3(-0.5f, -0.3f, 0), rot2) as GameObject;
-                    diagBullet1.GetComponent<BulletController>().SetStats(actualWeapon.damage, actualWeapon.range, transform.position, actualWeapon.bulletType);
+                    diagBullet1.GetComponent<BulletController>().SetStats(actualWeapon, transform.position);
                     diagBullet1.GetComponent<Rigidbody2D>().velocity = dir2.normalized * actualWeapon.shotSpeed;
 
                     diagBullet2 = Instantiate(bulletPrefab, playerPos + new Vector3(-0.5f, -0.3f, 0), rot3) as GameObject;
-                    diagBullet2.GetComponent<BulletController>().SetStats(actualWeapon.damage, actualWeapon.range, transform.position, actualWeapon.bulletType);
+                    diagBullet2.GetComponent<BulletController>().SetStats(actualWeapon, transform.position);
                     diagBullet2.GetComponent<Rigidbody2D>().velocity = dir3.normalized * actualWeapon.shotSpeed;
                 }
                 else if (direction.Equals("right"))
@@ -218,15 +219,15 @@ public class Weapon : MonoBehaviour {
                     Vector3 dir3 = rot3 * Vector3.up;
 
                     straightBullet = Instantiate(bulletPrefab, playerPos + new Vector3(0.5f, -0.3f, 0), rot1) as GameObject;
-                    straightBullet.GetComponent<BulletController>().SetStats(actualWeapon.damage, actualWeapon.range, transform.position, actualWeapon.bulletType);
+                    straightBullet.GetComponent<BulletController>().SetStats(actualWeapon, transform.position);
                     straightBullet.GetComponent<Rigidbody2D>().velocity = dir1.normalized * actualWeapon.shotSpeed;
 
                     diagBullet1 = Instantiate(bulletPrefab, playerPos + new Vector3(0.5f, -0.3f, 0), rot2) as GameObject;
-                    diagBullet1.GetComponent<BulletController>().SetStats(actualWeapon.damage, actualWeapon.range, transform.position, actualWeapon.bulletType);
+                    diagBullet1.GetComponent<BulletController>().SetStats(actualWeapon, transform.position);
                     diagBullet1.GetComponent<Rigidbody2D>().velocity = dir2.normalized * actualWeapon.shotSpeed;
 
                     diagBullet2 = Instantiate(bulletPrefab, playerPos + new Vector3(0.5f, -0.3f, 0), rot3) as GameObject;
-                    diagBullet2.GetComponent<BulletController>().SetStats(actualWeapon.damage, actualWeapon.range, transform.position, actualWeapon.bulletType);
+                    diagBullet2.GetComponent<BulletController>().SetStats(actualWeapon, transform.position);
                     diagBullet2.GetComponent<Rigidbody2D>().velocity = dir3.normalized * actualWeapon.shotSpeed;
                 }
                 else if (direction.Equals("up"))
@@ -239,15 +240,15 @@ public class Weapon : MonoBehaviour {
                     Vector3 dir3 = rot3 * Vector3.up;
 
                     straightBullet = Instantiate(bulletPrefab, playerPos + new Vector3(0, 0.75f, 0), rot1) as GameObject;
-                    straightBullet.GetComponent<BulletController>().SetStats(actualWeapon.damage, actualWeapon.range, transform.position, actualWeapon.bulletType);
+                    straightBullet.GetComponent<BulletController>().SetStats(actualWeapon, transform.position);
                     straightBullet.GetComponent<Rigidbody2D>().velocity = dir1.normalized * actualWeapon.shotSpeed;
 
                     diagBullet1 = Instantiate(bulletPrefab, playerPos + new Vector3(0, 0.75f, 0), rot2) as GameObject;
-                    diagBullet1.GetComponent<BulletController>().SetStats(actualWeapon.damage, actualWeapon.range, transform.position, actualWeapon.bulletType);
+                    diagBullet1.GetComponent<BulletController>().SetStats(actualWeapon, transform.position);
                     diagBullet1.GetComponent<Rigidbody2D>().velocity = dir2.normalized * actualWeapon.shotSpeed;
 
                     diagBullet2 = Instantiate(bulletPrefab, playerPos + new Vector3(0, 0.75f, 0), rot3) as GameObject;
-                    diagBullet2.GetComponent<BulletController>().SetStats(actualWeapon.damage, actualWeapon.range, transform.position, actualWeapon.bulletType);
+                    diagBullet2.GetComponent<BulletController>().SetStats(actualWeapon, transform.position);
                     diagBullet2.GetComponent<Rigidbody2D>().velocity = dir3.normalized * actualWeapon.shotSpeed;
                 }
                 else if (direction.Equals("down"))
@@ -260,15 +261,15 @@ public class Weapon : MonoBehaviour {
                     Vector3 dir3 = rot3 * Vector3.up;
 
                     straightBullet = Instantiate(bulletPrefab, playerPos + new Vector3(0, -0.5f, 0), rot1) as GameObject;
-                    straightBullet.GetComponent<BulletController>().SetStats(actualWeapon.damage, actualWeapon.range, transform.position, actualWeapon.bulletType);
+                    straightBullet.GetComponent<BulletController>().SetStats(actualWeapon, transform.position);
                     straightBullet.GetComponent<Rigidbody2D>().velocity = dir1.normalized * actualWeapon.shotSpeed;
 
                     diagBullet1 = Instantiate(bulletPrefab, playerPos + new Vector3(0, -0.5f, 0), rot2) as GameObject;
-                    diagBullet1.GetComponent<BulletController>().SetStats(actualWeapon.damage, actualWeapon.range, transform.position, actualWeapon.bulletType);
+                    diagBullet1.GetComponent<BulletController>().SetStats(actualWeapon, transform.position);
                     diagBullet1.GetComponent<Rigidbody2D>().velocity = dir2.normalized * actualWeapon.shotSpeed;
 
                     diagBullet2 = Instantiate(bulletPrefab, playerPos + new Vector3(0, -0.5f, 0), rot3) as GameObject;
-                    diagBullet2.GetComponent<BulletController>().SetStats(actualWeapon.damage, actualWeapon.range, transform.position, actualWeapon.bulletType);
+                    diagBullet2.GetComponent<BulletController>().SetStats(actualWeapon, transform.position);
                     diagBullet2.GetComponent<Rigidbody2D>().velocity = dir3.normalized * actualWeapon.shotSpeed;
                 }
 
@@ -286,11 +287,11 @@ public class Weapon : MonoBehaviour {
                     Vector3 dir2 = rot2 * Vector3.up;
 
                     straightBullet = Instantiate(bulletPrefab, playerPos + new Vector3(-0.5f, -0.3f, 0), rot1) as GameObject;
-                    straightBullet.GetComponent<BulletController>().SetStats(actualWeapon.damage, actualWeapon.range, transform.position, actualWeapon.bulletType);
+                    straightBullet.GetComponent<BulletController>().SetStats(actualWeapon, transform.position);
                     straightBullet.GetComponent<Rigidbody2D>().velocity = dir1.normalized * actualWeapon.shotSpeed;
 
                     diagBullet1 = Instantiate(bulletPrefab, playerPos + new Vector3(0.5f, -0.3f, 0), rot2) as GameObject;
-                    diagBullet1.GetComponent<BulletController>().SetStats(actualWeapon.damage, actualWeapon.range, transform.position, actualWeapon.bulletType);
+                    diagBullet1.GetComponent<BulletController>().SetStats(actualWeapon, transform.position);
                     diagBullet1.GetComponent<Rigidbody2D>().velocity = dir2.normalized * actualWeapon.shotSpeed;
                 }
                 else if (direction.Equals("up") || direction.Equals("down"))
@@ -301,11 +302,11 @@ public class Weapon : MonoBehaviour {
                     Vector3 dir2 = rot2 * Vector3.up;
 
                     straightBullet = Instantiate(bulletPrefab, playerPos + new Vector3(0, 0.75f, 0), rot1) as GameObject;
-                    straightBullet.GetComponent<BulletController>().SetStats(actualWeapon.damage, actualWeapon.range, transform.position, actualWeapon.bulletType);
+                    straightBullet.GetComponent<BulletController>().SetStats(actualWeapon, transform.position);
                     straightBullet.GetComponent<Rigidbody2D>().velocity = dir1.normalized * actualWeapon.shotSpeed;
 
                     diagBullet1 = Instantiate(bulletPrefab, playerPos + new Vector3(0, -0.75f, 0), rot2) as GameObject;
-                    diagBullet1.GetComponent<BulletController>().SetStats(actualWeapon.damage, actualWeapon.range, transform.position, actualWeapon.bulletType);
+                    diagBullet1.GetComponent<BulletController>().SetStats(actualWeapon, transform.position);
                     diagBullet1.GetComponent<Rigidbody2D>().velocity = dir2.normalized * actualWeapon.shotSpeed;
                 }
                 break;
@@ -358,7 +359,7 @@ public class Weapon : MonoBehaviour {
   
     }
 
-    public void SplitBullet(Vector3 position)
+    public void SplitBullet(ItemStats weapon, Vector3 position)
     {
         Quaternion rot1 = Quaternion.AngleAxis(-45, Vector3.forward);
         Quaternion rot2 = Quaternion.AngleAxis(-135, Vector3.forward);
@@ -369,25 +370,26 @@ public class Weapon : MonoBehaviour {
         Vector3 dir3 = rot3 * Vector3.up;
         Vector3 dir4 = rot4 * Vector3.up;
 
+        ItemStats newWeapon = new ItemStats(weapon.itemType, weapon.weaponType, ItemStats.FireType.single, weapon.bulletType, weapon.damage / 2, weapon.range / 2, weapon.fireRate, weapon.shotSpeed);
+
         GameObject bullet1 = Instantiate(bulletPrefab, position + new Vector3(0.3f, 0.3f, 0), rot1) as GameObject;
-        bullet1.GetComponent<BulletController>().SetStats(actualWeapon.damage / 2, actualWeapon.range / 2, position, ItemStats.BulletType.normal);
-        bullet1.GetComponent<Rigidbody2D>().velocity = dir1.normalized * actualWeapon.shotSpeed;
+        bullet1.GetComponent<BulletController>().SetStats(newWeapon, position);
+        bullet1.GetComponent<Rigidbody2D>().velocity = dir1.normalized * newWeapon.shotSpeed;
         bullet1.name = "b1";
         
-
         GameObject bullet2 = Instantiate(bulletPrefab, position + new Vector3(0.3f, -0.3f ,0), rot2) as GameObject;
-        bullet2.GetComponent<BulletController>().SetStats(actualWeapon.damage / 2, actualWeapon.range / 2, position, ItemStats.BulletType.normal);
-        bullet2.GetComponent<Rigidbody2D>().velocity = dir2.normalized * actualWeapon.shotSpeed;
+        bullet2.GetComponent<BulletController>().SetStats(newWeapon, position);
+        bullet2.GetComponent<Rigidbody2D>().velocity = dir2.normalized * newWeapon.shotSpeed;
         bullet2.name = "b2";
 
         GameObject bullet3 = Instantiate(bulletPrefab, position + new Vector3(-0.3f, -0.3f, 0), rot3) as GameObject;
-        bullet3.GetComponent<BulletController>().SetStats(actualWeapon.damage / 2, actualWeapon.range / 2, position, ItemStats.BulletType.normal);
-        bullet3.GetComponent<Rigidbody2D>().velocity = dir3.normalized * actualWeapon.shotSpeed;
+        bullet3.GetComponent<BulletController>().SetStats(newWeapon, position);
+        bullet3.GetComponent<Rigidbody2D>().velocity = dir3.normalized * newWeapon.shotSpeed;
         bullet3.name = "b3";
 
         GameObject bullet4 = Instantiate(bulletPrefab, position + new Vector3(-0.3f, 0.3f, 0), rot4) as GameObject;
-        bullet4.GetComponent<BulletController>().SetStats(actualWeapon.damage / 2, actualWeapon.range / 2, position, ItemStats.BulletType.normal);
-        bullet4.GetComponent<Rigidbody2D>().velocity = dir4.normalized * actualWeapon.shotSpeed;
+        bullet4.GetComponent<BulletController>().SetStats(newWeapon, position);
+        bullet4.GetComponent<Rigidbody2D>().velocity = dir4.normalized * newWeapon.shotSpeed;
         bullet4.name = "b4";
 
         actualRoom = GameManager.manager.ActualRoom;

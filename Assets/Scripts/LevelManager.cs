@@ -7,7 +7,7 @@ using Pathfinding;
 public class LevelManager : MonoBehaviour {
 
     public LevelGenerator lvlGen = null;
-    private static System.Random rnd = new System.Random();
+    private static System.Random rnd = new System.Random((int)DateTime.Now.Ticks);
     public int roomSizeX, roomSizeY;
     private int horPassSizeX, horPassSizeY, verPassSizeX, verPassSizeY;
     private BoxCollider2D wallCollider;

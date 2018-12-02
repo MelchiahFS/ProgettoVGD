@@ -7,7 +7,7 @@ using UnityEngine;
 public static class ObstacleLayout
 {
     private static int randomNumber;
-    private static System.Random rnd = new System.Random();
+    private static System.Random rnd = new System.Random((int)DateTime.Now.Ticks);
 
     //0: nessun ostacolo
     //1: ostacolo
