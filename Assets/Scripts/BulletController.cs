@@ -53,6 +53,7 @@ public class BulletController : MonoBehaviour {
 
     void OnTriggerEnter2D(Collider2D coll)
     {
+        GetComponent<Collider2D>().enabled = false;
         if (coll.gameObject.tag == "Enemy")
         {
             if (coll.isTrigger)
@@ -69,7 +70,8 @@ public class BulletController : MonoBehaviour {
             rb.velocity = Vector2.zero;
             anim.Play("Bullet explosion");
         }
-            
+        
+
     }
 
     void OnTriggerExit2D(Collider2D coll)
