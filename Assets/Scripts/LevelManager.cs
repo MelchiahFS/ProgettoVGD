@@ -47,9 +47,9 @@ public class LevelManager : MonoBehaviour {
                     DrawWalls(map[i, j]);
                     LinkRooms(i,j);
                     DrawDoors(i, j);
+                    DrawObstacles(i, j);
                     if (!map[i,j].bossRoom && !map[i,j].shopRoom && !map[i,j].startRoom)
                     {
-                        DrawObstacles(i, j);
                         InstantiateEnemies(i, j);
                     }
                     CreateGridGraphs(map[i,j]);
@@ -64,12 +64,24 @@ public class LevelManager : MonoBehaviour {
     //Istanzia gli ostacoli nelle stanze
     void DrawObstacles(int x, int y)
     {
+        //ObstacleLayout.GetLayoutZero()
         Room room = map[x, y];
         Vector2 drawPos = room.gridPos;
+
+        if (room.bossRoom || room.startRoom || room.shopRoom)
+            room.obsLayout = ObstacleLayout.GetLayoutZero();
+        else
+            room.obsLayout = ObstacleLayout.GetRandomLayout();
+
         for (int i = 0; i < roomSizeY; i++)
         {
             for (int j = 0; j < roomSizeX; j++)
             {
+                //aggiorno la lista delle posizioni prive di ostacoli
+                if (room.obsLayout[i, j] == 0)
+                {
+                    room.freePositions.Add(drawPos);
+                }
                 if (room.obsLayout[i, j] == 1)
                 {
                     GameObject obsSprite = Instantiate(tileToRend, drawPos, Quaternion.identity) as GameObject;
@@ -108,12 +120,7 @@ public class LevelManager : MonoBehaviour {
                 {
                     room.spawnPoints.Add(drawPos);
                 }
-
-                //aggiorno la lista delle posizioni prive di ostacoli
-                if(room.obsLayout[i, j] == 0)
-                {
-                    room.freePositions.Add(drawPos);
-                }
+                
                 drawPos.x++;
             }
             drawPos.x = room.gridPos.x;

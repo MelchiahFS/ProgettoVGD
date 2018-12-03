@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+[System.Serializable]
 public class ItemStats {
 
     public enum ItemType { emptyslot, basic, weapon, consumable, statBooster }; //il tipo di oggetto
@@ -15,6 +16,11 @@ public class ItemStats {
     public WeaponType weaponType;
     public FireType fireType;
     public BulletType bulletType;
+
+    public Sprite sprite;
+    public string itemName;
+    public int currentStack = 1;
+    public int maxStack = 1;
 
     public float damage;
     public float range;

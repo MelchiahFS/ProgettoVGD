@@ -436,6 +436,8 @@ MonoBehaviour:
   maxFR: 0
   minSP: 0
   maxSP: 0
+  sceneItemPrefab: {fileID: 1670819977172170, guid: 8596697453f85bb4fb1b9b990c035f07,
+    type: 2}
 --- !u!114 &114398144825452080
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -627,6 +629,7 @@ MonoBehaviour:
     toSort: []
     obsNumber: 0
     enemyCounter: 0
+    hasGenReward: 0
 --- !u!114 &114610786988894296
 MonoBehaviour:
   m_ObjectHideFlags: 1

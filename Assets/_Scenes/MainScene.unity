@@ -892,26 +892,26 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   itemList:
-  - {fileID: 11400000, guid: f04c0e939169e6e4d845a7c921b5763e, type: 2}
-  - {fileID: 11400000, guid: 9d77fc312b5c94344b12627f5dd4c127, type: 2}
-  - {fileID: 11400000, guid: e6800d96cd2e3104ab4ca345b02bd759, type: 2}
-  - {fileID: 11400000, guid: 6e50100aee31c8d44af46b41ae2e2672, type: 2}
-  - {fileID: 11400000, guid: 08bee350d954f144f969df75e1c01d76, type: 2}
-  - {fileID: 11400000, guid: 42d284568bd9ab543903dfe65182ef09, type: 2}
-  - {fileID: 11400000, guid: 310c59d4d2f994f43ba401ff2f11abd1, type: 2}
-  - {fileID: 11400000, guid: 26fb2a8f40c75824ca763091421679e7, type: 2}
-  - {fileID: 11400000, guid: 6d2e1494f24ad5a44ac6492433d3cc50, type: 2}
-  - {fileID: 11400000, guid: 8e27eac24a276064188724e110c5619e, type: 2}
-  - {fileID: 11400000, guid: 9d6e06421d973c847a8832dd9e726e31, type: 2}
-  - {fileID: 11400000, guid: fb23451ba52910a48b3899d8140ecbfe, type: 2}
-  - {fileID: 11400000, guid: 0b29a73a370a2154493b2ea7809121e6, type: 2}
-  - {fileID: 11400000, guid: cddb916f4f3dfb649923bc9c4bacb497, type: 2}
-  - {fileID: 11400000, guid: 38548ca85e52db7478daec68461431c2, type: 2}
-  - {fileID: 11400000, guid: a7524280d8d0b1444bee3b8e46c02801, type: 2}
-  - {fileID: 11400000, guid: d64094ccee720a547ad7e9afa88a536e, type: 2}
-  - {fileID: 11400000, guid: 49a7a50573e03694e98b8a07c891cbba, type: 2}
-  - {fileID: 11400000, guid: 2f6316a9cf2b6a64bb641ad526b5512d, type: 2}
-  - {fileID: 11400000, guid: 983c5d3a823dd154394fd429acc538c2, type: 2}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
   inventorySlots:
   - {fileID: 191841989}
   - {fileID: 1807221145}
@@ -933,7 +933,7 @@ MonoBehaviour:
   - {fileID: 784530407}
   - {fileID: 1403950715}
   - {fileID: 11262369}
-  emptySlot: {fileID: 11400000, guid: b09dc7d57a011bf46a079895fe6fd5a9, type: 2}
+  go: {fileID: 1670819977172170, guid: 8596697453f85bb4fb1b9b990c035f07, type: 2}
 --- !u!224 &798088366
 RectTransform:
   m_ObjectHideFlags: 0

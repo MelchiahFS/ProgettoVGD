@@ -71,7 +71,7 @@ public class BulletController : MonoBehaviour {
                 anim.Play("Bullet explosion");
             }               
         }
-        else if (coll.gameObject.tag != "Player" && coll.gameObject.tag != "DoorUp")
+        else if (coll.gameObject.tag != "Player" && coll.gameObject.tag != "DoorUp" && coll.gameObject.tag != "Item")
         {
             rb.velocity = Vector2.zero;
             anim.Play("Bullet explosion");

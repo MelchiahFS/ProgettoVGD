@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System;
 
 public class RoomChange : MonoBehaviour {
 
@@ -8,6 +9,7 @@ public class RoomChange : MonoBehaviour {
     private TileSpriteSelector selector;
     private MiniMapController minimap;
     private int roomSizeX, roomSizeY;
+    private System.Random rnd = new System.Random((int)DateTime.Now.Ticks);
 
     public bool passUp = false, passDown = false, passLeft = false, passRight = false;
 
@@ -70,6 +72,11 @@ public class RoomChange : MonoBehaviour {
             {
                 //Debug.Log("sblocco porte");
                 actualRoom.locked = false;
+                if (!actualRoom.hasGenReward)
+                {
+                    GetComponentInChildren<WeaponGenerator>().InstantiateWeapon(actualRoom.freePositions[rnd.Next(actualRoom.freePositions.Count)]);
+                    actualRoom.hasGenReward = true;
+                }
             }
 
         }

@@ -6,10 +6,13 @@ using UnityEngine;
 public class WeaponGenerator : MonoBehaviour {
 
     private static System.Random rnd = new System.Random((int)DateTime.Now.Ticks);
-    //minimo e massimo danno (per meele e ranged), range, fire rate e shot speed
-    public float minMeeleDmg, maxMeeleDmg, minRangedDmg, maxRangedDmg, minRng, maxRng, minFR, maxFR, minSP, maxSP;
+    public float minMeeleDmg, maxMeeleDmg, minRangedDmg, maxRangedDmg, minRng, maxRng, minFR, maxFR, minSP, maxSP; //minimo e massimo danno (per meele e ranged), range, fire rate e shot speed
     private Array enumValues;
     private List<Item> consumables;
+    public GameObject sceneItemPrefab;
+    private SceneItem si;
+
+    private Room actualRoom;
 
     void Start()
     {
@@ -19,8 +22,8 @@ public class WeaponGenerator : MonoBehaviour {
 
     public void InstantiateWeapon(Vector3 pos)
     {
-        GameObject weapon = Instantiate(new GameObject(), pos, Quaternion.identity);
-        SceneItem si = weapon.AddComponent(typeof(SceneItem)) as SceneItem;
+        GameObject weapon = Instantiate(sceneItemPrefab, pos, Quaternion.identity) as GameObject;
+        si = weapon.GetComponent<SceneItem>();
         SetWeaponStats(si);
     }
 
@@ -35,16 +38,23 @@ public class WeaponGenerator : MonoBehaviour {
 
         if (i.Info.weaponType == ItemStats.WeaponType.meele)
         {
-            i.GetComponent<SpriteRenderer>().sprite = itemSelect.meeleWeapons[rnd.Next(itemSelect.meeleWeapons.Count)];
+            i.Info.sprite = itemSelect.meeleWeapons[rnd.Next(itemSelect.meeleWeapons.Count)];
+            i.GetComponent<SpriteRenderer>().sprite = i.Info.sprite;
+            i.GetComponent<SpriteRenderer>().sortingLayerName = "Items";
             
             i.Info.damage = rnd.Next((int)minMeeleDmg * 100, (int)maxMeeleDmg * 100) / 100;
         }
         else
         {
-            i.GetComponent<SpriteRenderer>().sprite = itemSelect.rangedWeapons[rnd.Next(itemSelect.rangedWeapons.Count)];
+            i.Info.sprite = itemSelect.rangedWeapons[rnd.Next(itemSelect.rangedWeapons.Count)];
+            i.GetComponent<SpriteRenderer>().sprite = i.Info.sprite;
+            i.GetComponent<SpriteRenderer>().sortingLayerName = "Items";
 
             enumValues = Enum.GetValues(typeof(ItemStats.FireType));
             i.Info.fireType = (ItemStats.FireType)enumValues.GetValue(rnd.Next(enumValues.Length));
+
+            enumValues = Enum.GetValues(typeof(ItemStats.BulletType));
+            i.Info.bulletType = (ItemStats.BulletType)enumValues.GetValue(rnd.Next(enumValues.Length));
 
             i.Info.damage = rnd.Next((int)minRangedDmg * 100, (int)maxRangedDmg * 100) / 100;
             i.Info.range = rnd.Next((int)minRng * 100, (int)maxRng * 100) / 100;

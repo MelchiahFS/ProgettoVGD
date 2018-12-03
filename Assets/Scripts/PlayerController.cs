@@ -59,6 +59,7 @@ public class PlayerController : Character
         animator.SetFloat("FaceY", faceY);
      }
 
+
     
 
 }

@@ -27,14 +27,11 @@ public class Room
     public int obsNumber;
     public int enemyCounter;
 
+    public bool hasGenReward = false;
 
 
     public Room(Vector2Int _gridPos)
     {
-
-        obsLayout = ObstacleLayout.GetRandomLayout();
-        //obsLayout = ObstacleLayout.GetLayoutZero();
-
         passageLeftTiles = new List<GameObject>();
         passageRightTiles = new List<GameObject>();
         passageUpTiles = new List<GameObject>();
@@ -45,7 +42,7 @@ public class Room
         enemies = new List<GameObject>();
         toSort = new List<GameObject>();
         gridPos = _gridPos;
-        enemyCounter = 2;
+        enemyCounter = 0;
     }
 
 }

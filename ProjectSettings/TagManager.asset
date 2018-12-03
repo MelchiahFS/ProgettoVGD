@@ -33,6 +33,7 @@ TagManager:
   - Healthbar
   - SliderH
   - Bullet
+  - Item
   layers:
   - Default
   - TransparentFX
