@@ -28,6 +28,7 @@ GameObject:
   - component: {fileID: 114046695703326630}
   - component: {fileID: 114886888640070540}
   - component: {fileID: 114453399271460570}
+  - component: {fileID: 114589605459400034}
   m_Layer: 13
   m_Name: Bat
   m_TagString: Enemy
@@ -195,7 +196,26 @@ MonoBehaviour:
   changeTargetTime: 3
   chargeTime: 3
   playerDistance: 3
-  speed: 1
+  speed: 2
+--- !u!114 &114589605459400034
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1183940118386976}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f6c31a224a4aa2843942064d97f46ceb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  shotSpeed: 8
+  fireRate: 1.5
+  damage: 3
+  range: 6
+  distance: 5
+  bulletPrefab: {fileID: 1388309921085098, guid: baf262c6dfd82d8488e5c12aa4fb31de,
+    type: 2}
+  sprite: {fileID: 21300260, guid: b6de52fa87112f54d9be52f959e16fca, type: 3}
 --- !u!114 &114886888640070540
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -208,10 +228,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   healthBar: {fileID: 1389900041368190, guid: cd3284876139c6341a05791e8caae612, type: 2}
-  slider: {fileID: 0}
-  fire: {fileID: 0}
-  slow: {fileID: 0}
-  poison: {fileID: 0}
 --- !u!212 &212178944726735784
 SpriteRenderer:
   m_ObjectHideFlags: 1

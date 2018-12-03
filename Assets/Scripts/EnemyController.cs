@@ -38,7 +38,7 @@ public class EnemyController : Character
     {
         
         //se l'animator possiede le animazioni per le quattro direzioni, imposto i valori degli assi
-        if (animator.parameters.Length > 0)
+        if (animator.parameters.Length > 0 && !GetComponent<EnemyHealth>().dying)
         {
             movementDirection = transform.position - lastFramePosition;
 

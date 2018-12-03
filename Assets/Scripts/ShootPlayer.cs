@@ -35,21 +35,18 @@ public class ShootPlayer : MonoBehaviour {
                 //Debug.DrawRay(shotStartPoint, direction, Color.white);
 
                 hit = Physics2D.Raycast(shotStartPoint, direction, range, ~LayerMask.GetMask("Enemy"));
-                if (hit.collider != null)
+                if ((hit.collider != null && hit.collider.gameObject.tag == "Player") || GetComponent<EnemyController>().flying)
                 {
-                    if (hit.collider.gameObject.tag == "Player")
-                    {
-                        GameObject bullet = Instantiate(bulletPrefab, shotStartPoint, Quaternion.identity) as GameObject;
-                        rb = bullet.GetComponent<Rigidbody2D>();
-                        rb.velocity = direction.normalized * shotSpeed;
-                        enemyBullet = bullet.GetComponent<EnemyBullet>();
-                        enemyBullet.SetStats(damage, range, sprite, transform.position);
+                    GameObject bullet = Instantiate(bulletPrefab, shotStartPoint, Quaternion.identity) as GameObject;
+                    rb = bullet.GetComponent<Rigidbody2D>();
+                    rb.velocity = direction.normalized * shotSpeed;
+                    enemyBullet = bullet.GetComponent<EnemyBullet>();
+                    enemyBullet.SetStats(damage, range, sprite, transform.position, GetComponent<EnemyController>().flying);
 
-                        actualRoom = GameManager.manager.ActualRoom;
-                        actualRoom.toSort.Add(bullet);
+                    actualRoom = GameManager.manager.ActualRoom;
+                    actualRoom.toSort.Add(bullet);
 
-                        counter = 0;
-                    }
+                    counter = 0;
                 }
             }
         }

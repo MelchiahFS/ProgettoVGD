@@ -32,7 +32,7 @@ public class ShootCircle : MonoBehaviour {
             rb = bullet.GetComponent<Rigidbody2D>();
             rb.velocity = directions[index].normalized * shotSpeed;
             enemyBullet = bullet.GetComponent<EnemyBullet>();
-            enemyBullet.SetStats(damage, range, sprite, transform.position);
+            enemyBullet.SetStats(damage, range, sprite, transform.position, GetComponent<EnemyController>().flying);
 
             actualRoom = GameManager.manager.ActualRoom;
             actualRoom.toSort.Add(bullet);

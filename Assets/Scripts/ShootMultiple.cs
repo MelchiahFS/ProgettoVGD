@@ -37,29 +37,26 @@ public class ShootMultiple : MonoBehaviour {
                 Vector3 direction3 = Quaternion.AngleAxis(30, Vector3.forward) * direction1;                
 
                 hit = Physics2D.Raycast(shotStartPoint, direction1, range, ~LayerMask.GetMask("Enemy"));
-                if (hit.collider != null)
+                if ((hit.collider != null && hit.collider.gameObject.tag == "Player") || GetComponent<EnemyController>().flying)
                 {
-                    if (hit.collider.gameObject.tag == "Player")
-                    {
-                        GameObject bullet1 = Instantiate(bulletPrefab, shotStartPoint, Quaternion.identity) as GameObject;
-                        bullet1.GetComponent<EnemyBullet>().SetStats(damage, range, sprite, transform.position);
-                        bullet1.GetComponent<Rigidbody2D>().velocity = direction1.normalized * shotSpeed;
+                    GameObject bullet1 = Instantiate(bulletPrefab, shotStartPoint, Quaternion.identity) as GameObject;
+                    bullet1.GetComponent<EnemyBullet>().SetStats(damage, range, sprite, transform.position, GetComponent<EnemyController>().flying);
+                    bullet1.GetComponent<Rigidbody2D>().velocity = direction1.normalized * shotSpeed;
 
-                        GameObject bullet2 = Instantiate(bulletPrefab, shotStartPoint, Quaternion.identity) as GameObject;
-                        bullet2.GetComponent<EnemyBullet>().SetStats(damage, range, sprite, transform.position);
-                        bullet2.GetComponent<Rigidbody2D>().velocity = direction2.normalized * shotSpeed;
+                    GameObject bullet2 = Instantiate(bulletPrefab, shotStartPoint, Quaternion.identity) as GameObject;
+                    bullet2.GetComponent<EnemyBullet>().SetStats(damage, range, sprite, transform.position, GetComponent<EnemyController>().flying);
+                    bullet2.GetComponent<Rigidbody2D>().velocity = direction2.normalized * shotSpeed;
 
-                        GameObject bullet3 = Instantiate(bulletPrefab, shotStartPoint, Quaternion.identity) as GameObject;
-                        bullet3.GetComponent<EnemyBullet>().SetStats(damage, range, sprite, transform.position);
-                        bullet3.GetComponent<Rigidbody2D>().velocity = direction3.normalized * shotSpeed;
+                    GameObject bullet3 = Instantiate(bulletPrefab, shotStartPoint, Quaternion.identity) as GameObject;
+                    bullet3.GetComponent<EnemyBullet>().SetStats(damage, range, sprite, transform.position, GetComponent<EnemyController>().flying);
+                    bullet3.GetComponent<Rigidbody2D>().velocity = direction3.normalized * shotSpeed;
 
-                        actualRoom = GameManager.manager.ActualRoom;
-                        actualRoom.toSort.Add(bullet1);
-                        actualRoom.toSort.Add(bullet2);
-                        actualRoom.toSort.Add(bullet3);
+                    actualRoom = GameManager.manager.ActualRoom;
+                    actualRoom.toSort.Add(bullet1);
+                    actualRoom.toSort.Add(bullet2);
+                    actualRoom.toSort.Add(bullet3);
 
-                        counter = 0;
-                    }
+                    counter = 0;
                 }
             }
         }

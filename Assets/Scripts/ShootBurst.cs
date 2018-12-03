@@ -34,12 +34,9 @@ public class ShootBurst : MonoBehaviour {
                 Vector3 shotStartPoint = centerPoint + direction.normalized / 2;
 
                 hit = Physics2D.Raycast(shotStartPoint, direction, range, ~LayerMask.GetMask("Enemy"));
-                if (hit.collider != null)
+                if ((hit.collider != null && hit.collider.gameObject.tag == "Player") || GetComponent<EnemyController>().flying)
                 {
-                    if (hit.collider.gameObject.tag == "Player")
-                    {
-                        StartCoroutine(Burst());
-                    }
+                    StartCoroutine(Burst());
                 }
             }
         }
@@ -60,7 +57,7 @@ public class ShootBurst : MonoBehaviour {
             Vector3 shotStartPoint = centerPoint + direction.normalized / 2;
 
             GameObject bullet = Instantiate(bulletPrefab, shotStartPoint, Quaternion.identity) as GameObject;
-            bullet.GetComponent<EnemyBullet>().SetStats(damage, range, sprite, transform.position);
+            bullet.GetComponent<EnemyBullet>().SetStats(damage, range, sprite, transform.position, GetComponent<EnemyController>().flying);
             bullet.GetComponent<Rigidbody2D>().velocity = direction.normalized * shotSpeed;
 
             actualRoom = GameManager.manager.ActualRoom;

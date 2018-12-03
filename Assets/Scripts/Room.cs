@@ -32,8 +32,8 @@ public class Room
     public Room(Vector2Int _gridPos)
     {
 
-        //obsLayout = ObstacleLayout.GetRandomLayout();
-        obsLayout = ObstacleLayout.GetLayoutZero();
+        obsLayout = ObstacleLayout.GetRandomLayout();
+        //obsLayout = ObstacleLayout.GetLayoutZero();
 
         passageLeftTiles = new List<GameObject>();
         passageRightTiles = new List<GameObject>();

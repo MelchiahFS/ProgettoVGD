@@ -38,11 +38,11 @@ public class ShootBidirectional : MonoBehaviour {
             
             
             GameObject bullet1 = Instantiate(bulletPrefab, shotStartPoint1, Quaternion.identity) as GameObject;
-            bullet1.GetComponent<EnemyBullet>().SetStats(damage, range, sprite, transform.position);
+            bullet1.GetComponent<EnemyBullet>().SetStats(damage, range, sprite, transform.position, GetComponent<EnemyController>().flying);
             bullet1.GetComponent<Rigidbody2D>().velocity = direction1.normalized * shotSpeed;
 
             GameObject bullet2 = Instantiate(bulletPrefab, shotStartPoint2, Quaternion.identity) as GameObject;
-            bullet2.GetComponent<EnemyBullet>().SetStats(damage, range, sprite, transform.position);
+            bullet2.GetComponent<EnemyBullet>().SetStats(damage, range, sprite, transform.position, GetComponent<EnemyController>().flying);
             bullet2.GetComponent<Rigidbody2D>().velocity = direction2.normalized * shotSpeed;
 
             actualRoom = GameManager.manager.ActualRoom;

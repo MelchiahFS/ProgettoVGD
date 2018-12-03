@@ -8,7 +8,7 @@ public class EnemyHealth : MonoBehaviour {
 
     public int damage = 10;
     public float startingHealth = 50;
-    private float currentHealth;
+    public float currentHealth;
     private GameObject player;
     private PlayerHealth playerHealth;
     private PlayerController playerController;
@@ -19,7 +19,8 @@ public class EnemyHealth : MonoBehaviour {
     private Material defaultMaterial;
     private Color normalColor;
     private float fadeTime = 1.5f;
-    private bool dying = false, isFlashing = false, poisoned = false, burning = false, slowed = false, contact = false;
+    private bool isFlashing = false, poisoned = false, burning = false, slowed = false, contact = false;
+    public bool dying = false;
     private int tickNumber = 5;
     private float slowDownTime = 5, poisonDamageRate = 1, poisonDamage = 3, fireDamageRate = 0.5f, fireDamage = 3, fireContact = 1.5f;
     private float counter = 0, speed;
@@ -29,7 +30,8 @@ public class EnemyHealth : MonoBehaviour {
 	void Start ()
     {
         player = GameObject.FindGameObjectWithTag("Player");
-        astar = GetComponent<AStarAI>();
+        if (!GetComponent<EnemyController>().flying)
+            astar = GetComponent<AStarAI>();
         playerHealth = player.GetComponent<PlayerHealth>();
         rend = GetComponent<SpriteRenderer>();
         defaultMaterial = rend.material;
@@ -105,15 +107,17 @@ public class EnemyHealth : MonoBehaviour {
 
     private IEnumerator Die()
     {
-
+        dying = true;
         float rate = 1 / fadeTime;
         Color c = Color.white;
 
+        //aspetto che l'animazione del danno finisca
         while (isFlashing)
         {
             yield return 0;
         }
 
+        //termino eventuali coroutine attive
         if (slowed)
             StopCoroutine(slowCO);
         if (poisoned)
@@ -121,10 +125,19 @@ public class EnemyHealth : MonoBehaviour {
         if (burning)
             StopCoroutine(burnCO);
 
-
+        //rimuovo la healthBar
         Destroy(hb);
-        GetComponent<Animator>().speed = 0;
-        Destroy(GetComponent<AStarAI>());
+
+        //blocco l'animazione e i movimenti
+        Animator animator = GetComponent<Animator>();
+        animator.speed = 0;
+        animator = GetComponent<Animator>();
+        if (!GetComponent<EnemyController>().flying)
+            Destroy(GetComponent<AStarAI>());
+        else
+            GetComponent<MovementPattern>().speed = 0;
+
+        //impedisco al nemico di sparare ancora
         if (GetComponent<ShootPlayer>() != null)
             Destroy(GetComponent<ShootPlayer>());
         if (GetComponent<ShootCircle>() != null)
@@ -135,15 +148,17 @@ public class EnemyHealth : MonoBehaviour {
             Destroy(GetComponent<ShootBurst>());
         if (GetComponent<ShootBidirectional>() != null)
             Destroy(GetComponent<ShootBidirectional>());
+
+        //rendo il nemico intangibile
         foreach (Collider2D coll in GetComponents<Collider2D>())
         {
             coll.enabled = false;
         }
         
-
         rend.color = c;
         rend.material = hitColor;
 
+        //creo l'effetto di fade-off
         while (c.a > 0)
         {
             c.a -= Time.deltaTime * rate;
@@ -184,19 +199,22 @@ public class EnemyHealth : MonoBehaviour {
 
     private IEnumerator SlowDown()
     {
-        //while (isFlashing)
-        //    yield return 0;
 
         slowed = true;
         s.enabled = true;
 
         speed = GetComponent<MovementPattern>().speed;
-        astar.SetSpeed(1);
+        if (!GetComponent<EnemyController>().flying)
+            astar.SetSpeed(1);
+        else
+            GetComponent<MovementPattern>().speed = 1;
         yield return new WaitForSeconds(slowDownTime);
 
         counter = 0;
-        astar.SetSpeed(speed);
-
+        if (!GetComponent<EnemyController>().flying)
+            astar.SetSpeed(speed);
+        else
+            GetComponent<MovementPattern>().speed = speed;
         s.enabled = false;
         slowed = false;
         yield break;

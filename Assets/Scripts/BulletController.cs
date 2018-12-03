@@ -61,11 +61,11 @@ public class BulletController : MonoBehaviour {
             if (coll.isTrigger)
             {
                 GetComponent<Collider2D>().enabled = false;
-                coll.gameObject.SendMessage("TakeDamage", damage);
+                coll.gameObject.SendMessage("TakeDamage", weapon.damage);
                 if (weapon.bulletType != ItemStats.BulletType.normal)
                 {
                     if (rand.Next(0, 5) == 0)
-                        coll.gameObject.SendMessage("ApplyModifier", bulletType);
+                        coll.gameObject.SendMessage("ApplyModifier", weapon.bulletType);
                 }
                 rb.velocity = Vector2.zero;
                 anim.Play("Bullet explosion");
