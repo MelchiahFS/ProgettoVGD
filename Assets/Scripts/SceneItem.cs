@@ -24,6 +24,8 @@ public class SceneItem : MonoBehaviour
         {
             if (Input.GetKeyDown(KeyCode.E))
             {
+                //Debug.Log(info.itemName);
+                //Debug.Log(info.description);
                 ItemStats item = new ItemStats();
                 JsonUtility.FromJsonOverwrite(JsonUtility.ToJson(info), item);
                 Inventory.instance.AddSlot(item);

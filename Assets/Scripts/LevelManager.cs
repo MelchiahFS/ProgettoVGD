@@ -76,12 +76,8 @@ public class LevelManager : MonoBehaviour {
         for (int i = 0; i < roomSizeY; i++)
         {
             for (int j = 0; j < roomSizeX; j++)
-            {
-                //aggiorno la lista delle posizioni prive di ostacoli
-                if (room.obsLayout[i, j] == 0)
-                {
-                    room.freePositions.Add(drawPos);
-                }
+            {                
+                
                 if (room.obsLayout[i, j] == 1)
                 {
                     GameObject obsSprite = Instantiate(tileToRend, drawPos, Quaternion.identity) as GameObject;
@@ -96,6 +92,11 @@ public class LevelManager : MonoBehaviour {
                     rend.sprite = mapper.obstacles;
                     obsSprite.AddComponent(typeof(BoxCollider2D));
                     room.roomTiles.Add(obsSprite);
+                }
+                else
+                {
+                    //aggiorno la lista delle posizioni prive di ostacoli
+                    room.freePositions.Add(drawPos);  
                 }
                 drawPos.x++;
             }

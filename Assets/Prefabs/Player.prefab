@@ -436,8 +436,64 @@ MonoBehaviour:
   maxFR: 0
   minSP: 0
   maxSP: 0
+  consumablesSO:
+  - {fileID: 11400000, guid: aefca5fb8bf2a164e93767b4dbf43863, type: 2}
+  - {fileID: 11400000, guid: 15ce881c03f00fb4a8c2124add315b7c, type: 2}
+  - {fileID: 11400000, guid: f00115fc85965b5469879dbed104dbdf, type: 2}
+  - {fileID: 11400000, guid: 2a0bee009aa1e0540bf05b289d80d394, type: 2}
+  - {fileID: 11400000, guid: 2611daed24630ad44b9f1701d675a6f9, type: 2}
+  - {fileID: 11400000, guid: cea3edf0f8d3be6459c42ab2be6f4a91, type: 2}
+  - {fileID: 11400000, guid: 3e070b520d0959249bb426cae2738703, type: 2}
+  - {fileID: 11400000, guid: e26f6c0ccc4bdaa49b9a3e8cf1845d55, type: 2}
+  - {fileID: 11400000, guid: 061451c62d8b9874c83a2f7c228a6acc, type: 2}
+  - {fileID: 11400000, guid: b5ef3df2a2aa2f947a4fabd05e7fbf05, type: 2}
+  - {fileID: 11400000, guid: ee8d458794197b646b86841c61a03683, type: 2}
+  - {fileID: 11400000, guid: 948a3ccbf53396a4bab632c5317e32ab, type: 2}
+  - {fileID: 11400000, guid: 234c0f1e7923b724a9a19e89da80bf00, type: 2}
+  - {fileID: 11400000, guid: 3d230396071eda44195e15b48b8218df, type: 2}
+  - {fileID: 11400000, guid: d73647b8eb5f3474ea056be5826faaec, type: 2}
+  - {fileID: 11400000, guid: 89804c3b50f3ceb4996b3d8546d5d4ff, type: 2}
+  consumables: []
   sceneItemPrefab: {fileID: 1670819977172170, guid: 8596697453f85bb4fb1b9b990c035f07,
     type: 2}
+  actualRoom:
+    gridPos: {x: 0, y: 0}
+    bossRoom: 0
+    shopRoom: 0
+    startRoom: 0
+    doorTop: 0
+    doorBot: 0
+    doorLeft: 0
+    doorRight: 0
+    openUp: 0
+    openDown: 0
+    openLeft: 0
+    openRight: 0
+    visited: 0
+    locked: 0
+    roomTiles: []
+    passageLeftTiles: []
+    passageRightTiles: []
+    passageUpTiles: []
+    passageDownTiles: []
+    spawnPoints: []
+    freePositions: []
+    doorSpriteUp: {fileID: 0}
+    doorSpriteDown: {fileID: 0}
+    doorSpriteLeft: {fileID: 0}
+    doorSpriteRight: {fileID: 0}
+    actualMapSprite: {fileID: 0}
+    visitedMapSprite: {fileID: 0}
+    actualBossMapSprite: {fileID: 0}
+    visitedBossMapSprite: {fileID: 0}
+    actualShopMapSprite: {fileID: 0}
+    visitedShopMapSprite: {fileID: 0}
+    unknownMapSprite: {fileID: 0}
+    enemies: []
+    toSort: []
+    obsNumber: 0
+    enemyCounter: 0
+    hasGenReward: 0
 --- !u!114 &114398144825452080
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -651,6 +707,7 @@ MonoBehaviour:
   diagBullet2: {fileID: 0}
   isAttacking: 0
   isShooting: 0
+  weaponsStats: []
 --- !u!114 &114768629614625258
 MonoBehaviour:
   m_ObjectHideFlags: 1

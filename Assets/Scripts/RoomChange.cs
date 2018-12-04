@@ -70,13 +70,7 @@ public class RoomChange : MonoBehaviour {
             //se non ci sono più nemici sblocco le porte della stanza
             if (actualRoom.enemyCounter == 0)
             {
-                //Debug.Log("sblocco porte");
                 actualRoom.locked = false;
-                if (!actualRoom.hasGenReward)
-                {
-                    GetComponentInChildren<WeaponGenerator>().InstantiateWeapon(actualRoom.freePositions[rnd.Next(actualRoom.freePositions.Count)]);
-                    actualRoom.hasGenReward = true;
-                }
             }
 
         }
@@ -98,6 +92,7 @@ public class RoomChange : MonoBehaviour {
 
         //imposto l'immagine corretta nella minimappa per la stanza lasciata
         minimap.SetExitRoom(actualRoom);
+
         if (c == 'd')
         {
             passDown = false;
@@ -126,6 +121,9 @@ public class RoomChange : MonoBehaviour {
 
         //aggiorno la stanza attuale per il corretto rendering dei character
         GetComponent<SortRenderingOrder>().actualRoom = actualRoom;
+
+        //aggiorno la stanza attuale per spawnare le eventuali ricompense
+        GetComponentInChildren<WeaponGenerator>().actualRoom = actualRoom;
 
         //aggiungo il player alla lista degli oggetti da ordinare della nuova stanza
         actualRoom.toSort.Add(gameObject);

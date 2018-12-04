@@ -9,10 +9,12 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: e296643ffe087af458ed7bef108f13f6, type: 3}
-  m_Name: Scroll of Health
+  m_Name: Half Damage
   m_EditorClassIdentifier: 
-  itemName: Scroll of Health
-  itemDescription: Restores some Health
+  itemName: Weakness
+  itemDescription: Deliver half damage for 10 seconds
   icon: {fileID: 0}
-  type: 4
-  consumableType: 0
+  currentStack: 1
+  maxStack: 1
+  type: 3
+  consumableType: 15
