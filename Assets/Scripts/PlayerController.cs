@@ -31,7 +31,12 @@ public class PlayerController : Character
 		
 	    y = Input.GetAxisRaw("CustomVertical");
 
-        
+        if (ph.flipMov)
+        {
+            x = -x;
+            y = -y;
+        }
+
 	    Vector2 movement = new Vector2(x, y);
 
         //se il player attacca non può muoversi

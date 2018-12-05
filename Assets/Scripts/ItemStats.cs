@@ -6,8 +6,8 @@ using UnityEngine;
 public class ItemStats {
 
     public enum ItemType { emptyslot, basic, weapon, consumable, statBooster }; //il tipo di oggetto
-    public enum ConsumableType { healthUp25, healthUp50, healthDown, slowDownAll, slowDownSelf, poisonAll, poisonSelf, damageAll, damageSelf,
-        flipAttack, flipMovement, invincible, speedUpSelf, speedUpAll, doubleDamage, halfDamage, doubleDamageSelf};
+    public enum ConsumableType { healthUp25, healthUp50, slowDownAll, slowDownSelf, poisonAll, poisonSelf, damageAll, damageSelf,
+        flipAttack, flipMovement, invincible, speedUpSelf, speedUpAll, doubleDamage, halfDamage, getDoubleDamage};
     public enum WeaponType { meele, ranged }; //il tipo di arma
     public enum FireType { single, multiple, splitShot, bidirectional}; //se l'arma è ranged allora viene controllato il tipo di fuoco
     public enum BulletType { normal, poisonous, slowing, burning }; //il tipo di proiettile;
