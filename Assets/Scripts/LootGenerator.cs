@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System;
 using UnityEngine;
 
-public class WeaponGenerator : MonoBehaviour {
+public class LootGenerator : MonoBehaviour {
 
     private static System.Random rnd = new System.Random((int)DateTime.Now.Ticks);
     public float minMeeleDmg, maxMeeleDmg, minRangedDmg, maxRangedDmg, minRng, maxRng, minFR, maxFR, minSP, maxSP; //minimo e massimo danno (per meele e ranged), range, fire rate e shot speed
@@ -14,15 +14,15 @@ public class WeaponGenerator : MonoBehaviour {
     private SceneItem si;
     private ItemSpriteSelector select;
     private SpriteRenderer render;
-
+    private List<ItemStats> items = new List<ItemStats>();
+    private ItemStats actualItem;
     public Room actualRoom;
+    private int ind = 0;
 
    
     void Start()
     {
         select = GetComponent<ItemSpriteSelector>();
-        Debug.Log("books number: " + select.books.Count.ToString());
-        Debug.Log("scrolls number: " + select.scrolls.Count.ToString());
         consumables = new List<ItemStats>();
         foreach (Item c in consumablesSO)
         {
@@ -51,24 +51,94 @@ public class WeaponGenerator : MonoBehaviour {
             item.consumableType = c.consumableType;
             consumables.Add(item);
         }
+        foreach (ItemStats i in consumables)
+        {
+            switch (i.consumableType)
+            {
+                //case ItemStats.ConsumableType.healthUp25: //ok
+                //    items.Add(i);
+                //    break;
+
+                //case ItemStats.ConsumableType.healthUp50: //ok
+                //    items.Add(i);
+                //    break;
+
+                //case ItemStats.ConsumableType.slowDownAll: //ok
+                //    items.Add(i);
+                //    break;
+
+                //case ItemStats.ConsumableType.slowDownSelf: //ok
+                //    items.Add(i);
+                //    break;
+
+                //case ItemStats.ConsumableType.poisonAll: //ok
+                //    items.Add(i);
+                //    break;
+
+                case ItemStats.ConsumableType.poisonSelf: //ok
+                    items.Add(i);
+                    break;
+
+                    //case ItemStats.ConsumableType.damageAll: //ok
+                    //    items.Add(i);
+                    //    break;
+
+                    //case ItemStats.ConsumableType.damageSelf: //ok
+                    //    items.Add(i);
+                    //    break;
+
+                    //case ItemStats.ConsumableType.flipMovement: //ok
+                    //    items.Add(i);
+                    //    break;
+
+                    //case ItemStats.ConsumableType.invincible: //ok
+                    //    items.Add(i);
+                    //    break;
+
+                    //case ItemStats.ConsumableType.speedUpSelf: //ok
+                    //    items.Add(i);
+                    //    break;
+
+                    //case ItemStats.ConsumableType.speedUpAll:
+                    //    items.Add(i);
+                    //    break;
+            }
+        }
+
         actualRoom = GameManager.manager.ActualRoom;
     }
 
     void Update()
     {
+
+        if (Input.GetKeyDown(KeyCode.Alpha2))
+        {
+            if (items.Count > 0 && items[ind % items.Count] != null)
+            {
+                actualItem = items[ind % items.Count];
+                Debug.Log(actualItem.consumableType.ToString());
+                GetComponentInParent<PlayerHealth>().ApplyEffect(actualItem.consumableType);
+                items.Remove(items[ind % items.Count]);
+            }
+            
+        }
+
+        //se la stanza non ha nemici e la ricompensa non è ancora stata generata
         if (!actualRoom.hasGenReward && actualRoom.enemyCounter == 0)
         {
-            //se il player è effettivamente dentro la stanza
+            //e se il player è effettivamente dentro la stanza allora genero una ricompensa
             if (transform.position.x > actualRoom.gridPos.x && transform.position.x < (actualRoom.gridPos.x + GameManager.manager.lvlManager.roomSizeX)
                 && transform.position.y > actualRoom.gridPos.y && transform.position.y < (actualRoom.gridPos.y + GameManager.manager.lvlManager.roomSizeY))
             {
-                int seed = rnd.Next(100);
-                Debug.Log(seed.ToString());
-                if (seed < 30)
-                    InstantiateWeapon(actualRoom.freePositions[rnd.Next(actualRoom.freePositions.Count)]);
-                else
-                    InstantiateConsumable(actualRoom.freePositions[rnd.Next(actualRoom.freePositions.Count)]);
-
+                //ho il 50% di ottenere o no una ricompensa
+                if (rnd.Next(2) == 1)
+                {
+                    int seed = rnd.Next(100);
+                    if (seed < 30)
+                        InstantiateWeapon(actualRoom.freePositions[rnd.Next(actualRoom.freePositions.Count)]);
+                    else
+                        InstantiateConsumable(actualRoom.freePositions[rnd.Next(actualRoom.freePositions.Count)]);
+                }
                 actualRoom.hasGenReward = true;
             }   
         }

@@ -123,7 +123,7 @@ public class RoomChange : MonoBehaviour {
         GetComponent<SortRenderingOrder>().actualRoom = actualRoom;
 
         //aggiorno la stanza attuale per spawnare le eventuali ricompense
-        GetComponentInChildren<WeaponGenerator>().actualRoom = actualRoom;
+        GetComponentInChildren<LootGenerator>().actualRoom = actualRoom;
 
         //aggiungo il player alla lista degli oggetti da ordinare della nuova stanza
         actualRoom.toSort.Add(gameObject);

@@ -19,7 +19,7 @@ public class EnemyHealth : MonoBehaviour {
     private Material defaultMaterial;
     private Color normalColor;
     private float fadeTime = 1.5f;
-    private bool isFlashing = false, poisoned = false, burning = false, slowed = false, contact = false;
+    private bool isFlashing = false, poisoned = false, faster = false, burning = false, slowed = false, contact = false;
     public bool dying = false;
     private int tickNumber = 5;
     private float slowDownTime = 5, poisonDamageRate = 1, poisonDamage = 3, fireDamageRate = 0.5f, fireDamage = 3, fireContact = 1.5f;
@@ -41,6 +41,8 @@ public class EnemyHealth : MonoBehaviour {
         slider.maxValue = startingHealth;
         slider.value = startingHealth;
         currentHealth = startingHealth;
+
+        //trovo le icone di status tra i figli del gameObject
         foreach (SpriteRenderer r in GetComponentsInChildren<SpriteRenderer>())
         {
             if (r.gameObject.name == "Fire")
@@ -61,7 +63,6 @@ public class EnemyHealth : MonoBehaviour {
         }
     }
 	
-
     void OnCollisionStay2D(Collision2D collision)
     {
         if (collision.gameObject.tag == "Player")
@@ -176,8 +177,8 @@ public class EnemyHealth : MonoBehaviour {
         yield break;
     }
 
-    //crea un effetto flash quando il player viene colpito
-    private IEnumerator Flash()
+    //crea un flash bianco quando il nemico viene colpito
+    public IEnumerator Flash()
     {
         while (isFlashing)
             yield return 0;
@@ -197,7 +198,7 @@ public class EnemyHealth : MonoBehaviour {
         yield break;
     }
 
-    private IEnumerator SlowDown()
+    public IEnumerator SlowDown()
     {
 
         slowed = true;
@@ -220,7 +221,30 @@ public class EnemyHealth : MonoBehaviour {
         yield break;
     }
 
-    private IEnumerator Poisoned()
+    public IEnumerator SpeedUp()
+    {
+
+        faster = true;
+        //s.enabled = true;
+
+        speed = GetComponent<MovementPattern>().speed;
+        if (!GetComponent<EnemyController>().flying)
+            astar.SetSpeed(speed + 2);
+        else
+            GetComponent<MovementPattern>().speed +=2;
+        yield return new WaitForSeconds(slowDownTime);
+
+        counter = 0;
+        if (!GetComponent<EnemyController>().flying)
+            astar.SetSpeed(speed);
+        else
+            GetComponent<MovementPattern>().speed = speed;
+        //s.enabled = false;
+        faster = false;
+        yield break;
+    }
+
+    public IEnumerator Poisoned()
     {
         poisoned = true;
         p.enabled = true;

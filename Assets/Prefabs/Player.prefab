@@ -777,6 +777,14 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   currentHealth: 0
   isDead: 0
+  isFlashing: 0
+  isConsFlashing: 0
+  invincible: 0
+  flipMov: 0
+  flipAtt: 0
+  poisoned: 0
+  hitColor: {fileID: 2100000, guid: af4c9394002c4d84fb2f48fc93c94540, type: 2}
+  defaultMaterial: {fileID: 0}
 --- !u!124 &124660500414799588
 Behaviour:
   m_ObjectHideFlags: 1
