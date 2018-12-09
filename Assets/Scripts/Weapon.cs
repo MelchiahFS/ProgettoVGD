@@ -20,13 +20,13 @@ public class Weapon : MonoBehaviour {
     private int i = 0;
     private Quaternion rot, rot1, rot2, rot3;
     private Vector3 dir, dir1, dir2, dir3;
-
+    private PlayerHealth ph;
     private Animator animator;
 
     void Start()
     {
         animator = GetComponentInParent<Animator>();
-
+        ph = GetComponentInParent<PlayerHealth>();
         weaponsStats = new List<ItemStats>();
 
         //si potrebber creare uno scriptableObject per le armi iniziali 
@@ -70,21 +70,31 @@ public class Weapon : MonoBehaviour {
             {
                 if (Input.GetKeyDown("up"))
                 {
-                    Attack("up", transform.position);
+                    if (!ph.flipAtt)
+                        Attack("up", transform.position);
+                    else
+                        Attack("down", transform.position);
                 }
                 else if (Input.GetKeyDown("down"))
                 {
-                    Attack("down", transform.position);
-
+                    if (!ph.flipAtt)
+                        Attack("down", transform.position);
+                    else
+                        Attack("up", transform.position);
                 }
                 else if (Input.GetKeyDown("left"))
                 {
-                    Attack("left", transform.position);
-
+                    if (!ph.flipAtt)
+                        Attack("left", transform.position);
+                    else
+                        Attack("right", transform.position);
                 }
                 else if (Input.GetKeyDown("right"))
                 {
-                    Attack("right", transform.position);
+                    if (!ph.flipAtt)
+                        Attack("right", transform.position);
+                    else
+                        Attack("left", transform.position);
                 }
             }
             //la differenza è solamente che con le armi ranged posso tenere premuto il tasto per sparare in modo continuo
@@ -92,21 +102,31 @@ public class Weapon : MonoBehaviour {
             {
                 if (Input.GetKey("up"))
                 {
-                    Attack("up", transform.position);
+                    if (!ph.flipAtt)
+                        Attack("up", transform.position);
+                    else
+                        Attack("down", transform.position);
                 }
                 else if (Input.GetKey("down"))
                 {
-                    Attack("down", transform.position);
-
+                    if (!ph.flipAtt)
+                        Attack("down", transform.position);
+                    else
+                        Attack("up", transform.position);
                 }
                 else if (Input.GetKey("left"))
                 {
-                    Attack("left", transform.position);
-
+                    if (!ph.flipAtt)
+                        Attack("left", transform.position);
+                    else
+                        Attack("right", transform.position);
                 }
                 else if (Input.GetKey("right"))
                 {
-                    Attack("right", transform.position);
+                    if (!ph.flipAtt)
+                        Attack("right", transform.position);
+                    else
+                        Attack("left", transform.position);
                 }
             }
 
@@ -139,7 +159,7 @@ public class Weapon : MonoBehaviour {
                 {
                     isShooting = true;
                     shootTimer = 0;
-                    if (GetComponentInParent<PlayerHealth>().faster)
+                    if (ph.faster)
                         Shoot(direction, playerPos, actualWeapon.shotSpeed + 3);
                     else
                         Shoot(direction, playerPos, actualWeapon.shotSpeed);
@@ -346,7 +366,7 @@ public class Weapon : MonoBehaviour {
         Vector3 dir4 = rot4 * Vector3.up;
         float shotSpeed;
 
-        if (GetComponentInParent<PlayerHealth>().faster)
+        if (ph.faster)
             shotSpeed = weapon.shotSpeed + 3;
         else
             shotSpeed = weapon.shotSpeed;

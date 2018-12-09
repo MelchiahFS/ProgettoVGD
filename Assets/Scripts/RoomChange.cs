@@ -9,7 +9,7 @@ public class RoomChange : MonoBehaviour {
     private TileSpriteSelector selector;
     private MiniMapController minimap;
     private int roomSizeX, roomSizeY;
-    private System.Random rnd = new System.Random((int)DateTime.Now.Ticks);
+    
 
     public bool passUp = false, passDown = false, passLeft = false, passRight = false;
 

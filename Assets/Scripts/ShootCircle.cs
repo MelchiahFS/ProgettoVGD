@@ -44,4 +44,9 @@ public class ShootCircle : MonoBehaviour {
 
         counter += Time.deltaTime;
     }
+
+    public void SetShotSpeed(float amount)
+    {
+        shotSpeed += amount;
+    }
 }

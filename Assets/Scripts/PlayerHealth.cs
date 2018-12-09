@@ -15,8 +15,8 @@ public class PlayerHealth : MonoBehaviour {
     private Slider slider;
     private Color playerColor;
     private PlayerController pc;
-    public bool invincible = false, flipMov = false, flipAtt = false, poisoned = false, faster = false;
-    private Coroutine speedUpCO, slowDownCO, gddCO, speedUpAllCO, slowDownAllCO, ddCO, invCO, flipMovCO, flipAttCO, poisonCO, poisonAllCO;
+    public bool invincible = false, flipMov = false, flipAtt = false, poisoned = false, faster = false, slower = false, dd = false, gdd = false, hd = false;
+    private Coroutine speedUpCO, slowDownCO, hdCO, ddCO, gddCO, speedUpAllCO, slowDownAllCO, invCO, flipMovCO, flipAttCO, poisonCO, poisonAllCO;
     private int tickNumber = 5;
     private float poisonDamageRate = 1;
     private float poisonDamage = 3;
@@ -54,15 +54,27 @@ public class PlayerHealth : MonoBehaviour {
     //i nemici possono danneggiare nuovamente il player solo dopo un certo periodo
     public void TakeDamage(float amount)
     {
+
         if (!invincible && invTimer >= invincibilityTime)
         {
             invTimer = 0;
-            slider.value -= amount;
-            currentHealth -= amount;
-            if (currentHealth <= 0)
+
+            if (gdd)
+                amount *= 2;
+
+            if (currentHealth - amount <= 0)
+            {
+                currentHealth = 0;
+                slider.value = currentHealth;
                 PlayerDeath();
-            else 
-                StartCoroutine(Flash(playerColor, GetComponent<SpriteRenderer>())); 
+            }
+            else
+            {
+                currentHealth -= amount;
+                slider.value = currentHealth;
+                StartCoroutine(Flash(playerColor, GetComponent<SpriteRenderer>()));
+            }
+
         }
 
     }
@@ -162,16 +174,20 @@ public class PlayerHealth : MonoBehaviour {
                 }
                 break;
 
-            case ItemStats.ConsumableType.doubleDamage:
+            case ItemStats.ConsumableType.doubleDamage: //ok
+                ddCO = StartCoroutine(DoubleDamage());
                 break;
 
-            case ItemStats.ConsumableType.halfDamage:
+            case ItemStats.ConsumableType.halfDamage: //ok
+                hdCO = StartCoroutine(HalfDamage());
                 break;
 
-            case ItemStats.ConsumableType.getDoubleDamage:
+            case ItemStats.ConsumableType.getDoubleDamage: //ok
+                gddCO = StartCoroutine(GetDoubleDamage());
                 break;
                 
-            case ItemStats.ConsumableType.flipAttack:
+            case ItemStats.ConsumableType.flipAttack: //ok
+                flipAttCO = StartCoroutine(FlipAttack());
                 break;
         }
     }
@@ -184,21 +200,25 @@ public class PlayerHealth : MonoBehaviour {
 
     private IEnumerator SpeedUp()
     {
+        faster = true;
         float actualSpeed = pc.speed;
         pc.speed += 3;
         yield return new WaitForSeconds(10);
         pc.speed = actualSpeed;
-        yield return null;
+        faster = false;
+        yield break;
 
     }
 
     private IEnumerator SlowDown()
     {
+        slower = true;
         float actualSpeed = pc.speed;
         pc.speed -= 2;
         yield return new WaitForSeconds(10);
         pc.speed = actualSpeed;
-        yield return null;
+        slower = false;
+        yield break;
     }
 
     private IEnumerator Invincible()
@@ -206,7 +226,7 @@ public class PlayerHealth : MonoBehaviour {
         invincible = true;
         yield return new WaitForSeconds(10);
         invincible = false;
-        yield return null;
+        yield break;
     }
 
     private IEnumerator FlipMovement()
@@ -214,7 +234,7 @@ public class PlayerHealth : MonoBehaviour {
         flipMov = true;
         yield return new WaitForSeconds(10);
         flipMov = false;
-        yield return null;
+        yield break;
     }
 
     private IEnumerator FlipAttack()
@@ -222,7 +242,7 @@ public class PlayerHealth : MonoBehaviour {
         flipAtt = true;
         yield return new WaitForSeconds(10);
         flipAtt = false;
-        yield return null;
+        yield break;
     }
 
     public IEnumerator Poisoned()
@@ -241,15 +261,50 @@ public class PlayerHealth : MonoBehaviour {
         yield break;
     }
 
+    private IEnumerator DoubleDamage()
+    {
+        dd = true;
+        yield return new WaitForSeconds(10);
+        dd = false;
+        yield break;
+    }
+
+    private IEnumerator HalfDamage()
+    {
+        hd = true;
+        yield return new WaitForSeconds(10);
+        hd = false;
+        yield break;
+    }
+
+    private IEnumerator GetDoubleDamage()
+    {
+        gdd = true;
+        yield return new WaitForSeconds(10);
+        gdd = false;
+        yield break;
+    }
+
     //infligge danno da consumable al player
     public void ConsumableDamage(float amount)
     {
-        slider.value -= amount;
-        currentHealth -= amount;
-        if (currentHealth <= 0)
+        if (gdd)
+            amount *= 2;
+
+        if (currentHealth - amount <= 0)
+        {
+            currentHealth = 0;
+            slider.value = currentHealth;
             PlayerDeath();
-        else if (!isFlashing)
-            StartCoroutine(ConsumableFlash());
+        }
+        else
+        {
+            currentHealth -= amount;
+            slider.value = currentHealth;
+            if (!isFlashing)
+                StartCoroutine(ConsumableFlash());
+        }
+        
     }
 
     //crea un flash bianco quando il player riceve danno da consumable

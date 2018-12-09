@@ -70,4 +70,9 @@ public class ShootBurst : MonoBehaviour {
         shooting = false;
         yield break;
     }
+
+    public void SetShotSpeed(float amount)
+    {
+        shotSpeed += amount;
+    }
 }

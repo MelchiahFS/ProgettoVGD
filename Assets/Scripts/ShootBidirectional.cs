@@ -56,4 +56,9 @@ public class ShootBidirectional : MonoBehaviour {
         lastFramePosition = transform.position + offset;
         counter += Time.deltaTime;
     }
+
+    public void SetShotSpeed(float amount)
+    {
+        shotSpeed += amount;
+    }
 }

@@ -64,7 +64,7 @@ public class BulletController : MonoBehaviour {
                 coll.gameObject.SendMessage("TakeDamage", weapon.damage);
                 if (weapon.bulletType != ItemStats.BulletType.normal)
                 {
-                    if (rand.Next(0, 5) == 0)
+                    if (rand.Next(0, 5) == 0) //ho il 20% di probabilità di sparare un proiettile modificato
                         coll.gameObject.SendMessage("ApplyModifier", weapon.bulletType);
                 }
                 rb.velocity = Vector2.zero;

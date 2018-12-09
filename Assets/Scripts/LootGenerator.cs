@@ -71,13 +71,13 @@ public class LootGenerator : MonoBehaviour {
                 //    items.Add(i);
                 //    break;
 
-                //case ItemStats.ConsumableType.poisonAll: //ok
-                //    items.Add(i);
-                //    break;
-
-                case ItemStats.ConsumableType.poisonSelf: //ok
+                case ItemStats.ConsumableType.poisonAll: //ok
                     items.Add(i);
                     break;
+
+                    //case ItemStats.ConsumableType.poisonSelf: //ok
+                    //    items.Add(i);
+                    //    break;
 
                     //case ItemStats.ConsumableType.damageAll: //ok
                     //    items.Add(i);

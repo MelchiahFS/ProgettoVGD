@@ -12,14 +12,14 @@ public class EnemyHealth : MonoBehaviour {
     private GameObject player;
     private PlayerHealth playerHealth;
     private PlayerController playerController;
-    private SpriteRenderer rend, f, s, p;
+    private SpriteRenderer rend, burnR, slowR, poisonR, fastR;
     private Slider slider;
     private AStarAI astar;
     public Material hitColor;
     private Material defaultMaterial;
     private Color normalColor;
     private float fadeTime = 1.5f;
-    private bool isFlashing = false, poisoned = false, faster = false, burning = false, slowed = false, contact = false;
+    public bool isFlashing = false, poisoned = false, faster = false, burning = false, slowed = false, contact = false;
     public bool dying = false;
     private int tickNumber = 5;
     private float slowDownTime = 5, poisonDamageRate = 1, poisonDamage = 3, fireDamageRate = 0.5f, fireDamage = 3, fireContact = 1.5f;
@@ -41,18 +41,6 @@ public class EnemyHealth : MonoBehaviour {
         slider.maxValue = startingHealth;
         slider.value = startingHealth;
         currentHealth = startingHealth;
-
-        //trovo le icone di status tra i figli del gameObject
-        foreach (SpriteRenderer r in GetComponentsInChildren<SpriteRenderer>())
-        {
-            if (r.gameObject.name == "Fire")
-                f = r;
-            else if (r.gameObject.name == "Slow")
-                s = r;
-            else if (r.gameObject.name == "Poison")
-                p = r;
-        }
-
     }
 
     void Update()
@@ -91,6 +79,11 @@ public class EnemyHealth : MonoBehaviour {
 
     public void TakeDamage(float amount)
     {
+        if (playerHealth.dd)
+            amount *= 2;
+        if (playerHealth.hd)
+            amount /= 2;
+
         if (currentHealth - amount > 0)
         {
             currentHealth -= amount;
@@ -99,8 +92,8 @@ public class EnemyHealth : MonoBehaviour {
         }
         else
         {
-            currentHealth -= amount;
-            slider.value -= amount;
+            currentHealth = 0;
+            slider.value = 0;
             StartCoroutine(Die());
         }
             
@@ -201,8 +194,8 @@ public class EnemyHealth : MonoBehaviour {
     public IEnumerator SlowDown()
     {
 
+        GetComponent<AnchorHealthBar>().SetIconPosition(hb.transform.Find("Slow").gameObject, true);
         slowed = true;
-        s.enabled = true;
 
         speed = GetComponent<MovementPattern>().speed;
         if (!GetComponent<EnemyController>().flying)
@@ -210,44 +203,50 @@ public class EnemyHealth : MonoBehaviour {
         else
             GetComponent<MovementPattern>().speed = 1;
         yield return new WaitForSeconds(slowDownTime);
-
-        counter = 0;
+        
         if (!GetComponent<EnemyController>().flying)
             astar.SetSpeed(speed);
         else
             GetComponent<MovementPattern>().speed = speed;
-        s.enabled = false;
+
+        GetComponent<AnchorHealthBar>().SetIconPosition(hb.transform.Find("Slow").gameObject, false);
         slowed = false;
         yield break;
     }
 
     public IEnumerator SpeedUp()
     {
-
+        GetComponent<AnchorHealthBar>().SetIconPosition(hb.transform.Find("Fast").gameObject, true);
         faster = true;
-        //s.enabled = true;
 
+        gameObject.SendMessage("SetShotSpeed", 2);
+        //incremento la velocitò del nemico
         speed = GetComponent<MovementPattern>().speed;
         if (!GetComponent<EnemyController>().flying)
             astar.SetSpeed(speed + 2);
         else
             GetComponent<MovementPattern>().speed +=2;
         yield return new WaitForSeconds(slowDownTime);
-
-        counter = 0;
+        
         if (!GetComponent<EnemyController>().flying)
             astar.SetSpeed(speed);
         else
             GetComponent<MovementPattern>().speed = speed;
-        //s.enabled = false;
+
+        gameObject.SendMessage("SetShotSpeed", -2);
+        GetComponent<AnchorHealthBar>().SetIconPosition(hb.transform.Find("Fast").gameObject, false);
         faster = false;
         yield break;
     }
 
     public IEnumerator Poisoned()
     {
+        //aspetto che sia finita la precedente chiamata alla coroutine
+        while (poisoned)
+            yield return null;
+
+        GetComponent<AnchorHealthBar>().SetIconPosition(hb.transform.Find("Poison").gameObject, true);
         poisoned = true;
-        p.enabled = true;
 
         for (int i = 0; i < tickNumber; i++)
         {
@@ -255,15 +254,15 @@ public class EnemyHealth : MonoBehaviour {
             TakeDamage(poisonDamage);
         }
 
-        p.enabled = false;
+        GetComponent<AnchorHealthBar>().SetIconPosition(hb.transform.Find("Poison").gameObject, false);
         poisoned = false;
         yield break;
     }
 
     private IEnumerator Burn()
     {
+        GetComponent<AnchorHealthBar>().SetIconPosition(hb.transform.Find("Fire").gameObject, true);
         burning = true;
-        f.enabled = true;
 
         for (int i = 0; i < tickNumber; i++)
         {
@@ -271,7 +270,7 @@ public class EnemyHealth : MonoBehaviour {
             TakeDamage(fireDamage);
         }
 
-        f.enabled = false;
+        GetComponent<AnchorHealthBar>().SetIconPosition(hb.transform.Find("Fire").gameObject, false);
         burning = false;
         yield break;
 

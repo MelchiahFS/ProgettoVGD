@@ -5,28 +5,31 @@ using UnityEngine;
 public class AnchorHealthBar : MonoBehaviour {
 
 
-    private RectTransform rect, healthBarRT, sliderRT;
+    private RectTransform poisonRect, fastRect, slowRect, burnRect, healthBarRT, sliderRT;
     private Vector3 hbLocalScale, parentLocalScale;
     public GameObject healthBar;
 
     [System.NonSerialized]
     public GameObject slider, fire, slow, poison;
-    private GameObject go;
+    private List<GameObject> iconList = new List<GameObject>();
+    private GameObject hb;
+
 
     void Awake()
     {
-        go = Instantiate(healthBar, transform) as GameObject;
-        go.name = healthBar.name;
-        go.transform.SetParent(transform, false);
+        //imposto la healthBar come gameObject figlio
+        hb = Instantiate(healthBar, transform) as GameObject;
+        hb.name = healthBar.name;
+        hb.transform.SetParent(transform, false);
 
     }
 
     void Start ()
     {
         
-        slider = go.transform.Find("Slider").gameObject;
+        slider = hb.transform.Find("Slider").gameObject;
 
-        healthBarRT = go.GetComponent<RectTransform>();
+        healthBarRT = hb.GetComponent<RectTransform>();
         sliderRT = slider.GetComponent<RectTransform>();
 
         //posiziono la barra sopra la testa del nemico
@@ -50,32 +53,39 @@ public class AnchorHealthBar : MonoBehaviour {
         hbLocalScale.z /= parentLocalScale.z;
         healthBarRT.localScale = hbLocalScale;
 
-
-        fire = go.transform.Find("Fire").gameObject;
-        rect = fire.GetComponent<RectTransform>();
-        rect.anchorMin = new Vector2(0.5f, 1);
-        rect.anchorMax = new Vector2(0.5f, 1);
-        rect.anchoredPosition = new Vector3(-40, -30, 0);
-        rect.sizeDelta = new Vector2(40, 60);
-        fire.GetComponent<SpriteRenderer>().enabled = false;
-
-        slow = go.transform.Find("Slow").gameObject;
-        rect = slow.GetComponent<RectTransform>();
-        rect.anchorMin = new Vector2(0.5f, 1);
-        rect.anchorMax = new Vector2(0.5f, 1);
-        rect.anchoredPosition = new Vector3(0, -30, 0);
-        rect.sizeDelta = new Vector2(40, 60);
-        slow.GetComponent<SpriteRenderer>().enabled = false;
-
-        poison = go.transform.Find("Poison").gameObject;
-        rect = poison.GetComponent<RectTransform>();
-        rect.anchorMin = new Vector2(0.5f, 1);
-        rect.anchorMax = new Vector2(0.5f, 1);
-        rect.anchoredPosition = new Vector3(40, -30, 0);
-        rect.sizeDelta = new Vector2(40, 60);
-        poison.GetComponent<SpriteRenderer>().enabled = false;
-
-
     }
+
+    //attiva o disattiva le icone di status, e ne imposta dinamicamente la posizione
+    public void SetIconPosition(GameObject o, bool add)
+    {
+        if (add)
+        { 
+            if(!iconList.Contains(o))
+            {
+                iconList.Add(o);
+                o.GetComponent<SpriteRenderer>().enabled = true;
+            }
+        }
+        else
+        {
+            iconList.Remove(o);
+            o.GetComponent<SpriteRenderer>().enabled = false;
+        }
+
+        if (iconList.Count == 1)
+            iconList[0].GetComponent<RectTransform>().anchoredPosition = new Vector3(0, -30, 0);
+        else if (iconList.Count == 2)
+        {
+            iconList[0].GetComponent<RectTransform>().anchoredPosition = new Vector3(-20, -30, 0);
+            iconList[1].GetComponent<RectTransform>().anchoredPosition = new Vector3(20, -30, 0);
+        }
+        else if (iconList.Count == 3)
+        {
+            iconList[0].GetComponent<RectTransform>().anchoredPosition = new Vector3(-40, -30, 0);
+            iconList[1].GetComponent<RectTransform>().anchoredPosition = new Vector3(0, -30, 0);
+            iconList[2].GetComponent<RectTransform>().anchoredPosition = new Vector3(40, -30, 0);
+        }
+    }
+
 
 }
