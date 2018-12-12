@@ -9,9 +9,6 @@ public class PauseMenu : MonoBehaviour {
 	public static bool GameIsPaused = false;
 
 	public GameObject pauseMenuUI;
-    public GameObject inventoryUI;
-    public Inventory item;
-    public GameObject button;
 
     public void Start()
     {
@@ -27,15 +24,6 @@ public class PauseMenu : MonoBehaviour {
 			else
 				Pause();
 		}
-
-        if (Input.GetKeyDown(KeyCode.Tab))
-        {
-            if (GameIsPaused)
-                ResumeI();
-            else
-                PauseI();
-        }
-
     }
 
 	public void Resume()
@@ -45,26 +33,11 @@ public class PauseMenu : MonoBehaviour {
 		GameIsPaused = false;
 	}
 
-	public void Pause()
-	{
-		pauseMenuUI.SetActive(true);
-		Time.timeScale = 0f;
-		GameIsPaused = true;
-    }
-
-    public void ResumeI()
+    public void Pause()
     {
-        inventoryUI.SetActive(false);
-        Time.timeScale = 1f;
-        GameIsPaused = false;
-    }
-
-    public void PauseI()
-    {
-        inventoryUI.SetActive(true);
+        pauseMenuUI.SetActive(true);
         Time.timeScale = 0f;
         GameIsPaused = true;
-        EventSystem.current.SetSelectedGameObject(button);
     }
 
 

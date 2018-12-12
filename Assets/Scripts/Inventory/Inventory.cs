@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.EventSystems;
 
 public class Inventory : MonoBehaviour {
 
@@ -89,6 +90,41 @@ public class Inventory : MonoBehaviour {
 
     public GameObject go;
     private ItemStats emptySlot;
+    public Text text;
+    public GameObject options;
+    public int index;
+
+    public GameObject inventoryUI;
+    public GameObject button;
+
+    public static bool GameIsPaused = false;
+
+    void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.Tab))
+        {
+            if (GameIsPaused)
+                ResumeI();
+            else
+                PauseI();
+        }
+
+    }
+
+    public void ResumeI()
+    {
+        inventoryUI.SetActive(false);
+        Time.timeScale = 1f;
+        GameIsPaused = false;
+    }
+
+    public void PauseI()
+    {
+        inventoryUI.SetActive(true);
+        Time.timeScale = 0f;
+        GameIsPaused = true;
+        EventSystem.current.SetSelectedGameObject(button);
+    }
 
     private bool Add(ItemStats item)
     {
@@ -146,6 +182,25 @@ public class Inventory : MonoBehaviour {
         {
             JsonUtility.FromJsonOverwrite(JsonUtility.ToJson(emptySlot), itemList[i]);
         }
+    }
+
+    public void DropItem()
+    {
+        JsonUtility.FromJsonOverwrite(JsonUtility.ToJson(emptySlot), itemList[index]);
+        UpdateSlotUI();
+        HideMenu();
+    }
+
+    public void ShowMenu(int i)
+    {
+        options.SetActive(true);
+        text.text = itemList[i].itemName;
+        index = i;
+    }
+
+    public void HideMenu()
+    {
+        options.SetActive(false);
     }
 
     public void UpdateSlotUI()
