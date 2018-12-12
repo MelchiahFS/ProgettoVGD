@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class ShootPlayer : MonoBehaviour {
 
-    public float shotSpeed, fireRate, damage, range, distance;
+    public float shotSpeed, actualShotSpeed, fireRate, damage, range, distance;
     private float counter;
     private EnemyBullet enemyBullet;
     private Transform playerTransform;

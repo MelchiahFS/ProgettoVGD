@@ -5,10 +5,9 @@ using UnityEngine.UI;
 
 public class PlayerHealth : MonoBehaviour {
 
-    private float startingHealth = 300;
-    public float currentHealth;
-    private float invTimer = 0;
+    private float startingHealth = 300, invTimer = 0, poisonDamageRate = 1, poisonDamage = 3, actualSpeed;
     private float invincibilityTime = 2f; //periodo di invulnerabilità dopo aver ricevuto danno
+    public float currentHealth;
     private Animator animator;
     Collider2D[] hitObjects;
     public bool isDead = false, isFlashing = false,isConsFlashing = false;
@@ -16,10 +15,8 @@ public class PlayerHealth : MonoBehaviour {
     private Color playerColor;
     private PlayerController pc;
     public bool invincible = false, flipMov = false, flipAtt = false, poisoned = false, faster = false, slower = false, dd = false, gdd = false, hd = false;
-    private Coroutine speedUpCO, slowDownCO, hdCO, ddCO, gddCO, speedUpAllCO, slowDownAllCO, invCO, flipMovCO, flipAttCO, poisonCO, poisonAllCO;
+    public Coroutine speedUpCO, slowDownCO, hdCO, ddCO, gddCO, invCO, flipMovCO, flipAttCO, poisonCO;
     private int tickNumber = 5;
-    private float poisonDamageRate = 1;
-    private float poisonDamage = 3;
     private SpriteRenderer rend;
     public Material hitColor, defaultMaterial;
 
@@ -105,123 +102,13 @@ public class PlayerHealth : MonoBehaviour {
         yield break;
     }
 
-    //------------------------------
-    //Effetti relativi ai consumables
-
-    public void ApplyEffect(ItemStats.ConsumableType consumable)
-    {
-        Room actualRoom = GameManager.manager.ActualRoom;
-
-        switch (consumable)
-        {
-            case ItemStats.ConsumableType.healthUp25: //ok
-                HealthUp(25);
-                break;
-
-            case ItemStats.ConsumableType.healthUp50: //ok
-                HealthUp(50);
-                break;
-
-            case ItemStats.ConsumableType.slowDownAll: //ok
-                foreach (GameObject en in actualRoom.enemies)
-                {
-                    slowDownAllCO = StartCoroutine(en.GetComponent<EnemyHealth>().SlowDown());
-                }
-                break;
-
-            case ItemStats.ConsumableType.slowDownSelf: //ok
-                slowDownCO = StartCoroutine(SlowDown());
-                break;
-
-            case ItemStats.ConsumableType.poisonAll: //ok
-                foreach (GameObject en in actualRoom.enemies)
-                {
-                    poisonAllCO = StartCoroutine(en.GetComponent<EnemyHealth>().Poisoned());
-                }
-                break;
-
-            case ItemStats.ConsumableType.poisonSelf: //ok
-                poisonCO = StartCoroutine(Poisoned());
-                break;
-
-            case ItemStats.ConsumableType.damageAll: //ok
-                foreach (GameObject en in actualRoom.enemies)
-                {
-                    en.GetComponent<EnemyHealth>().TakeDamage(20);
-                }
-                break;
-
-            case ItemStats.ConsumableType.damageSelf: //ok
-                ConsumableDamage(20);
-                break;
-
-            case ItemStats.ConsumableType.flipMovement: //ok
-                flipMovCO = StartCoroutine(FlipMovement());
-                break;
-
-            case ItemStats.ConsumableType.invincible: //ok
-                invCO = StartCoroutine(Invincible());
-                break;
-
-            case ItemStats.ConsumableType.speedUpSelf: //ok
-                speedUpCO = StartCoroutine(SpeedUp());
-                break;
-
-            case ItemStats.ConsumableType.speedUpAll: //ok
-                foreach (GameObject en in actualRoom.enemies)
-                {
-                    speedUpAllCO = StartCoroutine(en.GetComponent<EnemyHealth>().SpeedUp());
-                }
-                break;
-
-            case ItemStats.ConsumableType.doubleDamage: //ok
-                ddCO = StartCoroutine(DoubleDamage());
-                break;
-
-            case ItemStats.ConsumableType.halfDamage: //ok
-                hdCO = StartCoroutine(HalfDamage());
-                break;
-
-            case ItemStats.ConsumableType.getDoubleDamage: //ok
-                gddCO = StartCoroutine(GetDoubleDamage());
-                break;
-                
-            case ItemStats.ConsumableType.flipAttack: //ok
-                flipAttCO = StartCoroutine(FlipAttack());
-                break;
-        }
-    }
-
-    private void HealthUp(int amount)
+    public void HealthUp(int amount)
     {
         currentHealth += amount;
         slider.value = currentHealth;
     }
 
-    private IEnumerator SpeedUp()
-    {
-        faster = true;
-        float actualSpeed = pc.speed;
-        pc.speed += 3;
-        yield return new WaitForSeconds(10);
-        pc.speed = actualSpeed;
-        faster = false;
-        yield break;
-
-    }
-
-    private IEnumerator SlowDown()
-    {
-        slower = true;
-        float actualSpeed = pc.speed;
-        pc.speed -= 2;
-        yield return new WaitForSeconds(10);
-        pc.speed = actualSpeed;
-        slower = false;
-        yield break;
-    }
-
-    private IEnumerator Invincible()
+    public IEnumerator Invincible()
     {
         invincible = true;
         yield return new WaitForSeconds(10);
@@ -229,7 +116,7 @@ public class PlayerHealth : MonoBehaviour {
         yield break;
     }
 
-    private IEnumerator FlipMovement()
+    public IEnumerator FlipMovement()
     {
         flipMov = true;
         yield return new WaitForSeconds(10);
@@ -237,7 +124,7 @@ public class PlayerHealth : MonoBehaviour {
         yield break;
     }
 
-    private IEnumerator FlipAttack()
+    public IEnumerator FlipAttack()
     {
         flipAtt = true;
         yield return new WaitForSeconds(10);
@@ -261,29 +148,6 @@ public class PlayerHealth : MonoBehaviour {
         yield break;
     }
 
-    private IEnumerator DoubleDamage()
-    {
-        dd = true;
-        yield return new WaitForSeconds(10);
-        dd = false;
-        yield break;
-    }
-
-    private IEnumerator HalfDamage()
-    {
-        hd = true;
-        yield return new WaitForSeconds(10);
-        hd = false;
-        yield break;
-    }
-
-    private IEnumerator GetDoubleDamage()
-    {
-        gdd = true;
-        yield return new WaitForSeconds(10);
-        gdd = false;
-        yield break;
-    }
 
     //infligge danno da consumable al player
     public void ConsumableDamage(float amount)
@@ -326,5 +190,86 @@ public class PlayerHealth : MonoBehaviour {
 
         isConsFlashing = false;
         yield break;
+    }
+
+    public IEnumerator SpeedUp()
+    {
+        faster = true;
+        actualSpeed = pc.speed;
+        pc.speed += 3;
+        yield return new WaitForSeconds(10);
+        SetNormalSpeed();
+        yield break;
+
+    }
+
+    public IEnumerator SlowDown()
+    {
+        slower = true;
+        actualSpeed = pc.speed;
+        pc.speed -= 2;
+        yield return new WaitForSeconds(10);
+        SetNormalSpeed();
+        yield break;
+    }
+
+    //reimposto la velocità normale del player; 
+    //il controllo della shotSpeed avviene nella classe Weapon tramite i bool faster e slower di questa classe
+    public void SetNormalSpeed()
+    {
+        if (faster)
+        {
+            StopCoroutine(speedUpCO);
+            faster = false;
+            //GetComponent<AnchorHealthBar>().SetIconPosition(fastIcon, false);
+        }
+        if (slower)
+        {
+            StopCoroutine(slowDownCO);
+            slower = false;
+            //GetComponent<AnchorHealthBar>().SetIconPosition(slowIcon, false);
+        }
+
+        pc.speed = actualSpeed;
+
+    }
+
+
+    public IEnumerator DoubleDamage()
+    {
+        dd = true;
+        yield return new WaitForSeconds(10);
+        SetNormalDamage();
+        yield break;
+    }
+
+    public IEnumerator HalfDamage()
+    {
+        hd = true;
+        yield return new WaitForSeconds(10);
+        SetNormalDamage();
+        yield break;
+    }
+
+    public IEnumerator GetDoubleDamage()
+    {
+        gdd = true;
+        yield return new WaitForSeconds(10);
+        gdd = false;
+        yield break;
+    }
+
+    public void SetNormalDamage()
+    {
+        if (dd)
+        {
+            StopCoroutine(ddCO);
+            dd = false;
+        }
+        if (hd)
+        {
+            StopCoroutine(hdCO);
+            hd = false;
+        }
     }
 }

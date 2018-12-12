@@ -59,8 +59,8 @@ public class AnchorHealthBar : MonoBehaviour {
     public void SetIconPosition(GameObject o, bool add)
     {
         if (add)
-        { 
-            if(!iconList.Contains(o))
+        {
+            if (!iconList.Contains(o))
             {
                 iconList.Add(o);
                 o.GetComponent<SpriteRenderer>().enabled = true;
@@ -68,8 +68,11 @@ public class AnchorHealthBar : MonoBehaviour {
         }
         else
         {
-            iconList.Remove(o);
-            o.GetComponent<SpriteRenderer>().enabled = false;
+            if (iconList.Contains(o))
+            {
+                iconList.Remove(o);
+                o.GetComponent<SpriteRenderer>().enabled = false;
+            }
         }
 
         if (iconList.Count == 1)

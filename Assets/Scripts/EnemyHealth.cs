@@ -7,9 +7,9 @@ using UnityEngine.UI;
 public class EnemyHealth : MonoBehaviour {
 
     public int damage = 10;
-    public float startingHealth = 50;
-    public float currentHealth;
-    private GameObject player;
+    private int tickNumber = 5;
+    public float currentHealth, startingHealth = 50;
+    private float slowDownTime = 5, poisonDamageRate = 1, poisonDamage = 3, fireDamageRate = 0.5f, fireDamage = 3, fireContact = 1.5f, counter = 0, speed, fadeTime = 1.5f;
     private PlayerHealth playerHealth;
     private PlayerController playerController;
     private SpriteRenderer rend, burnR, slowR, poisonR, fastR;
@@ -18,16 +18,11 @@ public class EnemyHealth : MonoBehaviour {
     public Material hitColor;
     private Material defaultMaterial;
     private Color normalColor;
-    private float fadeTime = 1.5f;
-    public bool isFlashing = false, poisoned = false, faster = false, burning = false, slowed = false, contact = false;
-    public bool dying = false;
-    private int tickNumber = 5;
-    private float slowDownTime = 5, poisonDamageRate = 1, poisonDamage = 3, fireDamageRate = 0.5f, fireDamage = 3, fireContact = 1.5f;
-    private float counter = 0, speed;
-    private Coroutine flashCO, slowCO, poisonCO, burnCO;
-    private GameObject hb;
+    public bool isFlashing = false, poisoned = false, faster = false, burning = false, slowed = false, contact = false, dying = false;
+    public Coroutine flashCO, slowCO, poisonCO, burnCO, fastCO;
+    private GameObject player, hb, burnIcon, fastIcon, slowIcon, poisonIcon;
 
-	void Start ()
+    void Start ()
     {
         player = GameObject.FindGameObjectWithTag("Player");
         if (!GetComponent<EnemyController>().flying)
@@ -41,6 +36,11 @@ public class EnemyHealth : MonoBehaviour {
         slider.maxValue = startingHealth;
         slider.value = startingHealth;
         currentHealth = startingHealth;
+
+        burnIcon = hb.transform.Find("Fire").gameObject;
+        poisonIcon = hb.transform.Find("Poison").gameObject;
+        slowIcon = hb.transform.Find("Slow").gameObject;
+        fastIcon = hb.transform.Find("Fast").gameObject;
     }
 
     void Update()
@@ -79,9 +79,10 @@ public class EnemyHealth : MonoBehaviour {
 
     public void TakeDamage(float amount)
     {
+        //controllo se il player è sotto l'effetto di doubleDamage o halfDamage
         if (playerHealth.dd)
             amount *= 2;
-        if (playerHealth.hd)
+        else if (playerHealth.hd)
             amount /= 2;
 
         if (currentHealth - amount > 0)
@@ -193,10 +194,13 @@ public class EnemyHealth : MonoBehaviour {
 
     public IEnumerator SlowDown()
     {
+        while (slowed)
+            yield return null;
 
-        GetComponent<AnchorHealthBar>().SetIconPosition(hb.transform.Find("Slow").gameObject, true);
+        GetComponent<AnchorHealthBar>().SetIconPosition(slowIcon, true);
         slowed = true;
 
+        gameObject.SendMessage("SetShotSpeed", -2);
         speed = GetComponent<MovementPattern>().speed;
         if (!GetComponent<EnemyController>().flying)
             astar.SetSpeed(1);
@@ -204,38 +208,28 @@ public class EnemyHealth : MonoBehaviour {
             GetComponent<MovementPattern>().speed = 1;
         yield return new WaitForSeconds(slowDownTime);
         
-        if (!GetComponent<EnemyController>().flying)
-            astar.SetSpeed(speed);
-        else
-            GetComponent<MovementPattern>().speed = speed;
-
-        GetComponent<AnchorHealthBar>().SetIconPosition(hb.transform.Find("Slow").gameObject, false);
-        slowed = false;
+        SetNormalSpeed();
         yield break;
     }
 
     public IEnumerator SpeedUp()
     {
-        GetComponent<AnchorHealthBar>().SetIconPosition(hb.transform.Find("Fast").gameObject, true);
+        while (faster)
+            yield return null;
+
+        GetComponent<AnchorHealthBar>().SetIconPosition(fastIcon, true);
         faster = true;
 
         gameObject.SendMessage("SetShotSpeed", 2);
-        //incremento la velocitò del nemico
+        //incremento la velocità del nemico
         speed = GetComponent<MovementPattern>().speed;
         if (!GetComponent<EnemyController>().flying)
             astar.SetSpeed(speed + 2);
         else
             GetComponent<MovementPattern>().speed +=2;
         yield return new WaitForSeconds(slowDownTime);
-        
-        if (!GetComponent<EnemyController>().flying)
-            astar.SetSpeed(speed);
-        else
-            GetComponent<MovementPattern>().speed = speed;
 
-        gameObject.SendMessage("SetShotSpeed", -2);
-        GetComponent<AnchorHealthBar>().SetIconPosition(hb.transform.Find("Fast").gameObject, false);
-        faster = false;
+        SetNormalSpeed();
         yield break;
     }
 
@@ -245,7 +239,7 @@ public class EnemyHealth : MonoBehaviour {
         while (poisoned)
             yield return null;
 
-        GetComponent<AnchorHealthBar>().SetIconPosition(hb.transform.Find("Poison").gameObject, true);
+        GetComponent<AnchorHealthBar>().SetIconPosition(poisonIcon, true);
         poisoned = true;
 
         for (int i = 0; i < tickNumber; i++)
@@ -254,14 +248,14 @@ public class EnemyHealth : MonoBehaviour {
             TakeDamage(poisonDamage);
         }
 
-        GetComponent<AnchorHealthBar>().SetIconPosition(hb.transform.Find("Poison").gameObject, false);
+        GetComponent<AnchorHealthBar>().SetIconPosition(poisonIcon, false);
         poisoned = false;
         yield break;
     }
 
     private IEnumerator Burn()
     {
-        GetComponent<AnchorHealthBar>().SetIconPosition(hb.transform.Find("Fire").gameObject, true);
+        GetComponent<AnchorHealthBar>().SetIconPosition(burnIcon, true);
         burning = true;
 
         for (int i = 0; i < tickNumber; i++)
@@ -270,7 +264,7 @@ public class EnemyHealth : MonoBehaviour {
             TakeDamage(fireDamage);
         }
 
-        GetComponent<AnchorHealthBar>().SetIconPosition(hb.transform.Find("Fire").gameObject, false);
+        GetComponent<AnchorHealthBar>().SetIconPosition(burnIcon, false);
         burning = false;
         yield break;
 
@@ -283,15 +277,46 @@ public class EnemyHealth : MonoBehaviour {
             if (!poisoned)
                 poisonCO = StartCoroutine(Poisoned());
         }
-        else if (bullet == ItemStats.BulletType.slowing)
-        {
-            if (!slowed)
-                slowCO = StartCoroutine(SlowDown());
-        }
         else if (bullet == ItemStats.BulletType.burning)
         {
             if (!burning)
                 burnCO = StartCoroutine(Burn());
         }
+        else if (bullet == ItemStats.BulletType.slowing)
+        {
+            if (!slowed)
+            {
+                if (faster)
+                    SetNormalSpeed();
+                else
+                    slowCO = StartCoroutine(SlowDown());
+            }
+                
+        }
+    }
+
+    public void SetNormalSpeed()
+    {
+        if (faster)
+        {
+            StopCoroutine(fastCO);
+            faster = false;
+            GetComponent<AnchorHealthBar>().SetIconPosition(fastIcon, false);
+            gameObject.SendMessage("SetShotSpeed", -2);
+        }
+        if (slowed)
+        {
+            StopCoroutine(slowCO);
+            slowed = false;
+            GetComponent<AnchorHealthBar>().SetIconPosition(slowIcon, false);
+            gameObject.SendMessage("SetShotSpeed", 2);
+        }
+
+        if (!GetComponent<EnemyController>().flying)
+            astar.SetSpeed(speed);
+        else
+            GetComponent<MovementPattern>().speed = speed;
+
+        
     }
 }

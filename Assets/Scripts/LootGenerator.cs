@@ -10,20 +10,21 @@ public class LootGenerator : MonoBehaviour {
     private Array enumValues;
     public List<Item> consumablesSO;
     public List<ItemStats> consumables;
+    private List<ItemStats> items = new List<ItemStats>();
     public GameObject sceneItemPrefab;
     private SceneItem si;
     private ItemSpriteSelector select;
     private SpriteRenderer render;
-    private List<ItemStats> items = new List<ItemStats>();
     private ItemStats actualItem;
     public Room actualRoom;
-    private int ind = 0;
-
+    private PlayerHealth ph;
    
     void Start()
     {
+        ph = GetComponentInParent<PlayerHealth>();
         select = GetComponent<ItemSpriteSelector>();
         consumables = new List<ItemStats>();
+
         foreach (Item c in consumablesSO)
         {
             ItemStats item = new ItemStats();
@@ -51,59 +52,6 @@ public class LootGenerator : MonoBehaviour {
             item.consumableType = c.consumableType;
             consumables.Add(item);
         }
-        foreach (ItemStats i in consumables)
-        {
-            switch (i.consumableType)
-            {
-                //case ItemStats.ConsumableType.healthUp25: //ok
-                //    items.Add(i);
-                //    break;
-
-                //case ItemStats.ConsumableType.healthUp50: //ok
-                //    items.Add(i);
-                //    break;
-
-                //case ItemStats.ConsumableType.slowDownAll: //ok
-                //    items.Add(i);
-                //    break;
-
-                //case ItemStats.ConsumableType.slowDownSelf: //ok
-                //    items.Add(i);
-                //    break;
-
-                case ItemStats.ConsumableType.poisonAll: //ok
-                    items.Add(i);
-                    break;
-
-                    //case ItemStats.ConsumableType.poisonSelf: //ok
-                    //    items.Add(i);
-                    //    break;
-
-                    //case ItemStats.ConsumableType.damageAll: //ok
-                    //    items.Add(i);
-                    //    break;
-
-                    //case ItemStats.ConsumableType.damageSelf: //ok
-                    //    items.Add(i);
-                    //    break;
-
-                    //case ItemStats.ConsumableType.flipMovement: //ok
-                    //    items.Add(i);
-                    //    break;
-
-                    //case ItemStats.ConsumableType.invincible: //ok
-                    //    items.Add(i);
-                    //    break;
-
-                    //case ItemStats.ConsumableType.speedUpSelf: //ok
-                    //    items.Add(i);
-                    //    break;
-
-                    //case ItemStats.ConsumableType.speedUpAll:
-                    //    items.Add(i);
-                    //    break;
-            }
-        }
 
         actualRoom = GameManager.manager.ActualRoom;
     }
@@ -113,12 +61,13 @@ public class LootGenerator : MonoBehaviour {
 
         if (Input.GetKeyDown(KeyCode.Alpha2))
         {
-            if (items.Count > 0 && items[ind % items.Count] != null)
+            if (consumables.Count > 0)
             {
-                actualItem = items[ind % items.Count];
+                actualItem = consumables[0];
                 Debug.Log(actualItem.consumableType.ToString());
-                GetComponentInParent<PlayerHealth>().ApplyEffect(actualItem.consumableType);
-                items.Remove(items[ind % items.Count]);
+                
+                ApplyEffect(actualItem.consumableType);
+                consumables.Remove(consumables[0]);
             }
             
         }
@@ -235,6 +184,122 @@ public class LootGenerator : MonoBehaviour {
 
         }
         
+    }
+
+    //------------------------------
+    //Effetti relativi ai consumables
+
+    public void ApplyEffect(ItemStats.ConsumableType consumable)
+    {
+        Room actualRoom = GameManager.manager.ActualRoom;
+
+        switch (consumable)
+        {
+            case ItemStats.ConsumableType.healthUp25: //ok
+                ph.HealthUp(25);
+                break;
+
+            case ItemStats.ConsumableType.healthUp50: //ok
+                ph.HealthUp(50);
+                break;
+
+            case ItemStats.ConsumableType.slowDownAll: //ok
+                foreach (GameObject en in actualRoom.enemies)
+                {
+                    EnemyHealth eh = en.GetComponent<EnemyHealth>();
+                    if (eh.faster)
+                        eh.SetNormalSpeed();
+                    else
+                        //chiamo startCoroutine in enemyHealth per poterlo fermare da lì, in modo da non ottenere il bug di Unity "Coroutine continue failure"
+                        eh.slowCO = eh.StartCoroutine(eh.SlowDown());
+                }
+                break;
+
+            case ItemStats.ConsumableType.speedUpAll: //ok
+                foreach (GameObject en in actualRoom.enemies)
+                {
+                    EnemyHealth eh = en.GetComponent<EnemyHealth>();
+                    if (eh.slowed)
+                        eh.SetNormalSpeed();
+                    else
+                        eh.fastCO = eh.StartCoroutine(eh.SpeedUp());
+                }
+                break;
+
+            case ItemStats.ConsumableType.poisonAll: //ok
+                foreach (GameObject en in actualRoom.enemies)
+                {
+                    EnemyHealth eh = en.GetComponent<EnemyHealth>();
+                    eh.poisonCO = eh.StartCoroutine(eh.Poisoned());
+                }
+                break;
+
+            case ItemStats.ConsumableType.poisonSelf: //ok
+                ph.poisonCO =ph. StartCoroutine(ph.Poisoned());
+                break;
+
+            case ItemStats.ConsumableType.damageAll: //ok
+                foreach (GameObject en in actualRoom.enemies)
+                {
+                    en.GetComponent<EnemyHealth>().TakeDamage(20);
+                }
+                break;
+
+            case ItemStats.ConsumableType.damageSelf: //ok
+                ph.ConsumableDamage(20);
+                break;
+
+            case ItemStats.ConsumableType.flipMovement: //ok
+                ph.flipMovCO = ph.StartCoroutine(ph.FlipMovement());
+                break;
+
+            case ItemStats.ConsumableType.invincible: //ok
+                ph.invCO = ph.StartCoroutine(ph.Invincible());
+                break;
+
+            case ItemStats.ConsumableType.slowDownSelf: //ok
+                if (ph.faster)
+                    ph.SetNormalSpeed();
+                else
+                    ph.slowDownCO = ph.StartCoroutine(ph.SlowDown());
+                break;
+
+            case ItemStats.ConsumableType.speedUpSelf: //ok
+                if (ph.slower)
+                    ph.SetNormalSpeed();
+                else
+                    ph.speedUpCO = ph.StartCoroutine(ph.SpeedUp());
+                break;
+
+            case ItemStats.ConsumableType.doubleDamage: //ok
+                //non posso duplicare più volte il danno
+                if (!ph.dd)
+                {
+                    if (ph.hd)
+                        ph.SetNormalDamage();
+                    else
+                        ph.ddCO = ph.StartCoroutine(ph.DoubleDamage());
+                }
+                break;
+
+            case ItemStats.ConsumableType.halfDamage: //ok
+                if (!ph.hd)
+                {
+                    if (ph.dd)
+                        ph.SetNormalDamage();
+                    else
+                        ph.hdCO = ph.StartCoroutine(ph.HalfDamage());
+                }
+                break;
+
+            case ItemStats.ConsumableType.getDoubleDamage: //ok
+                ph.gddCO = ph.StartCoroutine(ph.GetDoubleDamage());
+                break;
+
+            case ItemStats.ConsumableType.flipAttack: //ok
+                ph.flipAttCO = ph.StartCoroutine(ph.FlipAttack());
+                break;
+        }
     }
 
 }

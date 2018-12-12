@@ -129,8 +129,16 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   damage: 10
+  currentHealth: 0
   startingHealth: 50
   hitColor: {fileID: 2100000, guid: af4c9394002c4d84fb2f48fc93c94540, type: 2}
+  isFlashing: 0
+  poisoned: 0
+  faster: 0
+  burning: 0
+  slowed: 0
+  contact: 0
+  dying: 0
 --- !u!114 &114295124985491954
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -192,6 +200,7 @@ MonoBehaviour:
     toSort: []
     obsNumber: 0
     enemyCounter: 0
+    hasGenReward: 0
   astar: {fileID: 0}
   changeTargetTime: 3
   chargeTime: 3
@@ -208,7 +217,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f6c31a224a4aa2843942064d97f46ceb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  shotSpeed: 8
+  shotSpeed: 6
   fireRate: 1.5
   damage: 3
   range: 6

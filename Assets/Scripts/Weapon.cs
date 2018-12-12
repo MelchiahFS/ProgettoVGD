@@ -161,6 +161,8 @@ public class Weapon : MonoBehaviour {
                     shootTimer = 0;
                     if (ph.faster)
                         Shoot(direction, playerPos, actualWeapon.shotSpeed + 3);
+                    else if (ph.slower)
+                        Shoot(direction, playerPos, actualWeapon.shotSpeed -2);
                     else
                         Shoot(direction, playerPos, actualWeapon.shotSpeed);
                 }
@@ -368,6 +370,8 @@ public class Weapon : MonoBehaviour {
 
         if (ph.faster)
             shotSpeed = weapon.shotSpeed + 3;
+        else if (ph.slower)
+            shotSpeed  = weapon.shotSpeed - 2;
         else
             shotSpeed = weapon.shotSpeed;
 
