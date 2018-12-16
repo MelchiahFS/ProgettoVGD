@@ -22,6 +22,9 @@ public class Weapon : MonoBehaviour {
     private Vector3 dir, dir1, dir2, dir3;
     private PlayerHealth ph;
     private Animator animator;
+    public float radius = 0.75f;
+    public Vector3 upDistance = new Vector3(0, 0.75f, 0), downDistance = new Vector3(0, -0.75f, 0), leftDistance = new Vector3(-0.75f, 0, 0), rightDistance = new Vector3(0.75f, 0, 0);
+    private Vector3 attackStart;
 
     void Start()
     {
@@ -51,94 +54,97 @@ public class Weapon : MonoBehaviour {
 
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Alpha1))
+        if (!GameManager.manager.gamePause)
         {
-            if (weaponsStats[i % weaponsStats.Count] != null)
+            if (Input.GetKeyDown(KeyCode.Alpha1))
             {
-                actualWeapon = weaponsStats[i % weaponsStats.Count];
+                if (weaponsStats[i % weaponsStats.Count] != null)
+                {
+                    actualWeapon = weaponsStats[i % weaponsStats.Count];
+                    if (actualWeapon.weaponType == ItemStats.WeaponType.meele)
+                        Debug.Log(actualWeapon.weaponType.ToString());
+                    else
+                        Debug.Log(actualWeapon.fireType.ToString() + ", " + actualWeapon.bulletType.ToString());
+                    i++;
+                }
+            }
+
+            if (actualWeapon != null)
+            {
                 if (actualWeapon.weaponType == ItemStats.WeaponType.meele)
-                    Debug.Log(actualWeapon.weaponType.ToString());
+                {
+                    if (Input.GetKeyDown("up"))
+                    {
+                        if (!ph.flipAtt)
+                            Attack("up", transform.position);
+                        else
+                            Attack("down", transform.position);
+                    }
+                    else if (Input.GetKeyDown("down"))
+                    {
+                        if (!ph.flipAtt)
+                            Attack("down", transform.position);
+                        else
+                            Attack("up", transform.position);
+                    }
+                    else if (Input.GetKeyDown("left"))
+                    {
+                        if (!ph.flipAtt)
+                            Attack("left", transform.position);
+                        else
+                            Attack("right", transform.position);
+                    }
+                    else if (Input.GetKeyDown("right"))
+                    {
+                        if (!ph.flipAtt)
+                            Attack("right", transform.position);
+                        else
+                            Attack("left", transform.position);
+                    }
+                }
+                //la differenza è solamente che con le armi ranged posso tenere premuto il tasto per sparare in modo continuo
                 else
-                    Debug.Log(actualWeapon.fireType.ToString() + ", " + actualWeapon.bulletType.ToString());
-                i++;
-            } 
-        }
+                {
+                    if (Input.GetKey("up"))
+                    {
+                        if (!ph.flipAtt)
+                            Attack("up", transform.position);
+                        else
+                            Attack("down", transform.position);
+                    }
+                    else if (Input.GetKey("down"))
+                    {
+                        if (!ph.flipAtt)
+                            Attack("down", transform.position);
+                        else
+                            Attack("up", transform.position);
+                    }
+                    else if (Input.GetKey("left"))
+                    {
+                        if (!ph.flipAtt)
+                            Attack("left", transform.position);
+                        else
+                            Attack("right", transform.position);
+                    }
+                    else if (Input.GetKey("right"))
+                    {
+                        if (!ph.flipAtt)
+                            Attack("right", transform.position);
+                        else
+                            Attack("left", transform.position);
+                    }
+                }
 
-        if (actualWeapon != null)
-        {
-            if (actualWeapon.weaponType == ItemStats.WeaponType.meele)
-            {
-                if (Input.GetKeyDown("up"))
-                {
-                    if (!ph.flipAtt)
-                        Attack("up", transform.position);
-                    else
-                        Attack("down", transform.position);
-                }
-                else if (Input.GetKeyDown("down"))
-                {
-                    if (!ph.flipAtt)
-                        Attack("down", transform.position);
-                    else
-                        Attack("up", transform.position);
-                }
-                else if (Input.GetKeyDown("left"))
-                {
-                    if (!ph.flipAtt)
-                        Attack("left", transform.position);
-                    else
-                        Attack("right", transform.position);
-                }
-                else if (Input.GetKeyDown("right"))
-                {
-                    if (!ph.flipAtt)
-                        Attack("right", transform.position);
-                    else
-                        Attack("left", transform.position);
-                }
-            }
-            //la differenza è solamente che con le armi ranged posso tenere premuto il tasto per sparare in modo continuo
-            else
-            {
-                if (Input.GetKey("up"))
-                {
-                    if (!ph.flipAtt)
-                        Attack("up", transform.position);
-                    else
-                        Attack("down", transform.position);
-                }
-                else if (Input.GetKey("down"))
-                {
-                    if (!ph.flipAtt)
-                        Attack("down", transform.position);
-                    else
-                        Attack("up", transform.position);
-                }
-                else if (Input.GetKey("left"))
-                {
-                    if (!ph.flipAtt)
-                        Attack("left", transform.position);
-                    else
-                        Attack("right", transform.position);
-                }
-                else if (Input.GetKey("right"))
-                {
-                    if (!ph.flipAtt)
-                        Attack("right", transform.position);
-                    else
-                        Attack("left", transform.position);
-                }
             }
 
+            attackTimer += Time.deltaTime;
+            shootTimer += Time.deltaTime;
+            if (actualWeapon.weaponType == ItemStats.WeaponType.ranged && shootTimer >= actualWeapon.fireRate)
+                isShooting = false;
+
+            if (attackTimer >= attackDuration)
+                isAttacking = false;
         }
-
-        attackTimer += Time.deltaTime;
-        shootTimer += Time.deltaTime;
-        if (actualWeapon.weaponType == ItemStats.WeaponType.ranged && shootTimer >= actualWeapon.fireRate)
-            isShooting = false;
-
-        if (attackTimer >= attackDuration)
-            isAttacking = false;
     }
 
 
@@ -319,22 +325,26 @@ public class Weapon : MonoBehaviour {
         {
             case "up":
                 animator.Play("SlashUp");
-                hitObjects = Physics2D.OverlapCircleAll(transform.position + new Vector3(0, 0.5f, 0), 0.75f);
+                attackStart = transform.position + new Vector3(0, GetComponentInParent<Character>().RealOffset, 0) + upDistance;
+                hitObjects = Physics2D.OverlapCircleAll(attackStart, radius);
                 break;
             case "down":
                 animator.Play("SlashDown");
-                hitObjects = Physics2D.OverlapCircleAll(transform.position + new Vector3(0, -0.5f, 0), 0.75f);
+                attackStart = transform.position + new Vector3(0, GetComponentInParent<Character>().RealOffset, 0) + downDistance;
+                hitObjects = Physics2D.OverlapCircleAll(attackStart, radius);
                 break;
             case "left":
                 animator.Play("SlashLeft");
-                hitObjects = Physics2D.OverlapCircleAll(transform.position + new Vector3(-0.5f, 0, 0), 0.75f);
+                attackStart = transform.position + new Vector3(0, GetComponentInParent<Character>().RealOffset, 0) + leftDistance;
+                hitObjects = Physics2D.OverlapCircleAll(attackStart, radius);
                 break;
             case "right":
                 animator.Play("SlashRight");
-                hitObjects = Physics2D.OverlapCircleAll(transform.position + new Vector3(0.5f, 0, 0), 0.75f);
+                attackStart = transform.position + new Vector3(0, GetComponentInParent<Character>().RealOffset, 0) + rightDistance;
+                hitObjects = Physics2D.OverlapCircleAll(attackStart, radius);
                 break;
         }
-                
+
 
         if (hitObjects != null)
         {
@@ -342,18 +352,18 @@ public class Weapon : MonoBehaviour {
             {
                 if (coll.gameObject.tag == "Enemy" && coll.isTrigger)
                 {
-                    Vector3 dir = coll.gameObject.transform.position - transform.position;
-                    RaycastHit2D hit = Physics2D.Raycast(transform.position, dir);
+                    Vector3 dir = coll.gameObject.transform.position - (transform.position + new Vector3(0, GetComponentInParent<Character>().RealOffset, 0));
+                    RaycastHit2D hit = Physics2D.Raycast(transform.position + new Vector3(0, GetComponentInParent<Character>().RealOffset, 0), dir);
                     if (hit.collider.tag == "Enemy")
                     {
                         coll.gameObject.GetComponent<EnemyHealth>().TakeDamage(actualWeapon.damage);
                     }
                 }
-                    
+
             }
             hitObjects = null;
         }
-  
+
     }
 
     public void SplitBullet(ItemStats weapon, Vector3 position)
@@ -402,6 +412,21 @@ public class Weapon : MonoBehaviour {
         actualRoom.toSort.Add(bullet2);
         actualRoom.toSort.Add(bullet3);
         actualRoom.toSort.Add(bullet4);
+    }
+
+    void OnDrawGizmos()
+    {
+        if (isAttacking)
+        {
+            Gizmos.color = Color.white;
+            Gizmos.DrawWireSphere(attackStart, radius);
+        }
+        
+    }
+
+    public void EquipWeapon(ItemStats weapon)
+    {
+        JsonUtility.FromJsonOverwrite(JsonUtility.ToJson(weapon), actualWeapon);
     }
 
 }

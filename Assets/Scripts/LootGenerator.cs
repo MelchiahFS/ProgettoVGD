@@ -22,6 +22,7 @@ public class LootGenerator : MonoBehaviour {
     void Start()
     {
         ph = GetComponentInParent<PlayerHealth>();
+
         select = GetComponent<ItemSpriteSelector>();
         consumables = new List<ItemStats>();
 
@@ -235,7 +236,7 @@ public class LootGenerator : MonoBehaviour {
                 break;
 
             case ItemStats.ConsumableType.poisonSelf: //ok
-                ph.poisonCO =ph. StartCoroutine(ph.Poisoned());
+                ph.poisonCO = ph. StartCoroutine(ph.Poisoned());
                 break;
 
             case ItemStats.ConsumableType.damageAll: //ok
@@ -255,6 +256,12 @@ public class LootGenerator : MonoBehaviour {
 
             case ItemStats.ConsumableType.invincible: //ok
                 ph.invCO = ph.StartCoroutine(ph.Invincible());
+                break;
+
+            case ItemStats.ConsumableType.getDoubleDamage: //ok
+                //se il player è invincibile il consumable non ha effetto
+                if (!ph.invincible)
+                    ph.gddCO = ph.StartCoroutine(ph.GetDoubleDamage());
                 break;
 
             case ItemStats.ConsumableType.slowDownSelf: //ok
@@ -290,10 +297,6 @@ public class LootGenerator : MonoBehaviour {
                     else
                         ph.hdCO = ph.StartCoroutine(ph.HalfDamage());
                 }
-                break;
-
-            case ItemStats.ConsumableType.getDoubleDamage: //ok
-                ph.gddCO = ph.StartCoroutine(ph.GetDoubleDamage());
                 break;
 
             case ItemStats.ConsumableType.flipAttack: //ok

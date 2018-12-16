@@ -7,10 +7,7 @@ public class AnchorHealthBar : MonoBehaviour {
 
     private RectTransform poisonRect, fastRect, slowRect, burnRect, healthBarRT, sliderRT;
     private Vector3 hbLocalScale, parentLocalScale;
-    public GameObject healthBar;
-
-    [System.NonSerialized]
-    public GameObject slider, fire, slow, poison;
+    public GameObject slider, healthBar;
     private List<GameObject> iconList = new List<GameObject>();
     private GameObject hb;
 

@@ -9,7 +9,7 @@ public class PlayerHealth : MonoBehaviour {
     private float invincibilityTime = 2f; //periodo di invulnerabilità dopo aver ricevuto danno
     public float currentHealth;
     private Animator animator;
-    Collider2D[] hitObjects;
+    private Collider2D[] hitObjects;
     public bool isDead = false, isFlashing = false,isConsFlashing = false;
     private Slider slider;
     private Color playerColor;
@@ -19,8 +19,11 @@ public class PlayerHealth : MonoBehaviour {
     private int tickNumber = 5;
     private SpriteRenderer rend;
     public Material hitColor, defaultMaterial;
+    private GameObject iconsContainer, fastIcon, slowIcon, strongIcon, weakIcon, invIcon, vulnIcon, flipAttIcon, flipMovIcon, poisonIcon;
+    private AnchorIcons anchor;
 
-
+    
+    
     // Use this for initialization
     void Start ()
     {
@@ -40,6 +43,21 @@ public class PlayerHealth : MonoBehaviour {
         currentHealth = 150;
 
         playerColor = rend.color;
+
+        iconsContainer = transform.Find("HealthBar").gameObject;
+        fastIcon = iconsContainer.transform.Find("Fast").gameObject;
+        slowIcon = iconsContainer.transform.Find("Slow").gameObject;
+        strongIcon = iconsContainer.transform.Find("Strength").gameObject;
+        weakIcon = iconsContainer.transform.Find("Weakness").gameObject;
+        invIcon = iconsContainer.transform.Find("Invincibility").gameObject;
+        vulnIcon = iconsContainer.transform.Find("Vulnerability").gameObject;
+        flipAttIcon = iconsContainer.transform.Find("FlipAttack").gameObject;
+        flipMovIcon = iconsContainer.transform.Find("FlipMovement").gameObject;
+        poisonIcon = iconsContainer.transform.Find("Poison").gameObject;
+
+        anchor = GetComponentInChildren<AnchorIcons>();
+        if (anchor == null)
+            Debug.Log("gayyyyyyyyy");
     }
 
     // Update is called once per frame
@@ -110,40 +128,50 @@ public class PlayerHealth : MonoBehaviour {
 
     public IEnumerator Invincible()
     {
+        if (gdd)
+        {
+            StopCoroutine(GetDoubleDamage());
+            anchor.SetIconPosition(vulnIcon, false);
+            gdd = false;
+        }
+        anchor.SetIconPosition(invIcon, true);
         invincible = true;
         yield return new WaitForSeconds(10);
+        anchor.SetIconPosition(invIcon, false);
         invincible = false;
         yield break;
     }
 
     public IEnumerator FlipMovement()
     {
+        anchor.SetIconPosition(flipMovIcon, true);
         flipMov = true;
         yield return new WaitForSeconds(10);
+        anchor.SetIconPosition(flipMovIcon, false);
         flipMov = false;
         yield break;
     }
 
     public IEnumerator FlipAttack()
     {
+        anchor.SetIconPosition(flipAttIcon, true);
         flipAtt = true;
         yield return new WaitForSeconds(10);
+        anchor.SetIconPosition(flipAttIcon, false);
         flipAtt = false;
         yield break;
     }
 
     public IEnumerator Poisoned()
     {
+        anchor.SetIconPosition(poisonIcon, true);
         poisoned = true;
-        //p.enabled = true;
-
         for (int i = 0; i < tickNumber; i++)
         {
             yield return new WaitForSeconds(poisonDamageRate);
             ConsumableDamage(poisonDamage);
         }
-
-        //p.enabled = false;
+        anchor.SetIconPosition(poisonIcon, false);
         poisoned = false;
         yield break;
     }
@@ -194,6 +222,7 @@ public class PlayerHealth : MonoBehaviour {
 
     public IEnumerator SpeedUp()
     {
+        anchor.SetIconPosition(fastIcon, true);
         faster = true;
         actualSpeed = pc.speed;
         pc.speed += 3;
@@ -205,6 +234,7 @@ public class PlayerHealth : MonoBehaviour {
 
     public IEnumerator SlowDown()
     {
+        anchor.SetIconPosition(slowIcon, true);
         slower = true;
         actualSpeed = pc.speed;
         pc.speed -= 2;
@@ -221,13 +251,13 @@ public class PlayerHealth : MonoBehaviour {
         {
             StopCoroutine(speedUpCO);
             faster = false;
-            //GetComponent<AnchorHealthBar>().SetIconPosition(fastIcon, false);
+            anchor.SetIconPosition(fastIcon, false);
         }
         if (slower)
         {
             StopCoroutine(slowDownCO);
             slower = false;
-            //GetComponent<AnchorHealthBar>().SetIconPosition(slowIcon, false);
+            anchor.SetIconPosition(slowIcon, false);
         }
 
         pc.speed = actualSpeed;
@@ -237,6 +267,7 @@ public class PlayerHealth : MonoBehaviour {
 
     public IEnumerator DoubleDamage()
     {
+        anchor.SetIconPosition(strongIcon, true);
         dd = true;
         yield return new WaitForSeconds(10);
         SetNormalDamage();
@@ -245,6 +276,7 @@ public class PlayerHealth : MonoBehaviour {
 
     public IEnumerator HalfDamage()
     {
+        anchor.SetIconPosition(weakIcon, true);
         hd = true;
         yield return new WaitForSeconds(10);
         SetNormalDamage();
@@ -253,8 +285,10 @@ public class PlayerHealth : MonoBehaviour {
 
     public IEnumerator GetDoubleDamage()
     {
+        anchor.SetIconPosition(vulnIcon, true);
         gdd = true;
         yield return new WaitForSeconds(10);
+        anchor.SetIconPosition(vulnIcon, false);
         gdd = false;
         yield break;
     }
@@ -263,11 +297,13 @@ public class PlayerHealth : MonoBehaviour {
     {
         if (dd)
         {
+            anchor.SetIconPosition(strongIcon, false);
             StopCoroutine(ddCO);
             dd = false;
         }
         if (hd)
         {
+            anchor.SetIconPosition(weakIcon, false);
             StopCoroutine(hdCO);
             hd = false;
         }

@@ -27,24 +27,26 @@ public class PlayerController : Character
 	
 	void FixedUpdate()
 	{
-		x = Input.GetAxisRaw("CustomHorizontal");
-		
-	    y = Input.GetAxisRaw("CustomVertical");
-
-        if (ph.flipMov)
+		if (!GameManager.manager.gamePause)
         {
-            x = -x;
-            y = -y;
+            x = Input.GetAxisRaw("CustomHorizontal");
+
+            y = Input.GetAxisRaw("CustomVertical");
+
+            if (ph.flipMov)
+            {
+                x = -x;
+                y = -y;
+            }
+
+            Vector2 movement = new Vector2(x, y);
+
+            //se il player attacca non può muoversi
+            if (!weapon.isAttacking && !ph.isDead)
+                rb2d.velocity = movement * speed;
+            else
+                rb2d.velocity = movement * 0;
         }
-
-	    Vector2 movement = new Vector2(x, y);
-
-        //se il player attacca non può muoversi
-        if (!weapon.isAttacking && !ph.isDead)
-            rb2d.velocity = movement * speed;
-        else
-            rb2d.velocity = movement * 0;
-
     }
 
     void Update()

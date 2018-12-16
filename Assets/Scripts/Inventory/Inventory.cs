@@ -116,6 +116,7 @@ public class Inventory : MonoBehaviour {
         inventoryUI.SetActive(false);
         Time.timeScale = 1f;
         GameIsPaused = false;
+        GameManager.manager.gamePause = false;
     }
 
     public void PauseI()
@@ -123,6 +124,7 @@ public class Inventory : MonoBehaviour {
         inventoryUI.SetActive(true);
         Time.timeScale = 0f;
         GameIsPaused = true;
+        GameManager.manager.gamePause = true;
         EventSystem.current.SetSelectedGameObject(button);
     }
 

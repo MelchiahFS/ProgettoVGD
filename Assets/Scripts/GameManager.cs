@@ -9,6 +9,7 @@ public class GameManager : MonoBehaviour {
     public LevelManager lvlManager;
     private Room actualRoom = null;
     public Vector2Int actualPos;
+    public bool gamePause = false;
 
 
 
