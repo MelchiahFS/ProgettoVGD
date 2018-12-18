@@ -99,6 +99,31 @@ public class Inventory : MonoBehaviour {
 
     public static bool GameIsPaused = false;
 
+    private void Awake()
+    {
+        if (instance == null)
+        {
+            instance = this;
+        }
+        else
+        {
+            if (instance != this)
+            {
+                Destroy(this);
+            }
+        }
+        DontDestroyOnLoad(this);
+    }
+
+    private void Start()
+    {
+        emptySlot = new ItemStats();
+        emptySlot.itemType = ItemStats.ItemType.emptyslot;
+        InitializeItemList();
+        UpdateSlotUI();
+        ResetAllSlots();
+    }
+
     void Update()
     {
         if (Input.GetKeyDown(KeyCode.Tab))
@@ -153,30 +178,6 @@ public class Inventory : MonoBehaviour {
         return false;
     }
 
-    private void Awake()
-    {
-        if (instance == null)
-        {
-            instance = this;
-        }
-        else
-        {
-            if (instance != this)
-            {
-                Destroy(this);
-            }
-        }
-        DontDestroyOnLoad(this);
-    }
-
-    private void Start()
-    {
-        emptySlot = new ItemStats();
-        emptySlot.itemType = ItemStats.ItemType.emptyslot;
-        InitializeItemList();
-        UpdateSlotUI();
-        ResetAllSlots();
-    }
 
     private void ResetAllSlots()
     {

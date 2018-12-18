@@ -21,6 +21,8 @@ public class EnemyHealth : MonoBehaviour {
     public bool isFlashing = false, poisoned = false, faster = false, burning = false, slowed = false, contact = false, dying = false;
     public Coroutine flashCO, slowCO, poisonCO, burnCO, fastCO;
     private GameObject player, hb, burnIcon, fastIcon, slowIcon, poisonIcon;
+    public int points;
+    private Text playerPoints;
 
     void Start ()
     {
@@ -95,6 +97,14 @@ public class EnemyHealth : MonoBehaviour {
         {
             currentHealth = 0;
             slider.value = 0;
+            //incremento il punteggio del player
+            playerHealth.playerMoney += points;
+            playerPoints = player.GetComponentInChildren<Text>();
+            if (playerPoints == null)
+                Debug.Log("aia");
+            else
+                playerPoints.text = playerHealth.playerMoney.ToString();
+
             StartCoroutine(Die());
         }
             

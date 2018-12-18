@@ -21,9 +21,10 @@ public class PlayerHealth : MonoBehaviour {
     public Material hitColor, defaultMaterial;
     private GameObject iconsContainer, fastIcon, slowIcon, strongIcon, weakIcon, invIcon, vulnIcon, flipAttIcon, flipMovIcon, poisonIcon;
     private AnchorIcons anchor;
+    public int playerMoney;
 
-    
-    
+
+
     // Use this for initialization
     void Start ()
     {
@@ -42,6 +43,8 @@ public class PlayerHealth : MonoBehaviour {
         slider.value = 150;
         currentHealth = 150;
 
+        GetComponentInChildren<Text>().text = playerMoney.ToString();
+
         playerColor = rend.color;
 
         iconsContainer = transform.Find("HealthBar").gameObject;
@@ -56,8 +59,6 @@ public class PlayerHealth : MonoBehaviour {
         poisonIcon = iconsContainer.transform.Find("Poison").gameObject;
 
         anchor = GetComponentInChildren<AnchorIcons>();
-        if (anchor == null)
-            Debug.Log("gayyyyyyyyy");
     }
 
     // Update is called once per frame

@@ -68,10 +68,16 @@ public class LevelManager : MonoBehaviour {
         Room room = map[x, y];
         Vector2 drawPos = room.gridPos;
 
-        if (room.bossRoom || room.startRoom || room.shopRoom)
-            room.obsLayout = ObstacleLayout.GetLayoutZero();
+        //if (room.bossRoom || room.startRoom)
+        //    room.obsLayout = ObstacleLayout.GetLayoutZero();
+        //else if (room.shopRoom)
+        //    room.obsLayout = ObstacleLayout.GetShopLayout();
+        //else
+        //    room.obsLayout = ObstacleLayout.GetRandomLayout();
+        if (room.shopRoom)
+            room.obsLayout = ObstacleLayout.GetShopLayout();
         else
-            room.obsLayout = ObstacleLayout.GetRandomLayout();
+            room.obsLayout = ObstacleLayout.GetLayoutZero();
 
         for (int i = 0; i < roomSizeY; i++)
         {
@@ -96,7 +102,15 @@ public class LevelManager : MonoBehaviour {
                 else
                 {
                     //aggiorno la lista delle posizioni prive di ostacoli
-                    room.freePositions.Add(drawPos);  
+                    if (room.shopRoom)
+                    {
+                        //se la stanza è lo shop, le posizioni libere saranno i punti in cui spawnare gli item da comprare
+                        if (room.obsLayout[i, j] == 2)
+                            room.freePositions.Add(drawPos);
+
+                    }
+                    else
+                        room.freePositions.Add(drawPos);  
                 }
                 drawPos.x++;
             }
@@ -137,6 +151,7 @@ public class LevelManager : MonoBehaviour {
             enemyType = rnd.Next(0, enemyPrefabs.Count);
 
             GameObject enemy = Instantiate(enemyPrefabs[enemyType], room.spawnPoints[enemyPosition], Quaternion.identity) as GameObject;
+            enemy.name = enemyPrefabs[enemyType].name;
 
             //imposto il sorting layer dei nemici
             SpriteRenderer enemyRenderer = enemy.GetComponent<SpriteRenderer>();
@@ -171,7 +186,8 @@ public class LevelManager : MonoBehaviour {
                 {
 
                     LightUpRoom(map[i, j], true);
-                    Instantiate(playerPrefab, new Vector2(map[i, j].gridPos.x + (float)(roomSizeX / 2), map[i, j].gridPos.y + (float)(roomSizeY / 2)), Quaternion.identity);
+                    GameObject player = Instantiate(playerPrefab, new Vector2(map[i, j].gridPos.x + (float)(roomSizeX / 2), map[i, j].gridPos.y + (float)(roomSizeY / 2)), Quaternion.identity) as GameObject;
+                    player.name = playerPrefab.name;
                     playerPrefab.GetComponent<SpriteRenderer>().sortingLayerName = "Characters";
                     minimap.SetEnterRoom(map[i, j]);
                     return map[i, j];

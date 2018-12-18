@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 [RequireComponent(typeof(SpriteRenderer))]
 [RequireComponent(typeof(CircleCollider2D))]
@@ -24,10 +25,27 @@ public class SceneItem : MonoBehaviour
         {
             if (Input.GetKeyDown(KeyCode.E))
             {
-                ItemStats item = new ItemStats();
-                JsonUtility.FromJsonOverwrite(JsonUtility.ToJson(info), item);
-                Inventory.instance.AddSlot(item);
-                Destroy(gameObject);
+                if (info.toBuy)
+                {
+                    PlayerHealth ph = GameObject.Find("Player").GetComponent<PlayerHealth>();
+                    if (ph.playerMoney >= info.price)
+                    {
+                        ph.playerMoney -= info.price;
+                        ph.gameObject.GetComponentInChildren<Text>().text = ph.playerMoney.ToString();
+                        ItemStats item = new ItemStats();
+                        JsonUtility.FromJsonOverwrite(JsonUtility.ToJson(info), item);
+                        Inventory.instance.AddSlot(item);
+                        Destroy(gameObject);
+                    }
+                }
+                else
+                {
+                    ItemStats item = new ItemStats();
+                    JsonUtility.FromJsonOverwrite(JsonUtility.ToJson(info), item);
+                    Inventory.instance.AddSlot(item);
+                    Destroy(gameObject);
+                }
+                
             }
         }
         

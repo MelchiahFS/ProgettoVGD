@@ -29,8 +29,8 @@ public class ItemStats {
     public float fireRate;
     public float shotSpeed;
 
-    public float hp = 20;
-    public float ammo = 25; 
+    public bool toBuy;
+    public int price;
 
     public ItemStats() { }
 

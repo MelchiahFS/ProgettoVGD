@@ -139,6 +139,7 @@ MonoBehaviour:
   slowed: 0
   contact: 0
   dying: 0
+  points: 10
 --- !u!114 &114295124985491954
 MonoBehaviour:
   m_ObjectHideFlags: 1

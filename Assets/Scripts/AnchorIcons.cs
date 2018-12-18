@@ -36,44 +36,6 @@ public class AnchorIcons : MonoBehaviour
             }
         }
 
-        //if (iconList.Count == 1)
-        //    iconList[0].GetComponent<RectTransform>().anchoredPosition = new Vector3(0, -0.1f, 0);
-        //else if (iconList.Count == 2)
-        //{
-        //    iconList[0].GetComponent<RectTransform>().anchoredPosition = new Vector3(-0.2f, -0.1f, 0);
-        //    iconList[1].GetComponent<RectTransform>().anchoredPosition = new Vector3(0.2f, -0.1f, 0);
-        //}
-        //else if (iconList.Count == 3)
-        //{
-        //    iconList[0].GetComponent<RectTransform>().anchoredPosition = new Vector3(-0.4f, -0.1f, 0);
-        //    iconList[1].GetComponent<RectTransform>().anchoredPosition = new Vector3(0, -0.1f, 0);
-        //    iconList[2].GetComponent<RectTransform>().anchoredPosition = new Vector3(0.4f, -0.1f, 0);
-        //}
-        //else if (iconList.Count == 4)
-        //{
-        //    iconList[0].GetComponent<RectTransform>().anchoredPosition = new Vector3(-0.6f, -0.1f, 0);
-        //    iconList[1].GetComponent<RectTransform>().anchoredPosition = new Vector3(-0.2f, -0.1f, 0);
-        //    iconList[2].GetComponent<RectTransform>().anchoredPosition = new Vector3(0.2f, -0.1f, 0);
-        //    iconList[3].GetComponent<RectTransform>().anchoredPosition = new Vector3(0.6f, -0.1f, 0);
-        //}
-        //else if (iconList.Count == 5)
-        //{
-        //    iconList[0].GetComponent<RectTransform>().anchoredPosition = new Vector3(-0.6f, -0.1f, 0);
-        //    iconList[1].GetComponent<RectTransform>().anchoredPosition = new Vector3(-0.2f, -0.1f, 0);
-        //    iconList[2].GetComponent<RectTransform>().anchoredPosition = new Vector3(0.2f, -0.1f, 0);
-        //    iconList[3].GetComponent<RectTransform>().anchoredPosition = new Vector3(0.6f, -0.1f, 0);
-        //    iconList[4].GetComponent<RectTransform>().anchoredPosition = new Vector3(0, 0.1f, 0);
-        //}
-        //else if (iconList.Count == 6)
-        //{
-        //    iconList[0].GetComponent<RectTransform>().anchoredPosition = new Vector3(-0.6f, -0.1f, 0);
-        //    iconList[1].GetComponent<RectTransform>().anchoredPosition = new Vector3(-0.2f, -0.1f, 0);
-        //    iconList[2].GetComponent<RectTransform>().anchoredPosition = new Vector3(0.2f, -0.1f, 0);
-        //    iconList[3].GetComponent<RectTransform>().anchoredPosition = new Vector3(0.6f, -0.1f, 0);
-        //    iconList[4].GetComponent<RectTransform>().anchoredPosition = new Vector3(-0.3f, 0.1f, 0);
-        //    iconList[5].GetComponent<RectTransform>().anchoredPosition = new Vector3(0.3f, 0.1f, 0);
-        //}
-
         for (int i = 0; i < iconList.Count; i++)
         {
             if (i == 0)

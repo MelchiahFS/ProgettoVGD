@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class LootGenerator : MonoBehaviour {
 
@@ -18,6 +19,7 @@ public class LootGenerator : MonoBehaviour {
     private ItemStats actualItem;
     public Room actualRoom;
     private PlayerHealth ph;
+    public GameObject pricePrefab;
    
     void Start()
     {
@@ -26,6 +28,7 @@ public class LootGenerator : MonoBehaviour {
         select = GetComponent<ItemSpriteSelector>();
         consumables = new List<ItemStats>();
 
+        //converto gli scriptableObject in oggetti utilizzabili nel gioco
         foreach (Item c in consumablesSO)
         {
             ItemStats item = new ItemStats();
@@ -72,9 +75,30 @@ public class LootGenerator : MonoBehaviour {
             }
             
         }
+        //se la stanza è lo shop
+        if (actualRoom.shopRoom && !actualRoom.hasGenReward)
+        {
+            //e se il player è effettivamente dentro la stanza allora genero una ricompensa
+            if (transform.position.x > actualRoom.gridPos.x && transform.position.x < (actualRoom.gridPos.x + GameManager.manager.lvlManager.roomSizeX)
+                && transform.position.y > actualRoom.gridPos.y && transform.position.y < (actualRoom.gridPos.y + GameManager.manager.lvlManager.roomSizeY))
+            {
+                int i = 0;
+                foreach (Vector2 pos in actualRoom.freePositions)
+                {
+                    if (i < 3)
+                        InstantiateWeapon(pos, true);
+                    else
+                        InstantiateConsumable(pos, true);
+                    i++;
+                }
+                i = 0;
+                actualRoom.hasGenReward = true;
+            }
+            
+        }
 
         //se la stanza non ha nemici e la ricompensa non è ancora stata generata
-        if (!actualRoom.hasGenReward && actualRoom.enemyCounter == 0)
+        else if (!actualRoom.hasGenReward && actualRoom.enemyCounter == 0)
         {
             //e se il player è effettivamente dentro la stanza allora genero una ricompensa
             if (transform.position.x > actualRoom.gridPos.x && transform.position.x < (actualRoom.gridPos.x + GameManager.manager.lvlManager.roomSizeX)
@@ -85,22 +109,30 @@ public class LootGenerator : MonoBehaviour {
                 {
                     int seed = rnd.Next(100);
                     if (seed < 30)
-                        InstantiateWeapon(actualRoom.freePositions[rnd.Next(actualRoom.freePositions.Count)]);
+                        InstantiateWeapon(actualRoom.freePositions[rnd.Next(actualRoom.freePositions.Count)], false);
                     else
-                        InstantiateConsumable(actualRoom.freePositions[rnd.Next(actualRoom.freePositions.Count)]);
+                        InstantiateConsumable(actualRoom.freePositions[rnd.Next(actualRoom.freePositions.Count)], false);
                 }
                 actualRoom.hasGenReward = true;
             }   
         }
     }
 
-    public void InstantiateConsumable(Vector3 pos)
+    public void InstantiateConsumable(Vector3 pos, bool isShop)
     {
         GameObject cons = Instantiate(sceneItemPrefab, pos, Quaternion.identity) as GameObject;
         si = cons.GetComponent<SceneItem>();
         si.Info = consumables[rnd.Next(consumables.Count)];
         render = cons.GetComponent<SpriteRenderer>();
         render.sprite = si.Info.sprite;
+        if (isShop)
+        {
+            GameObject price = Instantiate(pricePrefab, cons.transform) as GameObject;
+            si.Info.toBuy = true;
+            si.Info.price = 30;
+            price.GetComponentInChildren<Text>().text = si.Info.price.ToString();
+            price.transform.SetParent(cons.transform, false);
+        }
 
         //imposto i consumable come trasparenti, per poi fare un effetto di fade-in quando verranno attivati 
         Color color = render.color;
@@ -110,12 +142,20 @@ public class LootGenerator : MonoBehaviour {
         StartCoroutine(GameManager.manager.lvlManager.FadeIn(render, 0.3f));
     }
 
-    public void InstantiateWeapon(Vector3 pos)
+    public void InstantiateWeapon(Vector3 pos, bool isShop)
     {
         GameObject weapon = Instantiate(sceneItemPrefab, pos, Quaternion.identity) as GameObject;
         si = weapon.GetComponent<SceneItem>();
         render = weapon.GetComponent<SpriteRenderer>();
         SetWeaponStats(si);
+        if (isShop)
+        {
+            GameObject price = Instantiate(pricePrefab, weapon.transform) as GameObject;
+            si.Info.toBuy = true;
+            si.Info.price = 100;
+            price.GetComponentInChildren<Text>().text = si.Info.price.ToString();
+            price.transform.SetParent(weapon.transform, false);
+        }
 
         //imposto i consumable come trasparenti, per poi fare un effetto di fade-in quando verranno attivati 
         Color color = render.color;

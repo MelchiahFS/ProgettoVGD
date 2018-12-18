@@ -20,13 +20,12 @@ public class LevelGenerator
         this.roomSizeY = sizeY;
 
 
-        numberOfRooms = Random.Range(15, 20);
+        numberOfRooms = Random.Range(10, 15);
         //numberOfRooms = 16;
 
         //NOTA: la dimensione della griglia delle stanze sarà il doppio in x e y 
         //in modo che la prima stanza stia al centro della griglia
-        worldSize = new Vector2Int(Random.Range(6, 7), Random.Range(6, 7));
-        //worldSize = new Vector2Int(2,2);
+        worldSize = new Vector2Int(Random.Range(4, 5), Random.Range(4, 5));
         
         //se il numero delle stanze eccede il numero delle celle nella griglia allora lo eguaglio a tale numero
         if (numberOfRooms >= (worldSize.x * 2) * (worldSize.y * 2))
