@@ -40,10 +40,23 @@ public class SceneItem : MonoBehaviour
                 }
                 else
                 {
-                    ItemStats item = new ItemStats();
-                    JsonUtility.FromJsonOverwrite(JsonUtility.ToJson(info), item);
-                    Inventory.instance.AddSlot(item);
-                    Destroy(gameObject);
+                    if (info.itemType != ItemStats.ItemType.key)
+                    {
+                        ItemStats item = new ItemStats();
+                        JsonUtility.FromJsonOverwrite(JsonUtility.ToJson(info), item);
+                        Inventory.instance.AddSlot(item);
+                        Destroy(gameObject);
+                    }
+                    else
+                    {
+                        GameObject player = GameObject.Find("Player");
+                        GameObject container = player.transform.Find("HealthBar").gameObject;
+                        GameObject key = container.transform.Find("Key").gameObject;
+                        key.GetComponent<Image>().sprite = info.sprite;
+                        key.GetComponent<Image>().enabled = true;
+                        player.GetComponent<RoomChange>().hasKey = true;
+                        Destroy(gameObject);
+                    }
                 }
                 
             }

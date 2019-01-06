@@ -25,6 +25,9 @@ public class LevelManager : MonoBehaviour {
 
     float fadeTime = 0.8f;
 
+    public int roomNumber;
+    public GameObject exit, hideExit;
+
     private MiniMapController minimap;
 
     //Si occupa di disegnare la mappa di gioco
@@ -33,6 +36,7 @@ public class LevelManager : MonoBehaviour {
         lvlGen = new LevelGenerator(roomSizeX, roomSizeY);
         map = lvlGen.Rooms;
         mapSize = lvlGen.GetMapSize();
+        roomNumber = lvlGen.GetRoomNumber();
         ActualPos = new Vector2Int((int)mapSize.x / 2, (int)mapSize.y / 2);
         minimap = GetComponent<MiniMapController>();
 
@@ -48,12 +52,9 @@ public class LevelManager : MonoBehaviour {
                     LinkRooms(i,j);
                     DrawDoors(i, j);
                     DrawObstacles(i, j);
-                    if (!map[i,j].bossRoom && !map[i,j].shopRoom && !map[i,j].startRoom)
-                    {
-                        InstantiateEnemies(i, j);
-                    }
                     CreateGridGraphs(map[i,j]);
                     DrawMinimapSprites(map[i,j]);
+                    SetEnemyNumber(i, j);
                 }
             }
         }
@@ -68,16 +69,18 @@ public class LevelManager : MonoBehaviour {
         Room room = map[x, y];
         Vector2 drawPos = room.gridPos;
 
-        //if (room.bossRoom || room.startRoom)
-        //    room.obsLayout = ObstacleLayout.GetLayoutZero();
-        //else if (room.shopRoom)
+        if (room.startRoom)
+            room.obsLayout = ObstacleLayout.GetLayoutZero();
+        else if (room.shopRoom)
+            room.obsLayout = ObstacleLayout.GetShopLayout();
+        else if (room.bossRoom)
+            room.obsLayout = ObstacleLayout.GetBossLayout();
+        else
+            room.obsLayout = ObstacleLayout.GetRandomLayout();
+        //if (room.shopRoom)
         //    room.obsLayout = ObstacleLayout.GetShopLayout();
         //else
-        //    room.obsLayout = ObstacleLayout.GetRandomLayout();
-        if (room.shopRoom)
-            room.obsLayout = ObstacleLayout.GetShopLayout();
-        else
-            room.obsLayout = ObstacleLayout.GetLayoutZero();
+        //    room.obsLayout = ObstacleLayout.GetLayoutZero();
 
         for (int i = 0; i < roomSizeY; i++)
         {
@@ -120,7 +123,7 @@ public class LevelManager : MonoBehaviour {
     }
 
     //Istanzia i nemici nelle stanze
-    void InstantiateEnemies(int x, int y)
+    public void InstantiateEnemies(int x, int y)
     {
         Room room = map[x, y];
         Vector2 drawPos = room.gridPos;
@@ -168,10 +171,13 @@ public class LevelManager : MonoBehaviour {
             //aggiungo il nemico alla lista degli oggetti attivi da ordinare per sorting order per stanza attuale
             room.toSort.Add(enemy);
 
-            enemy.SetActive(false);
             //rimuovo lo spawn point dalla lista di quelli disponinili per la stanza attuale
             room.spawnPoints.RemoveAt(enemyPosition);
+
+            StartCoroutine(GameManager.manager.lvlManager.FadeIn(enemy.GetComponent<SpriteRenderer>(), fadeTime));
         }
+        room.enemyNumber = room.enemyCounter;
+        room.enemyWaves--;
         
     }
 
@@ -331,6 +337,24 @@ public class LevelManager : MonoBehaviour {
                         rend.sprite = mapper.stairs;
                         wallCollider.size = new Vector2(1, 1);
                         wallCollider.offset = new Vector2(0, 1);
+                        exit = wallTile;
+                        room.roomTiles.Add(wallTile);
+
+
+
+                        hideExit = Instantiate(tileToRend, drawPos, Quaternion.identity) as GameObject;
+                        hideExit.tag = "Wall";
+                        hideExit.layer = LayerMask.NameToLayer("InnerWalls");
+
+                        BoxCollider2D hideExitCollider = hideExit.AddComponent(typeof(BoxCollider2D)) as BoxCollider2D;
+                        hideExitCollider.size = new Vector2(1, 2);
+                        hideExitCollider.offset = new Vector2(0, 0.5f);
+
+                        TileSpriteSelector HEmapper = hideExit.GetComponent<TileSpriteSelector>();
+                        SpriteRenderer HErend = hideExit.GetComponent<SpriteRenderer>();
+                        HErend.sortingLayerName = "Ground";
+                        HErend.sprite = HEmapper.innerWallCenter;
+                        room.roomTiles.Add(hideExit);
                     }
                     //se il muro è quello frontale
                     else if (i == roomSizeY + 1)
@@ -767,8 +791,12 @@ public class LevelManager : MonoBehaviour {
         }
         foreach (GameObject g in actualRoom.roomTiles)
         {
-            SpriteRenderer s = g.GetComponent<SpriteRenderer>();
-            StartCoroutine(FadeIn(s, fadeTime));
+            if (!ReferenceEquals(g,exit)) //se i due riferimenti rappresentano la stessa istanza
+            {
+                SpriteRenderer s = g.GetComponent<SpriteRenderer>();
+                StartCoroutine(FadeIn(s, fadeTime));
+            }
+            
         }
         if (actualRoom.doorSpriteUp != null)
         {
@@ -904,5 +932,54 @@ public class LevelManager : MonoBehaviour {
                 yield break;
         }
         yield break;
+    }
+
+    //Crea un effetto di FadeIn; usato da LightUpRoom e LightUpPassage
+    public IEnumerator FadeOff(SpriteRenderer s, float fadeTime)
+    {
+        Color c = s.color;
+        float rate = 1 / fadeTime;
+        while (c.a > 0)
+        {
+            //è necessario controllare che non sia null altrimenti Unity dà errore
+            if (s != null)
+            {
+                c.a -= Time.deltaTime * rate;
+                s.color = c;
+                yield return 0;
+            }
+            else
+                yield break;
+        }
+        yield break;
+    }
+
+    private void SetEnemyNumber(int x, int y)
+    {
+        Room room = map[x, y];
+        if (room.shopRoom || room.startRoom)
+        {
+            room.enemyCounter = 0;
+            room.enemyWaves = 0;
+        }
+        else if (room.bossRoom)
+        {
+            room.enemyCounter = rnd.Next(4, 8);
+            room.enemyWaves = 3;
+        }
+        else
+        {
+            //room.enemyCounter = rnd.Next(3, 6);
+            //room.enemyWaves = 1;
+            room.enemyCounter = 0;
+            room.enemyWaves = 0;
+        }
+    }
+
+    public void ShowExit()
+    {
+        StartCoroutine(FadeOff(hideExit.GetComponent<SpriteRenderer>(), 1));
+        hideExit.GetComponent<Collider2D>().enabled = false;
+        StartCoroutine(FadeIn(exit.GetComponent<SpriteRenderer>(), 1));
     }
 }

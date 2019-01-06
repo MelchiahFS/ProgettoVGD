@@ -201,6 +201,8 @@ MonoBehaviour:
     toSort: []
     obsNumber: 0
     enemyCounter: 0
+    enemyNumber: 0
+    enemyWaves: 0
     hasGenReward: 0
   astar: {fileID: 0}
   changeTargetTime: 3

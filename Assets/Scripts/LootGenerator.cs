@@ -20,9 +20,16 @@ public class LootGenerator : MonoBehaviour {
     public Room actualRoom;
     private PlayerHealth ph;
     public GameObject pricePrefab;
+    private bool keyGen = false;
+
+    private int roomsWithEnemies = 0;
    
     void Start()
     {
+        roomsWithEnemies = GameManager.manager.lvlManager.roomNumber - 3; //tolgo la stanza iniziale, lo shop e la stanza del boss
+        maxMeeleDmg = 100;
+
+
         ph = GetComponentInParent<PlayerHealth>();
 
         select = GetComponent<ItemSpriteSelector>();
@@ -98,14 +105,30 @@ public class LootGenerator : MonoBehaviour {
         }
 
         //se la stanza non ha nemici e la ricompensa non è ancora stata generata
-        else if (!actualRoom.hasGenReward && actualRoom.enemyCounter == 0)
+        else if (!actualRoom.startRoom && !actualRoom.hasGenReward && actualRoom.enemyNumber == 0 && actualRoom.enemyWaves == 0)
         {
             //e se il player è effettivamente dentro la stanza allora genero una ricompensa
             if (transform.position.x > actualRoom.gridPos.x && transform.position.x < (actualRoom.gridPos.x + GameManager.manager.lvlManager.roomSizeX)
                 && transform.position.y > actualRoom.gridPos.y && transform.position.y < (actualRoom.gridPos.y + GameManager.manager.lvlManager.roomSizeY))
             {
+                if (!keyGen)
+                {
+                    float keyProb = (float) 1 / roomsWithEnemies * 100;
+                    Debug.Log("KeyProb = " + (int)keyProb);
+                    int randomValue = rnd.Next(100);
+                    Debug.Log("randomValue = " + randomValue);
+                    if (randomValue <= (int)keyProb)
+                    {
+                        InstantiateKey(actualRoom.freePositions[rnd.Next(actualRoom.freePositions.Count)]);
+                        keyGen = true;
+                    }
+                    else
+                    {
+                        roomsWithEnemies--;
+                    }
+                }
                 //ho il 50% di ottenere o no una ricompensa
-                if (rnd.Next(2) == 1)
+                if (rnd.Next(100) >= 0)
                 {
                     int seed = rnd.Next(100);
                     if (seed < 30)
@@ -225,6 +248,26 @@ public class LootGenerator : MonoBehaviour {
 
         }
         
+    }
+
+    private void InstantiateKey(Vector3 pos)
+    {
+        GameObject key = Instantiate(sceneItemPrefab, pos, Quaternion.identity) as GameObject;
+        si = key.GetComponent<SceneItem>();
+        ItemSpriteSelector selector = GetComponent<ItemSpriteSelector>();
+        render = key.GetComponent<SpriteRenderer>();
+        si.Info = new ItemStats();
+        si.Info.itemType = ItemStats.ItemType.key;
+        si.Info.sprite = selector.keys[rnd.Next(selector.keys.Count)];
+        si.GetComponent<SpriteRenderer>().sprite = si.Info.sprite;
+        si.GetComponent<SpriteRenderer>().sortingLayerName = "Items";
+        si.Info.itemName = "Boss Key";
+        //imposto i consumable come trasparenti, per poi fare un effetto di fade-in quando verranno attivati 
+        Color color = render.color;
+        color.a = 0;
+        render.color = color;
+
+        StartCoroutine(GameManager.manager.lvlManager.FadeIn(render, 0.3f));
     }
 
     //------------------------------

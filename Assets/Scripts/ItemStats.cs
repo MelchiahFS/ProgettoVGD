@@ -5,7 +5,7 @@ using UnityEngine;
 [System.Serializable]
 public class ItemStats {
 
-    public enum ItemType { emptyslot, basic, weapon, consumable}; //il tipo di oggetto
+    public enum ItemType { emptyslot, basic, weapon, consumable, key}; //il tipo di oggetto
     public enum ConsumableType { healthUp25, healthUp50, slowDownAll, slowDownSelf, poisonAll, poisonSelf, damageAll, damageSelf,
         flipAttack, flipMovement, invincible, speedUpSelf, speedUpAll, doubleDamage, halfDamage, getDoubleDamage};
     public enum WeaponType { meele, ranged }; //il tipo di arma

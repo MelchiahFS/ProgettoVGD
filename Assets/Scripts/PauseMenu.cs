@@ -9,14 +9,13 @@ public class PauseMenu : MonoBehaviour {
 	public static bool GameIsPaused = false;
 
 	public GameObject pauseMenuUI;
+    public GameObject button, lastButton, lastInventoryButton;
+    public GameObject inventoryMenu;
 
-    public void Start()
+
+    void Update ()
     {
-
-    }
-
-    // Update is called once per frame
-    void Update () {
+        
         if (Input.GetKeyDown(KeyCode.Escape))
 		{
 			if (GameIsPaused)
@@ -24,20 +23,65 @@ public class PauseMenu : MonoBehaviour {
 			else
 				Pause();
 		}
+
+        else if (GameIsPaused)
+        {
+            if (EventSystem.current.currentSelectedGameObject == null)
+            {
+                EventSystem.current.SetSelectedGameObject(lastButton);
+            }
+            else
+            {
+                lastButton = EventSystem.current.currentSelectedGameObject;
+            }
+        }
+        
     }
 
 	public void Resume()
 	{ 
 		pauseMenuUI.SetActive(false);
-		Time.timeScale = 1f;
-		GameIsPaused = false;
-	}
+        EventSystem.current.SetSelectedGameObject(null);
+        
+        GameIsPaused = false;
+        GameManager.manager.pauseMenuActive = false;
+
+        if (!GameManager.manager.inventoryActive)
+        {
+            
+            Time.timeScale = 1f;
+            GameManager.manager.gamePause = false;
+            
+        }
+        else
+        {
+            foreach (Button b in inventoryMenu.GetComponentsInChildren<Button>())
+            {
+                b.enabled = true;
+            }
+            EventSystem.current.SetSelectedGameObject(lastInventoryButton);
+        }
+    }
 
     public void Pause()
     {
+        if (GameManager.manager.inventoryActive)
+        {
+            lastInventoryButton = EventSystem.current.currentSelectedGameObject;
+
+            foreach (Button b in inventoryMenu.GetComponentsInChildren<Button>())
+            {
+                b.enabled = false;
+            }
+        }
+
         pauseMenuUI.SetActive(true);
+        EventSystem.current.SetSelectedGameObject(button);
         Time.timeScale = 0f;
+        
         GameIsPaused = true;
+        GameManager.manager.gamePause = true;
+        GameManager.manager.pauseMenuActive = true;
     }
 
 

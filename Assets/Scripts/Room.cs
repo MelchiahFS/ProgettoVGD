@@ -25,7 +25,8 @@ public class Room
 
     public int[,] obsLayout;
     public int obsNumber;
-    public int enemyCounter;
+    public int enemyCounter, enemyNumber;
+    public int enemyWaves;
 
     public bool hasGenReward = false;
 
@@ -42,7 +43,8 @@ public class Room
         enemies = new List<GameObject>();
         toSort = new List<GameObject>();
         gridPos = _gridPos;
-        enemyCounter = 1;
+        //enemyCounter = 1;
+        //enemyWaves = 1;
     }
 
 }

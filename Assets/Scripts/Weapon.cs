@@ -35,7 +35,7 @@ public class Weapon : MonoBehaviour {
         //si potrebber creare uno scriptableObject per le armi iniziali 
         ItemStats meele = new ItemStats(ItemStats.ItemType.weapon, ItemStats.WeaponType.meele, 15);
         weaponsStats.Add(meele);
-        ItemStats ranged = new ItemStats(ItemStats.ItemType.weapon, ItemStats.WeaponType.ranged, ItemStats.FireType.multiple, ItemStats.BulletType.normal, 3, 7, 0.5f, 5.5f);
+        ItemStats ranged = new ItemStats(ItemStats.ItemType.weapon, ItemStats.WeaponType.ranged, ItemStats.FireType.multiple, ItemStats.BulletType.normal, 30, 7, 0.5f, 5.5f);
         weaponsStats.Add(ranged);
         ItemStats ranged2 = new ItemStats(ItemStats.ItemType.weapon, ItemStats.WeaponType.ranged, ItemStats.FireType.splitShot, ItemStats.BulletType.slowing, 3, 7, 0.5f, 5.5f);
         weaponsStats.Add(ranged2);

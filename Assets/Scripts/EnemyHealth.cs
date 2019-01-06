@@ -104,8 +104,8 @@ public class EnemyHealth : MonoBehaviour {
                 Debug.Log("aia");
             else
                 playerPoints.text = playerHealth.playerMoney.ToString();
-
-            StartCoroutine(Die());
+            if (!dying)
+                StartCoroutine(Die());
         }
             
     }
