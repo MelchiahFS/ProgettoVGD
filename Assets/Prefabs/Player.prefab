@@ -97,6 +97,7 @@ GameObject:
   - component: {fileID: 114992803289883544}
   - component: {fileID: 114400388194070284}
   - component: {fileID: 114150936759373606}
+  - component: {fileID: 82217059933803040}
   m_Layer: 0
   m_Name: Player
   m_TagString: Player
@@ -473,6 +474,101 @@ CapsuleCollider2D:
   m_Offset: {x: 0, y: -0.07}
   m_Size: {x: 0.35, y: 0.61}
   m_Direction: 0
+--- !u!82 &82217059933803040
+AudioSource:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1120037798620234}
+  m_Enabled: 1
+  serializedVersion: 4
+  OutputAudioMixerGroup: {fileID: 0}
+  m_audioClip: {fileID: 0}
+  m_PlayOnAwake: 0
+  m_Volume: 1
+  m_Pitch: 1
+  Loop: 0
+  Mute: 0
+  Spatialize: 0
+  SpatializePostEffects: 0
+  Priority: 128
+  DopplerLevel: 1
+  MinDistance: 1
+  MaxDistance: 500
+  Pan2D: 0
+  rolloffMode: 0
+  BypassEffects: 0
+  BypassListenerEffects: 0
+  BypassReverbZones: 0
+  rolloffCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 1
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  panLevelCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  spreadCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  reverbZoneMixCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
 --- !u!95 &95185175286433828
 Animator:
   serializedVersion: 3
@@ -692,6 +788,11 @@ MonoBehaviour:
   chRoom: 0
   hasKey: 0
   fadeTime: 0.3
+  doorOpen: {fileID: 8300000, guid: 5c23e21b4b4ad1a42977a87512e22741, type: 3}
+  doorClosed: {fileID: 8300000, guid: f6754667cf89c4b4699732c4faabd114, type: 3}
+  doorLocked: {fileID: 8300000, guid: 52b2a73e15ce24b46b380afbd516631c, type: 3}
+  doorUnlocked: {fileID: 8300000, guid: cd38e6c1062884b46846496e81b5d42c, type: 3}
+  cantOpen: {fileID: 8300000, guid: 8e894b2ec52240149a2aac7468209ce0, type: 3}
 --- !u!114 &114175781549608962
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -1159,6 +1260,11 @@ MonoBehaviour:
   downDistance: {x: 0, y: -0.75, z: 0}
   leftDistance: {x: -0.75, y: 0, z: 0}
   rightDistance: {x: 0.75, y: 0, z: 0}
+  swing: {fileID: 8300000, guid: 66045c66d92862f419bd5165537ca2b0, type: 3}
+  unsheathe: {fileID: 8300000, guid: 41ce59d91dc11d44195d2fc0da251f16, type: 3}
+  cut: {fileID: 8300000, guid: 726b3608b22b59044a842bd376366d8d, type: 3}
+  shoot: {fileID: 8300000, guid: 64223afcc7a673545b08e33fe235bd44, type: 3}
+  pickRanged: {fileID: 8300000, guid: 4eb8d8e4c82690142bf60e75573b4c31, type: 3}
 --- !u!114 &114687322423057432
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -1309,6 +1415,10 @@ MonoBehaviour:
   hitColor: {fileID: 2100000, guid: af4c9394002c4d84fb2f48fc93c94540, type: 2}
   defaultMaterial: {fileID: 0}
   playerMoney: 0
+  hurt: {fileID: 8300000, guid: 60243ba39af8c904f9ce0b36744f09ee, type: 3}
+  hurt1: {fileID: 8300000, guid: 342679cfd91b57f4b84d64c1e15dabf8, type: 3}
+  hurt2: {fileID: 8300000, guid: 6d66058704ff4714c849ad9e4db62120, type: 3}
+  dead: {fileID: 8300000, guid: f163fe86d9a4df84996eee5a8662e251, type: 3}
 --- !u!124 &124660500414799588
 Behaviour:
   m_ObjectHideFlags: 1

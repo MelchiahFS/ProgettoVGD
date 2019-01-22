@@ -114,9 +114,7 @@ public class LootGenerator : MonoBehaviour {
                 if (!keyGen)
                 {
                     float keyProb = (float) 1 / roomsWithEnemies * 100;
-                    Debug.Log("KeyProb = " + (int)keyProb);
                     int randomValue = rnd.Next(100);
-                    Debug.Log("randomValue = " + randomValue);
                     if (randomValue <= (int)keyProb)
                     {
                         InstantiateKey(actualRoom.freePositions[rnd.Next(actualRoom.freePositions.Count)]);
@@ -131,7 +129,7 @@ public class LootGenerator : MonoBehaviour {
                 if (rnd.Next(100) >= 0)
                 {
                     int seed = rnd.Next(100);
-                    if (seed < 30)
+                    if (seed < 100)
                         InstantiateWeapon(actualRoom.freePositions[rnd.Next(actualRoom.freePositions.Count)], false);
                     else
                         InstantiateConsumable(actualRoom.freePositions[rnd.Next(actualRoom.freePositions.Count)], false);

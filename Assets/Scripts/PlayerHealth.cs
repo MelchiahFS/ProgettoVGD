@@ -1,12 +1,14 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
 public class PlayerHealth : MonoBehaviour {
 
+    private static System.Random rnd = new System.Random((int)DateTime.Now.Ticks);
     private float startingHealth = 300, invTimer = 0, poisonDamageRate = 1, poisonDamage = 3, actualSpeed;
-    private float invincibilityTime = 2f; //periodo di invulnerabilità dopo aver ricevuto danno
+    private float invincibilityTime = 1.5f; //periodo di invulnerabilità dopo aver ricevuto danno
     public float currentHealth;
     private Animator animator;
     private Collider2D[] hitObjects;
@@ -22,6 +24,9 @@ public class PlayerHealth : MonoBehaviour {
     private GameObject iconsContainer, fastIcon, slowIcon, strongIcon, weakIcon, invIcon, vulnIcon, flipAttIcon, flipMovIcon, poisonIcon;
     private AnchorIcons anchor;
     public int playerMoney;
+
+    private AudioSource source;
+    public AudioClip hurt, hurt1, hurt2, dead;
 
 
 
@@ -40,10 +45,11 @@ public class PlayerHealth : MonoBehaviour {
 
         //slider.value = startingHealth;
         //currentHealth = startingHealth;
-        slider.value = 150;
-        currentHealth = 150;
+        slider.value = 1000;
+        currentHealth = 1000;
 
-        GetComponentInChildren<Text>().text = playerMoney.ToString();
+        //GetComponentInChildren<Text>().text = playerMoney.ToString();
+        GetComponentInChildren<Text>().text = GameManager.manager.playerMoney.ToString();
 
         playerColor = rend.color;
 
@@ -59,6 +65,7 @@ public class PlayerHealth : MonoBehaviour {
         poisonIcon = iconsContainer.transform.Find("Poison").gameObject;
 
         anchor = GetComponentInChildren<AnchorIcons>();
+        source = GetComponent<AudioSource>();
     }
 
     // Update is called once per frame
@@ -86,6 +93,14 @@ public class PlayerHealth : MonoBehaviour {
             }
             else
             {
+                int value = rnd.Next(3);
+                if (value == 0)
+                    source.PlayOneShot(hurt);
+                else if (value == 1)
+                    source.PlayOneShot(hurt1);
+                else
+                    source.PlayOneShot(hurt2);
+
                 currentHealth -= amount;
                 slider.value = currentHealth;
                 StartCoroutine(Flash(playerColor, GetComponent<SpriteRenderer>()));
@@ -98,9 +113,14 @@ public class PlayerHealth : MonoBehaviour {
 
     private void PlayerDeath()
     {
+        source.PlayOneShot(dead);
+
+        GameManager.manager.dead = true;
         animator.SetBool("isDead", true);
         isDead = true;
         this.enabled = false;
+        foreach (Collider2D c in GetComponents<Collider2D>())
+            c.enabled = false;
         GameManager.manager.Invoke("ReturnToMenu", 2f);
     }
 

@@ -10,12 +10,22 @@ public class PauseMenu : MonoBehaviour {
 
 	public GameObject pauseMenuUI;
     public GameObject button, lastButton, lastInventoryButton;
-    public GameObject inventoryMenu;
+    public GameObject inventory, inventoryMenu;
 
+    public AudioClip move, select, enter, exit;
+    private AudioSource source;
+
+    private CanvasGroup inventoryG, inventoryMenuG;
+
+    void Start()
+    {
+        source = GetComponent<AudioSource>();
+        inventoryG = inventory.GetComponent<CanvasGroup>();
+        inventoryMenuG = inventoryMenu.GetComponent<CanvasGroup>();
+    }
 
     void Update ()
     {
-        
         if (Input.GetKeyDown(KeyCode.Escape))
 		{
 			if (GameIsPaused)
@@ -34,12 +44,18 @@ public class PauseMenu : MonoBehaviour {
             {
                 lastButton = EventSystem.current.currentSelectedGameObject;
             }
+
+            if (Input.GetKeyDown(KeyCode.UpArrow) || Input.GetKeyDown(KeyCode.DownArrow) || Input.GetKeyDown(KeyCode.W) || Input.GetKeyDown(KeyCode.S))
+            {
+                source.PlayOneShot(move);
+            }
         }
         
     }
 
 	public void Resume()
-	{ 
+	{
+        source.PlayOneShot(exit);
 		pauseMenuUI.SetActive(false);
         EventSystem.current.SetSelectedGameObject(null);
         
@@ -48,16 +64,18 @@ public class PauseMenu : MonoBehaviour {
 
         if (!GameManager.manager.inventoryActive)
         {
-            
             Time.timeScale = 1f;
             GameManager.manager.gamePause = false;
-            
         }
         else
         {
-            foreach (Button b in inventoryMenu.GetComponentsInChildren<Button>())
+            inventoryG.alpha = 1;
+            inventoryG.interactable = true;
+
+            if (GameManager.manager.inventoryMenuActive)
             {
-                b.enabled = true;
+                inventoryMenuG.alpha = 1;
+                inventoryMenuG.interactable = true;
             }
             EventSystem.current.SetSelectedGameObject(lastInventoryButton);
         }
@@ -65,14 +83,20 @@ public class PauseMenu : MonoBehaviour {
 
     public void Pause()
     {
+        source.PlayOneShot(enter);
         if (GameManager.manager.inventoryActive)
         {
             lastInventoryButton = EventSystem.current.currentSelectedGameObject;
+            
+            inventoryG.alpha = 0.5f;
+            inventoryG.interactable = false;
+        }
+        if (GameManager.manager.inventoryMenuActive)
+        {
+            lastInventoryButton = EventSystem.current.currentSelectedGameObject;
 
-            foreach (Button b in inventoryMenu.GetComponentsInChildren<Button>())
-            {
-                b.enabled = false;
-            }
+            inventoryMenuG.alpha = 0.5f;
+            inventoryMenuG.interactable = false;
         }
 
         pauseMenuUI.SetActive(true);
@@ -87,6 +111,7 @@ public class PauseMenu : MonoBehaviour {
 
     public void QuitGame()
 	{
-		Application.Quit();
+        source.PlayOneShot(exit);
+        Application.Quit();
 	}
 }

@@ -969,10 +969,10 @@ public class LevelManager : MonoBehaviour {
         }
         else
         {
-            //room.enemyCounter = rnd.Next(3, 6);
-            //room.enemyWaves = 1;
-            room.enemyCounter = 0;
-            room.enemyWaves = 0;
+            room.enemyCounter = rnd.Next(3, 6);
+            room.enemyWaves = 1;
+            //room.enemyCounter = 0;
+            //room.enemyWaves = 0;
         }
     }
 

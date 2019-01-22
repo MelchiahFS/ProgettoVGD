@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
+
 [RequireComponent(typeof(AnchorHealthBar))]
 public class EnemyHealth : MonoBehaviour {
 
@@ -23,9 +24,16 @@ public class EnemyHealth : MonoBehaviour {
     private GameObject player, hb, burnIcon, fastIcon, slowIcon, poisonIcon;
     public int points;
     private Text playerPoints;
+    
+    private AudioSource source;
+    public AudioClip enemySound, enemyDeath;
+    private float waitingTime, waitCounter = 0;
+    private bool waiting = true;
+
 
     void Start ()
     {
+        source = GetComponent<AudioSource>();
         player = GameObject.FindGameObjectWithTag("Player");
         if (!GetComponent<EnemyController>().flying)
             astar = GetComponent<AStarAI>();
@@ -43,14 +51,40 @@ public class EnemyHealth : MonoBehaviour {
         poisonIcon = hb.transform.Find("Poison").gameObject;
         slowIcon = hb.transform.Find("Slow").gameObject;
         fastIcon = hb.transform.Find("Fast").gameObject;
+
+        waitingTime = Random.Range(2, 5);
+        waiting = true;
     }
 
     void Update()
     {
-        if (contact)
+        if (!dying)
         {
-            counter += Time.deltaTime;
+            if (!waiting)
+            {
+                source.PlayOneShot(enemySound);
+                waitingTime = Random.Range(3, 7);
+                waiting = true;
+            }
+            else
+            {
+                if (waitCounter >= waitingTime)
+                {
+                    waitCounter = 0;
+                    waiting = false;
+                }
+                else
+                {
+                    waitCounter += Time.deltaTime;
+                }
+            }
+
+            if (contact)
+            {
+                counter += Time.deltaTime;
+            }
         }
+        
     }
 	
     void OnCollisionStay2D(Collision2D collision)
@@ -98,12 +132,11 @@ public class EnemyHealth : MonoBehaviour {
             currentHealth = 0;
             slider.value = 0;
             //incremento il punteggio del player
-            playerHealth.playerMoney += points;
+            //playerHealth.playerMoney += points;
+            GameManager.manager.playerMoney += points;
             playerPoints = player.GetComponentInChildren<Text>();
-            if (playerPoints == null)
-                Debug.Log("aia");
-            else
-                playerPoints.text = playerHealth.playerMoney.ToString();
+            //playerPoints.text = playerHealth.playerMoney.ToString();
+            playerPoints.text = GameManager.manager.playerMoney.ToString(); 
             if (!dying)
                 StartCoroutine(Die());
         }
@@ -121,6 +154,8 @@ public class EnemyHealth : MonoBehaviour {
         {
             yield return 0;
         }
+
+        source.PlayOneShot(enemyDeath);
 
         //termino eventuali coroutine attive
         if (slowed)
@@ -328,5 +363,10 @@ public class EnemyHealth : MonoBehaviour {
             GetComponent<MovementPattern>().speed = speed;
 
         
+    }
+
+    public void PlayJumpSound()
+    {
+        source.PlayOneShot(enemySound);
     }
 }

@@ -18,12 +18,16 @@ public class RoomChange : MonoBehaviour {
 
     public float fadeTime = 0.3f;
 
+    public AudioClip doorOpen, doorClosed, doorLocked, doorUnlocked, cantOpen;
+    private AudioSource source;
+
     void Start()
     {
         minimap = GameManager.manager.GetComponent<MiniMapController>();
         actualRoom = GameManager.manager.ActualRoom;
         roomSizeX = GameManager.manager.lvlManager.roomSizeX;
         roomSizeY = GameManager.manager.lvlManager.roomSizeY;
+        source = GetComponent<AudioSource>();
     }
 
     void Update ()
@@ -63,7 +67,10 @@ public class RoomChange : MonoBehaviour {
                     if (actualRoom.enemyWaves > 0)
                     {
                         if (!actualRoom.locked)
+                        {
                             LockRoom(actualRoom);
+                            source.PlayOneShot(doorLocked);
+                        }
                         GameManager.manager.lvlManager.InstantiateEnemies(GameManager.manager.actualPos.x, GameManager.manager.actualPos.y);
                     }
                 }
@@ -72,7 +79,10 @@ public class RoomChange : MonoBehaviour {
                     if (actualRoom.enemyWaves > 0 && actualRoom.enemyNumber == 0)
                     {
                         if (!actualRoom.locked)
+                        {
                             LockRoom(actualRoom);
+                            source.PlayOneShot(doorLocked);
+                        }
                         GameManager.manager.lvlManager.InstantiateEnemies(GameManager.manager.actualPos.x, GameManager.manager.actualPos.y);
                     }
                     else if (actualRoom.enemyWaves == 0 && actualRoom.enemyNumber == 0)
@@ -82,8 +92,9 @@ public class RoomChange : MonoBehaviour {
                 }
             }
             //se non ci sono più nemici sblocco le porte della stanza
-            if (actualRoom.enemyNumber == 0 && actualRoom.enemyWaves == 0)
+            if (actualRoom.enemyNumber == 0 && actualRoom.enemyWaves == 0 && actualRoom.locked)
             {
+                source.PlayOneShot(doorUnlocked);
                 actualRoom.locked = false;
             }
 
@@ -157,80 +168,11 @@ public class RoomChange : MonoBehaviour {
             //Invoco la funzione restart con delay di due secondi
             GameManager.manager.Invoke("Restart", 2);
         }
-    }
 
-    private void OnCollisionStay2D(Collision2D other)
-    {
+        
         //se non è in atto un cambio di stanza e la stanza non è sigillata
         if (!chRoom && !actualRoom.locked)
         {
-            //if (other.gameObject.tag == "DoorUp")
-            //{
-            //    //se la porta non è ancora aperta
-            //    if (!actualRoom.openUp)
-            //    {
-            //        //allora la apro
-            //        SetRoomDoor('u', other.gameObject);
-            //        //se la stanza attuale non è ancora stata visitata la illumino (entro in una stanza nuova)
-            //        if (!actualRoom.visited)
-            //            GameManager.manager.lvlManager.LightUpRoom(actualRoom, true);
-            //        //altrimenti sto uscendo dalla stanza e recupero le info sulla stanza successiva
-            //        else
-            //        {
-            //            adiacentRoom = GameManager.manager.GetAdiacentRoom('u');
-            //            //se non ho ancora visitato la stanza successiva allora illumino il passaggio che la collega alla stanza attuale
-            //            if (!adiacentRoom.visited)
-            //                GameManager.manager.lvlManager.LightUpPassage(adiacentRoom.doorSpriteDown, actualRoom.passageUpTiles, true);
-            //        }
-
-            //    }
-            //}
-            //else if (other.gameObject.tag == "DoorDown")
-            //{
-            //    if (!actualRoom.openDown)
-            //    {
-            //        SetRoomDoor('d', other.gameObject);
-            //        if (!actualRoom.visited)
-            //            GameManager.manager.lvlManager.LightUpRoom(actualRoom, true);
-            //        else
-            //        {
-            //            adiacentRoom = GameManager.manager.GetAdiacentRoom('d');
-            //            GameManager.manager.lvlManager.LightUpPassage(adiacentRoom.doorSpriteUp, actualRoom.passageDownTiles, true);
-            //        }
-
-            //    }
-            //}
-            //else if (other.gameObject.tag == "DoorLeft")
-            //{
-            //    if (!actualRoom.openLeft)
-            //    {
-            //        SetRoomDoor('l', other.gameObject);
-            //        if (!actualRoom.visited)
-            //            GameManager.manager.lvlManager.LightUpRoom(actualRoom, true);
-            //        else
-            //        {
-            //            adiacentRoom = GameManager.manager.GetAdiacentRoom('l');
-            //            GameManager.manager.lvlManager.LightUpPassage(adiacentRoom.doorSpriteRight, actualRoom.passageLeftTiles, true);
-            //        }
-
-            //    }
-            //}
-            //else if (other.gameObject.tag == "DoorRight")
-            //{
-            //    if (!actualRoom.openRight)
-            //    {
-            //        SetRoomDoor('r', other.gameObject);
-            //        if (!actualRoom.visited)
-            //            GameManager.manager.lvlManager.LightUpRoom(actualRoom, true);
-            //        else
-            //        {
-            //            adiacentRoom = GameManager.manager.GetAdiacentRoom('r');
-            //            GameManager.manager.lvlManager.LightUpPassage(adiacentRoom.doorSpriteLeft, actualRoom.passageRightTiles, true);
-            //        }
-            //        adiacentRoom = GameManager.manager.GetAdiacentRoom('r');
-            //        GameManager.manager.lvlManager.LightUpPassage(adiacentRoom.doorSpriteLeft, actualRoom.passageRightTiles, true);
-            //    }
-            //}
             if (other.gameObject.tag == "DoorUp")
             {
                 if (actualRoom.visited)
@@ -241,16 +183,23 @@ public class RoomChange : MonoBehaviour {
                         {
                             if (!actualRoom.openUp)
                             {
+                                source.PlayOneShot(doorUnlocked);
                                 SetRoomDoor('u', other.gameObject);
                                 adiacentRoom = GameManager.manager.GetAdiacentRoom('u');
                                 GameManager.manager.lvlManager.LightUpPassage(adiacentRoom.doorSpriteDown, actualRoom.passageUpTiles, true);
                             }
+                            
+                        }
+                        else if (!actualRoom.openUp)
+                        {
+                            source.PlayOneShot(cantOpen);
                         }
                     }
                     else
                     {
                         if (!actualRoom.openUp)
                         {
+                            source.PlayOneShot(doorOpen);
                             SetRoomDoor('u', other.gameObject);
                             adiacentRoom = GameManager.manager.GetAdiacentRoom('u');
                             GameManager.manager.lvlManager.LightUpPassage(adiacentRoom.doorSpriteDown, actualRoom.passageUpTiles, true);
@@ -261,6 +210,7 @@ public class RoomChange : MonoBehaviour {
                 {
                     if (!actualRoom.openUp)
                     {
+                        source.PlayOneShot(doorOpen);
                         SetRoomDoor('u', other.gameObject);
                         GameManager.manager.lvlManager.LightUpRoom(actualRoom, true);
                     }
@@ -276,16 +226,22 @@ public class RoomChange : MonoBehaviour {
                         {
                             if (!actualRoom.openDown)
                             {
+                                source.PlayOneShot(doorUnlocked);
                                 SetRoomDoor('d', other.gameObject);
                                 adiacentRoom = GameManager.manager.GetAdiacentRoom('d');
                                 GameManager.manager.lvlManager.LightUpPassage(adiacentRoom.doorSpriteUp, actualRoom.passageDownTiles, true);
                             }
+                        }
+                        else if (!actualRoom.openDown)
+                        {
+                            source.PlayOneShot(cantOpen);
                         }
                     }
                     else
                     {
                         if (!actualRoom.openDown)
                         {
+                            source.PlayOneShot(doorOpen);
                             SetRoomDoor('d', other.gameObject);
                             adiacentRoom = GameManager.manager.GetAdiacentRoom('d');
                             GameManager.manager.lvlManager.LightUpPassage(adiacentRoom.doorSpriteUp, actualRoom.passageDownTiles, true);
@@ -296,6 +252,7 @@ public class RoomChange : MonoBehaviour {
                 {
                     if (!actualRoom.openDown)
                     {
+                        source.PlayOneShot(doorOpen);
                         SetRoomDoor('d', other.gameObject);
                         GameManager.manager.lvlManager.LightUpRoom(actualRoom, true);
                     }
@@ -311,16 +268,22 @@ public class RoomChange : MonoBehaviour {
                         {
                             if (!actualRoom.openLeft)
                             {
+                                source.PlayOneShot(doorUnlocked);
                                 SetRoomDoor('l', other.gameObject);
                                 adiacentRoom = GameManager.manager.GetAdiacentRoom('l');
                                 GameManager.manager.lvlManager.LightUpPassage(adiacentRoom.doorSpriteRight, actualRoom.passageLeftTiles, true);
                             }
+                        }
+                        else if (!actualRoom.openLeft)
+                        {
+                            source.PlayOneShot(cantOpen);
                         }
                     }
                     else
                     {
                         if (!actualRoom.openLeft)
                         {
+                            source.PlayOneShot(doorOpen);
                             SetRoomDoor('l', other.gameObject);
                             adiacentRoom = GameManager.manager.GetAdiacentRoom('l');
                             GameManager.manager.lvlManager.LightUpPassage(adiacentRoom.doorSpriteRight, actualRoom.passageLeftTiles, true);
@@ -331,6 +294,7 @@ public class RoomChange : MonoBehaviour {
                 {
                     if (!actualRoom.openLeft)
                     {
+                        source.PlayOneShot(doorOpen);
                         SetRoomDoor('l', other.gameObject);
                         GameManager.manager.lvlManager.LightUpRoom(actualRoom, true);
                     }
@@ -346,16 +310,22 @@ public class RoomChange : MonoBehaviour {
                         {
                             if (!actualRoom.openRight)
                             {
+                                source.PlayOneShot(doorUnlocked);
                                 SetRoomDoor('r', other.gameObject);
                                 adiacentRoom = GameManager.manager.GetAdiacentRoom('r');
                                 GameManager.manager.lvlManager.LightUpPassage(adiacentRoom.doorSpriteLeft, actualRoom.passageRightTiles, true);
                             }
+                        }
+                        else if (!actualRoom.openRight)
+                        {
+                            source.PlayOneShot(cantOpen);
                         }
                     }
                     else
                     {
                         if (!actualRoom.openRight)
                         {
+                            source.PlayOneShot(doorOpen);
                             SetRoomDoor('r', other.gameObject);
                             adiacentRoom = GameManager.manager.GetAdiacentRoom('r');
                             GameManager.manager.lvlManager.LightUpPassage(adiacentRoom.doorSpriteLeft, actualRoom.passageRightTiles, true);
@@ -366,14 +336,172 @@ public class RoomChange : MonoBehaviour {
                 {
                     if (!actualRoom.openRight)
                     {
+                        source.PlayOneShot(doorOpen);
                         SetRoomDoor('r', other.gameObject);
                         GameManager.manager.lvlManager.LightUpRoom(actualRoom, true);
                     }
                 }
             }
-            
+
         }
+        else if (actualRoom.locked)
+        {
+            if (other.gameObject.tag == "DoorUp" || other.gameObject.tag == "DoorDown" || other.gameObject.tag == "DoorLeft" || other.gameObject.tag == "DoorRight")
+            {
+                source.PlayOneShot(doorLocked);
+            }
+        }
+        
     }
+
+    //private void OnCollisionStay2D(Collision2D other)
+    //{
+    //    //se non è in atto un cambio di stanza e la stanza non è sigillata
+    //    if (!chRoom && !actualRoom.locked)
+    //    {
+    //        if (other.gameObject.tag == "DoorUp")
+    //        {
+    //            if (actualRoom.visited)
+    //            {
+    //                if (GameManager.manager.GetAdiacentRoom('u').bossRoom)
+    //                {
+    //                    if (hasKey)
+    //                    {
+    //                        if (!actualRoom.openUp)
+    //                        {
+    //                            SetRoomDoor('u', other.gameObject);
+    //                            adiacentRoom = GameManager.manager.GetAdiacentRoom('u');
+    //                            GameManager.manager.lvlManager.LightUpPassage(adiacentRoom.doorSpriteDown, actualRoom.passageUpTiles, true);
+    //                        }
+    //                    }
+    //                }
+    //                else
+    //                {
+    //                    if (!actualRoom.openUp)
+    //                    {
+    //                        SetRoomDoor('u', other.gameObject);
+    //                        adiacentRoom = GameManager.manager.GetAdiacentRoom('u');
+    //                        GameManager.manager.lvlManager.LightUpPassage(adiacentRoom.doorSpriteDown, actualRoom.passageUpTiles, true);
+    //                    }
+    //                }
+    //            }
+    //            else
+    //            {
+    //                if (!actualRoom.openUp)
+    //                {
+    //                    SetRoomDoor('u', other.gameObject);
+    //                    GameManager.manager.lvlManager.LightUpRoom(actualRoom, true);
+    //                }
+    //            }
+    //        }
+    //        else if (other.gameObject.tag == "DoorDown")
+    //        {
+    //            if (actualRoom.visited)
+    //            {
+    //                if (GameManager.manager.GetAdiacentRoom('d').bossRoom)
+    //                {
+    //                    if (hasKey)
+    //                    {
+    //                        if (!actualRoom.openDown)
+    //                        {
+    //                            SetRoomDoor('d', other.gameObject);
+    //                            adiacentRoom = GameManager.manager.GetAdiacentRoom('d');
+    //                            GameManager.manager.lvlManager.LightUpPassage(adiacentRoom.doorSpriteUp, actualRoom.passageDownTiles, true);
+    //                        }
+    //                    }
+    //                }
+    //                else
+    //                {
+    //                    if (!actualRoom.openDown)
+    //                    {
+    //                        SetRoomDoor('d', other.gameObject);
+    //                        adiacentRoom = GameManager.manager.GetAdiacentRoom('d');
+    //                        GameManager.manager.lvlManager.LightUpPassage(adiacentRoom.doorSpriteUp, actualRoom.passageDownTiles, true);
+    //                    }
+    //                }
+    //            }
+    //            else
+    //            {
+    //                if (!actualRoom.openDown)
+    //                {
+    //                    SetRoomDoor('d', other.gameObject);
+    //                    GameManager.manager.lvlManager.LightUpRoom(actualRoom, true);
+    //                }
+    //            }
+    //        }
+    //        else if (other.gameObject.tag == "DoorLeft")
+    //        {
+    //            if (actualRoom.visited)
+    //            {
+    //                if (GameManager.manager.GetAdiacentRoom('l').bossRoom)
+    //                {
+    //                    if (hasKey)
+    //                    {
+    //                        if (!actualRoom.openLeft)
+    //                        {
+    //                            SetRoomDoor('l', other.gameObject);
+    //                            adiacentRoom = GameManager.manager.GetAdiacentRoom('l');
+    //                            GameManager.manager.lvlManager.LightUpPassage(adiacentRoom.doorSpriteRight, actualRoom.passageLeftTiles, true);
+    //                        }
+    //                    }
+    //                }
+    //                else
+    //                {
+    //                    if (!actualRoom.openLeft)
+    //                    {
+    //                        SetRoomDoor('l', other.gameObject);
+    //                        adiacentRoom = GameManager.manager.GetAdiacentRoom('l');
+    //                        GameManager.manager.lvlManager.LightUpPassage(adiacentRoom.doorSpriteRight, actualRoom.passageLeftTiles, true);
+    //                    }
+    //                }
+    //            }
+    //            else
+    //            {
+    //                if (!actualRoom.openLeft)
+    //                {
+    //                    SetRoomDoor('l', other.gameObject);
+    //                    GameManager.manager.lvlManager.LightUpRoom(actualRoom, true);
+    //                }
+    //            }
+    //        }
+    //        else if (other.gameObject.tag == "DoorRight")
+    //        {
+    //            if (actualRoom.visited)
+    //            {
+    //                if (GameManager.manager.GetAdiacentRoom('r').bossRoom)
+    //                {
+    //                    if (hasKey)
+    //                    {
+    //                        if (!actualRoom.openRight)
+    //                        {
+    //                            SetRoomDoor('r', other.gameObject);
+    //                            adiacentRoom = GameManager.manager.GetAdiacentRoom('r');
+    //                            GameManager.manager.lvlManager.LightUpPassage(adiacentRoom.doorSpriteLeft, actualRoom.passageRightTiles, true);
+    //                        }
+    //                    }
+    //                }
+    //                else
+    //                {
+    //                    if (!actualRoom.openRight)
+    //                    {
+    //                        SetRoomDoor('r', other.gameObject);
+    //                        adiacentRoom = GameManager.manager.GetAdiacentRoom('r');
+    //                        GameManager.manager.lvlManager.LightUpPassage(adiacentRoom.doorSpriteLeft, actualRoom.passageRightTiles, true);
+    //                    }
+    //                }
+    //            }
+    //            else
+    //            {
+    //                if (!actualRoom.openRight)
+    //                {
+    //                    SetRoomDoor('r', other.gameObject);
+    //                    GameManager.manager.lvlManager.LightUpRoom(actualRoom, true);
+    //                }
+    //            }
+    //        }
+            
+    //    }
+    //}
 
     //controlla quale porta è stata aperta per entrare nella stanza e la richiude,
     //sigillando poi tutte le stanze finché restano nemici vivi nella stanza

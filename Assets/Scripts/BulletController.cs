@@ -22,10 +22,14 @@ public class BulletController : MonoBehaviour {
 
     private System.Random rand = new System.Random((int)DateTime.Now.Ticks);
 
+    public AudioClip explosion;
+    public AudioSource source;
+
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
         anim = GetComponent<Animator>();
+        source = GetComponent<AudioSource>();
     }
 
     void Update()
@@ -102,6 +106,7 @@ public class BulletController : MonoBehaviour {
     //Viene chiamata da un animation event all'inizio dell'animazione Bullet explosion
     public void BulletSplit()
     {
+        source.PlayOneShot(explosion);
         if (weapon.fireType == ItemStats.FireType.splitShot)
         {
             GameObject.Find("EquippedWeapon").GetComponent<Weapon>().SplitBullet(weapon, transform.position);

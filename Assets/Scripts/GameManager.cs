@@ -9,9 +9,10 @@ public class GameManager : MonoBehaviour {
     public LevelManager lvlManager;
     private Room actualRoom = null;
     public Vector2Int actualPos;
-    public bool gamePause = false, inventoryActive = false, pauseMenuActive = false;
-
-
+    public bool gamePause = false, inventoryActive = false, inventoryMenuActive = false, pauseMenuActive = false;
+    public bool dead = false;
+    public int playerMoney;
+    
 
     private void Awake()
     {
@@ -25,7 +26,6 @@ public class GameManager : MonoBehaviour {
             Destroy(gameObject);
         }
         DontDestroyOnLoad(gameObject);
-        
     }
 
     void InitGame() 
@@ -35,9 +35,7 @@ public class GameManager : MonoBehaviour {
         actualPos = lvlManager.ActualPos;
         ActualRoom = lvlManager.InstantiatePlayer();
     }
-
-
-
+    
     //Esegue OnSceneLoaded dopo che viene caricata la scena
     [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.AfterSceneLoad)]
     static public void CallbackInitialization()
@@ -48,8 +46,28 @@ public class GameManager : MonoBehaviour {
     //Prepara la scena appena caricata
     static private void OnSceneLoaded(Scene arg0, LoadSceneMode arg1)
     {
-        manager.InitGame();
+        if (!manager.dead)
+        {
+            manager.InitGame();
+        }
     }
+
+    //Ricarica la scena
+    private void Restart()
+    {
+
+        //Ricarica l'unica scena esistente con modalità Single, per eliminare la scena precedente
+        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex, LoadSceneMode.Single);
+    }
+
+    private void ReturnToMenu()
+    {
+        Destroy(gameObject);
+        SceneManager.LoadScene("Menu", LoadSceneMode.Single);
+        //SceneManager.UnloadSceneAsync("MainScene");
+    }
+
+
 
     void Save()
     {
@@ -60,13 +78,13 @@ public class GameManager : MonoBehaviour {
     {
 
     }
-
+    
     //viene aggiornata la posizione della stanza attuale nella griglia delle stanze
     public void UpdateActualRoom(char room)
     {
         if (room == 'u')
         {
-            actualPos += new Vector2Int(0, 1);  
+            actualPos += new Vector2Int(0, 1);
         }
         else if (room == 'd')
         {
@@ -148,19 +166,6 @@ public class GameManager : MonoBehaviour {
         return null;
     }
 
-    //Ricarica la scena
-    private void Restart()
-    {
-        //Ricarica l'unica scena esistente con modalità Single, per eliminare la scena precedente
-        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex, LoadSceneMode.Single);
-    }
-
-    private void ReturnToMenu()
-    {
-        SceneManager.LoadScene("Menu", LoadSceneMode.Single);
-        SceneManager.UnloadSceneAsync("MainScene");
-        
-    }
 
 }
 

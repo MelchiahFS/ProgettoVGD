@@ -10,106 +10,34 @@ public class Inventory : MonoBehaviour {
     public LootGenerator loot;
     public Weapon weapon;
 
-    //public Item[] itemList = new Item[20];
-    //public InventorySlot[] inventorySlots = new InventorySlot[20];
-
-    //public Item emptySlot;
-
-    //private bool Add(Item item)
-    //{
-    //    for (int i = 0; i < itemList.Length; i++)
-    //    {
-    //        if(itemList[i].itemName == item.itemName)
-    //        {
-    //            if(itemList[i].currentStack < itemList[i].maxStack)
-    //            {
-    //                itemList[i].currentStack++;
-    //                UpdateSlotUI();
-    //                return true;
-    //            }
-    //        }
-    //    }
-    //        for (int i = 0; i < itemList.Length; i++)
-    //    {
-    //        if(itemList[i].type == ItemStats.ItemType.emptyslot)
-    //        {
-    //            JsonUtility.FromJsonOverwrite(JsonUtility.ToJson(item), itemList[i]);
-    //            return true;
-    //        }
-    //    }
-    //    return false;
-    //}
-
-    //private void Awake()
-    //{
-    //    if(instance == null)
-    //    {
-    //        instance = this;
-    //    }
-    //    else
-    //    {
-    //        if(instance != this)
-    //        {
-    //            Destroy(this);
-    //        }
-    //    }
-    //    DontDestroyOnLoad(this);
-    //}
-
-    //private void Start()
-    //{
-    //    UpdateSlotUI();
-    //    ResetAllSlots();
-    //}
-
-    //private void ResetAllSlots()
-    //{
-    //    for(int i = 0; i < itemList.Length; i++)
-    //    {
-    //        JsonUtility.FromJsonOverwrite(JsonUtility.ToJson(emptySlot), itemList[i]);
-    //    }
-    //}
-
-    //public void UpdateSlotUI()
-    //{
-    //    for(int i = 0; i < inventorySlots.Length; i++)
-    //    {
-    //        inventorySlots[i].UpdateSlot();
-    //    }
-    //}
-
-    //public void AddSlot(Item item)
-    //{
-    //    bool hasAdded = Add(item);
-    //    if (hasAdded)
-    //    {
-    //        UpdateSlotUI();
-    //    }
-    //}
-
     public ItemStats[] itemList = new ItemStats[20];
     public InventorySlot[] inventorySlots = new InventorySlot[20];
 
-    public GameObject go;
+    public PlayerStats playerStats;
+
     private ItemStats emptySlot;
-    public Text text;
-    public GameObject options;
+    
     private int index;
     private int count;
-    private bool isEquipped;
-    public Text text1;
-    public Text text2;
-    public Text text3;
+    public Text name;  //Nome
+    public Text use; //Tasto Usa - Equipaggia
+    public Text isWeaponEquipped; //L'arma è equipaggiata?
+    public Text description; //Descrizione
     private int equippedSlot;
     private bool equipped;
     private bool menuShown;
 
-    public GameObject inventoryUI;
-    public GameObject button;
-    public GameObject buttonMenu;
-    private GameObject lastButton;
+    public GameObject inventoryMenu; //menu interno dell'inventario
+    public GameObject inventoryUI; //inventario
+    public GameObject button; //primo oggetto dell'inventario (in alto a sinistra)
+    public GameObject buttonMenu; //primo tasto del menu dell'inventario
+    private GameObject lastButton; //ultimo tasto premuto
+    private GameObject lastInventoryButton; //ultimo oggetto selezionato dell'inventario
 
-    public static bool GameIsPaused = false, inventoryActive = false;
+    public AudioClip pickKey, pickItem, buyItem, useItem, dropItem, enter, exit, move, select, empty;
+    private AudioSource source;
+
+    public static bool inventoryActive = false;
 
 
     private void Awake()
@@ -130,8 +58,9 @@ public class Inventory : MonoBehaviour {
 
     private void Start()
     {
+        playerStats = new PlayerStats();
         menuShown = false;
-        text2.text = "";
+        isWeaponEquipped.text = "";
         equippedSlot = 21;
         emptySlot = new ItemStats();
         emptySlot.itemType = ItemStats.ItemType.emptyslot;
@@ -140,35 +69,54 @@ public class Inventory : MonoBehaviour {
         ResetAllSlots();
         loot = GameObject.Find("EquippedWeapon").GetComponent<LootGenerator>();
         weapon = GameObject.Find("EquippedWeapon").GetComponent<Weapon>();
+        source = GetComponent<AudioSource>();
         count = 0;
-        isEquipped = false;
     }
 
     void Update()
     {
+        //prevengo che sia possibile aprire l'inventario se il menu di pausa è attivo
         if (!GameManager.manager.pauseMenuActive)
         {
             if (Input.GetKeyDown(KeyCode.Tab))
             {
-                if (GameIsPaused)
+                if (inventoryActive)
+                {
                     ResumeI();
+                    source.PlayOneShot(exit);
+                }
                 else
+                {
                     PauseI();
+                }
             }
-            else if (inventoryActive && Input.GetKeyDown(KeyCode.RightArrow))
-            {
-                HideMenu();
-            }
-        }
-        
 
-        if (GameIsPaused || inventoryActive)
-        {
+            //se il menu dell'inventario è attivo
             if (menuShown)
             {
                 if (Input.GetKeyDown(KeyCode.RightArrow) || Input.GetKeyDown(KeyCode.D))
+                {
                     HideMenu();
+                    source.PlayOneShot(exit);
+                }
+                else if (Input.GetKeyDown(KeyCode.UpArrow) || Input.GetKeyDown(KeyCode.DownArrow) || Input.GetKeyDown(KeyCode.W) || Input.GetKeyDown(KeyCode.S))
+                {
+                    source.PlayOneShot(move);
+                }
             }
+            else if (inventoryActive)
+            {
+                if (Input.GetKeyDown(KeyCode.UpArrow) || Input.GetKeyDown(KeyCode.DownArrow) || Input.GetKeyDown(KeyCode.LeftArrow) || Input.GetKeyDown(KeyCode.RightArrow) ||
+                    Input.GetKeyDown(KeyCode.W) || Input.GetKeyDown(KeyCode.A) || Input.GetKeyDown(KeyCode.S) || Input.GetKeyDown(KeyCode.D))
+                {
+                    source.PlayOneShot(move);
+                }
+            }
+        }
+
+
+        if (inventoryActive /*|| menuShown*/)     //DA FARE: controllare che resti selezionato l'oggetto dell'inventario giusto entrando nel menu dell'inventario
+        {
 
             if (EventSystem.current.currentSelectedGameObject == null)
             {
@@ -185,10 +133,11 @@ public class Inventory : MonoBehaviour {
     {
         inventoryUI.SetActive(false);
         Time.timeScale = 1f;
-        GameIsPaused = false;
+        inventoryActive = false;
+        menuShown = false;
         GameManager.manager.gamePause = false;
         GameManager.manager.inventoryActive = false;
-        options.SetActive(false);
+        inventoryMenu.SetActive(false);
         EventSystem.current.SetSelectedGameObject(null);
     }
 
@@ -196,10 +145,11 @@ public class Inventory : MonoBehaviour {
     {
         inventoryUI.SetActive(true);
         Time.timeScale = 0f;
-        GameIsPaused = true;
+        inventoryActive = true;
         GameManager.manager.gamePause = true;
         GameManager.manager.inventoryActive = true;
         EventSystem.current.SetSelectedGameObject(button);
+        source.PlayOneShot(enter);
     }
 
     public void Use()
@@ -215,6 +165,7 @@ public class Inventory : MonoBehaviour {
             {
                 itemList[index].currentStack--;
             }
+            source.PlayOneShot(useItem);
         }
         else
         {
@@ -231,30 +182,52 @@ public class Inventory : MonoBehaviour {
         equippedSlot = index;
     }
 
-    private bool Add(ItemStats item)
+    //private bool Add(ItemStats item)
+    //{
+    //    for (int i = 0; i < itemList.Length; i++)
+    //    {
+    //        if (itemList[i].itemName == item.itemName)
+    //        {
+    //            if (itemList[i].currentStack < itemList[i].maxStack)
+    //            {
+    //                itemList[i].currentStack++;
+    //                UpdateSlotUI();
+    //                return true;
+    //            }
+    //        }
+    //    }
+    //    for (int i = 0; i < itemList.Length; i++)
+    //    {
+    //        if (itemList[i].itemType == ItemStats.ItemType.emptyslot)
+    //        {
+    //            JsonUtility.FromJsonOverwrite(JsonUtility.ToJson(item), itemList[i]);
+    //            count++;
+    //            return true;
+    //        }
+    //    }
+    //    return false;
+    //}
+
+    private void Add(ItemStats item)
     {
-            for (int i = 0; i < itemList.Length; i++)
+        for (int i = 0; i < itemList.Length; i++)
+        {
+            if (itemList[i].itemName == item.itemName && itemList[i].itemType != ItemStats.ItemType.weapon) //se ci sono già oggetti identici
             {
-                if (itemList[i].itemName == item.itemName)
+                if (itemList[i].currentStack < itemList[i].maxStack) //controllo che lo slot non sia pieno
                 {
-                    if (itemList[i].currentStack < itemList[i].maxStack)
-                    {
-                        itemList[i].currentStack++;
-                        UpdateSlotUI();
-                        return true;
-                    }
+                    itemList[i].currentStack++;
+                    UpdateSlotUI();
+                    return;
                 }
             }
-            for (int i = 0; i < itemList.Length; i++)
+            else if (itemList[i].itemType == ItemStats.ItemType.emptyslot) //se invece lo slot è vuoto aggiungo qui l'oggetto
             {
-                if (itemList[i].itemType == ItemStats.ItemType.emptyslot)
-                {
-                    JsonUtility.FromJsonOverwrite(JsonUtility.ToJson(item), itemList[i]);
-                    count++;
-                    return true;
-                }
+                JsonUtility.FromJsonOverwrite(JsonUtility.ToJson(item), itemList[i]);
+                count++;
+                return;
             }
-            return false;
+        }
     }
 
     private void ResetAllSlots()
@@ -276,47 +249,60 @@ public class Inventory : MonoBehaviour {
         {
             itemList[index].currentStack--;
         }
+        source.PlayOneShot(dropItem);
         UpdateSlotUI();
         HideMenu();
     }
 
     public void ShowMenu(int i)
     {
-        menuShown = true;
         if (itemList[i].itemType != ItemStats.ItemType.emptyslot)
         {
-            inventoryActive = true;
-            options.SetActive(true);
+            lastInventoryButton = EventSystem.current.currentSelectedGameObject;
+            menuShown = true;
+            GameManager.manager.inventoryMenuActive = true;
+            inventoryMenu.SetActive(true);
             if (itemList[i].itemType == ItemStats.ItemType.consumable)
             {
-                text1.text = "Use";
-                text3.text = "";
+                use.text = "Use";
+                //description.text = "";
             }
             else
             {
-                text1.text = "Equip";
-                text3.text = "dmg:" + itemList[i].damage + "range:" + itemList[i].range;
+                use.text = "Equip";
             }
 
             if (i == equippedSlot)
-                text2.text = "Equipped";
+                isWeaponEquipped.text = "Equipped";
             else
-                text2.text = "";
+                isWeaponEquipped.text = "";
 
             EventSystem.current.SetSelectedGameObject(buttonMenu);
-            text.text = itemList[i].itemName;
+            //description.text = "dmg:" + itemList[i].damage + "range:" + itemList[i].range;
+            description.text = itemList[i].description;
+            name.text = itemList[i].itemName;
             index = i;
+            source.PlayOneShot(enter);
+            Canvas.ForceUpdateCanvases();
         }
         else
-            return;
+        {
+            source.PlayOneShot(empty);
+        }
     }
 
     public void HideMenu()
     {
         menuShown = false;
-        inventoryActive = false;
-        options.SetActive(false);
-        EventSystem.current.SetSelectedGameObject(button);
+        GameManager.manager.inventoryMenuActive = false;
+        inventoryMenu.SetActive(false);
+        //EventSystem.current.SetSelectedGameObject(button);
+        EventSystem.current.SetSelectedGameObject(lastInventoryButton);
+    }
+
+    public void PlayExitSound()
+    {
+        source.PlayOneShot(exit);
     }
 
     public void UpdateSlotUI()
@@ -327,19 +313,41 @@ public class Inventory : MonoBehaviour {
         }
     }
 
-    public void AddSlot(ItemStats info)
+    //public void AddSlot(ItemStats info)
+    //{
+    //    if (count < 20)
+    //    {
+    //        bool hasAdded = Add(info);
+    //        if (hasAdded)
+    //        {
+    //            //playerStats.Inizializate(info);
+    //            UpdateSlotUI();
+    //            source.PlayOneShot(pickItem);
+    //        }
+    //    }
+    //    else
+    //    {
+    //        source.PlayOneShot(empty);
+    //            Debug.Log("inventario pieno");
+    //    }
+    //}
+
+    public bool AddSlot(ItemStats info)
     {
         if (count < 20)
         {
-            bool hasAdded = Add(info);
-            if (hasAdded)
-            {
-                UpdateSlotUI();
-            }
+            Add(info);
+
+            //playerStats.Inizializate(info);
+            UpdateSlotUI();
+
+            return true;
         }
         else
         {
-                Debug.Log("inventario pieno");
+            //source.PlayOneShot(empty);
+            //Debug.Log("inventario pieno");
+            return false;
         }
     }
 

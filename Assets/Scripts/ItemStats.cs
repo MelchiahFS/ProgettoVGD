@@ -22,7 +22,7 @@ public class ItemStats {
     public string itemName;
     public string description;
     public int currentStack = 1;
-    public int maxStack = 1;
+    public int maxStack = 5;
 
     public float damage;
     public float range;

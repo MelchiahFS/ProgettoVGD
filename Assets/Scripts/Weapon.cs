@@ -25,12 +25,19 @@ public class Weapon : MonoBehaviour {
     public float radius = 0.75f;
     public Vector3 upDistance = new Vector3(0, 0.75f, 0), downDistance = new Vector3(0, -0.75f, 0), leftDistance = new Vector3(-0.75f, 0, 0), rightDistance = new Vector3(0.75f, 0, 0);
     private Vector3 attackStart;
+    private AudioSource source;
+
+    public AudioClip swing, unsheathe, cut; //arma meele
+    public AudioClip shoot, pickRanged; //arma ranged
+
+    private bool hitEnemy = false;
 
     void Start()
     {
         animator = GetComponentInParent<Animator>();
         ph = GetComponentInParent<PlayerHealth>();
         weaponsStats = new List<ItemStats>();
+        source = GetComponentInParent<AudioSource>();
 
         //si potrebber creare uno scriptableObject per le armi iniziali 
         ItemStats meele = new ItemStats(ItemStats.ItemType.weapon, ItemStats.WeaponType.meele, 15);
@@ -179,6 +186,8 @@ public class Weapon : MonoBehaviour {
     //Arma da fuoco
     public void Shoot(string direction, Vector3 playerPos, float shotSpeed)
     {
+        source.PlayOneShot(shoot);
+
         switch (actualWeapon.fireType)
         {
             case ItemStats.FireType.single:
@@ -348,6 +357,7 @@ public class Weapon : MonoBehaviour {
 
         if (hitObjects != null)
         {
+
             foreach (Collider2D coll in hitObjects)
             {
                 if (coll.gameObject.tag == "Enemy" && coll.isTrigger)
@@ -356,10 +366,20 @@ public class Weapon : MonoBehaviour {
                     RaycastHit2D hit = Physics2D.Raycast(transform.position + new Vector3(0, GetComponentInParent<Character>().RealOffset, 0), dir);
                     if (hit.collider.tag == "Enemy")
                     {
+                        hitEnemy = true;
                         coll.gameObject.GetComponent<EnemyHealth>().TakeDamage(actualWeapon.damage);
                     }
                 }
 
+            }
+            if (hitEnemy)
+            {
+                source.PlayOneShot(cut);
+                hitEnemy = false;
+            }
+            else
+            {
+                source.PlayOneShot(swing);
             }
             hitObjects = null;
         }
@@ -427,6 +447,13 @@ public class Weapon : MonoBehaviour {
     public void EquipWeapon(ItemStats weapon)
     {
         JsonUtility.FromJsonOverwrite(JsonUtility.ToJson(weapon), actualWeapon);
+        if (weapon.weaponType == ItemStats.WeaponType.meele)
+        {
+            source.PlayOneShot(unsheathe);
+        }
+        else
+        {
+            source.PlayOneShot(pickRanged);
+        }
     }
-
 }
