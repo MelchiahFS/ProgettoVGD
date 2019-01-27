@@ -61,7 +61,8 @@ public class MenuManager : MonoBehaviour
             sound.volume -= rate * Time.deltaTime;
             yield return 0;
         }
-        SceneManager.LoadScene(newGameLevel);
-        yield break;
+		//SceneManager.LoadScene(newGameLevel);
+		SceneManager.LoadScene("LoadingScreen");
+		yield break;
     }
 }

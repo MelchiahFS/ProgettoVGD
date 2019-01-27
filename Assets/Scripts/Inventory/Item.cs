@@ -11,6 +11,7 @@ public class Item : ScriptableObject
     public Sprite icon;
     public int currentStack = 1;
     public int maxStack = 1;
+    public int code;
 
     public ItemStats.ItemType type = ItemStats.ItemType.basic ;
     public ItemStats.ConsumableType consumableType;

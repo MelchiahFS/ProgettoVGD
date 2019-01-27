@@ -9,163 +9,133 @@ Prefab:
     m_Modifications: []
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 0}
-  m_RootGameObject: {fileID: 1942134024945836}
+  m_RootGameObject: {fileID: 1086500225926342}
   m_IsPrefabAsset: 1
---- !u!1 &1022828965000930
+--- !u!1 &1086500225926342
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 4970177364578350}
-  - component: {fileID: 20504850057026908}
-  - component: {fileID: 124135047223986708}
-  - component: {fileID: 81316450031941460}
-  m_Layer: 0
-  m_Name: MinimapCamera
+  - component: {fileID: 224819756532581712}
+  - component: {fileID: 114709565262891498}
+  - component: {fileID: 82298206235495546}
+  m_Layer: 5
+  m_Name: InventoryHandler
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!1 &1942134024945836
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 4710746060159388}
-  - component: {fileID: 114602589198929644}
-  - component: {fileID: 114264991956529208}
-  - component: {fileID: 114716911500170716}
-  m_Layer: 0
-  m_Name: GameManager
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &4710746060159388
-Transform:
+--- !u!82 &82298206235495546
+AudioSource:
   m_ObjectHideFlags: 1
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1942134024945836}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children:
-  - {fileID: 4970177364578350}
-  m_Father: {fileID: 0}
-  m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!4 &4970177364578350
-Transform:
-  m_ObjectHideFlags: 1
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1022828965000930}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 25, y: 6, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
-  m_Father: {fileID: 4710746060159388}
-  m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!20 &20504850057026908
-Camera:
-  m_ObjectHideFlags: 1
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1022828965000930}
+  m_GameObject: {fileID: 1086500225926342}
   m_Enabled: 1
-  serializedVersion: 2
-  m_ClearFlags: 1
-  m_BackGroundColor: {r: 0.03695655, g: 0, b: 0.5, a: 0.28235295}
-  m_projectionMatrixMode: 1
-  m_SensorSize: {x: 36, y: 24}
-  m_LensShift: {x: 0, y: 0}
-  m_FocalLength: 50
-  m_NormalizedViewPortRect:
+  serializedVersion: 4
+  OutputAudioMixerGroup: {fileID: 0}
+  m_audioClip: {fileID: 0}
+  m_PlayOnAwake: 1
+  m_Volume: 1
+  m_Pitch: 1
+  Loop: 0
+  Mute: 0
+  Spatialize: 0
+  SpatializePostEffects: 0
+  Priority: 128
+  DopplerLevel: 1
+  MinDistance: 1
+  MaxDistance: 500
+  Pan2D: 0
+  rolloffMode: 0
+  BypassEffects: 0
+  BypassListenerEffects: 0
+  BypassReverbZones: 0
+  rolloffCustomCurve:
     serializedVersion: 2
-    x: 0
-    y: 0
-    width: 1
-    height: 1
-  near clip plane: -1
-  far clip plane: 1000
-  field of view: 60
-  orthographic: 1
-  orthographic size: 90
-  m_Depth: 0
-  m_CullingMask:
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 1
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  panLevelCustomCurve:
     serializedVersion: 2
-    m_Bits: 1024
-  m_RenderingPath: -1
-  m_TargetTexture: {fileID: 8400000, guid: a88c6d7d8657aa0498e9f6a44514792e, type: 2}
-  m_TargetDisplay: 0
-  m_TargetEye: 3
-  m_HDR: 1
-  m_AllowMSAA: 1
-  m_AllowDynamicResolution: 0
-  m_ForceIntoRT: 0
-  m_OcclusionCulling: 1
-  m_StereoConvergence: 10
-  m_StereoSeparation: 0.022
---- !u!81 &81316450031941460
-AudioListener:
-  m_ObjectHideFlags: 1
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1022828965000930}
-  m_Enabled: 1
---- !u!114 &114264991956529208
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  spreadCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  reverbZoneMixCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+--- !u!114 &114709565262891498
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1942134024945836}
+  m_GameObject: {fileID: 1086500225926342}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a6366acc3de5f9d43b9873fb7d67b7b2, type: 3}
+  m_Script: {fileID: 11500000, guid: 13b88e75097aeeb4c85a9573d0782713, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  roomSizeX: 15
-  roomSizeY: 15
-  tileToRend: {fileID: 1670268643928982, guid: cadcbdbab3604be438163c9ea4ec6fbf, type: 2}
-  playerPrefab: {fileID: 1120037798620234, guid: 43c51975d4bc6a54dbad4434af98e547,
-    type: 2}
-  enemyPrefabs:
-  - {fileID: 1183940118386976, guid: 6bd695610acadb54cbc881d65742d829, type: 2}
-  mapSize: {x: 0, y: 0}
-  dim: 0.5
-  full: 1
-  off: 0
-  alpha: 0
-  roomNumber: 0
-  exit: {fileID: 0}
-  hideExit: {fileID: 0}
---- !u!114 &114602589198929644
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1942134024945836}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4c8a4204cbc887d4bb4934b09127df45, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  lvlManager: {fileID: 0}
-  actualPos: {x: 0, y: 0}
-  gamePause: 0
-  inventoryActive: 0
-  inventoryMenuActive: 0
-  pauseMenuActive: 0
-  dead: 0
-  playerMoney: 0
+  loot: {fileID: 0}
+  weapon: {fileID: 0}
   itemList:
   - itemType: 0
     consumableType: 0
@@ -176,7 +146,7 @@ MonoBehaviour:
     itemName: 
     description: 
     currentStack: 1
-    maxStack: 5
+    maxStack: 1
     damage: 0
     range: 0
     fireRate: 0
@@ -192,7 +162,7 @@ MonoBehaviour:
     itemName: 
     description: 
     currentStack: 1
-    maxStack: 5
+    maxStack: 1
     damage: 0
     range: 0
     fireRate: 0
@@ -208,7 +178,7 @@ MonoBehaviour:
     itemName: 
     description: 
     currentStack: 1
-    maxStack: 5
+    maxStack: 1
     damage: 0
     range: 0
     fireRate: 0
@@ -224,7 +194,7 @@ MonoBehaviour:
     itemName: 
     description: 
     currentStack: 1
-    maxStack: 5
+    maxStack: 1
     damage: 0
     range: 0
     fireRate: 0
@@ -240,7 +210,7 @@ MonoBehaviour:
     itemName: 
     description: 
     currentStack: 1
-    maxStack: 5
+    maxStack: 1
     damage: 0
     range: 0
     fireRate: 0
@@ -256,7 +226,7 @@ MonoBehaviour:
     itemName: 
     description: 
     currentStack: 1
-    maxStack: 5
+    maxStack: 1
     damage: 0
     range: 0
     fireRate: 0
@@ -272,7 +242,7 @@ MonoBehaviour:
     itemName: 
     description: 
     currentStack: 1
-    maxStack: 5
+    maxStack: 1
     damage: 0
     range: 0
     fireRate: 0
@@ -288,7 +258,7 @@ MonoBehaviour:
     itemName: 
     description: 
     currentStack: 1
-    maxStack: 5
+    maxStack: 1
     damage: 0
     range: 0
     fireRate: 0
@@ -304,7 +274,7 @@ MonoBehaviour:
     itemName: 
     description: 
     currentStack: 1
-    maxStack: 5
+    maxStack: 1
     damage: 0
     range: 0
     fireRate: 0
@@ -320,7 +290,7 @@ MonoBehaviour:
     itemName: 
     description: 
     currentStack: 1
-    maxStack: 5
+    maxStack: 1
     damage: 0
     range: 0
     fireRate: 0
@@ -336,7 +306,7 @@ MonoBehaviour:
     itemName: 
     description: 
     currentStack: 1
-    maxStack: 5
+    maxStack: 1
     damage: 0
     range: 0
     fireRate: 0
@@ -352,7 +322,7 @@ MonoBehaviour:
     itemName: 
     description: 
     currentStack: 1
-    maxStack: 5
+    maxStack: 1
     damage: 0
     range: 0
     fireRate: 0
@@ -368,7 +338,7 @@ MonoBehaviour:
     itemName: 
     description: 
     currentStack: 1
-    maxStack: 5
+    maxStack: 1
     damage: 0
     range: 0
     fireRate: 0
@@ -384,7 +354,7 @@ MonoBehaviour:
     itemName: 
     description: 
     currentStack: 1
-    maxStack: 5
+    maxStack: 1
     damage: 0
     range: 0
     fireRate: 0
@@ -400,7 +370,7 @@ MonoBehaviour:
     itemName: 
     description: 
     currentStack: 1
-    maxStack: 5
+    maxStack: 1
     damage: 0
     range: 0
     fireRate: 0
@@ -416,7 +386,7 @@ MonoBehaviour:
     itemName: 
     description: 
     currentStack: 1
-    maxStack: 5
+    maxStack: 1
     damage: 0
     range: 0
     fireRate: 0
@@ -432,7 +402,7 @@ MonoBehaviour:
     itemName: 
     description: 
     currentStack: 1
-    maxStack: 5
+    maxStack: 1
     damage: 0
     range: 0
     fireRate: 0
@@ -448,7 +418,7 @@ MonoBehaviour:
     itemName: 
     description: 
     currentStack: 1
-    maxStack: 5
+    maxStack: 1
     damage: 0
     range: 0
     fireRate: 0
@@ -464,7 +434,7 @@ MonoBehaviour:
     itemName: 
     description: 
     currentStack: 1
-    maxStack: 5
+    maxStack: 1
     damage: 0
     range: 0
     fireRate: 0
@@ -480,45 +450,66 @@ MonoBehaviour:
     itemName: 
     description: 
     currentStack: 1
-    maxStack: 5
+    maxStack: 1
     damage: 0
     range: 0
     fireRate: 0
     shotSpeed: 0
     toBuy: 0
     price: 0
-  equippedSlot: 21
-  loadScreenActive: 0
-  levelNumber: 1
---- !u!114 &114716911500170716
-MonoBehaviour:
+  inventorySlots:
+  - {fileID: 114464566752176980, guid: b7c6307bbda77de4ba3b4d79bfb50554, type: 2}
+  - {fileID: 114009632216319800, guid: 221ba904cde32f2478c10e59e1dc0dc1, type: 2}
+  - {fileID: 114119044094602366, guid: 7b9ab85ed76be3846977aea3fd5953a3, type: 2}
+  - {fileID: 114435190379087748, guid: 38ee051907ed91f47827371eaf0f9448, type: 2}
+  - {fileID: 114376861040725694, guid: 65c73859143edbe4d976bcce36c4348c, type: 2}
+  - {fileID: 114487591785929550, guid: 63124eea116cd3c4db4246395ead9507, type: 2}
+  - {fileID: 114754545283714444, guid: 298a430ec17b62f42875e9929902209b, type: 2}
+  - {fileID: 114128537398301774, guid: e45fda3182fa0064f83bfef4c142f563, type: 2}
+  - {fileID: 114907835819677968, guid: 702929e907109544da5bb2ba1dc4a231, type: 2}
+  - {fileID: 114993115662564734, guid: 48dfd35a2d0787943a1bc56bec3d2a3b, type: 2}
+  - {fileID: 114144849054029336, guid: 3bfe1c512ef877b4e9e058d3ee8a5d8a, type: 2}
+  - {fileID: 114560287917308722, guid: c2384220b8f4b6a468b9d529014d5eba, type: 2}
+  - {fileID: 114310792609288168, guid: 94d988a7f695a964b85a68e88f8b3714, type: 2}
+  - {fileID: 114126022016063918, guid: 483d5011da70ab64cbc78aa56b76119c, type: 2}
+  - {fileID: 114529369355279416, guid: da9c6f700917f354ca8c4848f38411c5, type: 2}
+  - {fileID: 114688098779105066, guid: 4d19949ba5835a749a8ebffff014615e, type: 2}
+  - {fileID: 114046163710347068, guid: 3c5288c94ccd4a148bb2a6243ee49ead, type: 2}
+  - {fileID: 114777177492271074, guid: 509de2e971e5c5445946014d6d939e66, type: 2}
+  - {fileID: 114976921288548288, guid: 6eba0cf245b4e2342a65a231dc1cb2ff, type: 2}
+  - {fileID: 114597156696546616, guid: 767e4b2395eb0284a915ad02850ec41a, type: 2}
+  playerStats: {fileID: 0}
+  go: {fileID: 1670819977172170, guid: 8596697453f85bb4fb1b9b990c035f07, type: 2}
+  options: {fileID: 1617480777697752, guid: 4ebbccd67cdf4914abd32f53174f66c2, type: 2}
+  name: {fileID: 114672881521493888, guid: c4c6d601610583a4790660cf956d1f99, type: 2}
+  use: {fileID: 0}
+  isWeaponEquipped: {fileID: 0}
+  description: {fileID: 0}
+  inventoryUI: {fileID: 0}
+  button: {fileID: 0}
+  buttonMenu: {fileID: 0}
+  useItem: {fileID: 8300000, guid: 658b35c66a4bbb44bbb9f37062e6a852, type: 3}
+  dropItem: {fileID: 8300000, guid: ca575e30f895cbf4fb4a2eafea040f8f, type: 3}
+  enter: {fileID: 8300000, guid: 7f110b1552215314ba8b9eb931fff7ae, type: 3}
+  exit: {fileID: 8300000, guid: 77e10898b22c69145a91be66afd76c7f, type: 3}
+  move: {fileID: 8300000, guid: dfd9b140aa2e16841928b554ae79b0d4, type: 3}
+  select: {fileID: 8300000, guid: 0f5b54e10ced18f40aa828c6fa24a788, type: 3}
+  empty: {fileID: 8300000, guid: 0f888eb75922eee40a1378e40f72728b, type: 3}
+--- !u!224 &224819756532581712
+RectTransform:
   m_ObjectHideFlags: 1
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1942134024945836}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6f63b3c0c30bfc94eba20a220a0c2ec3, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  actualRoom: {fileID: 1898078663905458, guid: fda2d35a2f6582b4fbc19e48860ca61a, type: 2}
-  visitedRoom: {fileID: 1577879277103060, guid: c1231bf2a4d29ea42a0d07c0721ec153,
-    type: 2}
-  actualBossRoom: {fileID: 1477923246458824, guid: 9f38c955631cec94ea3eeeb1427d3a38,
-    type: 2}
-  visitedBossRoom: {fileID: 1233229086028382, guid: dc5fc63cbf34af942a59ca9a58f4849f,
-    type: 2}
-  actualShopRoom: {fileID: 1523633657587596, guid: 845732b2f620d4d4e99c02b1c41aea05,
-    type: 2}
-  visitedShopRoom: {fileID: 1894160867918880, guid: 632885f2e8f1d114e94f7bbce851fa7f,
-    type: 2}
-  unknownRoom: {fileID: 1944952574655890, guid: 42b2efd499148dd498aefe9a0dd4d5d1,
-    type: 2}
-  isCameraSet: 0
---- !u!124 &124135047223986708
-Behaviour:
-  m_ObjectHideFlags: 1
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1022828965000930}
-  m_Enabled: 1
+  m_GameObject: {fileID: 1086500225926342}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: -22, y: 23}
+  m_SizeDelta: {x: 100, y: 100}
+  m_Pivot: {x: 0.5, y: 0.5}

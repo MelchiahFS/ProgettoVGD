@@ -12,72 +12,46 @@ public class GameManager : MonoBehaviour {
     public bool gamePause = false, inventoryActive = false, inventoryMenuActive = false, pauseMenuActive = false;
     public bool dead = false;
     public int playerMoney;
-    
+    public ItemStats[] itemList = new ItemStats[20];
+    public int equippedSlot =21;
 
-    private void Awake()
-    {
-        if (manager == null)
-        {
-            DontDestroyOnLoad(gameObject);
-            manager = this;
-        }
-        else if (manager != this)
-        {
-            Destroy(gameObject);
-        }
-        DontDestroyOnLoad(gameObject);
-    }
+    public bool loadScreenActive = false;
+    public int levelNumber = 1;
 
-    void InitGame() 
-    {
-        lvlManager = GetComponent<LevelManager>();
-        lvlManager.DrawMap();
-        actualPos = lvlManager.ActualPos;
-        ActualRoom = lvlManager.InstantiatePlayer();
-    }
-    
-    //Esegue OnSceneLoaded dopo che viene caricata la scena
-    [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.AfterSceneLoad)]
-    static public void CallbackInitialization()
-    {
-        SceneManager.sceneLoaded += OnSceneLoaded;
-    }
 
-    //Prepara la scena appena caricata
-    static private void OnSceneLoaded(Scene arg0, LoadSceneMode arg1)
-    {
-        if (!manager.dead)
-        {
-            manager.InitGame();
-        }
-    }
+	private void Awake()
+	{
+		if (manager == null)
+		{
+			manager = this;
+		}
+		else if (manager != this)
+		{
+			Destroy(gameObject);
+		}
 
-    //Ricarica la scena
-    private void Restart()
-    {
+		lvlManager = GetComponent<LevelManager>();
+		lvlManager.DrawMap();
+		actualPos = lvlManager.ActualPos;
+		ActualRoom = lvlManager.InstantiatePlayer();
+	}
 
-        //Ricarica l'unica scena esistente con modalità Single, per eliminare la scena precedente
-        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex, LoadSceneMode.Single);
-    }
+    //Carica il nuovo livello
+    private void NewLevel()
+    {
+		//Carica la schermata di caricamento
+		GameStats.stats.levelNumber++;
+		SceneManager.LoadScene("LoadingScreen", LoadSceneMode.Single);
+	}
 
     private void ReturnToMenu()
     {
         Destroy(gameObject);
         SceneManager.LoadScene("Menu", LoadSceneMode.Single);
-        //SceneManager.UnloadSceneAsync("MainScene");
     }
 
 
 
-    void Save()
-    {
-
-    }
-
-    void Load()
-    {
-
-    }
     
     //viene aggiornata la posizione della stanza attuale nella griglia delle stanze
     public void UpdateActualRoom(char room)

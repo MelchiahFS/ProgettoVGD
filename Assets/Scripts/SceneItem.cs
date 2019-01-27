@@ -29,19 +29,21 @@ public class SceneItem : MonoBehaviour
                 if (info.toBuy)
                 {
                     PlayerHealth ph = GameObject.Find("Player").GetComponent<PlayerHealth>();
-                    
-                    //if (ph.playerMoney >= info.price)
-                    if (GameManager.manager.playerMoney >= info.price)
-                    {
+
+					//if (GameManager.manager.playerMoney >= info.price)
+					if (GameStats.stats.playerMoney >= info.price)
+					{
                         ItemStats item = new ItemStats();
                         JsonUtility.FromJsonOverwrite(JsonUtility.ToJson(info), item);
                         if (Inventory.instance.AddSlot(item))
                         {
-                            GameManager.manager.playerMoney -= info.price;
-                            //ph.playerMoney -= info.price;
-                            ph.gameObject.GetComponentInChildren<Text>().text = GameManager.manager.playerMoney.ToString();
-                            //ph.gameObject.GetComponentInChildren<Text>().text = ph.playerMoney.ToString();
-                            source.PlayOneShot(Inventory.instance.buyItem);
+							//GameManager.manager.playerMoney -= info.price;
+							GameStats.stats.playerMoney -= info.price;
+
+							//ph.gameObject.GetComponentInChildren<Text>().text = GameManager.manager.playerMoney.ToString();
+							ph.gameObject.GetComponentInChildren<Text>().text = GameStats.stats.playerMoney.ToString();
+
+							source.PlayOneShot(Inventory.instance.buyItem);
                             Destroy(gameObject);
                         }
                         else

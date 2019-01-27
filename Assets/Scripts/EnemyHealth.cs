@@ -131,13 +131,12 @@ public class EnemyHealth : MonoBehaviour {
         {
             currentHealth = 0;
             slider.value = 0;
+
             //incremento il punteggio del player
-            //playerHealth.playerMoney += points;
-            GameManager.manager.playerMoney += points;
             playerPoints = player.GetComponentInChildren<Text>();
-            //playerPoints.text = playerHealth.playerMoney.ToString();
-            playerPoints.text = GameManager.manager.playerMoney.ToString(); 
-            if (!dying)
+			GameStats.stats.playerMoney += points;
+			playerPoints.text = GameStats.stats.playerMoney.ToString();
+			if (!dying)
                 StartCoroutine(Die());
         }
             

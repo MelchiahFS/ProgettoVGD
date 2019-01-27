@@ -10,16 +10,14 @@ public class Inventory : MonoBehaviour {
     public LootGenerator loot;
     public Weapon weapon;
 
-    public ItemStats[] itemList = new ItemStats[20];
+    //public ItemStats[] itemList = new ItemStats[20];
     public InventorySlot[] inventorySlots = new InventorySlot[20];
-
-    public PlayerStats playerStats;
 
     private ItemStats emptySlot;
     
-    private int index;
+    public int index;
     private int count;
-    public Text name;  //Nome
+    public Text itemName;  //Nome
     public Text use; //Tasto Usa - Equipaggia
     public Text isWeaponEquipped; //L'arma è equipaggiata?
     public Text description; //Descrizione
@@ -40,7 +38,8 @@ public class Inventory : MonoBehaviour {
     public static bool inventoryActive = false;
 
 
-    private void Awake()
+
+private void Awake()
     {
         if (instance == null)
         {
@@ -56,21 +55,31 @@ public class Inventory : MonoBehaviour {
         //DontDestroyOnLoad(this);
     }
 
-    private void Start()
+    void Start()
     {
-        playerStats = new PlayerStats();
         menuShown = false;
         isWeaponEquipped.text = "";
-        equippedSlot = 21;
         emptySlot = new ItemStats();
         emptySlot.itemType = ItemStats.ItemType.emptyslot;
-        InitializeItemList();
+        //InitializeItemList();
         UpdateSlotUI();
-        ResetAllSlots();
+        if(IsInventoryEmpty())
+            ResetAllSlots();
+        Debug.Log("inventory inizializza armi");
         loot = GameObject.Find("EquippedWeapon").GetComponent<LootGenerator>();
         weapon = GameObject.Find("EquippedWeapon").GetComponent<Weapon>();
         source = GetComponent<AudioSource>();
         count = 0;
+    }
+
+    private bool IsInventoryEmpty()
+    {
+		for (int i = 0; i < GameStats.stats.itemList.Length; i++)
+		{
+			if (GameStats.stats.itemList[i].itemType != ItemStats.ItemType.emptyslot)
+				return false;
+        }
+        return true;
     }
 
     void Update()
@@ -154,17 +163,18 @@ public class Inventory : MonoBehaviour {
 
     public void Use()
     {
-        if (itemList[index].itemType == ItemStats.ItemType.consumable)
-        {
-            loot.ApplyEffect(itemList[index].consumableType);
-            if (itemList[index].currentStack == 1)
-            {
-                JsonUtility.FromJsonOverwrite(JsonUtility.ToJson(emptySlot), itemList[index]);
-            }
+		if (GameStats.stats.itemList[index].itemType == ItemStats.ItemType.consumable)
+		{
+			loot.ApplyEffect(GameStats.stats.itemList[index].consumableType);
+			
+			if (GameStats.stats.itemList[index].currentStack == 1)
+			{
+				JsonUtility.FromJsonOverwrite(JsonUtility.ToJson(emptySlot), GameStats.stats.itemList[index]);
+			}
             else
             {
-                itemList[index].currentStack--;
-            }
+				GameStats.stats.itemList[index].currentStack--;
+			}
             source.PlayOneShot(useItem);
         }
         else
@@ -178,110 +188,83 @@ public class Inventory : MonoBehaviour {
 
     public void Equip()
     {
-        weapon.EquipWeapon(itemList[index]);
-        equippedSlot = index;
-    }
-
-    //private bool Add(ItemStats item)
-    //{
-    //    for (int i = 0; i < itemList.Length; i++)
-    //    {
-    //        if (itemList[i].itemName == item.itemName)
-    //        {
-    //            if (itemList[i].currentStack < itemList[i].maxStack)
-    //            {
-    //                itemList[i].currentStack++;
-    //                UpdateSlotUI();
-    //                return true;
-    //            }
-    //        }
-    //    }
-    //    for (int i = 0; i < itemList.Length; i++)
-    //    {
-    //        if (itemList[i].itemType == ItemStats.ItemType.emptyslot)
-    //        {
-    //            JsonUtility.FromJsonOverwrite(JsonUtility.ToJson(item), itemList[i]);
-    //            count++;
-    //            return true;
-    //        }
-    //    }
-    //    return false;
-    //}
+		weapon.EquipWeapon(GameStats.stats.itemList[index]);
+		GameStats.stats.equippedSlot = index;
+	}
 
     private void Add(ItemStats item)
     {
-        for (int i = 0; i < itemList.Length; i++)
-        {
-            if (itemList[i].itemName == item.itemName && itemList[i].itemType != ItemStats.ItemType.weapon) //se ci sono già oggetti identici
-            {
-                if (itemList[i].currentStack < itemList[i].maxStack) //controllo che lo slot non sia pieno
-                {
-                    itemList[i].currentStack++;
-                    UpdateSlotUI();
-                    return;
-                }
-            }
-            else if (itemList[i].itemType == ItemStats.ItemType.emptyslot) //se invece lo slot è vuoto aggiungo qui l'oggetto
-            {
-                JsonUtility.FromJsonOverwrite(JsonUtility.ToJson(item), itemList[i]);
-                count++;
-                return;
-            }
-        }
-    }
+		for (int i = 0; i < GameStats.stats.itemList.Length; i++)
+		{
+			if (GameStats.stats.itemList[i].itemName == item.itemName && GameStats.stats.itemList[i].itemType != ItemStats.ItemType.weapon) //se ci sono già oggetti identici
+			{
+				if (GameStats.stats.itemList[i].currentStack < GameStats.stats.itemList[i].maxStack) //controllo che lo slot non sia pieno
+				{
+					GameStats.stats.itemList[i].currentStack++;
+					UpdateSlotUI();
+					return;
+				}
+			}
+			else if (GameStats.stats.itemList[i].itemType == ItemStats.ItemType.emptyslot) //se invece lo slot è vuoto aggiungo qui l'oggetto
+			{
+				JsonUtility.FromJsonOverwrite(JsonUtility.ToJson(item), GameStats.stats.itemList[i]);
+				count++;
+				return;
+			}
+		}
+	}
 
     private void ResetAllSlots()
     {
-        for (int i = 0; i < itemList.Length; i++)
-        {
-            JsonUtility.FromJsonOverwrite(JsonUtility.ToJson(emptySlot), itemList[i]);
-        }
-    }
+		for (int i = 0; i < GameStats.stats.itemList.Length; i++)
+		{
+			JsonUtility.FromJsonOverwrite(JsonUtility.ToJson(emptySlot), GameStats.stats.itemList[i]);
+		}
+	}
 
     public void DropItem()
     {
-        if (itemList[index].currentStack == 1)
-        {
-            JsonUtility.FromJsonOverwrite(JsonUtility.ToJson(emptySlot), itemList[index]);
-            count--;
-        }
-        else
-        {
-            itemList[index].currentStack--;
-        }
-        source.PlayOneShot(dropItem);
+		if (GameStats.stats.itemList[index].currentStack == 1)
+		{
+			JsonUtility.FromJsonOverwrite(JsonUtility.ToJson(emptySlot), GameStats.stats.itemList[index]);
+			count--;
+		}
+		else
+		{
+			GameStats.stats.itemList[index].currentStack--;
+		}
+		source.PlayOneShot(dropItem);
         UpdateSlotUI();
         HideMenu();
     }
 
     public void ShowMenu(int i)
     {
-        if (itemList[i].itemType != ItemStats.ItemType.emptyslot)
-        {
+		if (GameStats.stats.itemList[i].itemType != ItemStats.ItemType.emptyslot)
+		{
             lastInventoryButton = EventSystem.current.currentSelectedGameObject;
             menuShown = true;
             GameManager.manager.inventoryMenuActive = true;
             inventoryMenu.SetActive(true);
-            if (itemList[i].itemType == ItemStats.ItemType.consumable)
-            {
+			
+			if (GameStats.stats.itemList[i].itemType == ItemStats.ItemType.consumable)
+			{
                 use.text = "Use";
-                //description.text = "";
             }
             else
             {
                 use.text = "Equip";
             }
-
-            if (i == equippedSlot)
-                isWeaponEquipped.text = "Equipped";
+			
+			if (i == GameStats.stats.equippedSlot)
+				isWeaponEquipped.text = "Equipped";
             else
                 isWeaponEquipped.text = "";
 
             EventSystem.current.SetSelectedGameObject(buttonMenu);
-            //description.text = "dmg:" + itemList[i].damage + "range:" + itemList[i].range;
-            description.text = itemList[i].description;
-            name.text = itemList[i].itemName;
-            index = i;
+			description.text = GameStats.stats.itemList[i].description;
+			itemName.text = GameStats.stats.itemList[i].itemName;
+			index = i;
             source.PlayOneShot(enter);
             Canvas.ForceUpdateCanvases();
         }
@@ -309,8 +292,8 @@ public class Inventory : MonoBehaviour {
     {
         for (int i = 0; i < inventorySlots.Length; i++)
         {
-            inventorySlots[i].UpdateSlot(itemList[i]);
-        }
+			inventorySlots[i].UpdateSlot(GameStats.stats.itemList[i]);
+		}
     }
 
     //public void AddSlot(ItemStats info)
@@ -351,13 +334,14 @@ public class Inventory : MonoBehaviour {
         }
     }
 
-    private void InitializeItemList()
-    {
-        for (int i = 0; i < itemList.Length; i++)
-        {
-            itemList[i] = new ItemStats();
-            itemList[i].itemType = ItemStats.ItemType.emptyslot;
-        }
-    }
+    //private void InitializeItemList()
+    //{
+    //    for (int i = 0; i < GameManager.manager.itemList.Length; i++)
+    //    {
+    //        GameManager.manager.itemList[i] = new ItemStats();
+    //        GameManager.manager.itemList[i].itemType = ItemStats.ItemType.emptyslot;
+    //    }
+    //}
 
 }
+

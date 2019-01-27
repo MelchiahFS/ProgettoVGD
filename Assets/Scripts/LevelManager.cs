@@ -964,16 +964,18 @@ public class LevelManager : MonoBehaviour {
         }
         else if (room.bossRoom)
         {
-            room.enemyCounter = rnd.Next(4, 8);
-            room.enemyWaves = 3;
+            //room.enemyCounter = rnd.Next(4, 8);
+            //room.enemyWaves = 3;
+            room.enemyCounter = 0;
+            room.enemyWaves = 0;
         }
         else
         {
-            room.enemyCounter = rnd.Next(3, 6);
-            room.enemyWaves = 1;
-            //room.enemyCounter = 0;
-            //room.enemyWaves = 0;
-        }
+			room.enemyCounter = rnd.Next(3, 6);
+			room.enemyWaves = 1;
+			//room.enemyCounter = 0;
+			//room.enemyWaves = 0;
+		}
     }
 
     public void ShowExit()

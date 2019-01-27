@@ -14,7 +14,9 @@ public class RoomChange : MonoBehaviour {
 
     public bool passUp = false, passDown = false, passLeft = false, passRight = false;
 
-    public bool chRoom = false, hasKey = false;
+    public bool chRoom = false;
+    //public bool hasKey = false;
+    public bool hasKey = true;
 
     public float fadeTime = 0.3f;
 
@@ -23,6 +25,7 @@ public class RoomChange : MonoBehaviour {
 
     void Start()
     {
+        hasKey = true;
         minimap = GameManager.manager.GetComponent<MiniMapController>();
         actualRoom = GameManager.manager.ActualRoom;
         roomSizeX = GameManager.manager.lvlManager.roomSizeX;
@@ -166,7 +169,7 @@ public class RoomChange : MonoBehaviour {
         if (other.gameObject.tag == "Exit")
         {
             //Invoco la funzione restart con delay di due secondi
-            GameManager.manager.Invoke("Restart", 2);
+            GameManager.manager.Invoke("NewLevel", 2);  //---------------------------------------------------------------
         }
 
         

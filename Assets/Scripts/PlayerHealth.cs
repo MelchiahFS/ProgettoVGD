@@ -23,7 +23,6 @@ public class PlayerHealth : MonoBehaviour {
     public Material hitColor, defaultMaterial;
     private GameObject iconsContainer, fastIcon, slowIcon, strongIcon, weakIcon, invIcon, vulnIcon, flipAttIcon, flipMovIcon, poisonIcon;
     private AnchorIcons anchor;
-    public int playerMoney;
 
     private AudioSource source;
     public AudioClip hurt, hurt1, hurt2, dead;
@@ -41,17 +40,17 @@ public class PlayerHealth : MonoBehaviour {
         
         slider = GetComponentInChildren<Slider>();
         slider.minValue = 0;
-        slider.maxValue = startingHealth;
+		//slider.maxValue = startingHealth;
+		slider.maxValue = GameStats.stats.maxHealth;
 
-        //slider.value = startingHealth;
-        //currentHealth = startingHealth;
-        slider.value = 1000;
-        currentHealth = 1000;
+		slider.value = GameStats.stats.playerHealth;
+		currentHealth = GameStats.stats.playerHealth;
+		//slider.value = 1000;
+		//currentHealth = 1000;
 
-        //GetComponentInChildren<Text>().text = playerMoney.ToString();
-        GetComponentInChildren<Text>().text = GameManager.manager.playerMoney.ToString();
+		GetComponentInChildren<Text>().text = GameStats.stats.playerMoney.ToString();
 
-        playerColor = rend.color;
+		playerColor = rend.color;
 
         iconsContainer = transform.Find("HealthBar").gameObject;
         fastIcon = iconsContainer.transform.Find("Fast").gameObject;
@@ -85,9 +84,10 @@ public class PlayerHealth : MonoBehaviour {
             if (gdd)
                 amount *= 2;
 
-            if (currentHealth - amount <= 0)
-            {
-                currentHealth = 0;
+            if (GameStats.stats.playerHealth - amount <= 0)
+			{
+				GameStats.stats.playerHealth = 0;
+				currentHealth = 0;
                 slider.value = currentHealth;
                 PlayerDeath();
             }
@@ -101,7 +101,8 @@ public class PlayerHealth : MonoBehaviour {
                 else
                     source.PlayOneShot(hurt2);
 
-                currentHealth -= amount;
+				GameStats.stats.playerHealth -= amount;
+				currentHealth = GameStats.stats.playerHealth;
                 slider.value = currentHealth;
                 StartCoroutine(Flash(playerColor, GetComponent<SpriteRenderer>()));
             }
@@ -141,11 +142,22 @@ public class PlayerHealth : MonoBehaviour {
         yield break;
     }
 
+	//Convertito
     public void HealthUp(int amount)
     {
-        currentHealth += amount;
-        slider.value = currentHealth;
-    }
+		if (currentHealth + amount >= GameStats.stats.maxHealth)
+		{
+			GameStats.stats.playerHealth = GameStats.stats.maxHealth;
+			currentHealth = GameStats.stats.maxHealth;
+		}
+		else
+		{
+			GameStats.stats.playerHealth += amount;
+			currentHealth += GameStats.stats.playerHealth;
+			
+		}
+		slider.value = currentHealth;
+	}
 
     public IEnumerator Invincible()
     {
@@ -183,6 +195,7 @@ public class PlayerHealth : MonoBehaviour {
         yield break;
     }
 
+	//Convertito
     public IEnumerator Poisoned()
     {
         anchor.SetIconPosition(poisonIcon, true);
@@ -204,15 +217,17 @@ public class PlayerHealth : MonoBehaviour {
         if (gdd)
             amount *= 2;
 
-        if (currentHealth - amount <= 0)
+        if (GameStats.stats.playerHealth - amount <= 0)
         {
+			GameStats.stats.playerHealth = 0;
             currentHealth = 0;
             slider.value = currentHealth;
             PlayerDeath();
         }
         else
         {
-            currentHealth -= amount;
+			GameStats.stats.playerHealth -= amount;
+			currentHealth = GameStats.stats.playerHealth;
             slider.value = currentHealth;
             if (!isFlashing)
                 StartCoroutine(ConsumableFlash());
