@@ -11,6 +11,7 @@ public class PauseMenu : MonoBehaviour {
 	public GameObject pauseMenuUI;
     public GameObject button, lastButton, lastInventoryButton;
     public GameObject inventory, inventoryMenu;
+	public GameObject hidingPanel;
 
     public AudioClip move, select, enter, exit;
     private AudioSource source;
@@ -57,7 +58,8 @@ public class PauseMenu : MonoBehaviour {
 	{
         source.PlayOneShot(exit);
 		pauseMenuUI.SetActive(false);
-        EventSystem.current.SetSelectedGameObject(null);
+		hidingPanel.SetActive(false);
+		EventSystem.current.SetSelectedGameObject(null);
         
         GameIsPaused = false;
         GameManager.manager.pauseMenuActive = false;
@@ -69,12 +71,12 @@ public class PauseMenu : MonoBehaviour {
         }
         else
         {
-            inventoryG.alpha = 1;
+            //inventoryG.alpha = 1;
             inventoryG.interactable = true;
 
             if (GameManager.manager.inventoryMenuActive)
             {
-                inventoryMenuG.alpha = 1;
+                //inventoryMenuG.alpha = 1;
                 inventoryMenuG.interactable = true;
             }
             EventSystem.current.SetSelectedGameObject(lastInventoryButton);
@@ -88,17 +90,18 @@ public class PauseMenu : MonoBehaviour {
         {
             lastInventoryButton = EventSystem.current.currentSelectedGameObject;
             
-            inventoryG.alpha = 0.5f;
+            //inventoryG.alpha = 0.5f;
             inventoryG.interactable = false;
         }
         if (GameManager.manager.inventoryMenuActive)
         {
             lastInventoryButton = EventSystem.current.currentSelectedGameObject;
 
-            inventoryMenuG.alpha = 0.5f;
+            //inventoryMenuG.alpha = 0.5f;
             inventoryMenuG.interactable = false;
         }
 
+		hidingPanel.SetActive(true);
         pauseMenuUI.SetActive(true);
         EventSystem.current.SetSelectedGameObject(button);
         Time.timeScale = 0f;

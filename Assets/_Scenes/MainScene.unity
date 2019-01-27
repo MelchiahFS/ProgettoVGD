@@ -782,6 +782,7 @@ MonoBehaviour:
   lastInventoryButton: {fileID: 0}
   inventory: {fileID: 1990053017}
   inventoryMenu: {fileID: 1989671608}
+  hidingPanel: {fileID: 1308758424}
   move: {fileID: 8300000, guid: dfd9b140aa2e16841928b554ae79b0d4, type: 3}
   select: {fileID: 8300000, guid: 0f5b54e10ced18f40aa828c6fa24a788, type: 3}
   enter: {fileID: 8300000, guid: 4893fc40795b4254b8bb941d62f8e873, type: 3}
@@ -1878,7 +1879,7 @@ RectTransform:
   m_Children:
   - {fileID: 1659694191}
   m_Father: {fileID: 1450494082}
-  m_RootOrder: 8
+  m_RootOrder: 9
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
@@ -3494,6 +3495,75 @@ Prefab:
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 63124eea116cd3c4db4246395ead9507, type: 2}
   m_IsPrefabAsset: 0
+--- !u!1 &1308758424
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1308758427}
+  - component: {fileID: 1308758426}
+  - component: {fileID: 1308758425}
+  m_Layer: 5
+  m_Name: Panel
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 0
+--- !u!114 &1308758425
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1308758424}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: -765806418, guid: f70555f144d8491a825f0804e09c671c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Material: {fileID: 0}
+  m_Color: {r: 0, g: 0, b: 0, a: 0.392}
+  m_RaycastTarget: 1
+  m_OnCullStateChanged:
+    m_PersistentCalls:
+      m_Calls: []
+    m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
+      Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
+  m_Sprite: {fileID: 10907, guid: 0000000000000000f000000000000000, type: 0}
+  m_Type: 1
+  m_PreserveAspect: 0
+  m_FillCenter: 1
+  m_FillMethod: 4
+  m_FillAmount: 1
+  m_FillClockwise: 1
+  m_FillOrigin: 0
+--- !u!222 &1308758426
+CanvasRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1308758424}
+  m_CullTransparentMesh: 0
+--- !u!224 &1308758427
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1308758424}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 1450494082}
+  m_RootOrder: 7
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 1, y: 1}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 0, y: 2}
+  m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &1313905058
 GameObject:
   m_ObjectHideFlags: 0
@@ -3899,6 +3969,7 @@ RectTransform:
   - {fileID: 1237960339}
   - {fileID: 1990053021}
   - {fileID: 1989671613}
+  - {fileID: 1308758427}
   - {fileID: 1815894584}
   - {fileID: 757713459}
   - {fileID: 2076728227}
@@ -4799,7 +4870,7 @@ RectTransform:
   - {fileID: 232699000}
   - {fileID: 1755111559}
   m_Father: {fileID: 1450494082}
-  m_RootOrder: 7
+  m_RootOrder: 8
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
@@ -5892,7 +5963,7 @@ RectTransform:
   m_Children:
   - {fileID: 1694744222}
   m_Father: {fileID: 1450494082}
-  m_RootOrder: 9
+  m_RootOrder: 10
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
