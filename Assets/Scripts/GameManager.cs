@@ -10,13 +10,7 @@ public class GameManager : MonoBehaviour {
     private Room actualRoom = null;
     public Vector2Int actualPos;
     public bool gamePause = false, inventoryActive = false, inventoryMenuActive = false, pauseMenuActive = false;
-    public bool dead = false;
-    public int playerMoney;
-    public ItemStats[] itemList = new ItemStats[20];
-    public int equippedSlot =21;
-
-    public bool loadScreenActive = false;
-    public int levelNumber = 1;
+    public bool dead = false, isDying = false;
 
 
 	private void Awake()

@@ -27,32 +27,36 @@ public class PauseMenu : MonoBehaviour {
 
     void Update ()
     {
-        if (Input.GetKeyDown(KeyCode.Escape))
+		if (!GameManager.manager.isDying)
 		{
-			if (GameIsPaused)
-				Resume();
-			else
-				Pause();
+			if (Input.GetKeyDown(KeyCode.Escape))
+			{
+				if (GameIsPaused)
+					Resume();
+				else
+					Pause();
+			}
+
+			else if (GameIsPaused)
+			{
+				if (EventSystem.current.currentSelectedGameObject == null)
+				{
+					EventSystem.current.SetSelectedGameObject(lastButton);
+				}
+				else
+				{
+					lastButton = EventSystem.current.currentSelectedGameObject;
+				}
+
+				if (Input.GetKeyDown(KeyCode.UpArrow) || Input.GetKeyDown(KeyCode.DownArrow) || Input.GetKeyDown(KeyCode.W) || Input.GetKeyDown(KeyCode.S))
+				{
+					source.PlayOneShot(move);
+				}
+			}
+
 		}
 
-        else if (GameIsPaused)
-        {
-            if (EventSystem.current.currentSelectedGameObject == null)
-            {
-                EventSystem.current.SetSelectedGameObject(lastButton);
-            }
-            else
-            {
-                lastButton = EventSystem.current.currentSelectedGameObject;
-            }
-
-            if (Input.GetKeyDown(KeyCode.UpArrow) || Input.GetKeyDown(KeyCode.DownArrow) || Input.GetKeyDown(KeyCode.W) || Input.GetKeyDown(KeyCode.S))
-            {
-                source.PlayOneShot(move);
-            }
-        }
-        
-    }
+	}
 
 	public void Resume()
 	{

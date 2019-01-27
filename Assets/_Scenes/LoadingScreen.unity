@@ -113,372 +113,6 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
---- !u!1 &126036452
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 126036454}
-  - component: {fileID: 126036453}
-  m_Layer: 0
-  m_Name: GameStats
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!114 &126036453
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 126036452}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 57d39f6570aee044f9c87d00785ce025, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  levelNumber: 1
-  playerMoney: 0
-  maxHealth: 300
-  playerHealth: 300
-  itemList:
-  - itemType: 0
-    consumableType: 0
-    weaponType: 0
-    fireType: 0
-    bulletType: 0
-    sprite: {fileID: 0}
-    itemName: 
-    description: 
-    currentStack: 1
-    maxStack: 5
-    damage: 0
-    range: 0
-    fireRate: 0
-    shotSpeed: 0
-    toBuy: 0
-    price: 0
-  - itemType: 0
-    consumableType: 0
-    weaponType: 0
-    fireType: 0
-    bulletType: 0
-    sprite: {fileID: 0}
-    itemName: 
-    description: 
-    currentStack: 1
-    maxStack: 5
-    damage: 0
-    range: 0
-    fireRate: 0
-    shotSpeed: 0
-    toBuy: 0
-    price: 0
-  - itemType: 0
-    consumableType: 0
-    weaponType: 0
-    fireType: 0
-    bulletType: 0
-    sprite: {fileID: 0}
-    itemName: 
-    description: 
-    currentStack: 1
-    maxStack: 5
-    damage: 0
-    range: 0
-    fireRate: 0
-    shotSpeed: 0
-    toBuy: 0
-    price: 0
-  - itemType: 0
-    consumableType: 0
-    weaponType: 0
-    fireType: 0
-    bulletType: 0
-    sprite: {fileID: 0}
-    itemName: 
-    description: 
-    currentStack: 1
-    maxStack: 5
-    damage: 0
-    range: 0
-    fireRate: 0
-    shotSpeed: 0
-    toBuy: 0
-    price: 0
-  - itemType: 0
-    consumableType: 0
-    weaponType: 0
-    fireType: 0
-    bulletType: 0
-    sprite: {fileID: 0}
-    itemName: 
-    description: 
-    currentStack: 1
-    maxStack: 5
-    damage: 0
-    range: 0
-    fireRate: 0
-    shotSpeed: 0
-    toBuy: 0
-    price: 0
-  - itemType: 0
-    consumableType: 0
-    weaponType: 0
-    fireType: 0
-    bulletType: 0
-    sprite: {fileID: 0}
-    itemName: 
-    description: 
-    currentStack: 1
-    maxStack: 5
-    damage: 0
-    range: 0
-    fireRate: 0
-    shotSpeed: 0
-    toBuy: 0
-    price: 0
-  - itemType: 0
-    consumableType: 0
-    weaponType: 0
-    fireType: 0
-    bulletType: 0
-    sprite: {fileID: 0}
-    itemName: 
-    description: 
-    currentStack: 1
-    maxStack: 5
-    damage: 0
-    range: 0
-    fireRate: 0
-    shotSpeed: 0
-    toBuy: 0
-    price: 0
-  - itemType: 0
-    consumableType: 0
-    weaponType: 0
-    fireType: 0
-    bulletType: 0
-    sprite: {fileID: 0}
-    itemName: 
-    description: 
-    currentStack: 1
-    maxStack: 5
-    damage: 0
-    range: 0
-    fireRate: 0
-    shotSpeed: 0
-    toBuy: 0
-    price: 0
-  - itemType: 0
-    consumableType: 0
-    weaponType: 0
-    fireType: 0
-    bulletType: 0
-    sprite: {fileID: 0}
-    itemName: 
-    description: 
-    currentStack: 1
-    maxStack: 5
-    damage: 0
-    range: 0
-    fireRate: 0
-    shotSpeed: 0
-    toBuy: 0
-    price: 0
-  - itemType: 0
-    consumableType: 0
-    weaponType: 0
-    fireType: 0
-    bulletType: 0
-    sprite: {fileID: 0}
-    itemName: 
-    description: 
-    currentStack: 1
-    maxStack: 5
-    damage: 0
-    range: 0
-    fireRate: 0
-    shotSpeed: 0
-    toBuy: 0
-    price: 0
-  - itemType: 0
-    consumableType: 0
-    weaponType: 0
-    fireType: 0
-    bulletType: 0
-    sprite: {fileID: 0}
-    itemName: 
-    description: 
-    currentStack: 1
-    maxStack: 5
-    damage: 0
-    range: 0
-    fireRate: 0
-    shotSpeed: 0
-    toBuy: 0
-    price: 0
-  - itemType: 0
-    consumableType: 0
-    weaponType: 0
-    fireType: 0
-    bulletType: 0
-    sprite: {fileID: 0}
-    itemName: 
-    description: 
-    currentStack: 1
-    maxStack: 5
-    damage: 0
-    range: 0
-    fireRate: 0
-    shotSpeed: 0
-    toBuy: 0
-    price: 0
-  - itemType: 0
-    consumableType: 0
-    weaponType: 0
-    fireType: 0
-    bulletType: 0
-    sprite: {fileID: 0}
-    itemName: 
-    description: 
-    currentStack: 1
-    maxStack: 5
-    damage: 0
-    range: 0
-    fireRate: 0
-    shotSpeed: 0
-    toBuy: 0
-    price: 0
-  - itemType: 0
-    consumableType: 0
-    weaponType: 0
-    fireType: 0
-    bulletType: 0
-    sprite: {fileID: 0}
-    itemName: 
-    description: 
-    currentStack: 1
-    maxStack: 5
-    damage: 0
-    range: 0
-    fireRate: 0
-    shotSpeed: 0
-    toBuy: 0
-    price: 0
-  - itemType: 0
-    consumableType: 0
-    weaponType: 0
-    fireType: 0
-    bulletType: 0
-    sprite: {fileID: 0}
-    itemName: 
-    description: 
-    currentStack: 1
-    maxStack: 5
-    damage: 0
-    range: 0
-    fireRate: 0
-    shotSpeed: 0
-    toBuy: 0
-    price: 0
-  - itemType: 0
-    consumableType: 0
-    weaponType: 0
-    fireType: 0
-    bulletType: 0
-    sprite: {fileID: 0}
-    itemName: 
-    description: 
-    currentStack: 1
-    maxStack: 5
-    damage: 0
-    range: 0
-    fireRate: 0
-    shotSpeed: 0
-    toBuy: 0
-    price: 0
-  - itemType: 0
-    consumableType: 0
-    weaponType: 0
-    fireType: 0
-    bulletType: 0
-    sprite: {fileID: 0}
-    itemName: 
-    description: 
-    currentStack: 1
-    maxStack: 5
-    damage: 0
-    range: 0
-    fireRate: 0
-    shotSpeed: 0
-    toBuy: 0
-    price: 0
-  - itemType: 0
-    consumableType: 0
-    weaponType: 0
-    fireType: 0
-    bulletType: 0
-    sprite: {fileID: 0}
-    itemName: 
-    description: 
-    currentStack: 1
-    maxStack: 5
-    damage: 0
-    range: 0
-    fireRate: 0
-    shotSpeed: 0
-    toBuy: 0
-    price: 0
-  - itemType: 0
-    consumableType: 0
-    weaponType: 0
-    fireType: 0
-    bulletType: 0
-    sprite: {fileID: 0}
-    itemName: 
-    description: 
-    currentStack: 1
-    maxStack: 5
-    damage: 0
-    range: 0
-    fireRate: 0
-    shotSpeed: 0
-    toBuy: 0
-    price: 0
-  - itemType: 0
-    consumableType: 0
-    weaponType: 0
-    fireType: 0
-    bulletType: 0
-    sprite: {fileID: 0}
-    itemName: 
-    description: 
-    currentStack: 1
-    maxStack: 5
-    damage: 0
-    range: 0
-    fireRate: 0
-    shotSpeed: 0
-    toBuy: 0
-    price: 0
-  equippedSlot: 21
---- !u!4 &126036454
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 126036452}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &614131686
 GameObject:
   m_ObjectHideFlags: 0
@@ -556,6 +190,48 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1001 &657822754
+Prefab:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 4866998111175090, guid: 0b9eae2f7a17c6149a641fa4ad042b97, type: 2}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4866998111175090, guid: 0b9eae2f7a17c6149a641fa4ad042b97, type: 2}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4866998111175090, guid: 0b9eae2f7a17c6149a641fa4ad042b97, type: 2}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4866998111175090, guid: 0b9eae2f7a17c6149a641fa4ad042b97, type: 2}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4866998111175090, guid: 0b9eae2f7a17c6149a641fa4ad042b97, type: 2}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4866998111175090, guid: 0b9eae2f7a17c6149a641fa4ad042b97, type: 2}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4866998111175090, guid: 0b9eae2f7a17c6149a641fa4ad042b97, type: 2}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4866998111175090, guid: 0b9eae2f7a17c6149a641fa4ad042b97, type: 2}
+      propertyPath: m_RootOrder
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 0b9eae2f7a17c6149a641fa4ad042b97, type: 2}
+  m_IsPrefabAsset: 0
 --- !u!1 &1146194355
 GameObject:
   m_ObjectHideFlags: 0

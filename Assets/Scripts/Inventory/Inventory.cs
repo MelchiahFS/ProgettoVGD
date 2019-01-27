@@ -65,7 +65,6 @@ private void Awake()
         UpdateSlotUI();
         if(IsInventoryEmpty())
             ResetAllSlots();
-        Debug.Log("inventory inizializza armi");
         loot = GameObject.Find("EquippedWeapon").GetComponent<LootGenerator>();
         weapon = GameObject.Find("EquippedWeapon").GetComponent<Weapon>();
         source = GetComponent<AudioSource>();
@@ -84,59 +83,62 @@ private void Awake()
 
     void Update()
     {
-        //prevengo che sia possibile aprire l'inventario se il menu di pausa è attivo
-        if (!GameManager.manager.pauseMenuActive)
-        {
-            if (Input.GetKeyDown(KeyCode.Tab))
-            {
-                if (inventoryActive)
-                {
-                    ResumeI();
-                    source.PlayOneShot(exit);
-                }
-                else
-                {
-                    PauseI();
-                }
-            }
+		if (!GameManager.manager.isDying)
+		{
+			//prevengo che sia possibile aprire l'inventario se il menu di pausa è attivo
+			if (!GameManager.manager.pauseMenuActive)
+			{
+				if (Input.GetKeyDown(KeyCode.Tab))
+				{
+					if (inventoryActive)
+					{
+						ResumeI();
+						source.PlayOneShot(exit);
+					}
+					else
+					{
+						PauseI();
+					}
+				}
 
-            //se il menu dell'inventario è attivo
-            if (menuShown)
-            {
-                if (Input.GetKeyDown(KeyCode.RightArrow) || Input.GetKeyDown(KeyCode.D))
-                {
-                    HideMenu();
-                    source.PlayOneShot(exit);
-                }
-                else if (Input.GetKeyDown(KeyCode.UpArrow) || Input.GetKeyDown(KeyCode.DownArrow) || Input.GetKeyDown(KeyCode.W) || Input.GetKeyDown(KeyCode.S))
-                {
-                    source.PlayOneShot(move);
-                }
-            }
-            else if (inventoryActive)
-            {
-                if (Input.GetKeyDown(KeyCode.UpArrow) || Input.GetKeyDown(KeyCode.DownArrow) || Input.GetKeyDown(KeyCode.LeftArrow) || Input.GetKeyDown(KeyCode.RightArrow) ||
-                    Input.GetKeyDown(KeyCode.W) || Input.GetKeyDown(KeyCode.A) || Input.GetKeyDown(KeyCode.S) || Input.GetKeyDown(KeyCode.D))
-                {
-                    source.PlayOneShot(move);
-                }
-            }
-        }
+				//se il menu dell'inventario è attivo
+				if (menuShown)
+				{
+					if (Input.GetKeyDown(KeyCode.RightArrow) || Input.GetKeyDown(KeyCode.D))
+					{
+						HideMenu();
+						source.PlayOneShot(exit);
+					}
+					else if (Input.GetKeyDown(KeyCode.UpArrow) || Input.GetKeyDown(KeyCode.DownArrow) || Input.GetKeyDown(KeyCode.W) || Input.GetKeyDown(KeyCode.S))
+					{
+						source.PlayOneShot(move);
+					}
+				}
+				else if (inventoryActive)
+				{
+					if (Input.GetKeyDown(KeyCode.UpArrow) || Input.GetKeyDown(KeyCode.DownArrow) || Input.GetKeyDown(KeyCode.LeftArrow) || Input.GetKeyDown(KeyCode.RightArrow) ||
+						Input.GetKeyDown(KeyCode.W) || Input.GetKeyDown(KeyCode.A) || Input.GetKeyDown(KeyCode.S) || Input.GetKeyDown(KeyCode.D))
+					{
+						source.PlayOneShot(move);
+					}
+				}
+			}
 
 
-        if (inventoryActive /*|| menuShown*/)     //DA FARE: controllare che resti selezionato l'oggetto dell'inventario giusto entrando nel menu dell'inventario
-        {
+			if (inventoryActive)
+			{
 
-            if (EventSystem.current.currentSelectedGameObject == null)
-            {
-                EventSystem.current.SetSelectedGameObject(lastButton);
-            }
-            else
-            {
-                lastButton = EventSystem.current.currentSelectedGameObject;
-            }
-        }
-    }
+				if (EventSystem.current.currentSelectedGameObject == null)
+				{
+					EventSystem.current.SetSelectedGameObject(lastButton);
+				}
+				else
+				{
+					lastButton = EventSystem.current.currentSelectedGameObject;
+				}
+			}
+		}
+	}
 
     public void ResumeI()
     {

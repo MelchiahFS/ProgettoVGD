@@ -116,14 +116,21 @@ public class PlayerHealth : MonoBehaviour {
     {
         source.PlayOneShot(dead);
 
-        GameManager.manager.dead = true;
-        animator.SetBool("isDead", true);
-        isDead = true;
+		//GameManager.manager.dead = true;
+		//isDead = true;
+		GameManager.manager.isDying = true;
+		animator.SetBool("isDead", true);
         this.enabled = false;
         foreach (Collider2D c in GetComponents<Collider2D>())
             c.enabled = false;
-        GameManager.manager.Invoke("ReturnToMenu", 2f);
+        //GameManager.manager.Invoke("ReturnToMenu", 2f);
     }
+
+	public void SignalPlayerDeath()
+	{
+		GameManager.manager.dead = true;
+		isDead = true;
+	}
 
     //crea un effetto flash intermittente quando il player viene colpito
     private IEnumerator Flash(Color c1, SpriteRenderer r)
