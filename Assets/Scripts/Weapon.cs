@@ -61,7 +61,7 @@ public class Weapon : MonoBehaviour {
 
     void Update()
     {
-        if (!GameManager.manager.gamePause && !GameManager.manager.isDying)
+        if (!GameManager.manager.gamePause)
         {
             if (Input.GetKeyDown(KeyCode.Alpha1))
             {
