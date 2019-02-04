@@ -68,19 +68,17 @@ public class PauseMenu : MonoBehaviour {
         GameIsPaused = false;
         GameManager.manager.pauseMenuActive = false;
 
-        if (!GameManager.manager.inventoryActive)
+        if (!GameManager.manager.inventoryActive && !GameManager.manager.signboardActive)
         {
             Time.timeScale = 1f;
             GameManager.manager.gamePause = false;
         }
         else
         {
-            //inventoryG.alpha = 1;
             inventoryG.interactable = true;
 
             if (GameManager.manager.inventoryMenuActive)
             {
-                //inventoryMenuG.alpha = 1;
                 inventoryMenuG.interactable = true;
             }
             EventSystem.current.SetSelectedGameObject(lastInventoryButton);
@@ -94,14 +92,12 @@ public class PauseMenu : MonoBehaviour {
         {
             lastInventoryButton = EventSystem.current.currentSelectedGameObject;
             
-            //inventoryG.alpha = 0.5f;
             inventoryG.interactable = false;
         }
         if (GameManager.manager.inventoryMenuActive)
         {
             lastInventoryButton = EventSystem.current.currentSelectedGameObject;
-
-            //inventoryMenuG.alpha = 0.5f;
+			
             inventoryMenuG.interactable = false;
         }
 

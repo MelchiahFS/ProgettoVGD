@@ -13,7 +13,6 @@ public class MenuManager : MonoBehaviour
     public AudioClip move, select, music;
     public float time = 0.5f;
 	private bool menu = true, comm = false;
-	int i = 0;
 
     public void Start()
     {
@@ -25,23 +24,6 @@ public class MenuManager : MonoBehaviour
 
     void Update()
     {
-		//if (Input.GetKeyDown(KeyCode.UpArrow) || Input.GetKeyDown(KeyCode.DownArrow) || Input.GetKeyDown(KeyCode.W) || Input.GetKeyDown(KeyCode.S))
-		//{
-		//    sound.PlayOneShot(move, 0.5f);
-		//}
-		//else if (Input.GetKeyDown(KeyCode.Return))
-		//{
-		//    sound.PlayOneShot(select, 0.5f);
-		//}
-
-		//if (EventSystem.current.currentSelectedGameObject == null)
-		//{
-		//    EventSystem.current.SetSelectedGameObject(button);
-		//}
-		//else
-		//{
-		//    button = EventSystem.current.currentSelectedGameObject;
-		//}
 		if (menu)
 		{
 			if (Input.GetKeyDown(KeyCode.UpArrow) || Input.GetKeyDown(KeyCode.DownArrow) || Input.GetKeyDown(KeyCode.W) || Input.GetKeyDown(KeyCode.S))
@@ -70,8 +52,6 @@ public class MenuManager : MonoBehaviour
 				sound.PlayOneShot(select, 0.5f);
 			}
 		}
-
-
 	}
 
 
@@ -94,7 +74,6 @@ public class MenuManager : MonoBehaviour
             sound.volume -= rate * Time.deltaTime;
             yield return 0;
         }
-		//SceneManager.LoadScene(newGameLevel);
 		SceneManager.LoadScene("LoadingScreen");
 		yield break;
     }

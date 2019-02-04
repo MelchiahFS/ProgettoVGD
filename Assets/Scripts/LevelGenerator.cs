@@ -14,16 +14,14 @@ public class LevelGenerator
     public int distRoomX = 6, distRoomY = 6;
     private int numberOfRooms;
     private bool bossIsSet = false, shopIsSet = false;
-    //private static System.Random rnd = new System.Random((int)DateTime.Now.Ticks);
-
-
+	
     public LevelGenerator(int sizeX, int sizeY)
     {
         this.roomSizeX = sizeX;
         this.roomSizeY = sizeY;
-
-
-        numberOfRooms = UnityEngine.Random.Range(10, 15);
+	
+		numberOfRooms = UnityEngine.Random.Range(10, 15);
+		
         //numberOfRooms = 16;
 
         //NOTA: la dimensione della griglia delle stanze sarà il doppio in x e y 
@@ -38,14 +36,18 @@ public class LevelGenerator
         gridSizeX = worldSize.x;
         gridSizeY = worldSize.y;
 
-        //bug fix per forzare la generazione di un livello con le stanze boss e shop
-        while (!bossIsSet || !shopIsSet)
-        {
-            CreateRooms();
-            SetRoomDoors();
-            SetBossAndShop();
-        }
-    }
+		//bug fix per forzare la generazione di un livello con le stanze boss e shop
+
+		while (!bossIsSet || !shopIsSet)
+		{
+			CreateRooms();
+			SetRoomDoors();
+			SetBossAndShop();
+		}
+
+
+	}
+
 
     private void CreateRooms()
     {

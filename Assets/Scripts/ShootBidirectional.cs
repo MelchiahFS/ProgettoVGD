@@ -7,7 +7,6 @@ public class ShootBidirectional : MonoBehaviour {
     public float shotSpeed, fireRate, damage, range;
     private float counter;
     private EnemyBullet enemyBullet;
-    private Transform playerTransform;
     public GameObject bulletPrefab;
     private Rigidbody2D rb;
     public Sprite sprite;
@@ -17,7 +16,6 @@ public class ShootBidirectional : MonoBehaviour {
 
     void Start()
     {
-        playerTransform = GameObject.FindGameObjectWithTag("Player").transform;
         offset = new Vector3(0, GetComponent<EnemyController>().RealOffset, 0);
         counter = 0;
         lastFramePosition = transform.position + offset;

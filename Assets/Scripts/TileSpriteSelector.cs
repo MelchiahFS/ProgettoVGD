@@ -68,10 +68,12 @@ public class TileSpriteSelector : MonoBehaviour
         openDoorRight;
     
     //sprite degli ostacoli all'interno delle stanze
-        public Sprite obstacles;
+    public Sprite obstacles;
 
     //il passaggio al livello seguente
     public Sprite stairs;
+
+	public Sprite greyBlock;
     
    
 }

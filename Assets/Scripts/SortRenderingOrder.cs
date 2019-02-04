@@ -7,6 +7,11 @@ public class SortRenderingOrder : MonoBehaviour {
     public Room actualRoom;
     private float posA, posB;
 
+	void Start()
+	{
+		actualRoom = GameManager.manager.ActualRoom;
+	}
+
     void Update ()
     {
         if (actualRoom.toSort.Count > 0)

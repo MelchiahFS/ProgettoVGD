@@ -28,17 +28,23 @@ public class LevelManager : MonoBehaviour {
     public int roomNumber;
     public GameObject exit, hideExit;
 
-    private MiniMapController minimap;
+	public GameObject altarPref, writingsPref;
+	private GameObject altar, writings;
+
+	private MiniMapController minimap;
 
     //Si occupa di disegnare la mappa di gioco
     public void DrawMap()
     {
-        lvlGen = new LevelGenerator(roomSizeX, roomSizeY);
+
+		lvlGen = new LevelGenerator(roomSizeX, roomSizeY);
+		
         map = lvlGen.Rooms;
         mapSize = lvlGen.GetMapSize();
         roomNumber = lvlGen.GetRoomNumber();
-        ActualPos = new Vector2Int((int)mapSize.x / 2, (int)mapSize.y / 2);
-        minimap = GetComponent<MiniMapController>();
+		ActualPos = new Vector2Int((int)mapSize.x / 2, (int)mapSize.y / 2);
+		
+		minimap = GetComponent<MiniMapController>();
 
         for (int i = 0; i < mapSize.x; i++) //per ogni stanza nella griglia delle stanze
         {
@@ -46,20 +52,20 @@ public class LevelManager : MonoBehaviour {
             {
                 if (map[i,j] != null) //salto le posizioni inoccupate della griglia
                 {
-
                     DrawRoom(map[i, j]);
                     DrawWalls(map[i, j]);
-                    LinkRooms(i,j);
-                    DrawDoors(i, j);
-                    DrawObstacles(i, j);
-                    CreateGridGraphs(map[i,j]);
-                    DrawMinimapSprites(map[i,j]);
-                    SetEnemyNumber(i, j);
-                }
+					LinkRooms(i, j);
+					DrawDoors(i, j);
+					DrawObstacles(i, j);
+					CreateGridGraphs(map[i, j]);
+					DrawMinimapSprites(map[i, j]);
+					SetEnemyNumber(i, j);
+
+				}
             }
         }
-        //esegue una scansione di tutti i GridGraph
-        AstarPath.active.Scan();
+		//esegue una scansione di tutti i GridGraph
+		AstarPath.active.Scan();
     }
 
     //Istanzia gli ostacoli nelle stanze
@@ -112,7 +118,12 @@ public class LevelManager : MonoBehaviour {
                             room.freePositions.Add(drawPos);
 
                     }
-                    else
+                    else if (room.bossRoom)
+					{
+						if (room.obsLayout[i, j] == 3)
+							room.freePositions.Add(drawPos);
+					}
+					else
                         room.freePositions.Add(drawPos);  
                 }
                 drawPos.x++;
@@ -190,12 +201,16 @@ public class LevelManager : MonoBehaviour {
             {
                 if (map[i, j] != null && map[i, j].startRoom) 
                 {
-
-                    LightUpRoom(map[i, j], true);
-                    GameObject player = Instantiate(playerPrefab, new Vector2(map[i, j].gridPos.x + (float)(roomSizeX / 2), map[i, j].gridPos.y + (float)(roomSizeY / 2)), Quaternion.identity) as GameObject;
+					GameObject player = Instantiate(playerPrefab, new Vector2(map[i, j].gridPos.x + (float)(roomSizeX / 2), map[i, j].gridPos.y + (float)(roomSizeY / 2) - 3), Quaternion.identity) as GameObject;
                     player.name = playerPrefab.name;
                     playerPrefab.GetComponent<SpriteRenderer>().sortingLayerName = "Characters";
-                    minimap.SetEnterRoom(map[i, j]);
+					map[i, j].toSort.Add(player);
+
+					LightUpRoom(map[i, j], true);
+					StartCoroutine(FadeIn(altar.GetComponent<SpriteRenderer>(), 0.3f));
+					StartCoroutine(FadeIn(writings.GetComponent<SpriteRenderer>(), 0.3f));
+					
+					minimap.SetEnterRoom(map[i, j]);
                     return map[i, j];
                 }
             }
@@ -203,100 +218,214 @@ public class LevelManager : MonoBehaviour {
         return null;
     }
 
-    //Disegna il pavimento delle stanze
-    void DrawRoom(Room room)
-    {
-        Vector2 drawPos = room.gridPos;
-        for (int i = 0; i < roomSizeY; i++)
-        {
-            for (int j = 0; j < roomSizeX; j++)
-            {
-                GameObject roomTile = Instantiate(tileToRend, drawPos, Quaternion.identity) as GameObject;
+	//Disegna il pavimento delle stanze
+	//void DrawRoom(Room room)
+	//{
+	//    Vector2 drawPos = room.gridPos;
+	//    for (int i = 0; i < roomSizeY; i++)
+	//    {
+	//        for (int j = 0; j < roomSizeX; j++)
+	//        {
+	//            GameObject roomTile = Instantiate(tileToRend, drawPos, Quaternion.identity) as GameObject;
 
-                roomTile.tag = "Floor";
-                roomTile.layer = LayerMask.NameToLayer("Ground");
-                TileSpriteSelector mapper = roomTile.GetComponent<TileSpriteSelector>();
-                SpriteRenderer rend = roomTile.GetComponent<SpriteRenderer>();
-                rend.sortingLayerName = "Ground";
-                room.roomTiles.Add(roomTile);
+	//            roomTile.tag = "Floor";
+	//            roomTile.layer = LayerMask.NameToLayer("Ground");
+	//            TileSpriteSelector mapper = roomTile.GetComponent<TileSpriteSelector>();
+	//            SpriteRenderer rend = roomTile.GetComponent<SpriteRenderer>();
+	//            rend.sortingLayerName = "Ground";
+	//            room.roomTiles.Add(roomTile);
 
-                if (i == 0 && j == (roomSizeX / 2) && room.doorBot)
-                {
-                    roomTile.tag = "innerDoorDown";
-                    roomTile.AddComponent(typeof(TileTrigger));
-                    groundTrigger = roomTile.AddComponent(typeof(BoxCollider2D)) as BoxCollider2D;
-                    groundTrigger.size = new Vector2(1, 1);
-                    groundTrigger.isTrigger = true;
+	//            if (i == 0 && j == (roomSizeX / 2) && room.doorBot)
+	//            {
+	//                roomTile.tag = "innerDoorDown";
+	//                roomTile.AddComponent(typeof(TileTrigger));
+	//                groundTrigger = roomTile.AddComponent(typeof(BoxCollider2D)) as BoxCollider2D;
+	//                groundTrigger.size = new Vector2(1, 1);
+	//                groundTrigger.isTrigger = true;
 
-                    rend.sprite = mapper.doorFloorDown;
-                }
-                else if (i == (roomSizeY - 1) && j == (roomSizeX / 2) && room.doorTop)
-                {
-                    roomTile.tag = "innerDoorUp";
-                    roomTile.AddComponent(typeof(TileTrigger));
-                    groundTrigger = roomTile.AddComponent(typeof(BoxCollider2D)) as BoxCollider2D;
-                    groundTrigger.size = new Vector2(1, 1);
-                    groundTrigger.isTrigger = true;
+	//                rend.sprite = mapper.doorFloorDown;
+	//            }
+	//            else if (i == (roomSizeY - 1) && j == (roomSizeX / 2) && room.doorTop)
+	//            {
+	//                roomTile.tag = "innerDoorUp";
+	//                roomTile.AddComponent(typeof(TileTrigger));
+	//                groundTrigger = roomTile.AddComponent(typeof(BoxCollider2D)) as BoxCollider2D;
+	//                groundTrigger.size = new Vector2(1, 1);
+	//                groundTrigger.isTrigger = true;
 
-                    rend.sprite = mapper.doorFloorUp;
-                }
-                else if (i == (roomSizeY / 2) && j == 0 && room.doorLeft)
-                {
-                    roomTile.tag = "innerDoorLeft";
-                    roomTile.AddComponent(typeof(TileTrigger));
-                    groundTrigger = roomTile.AddComponent(typeof(BoxCollider2D)) as BoxCollider2D;
-                    groundTrigger.size = new Vector2(1, 1);
-                    groundTrigger.isTrigger = true;
-                    
-                    rend.sprite = mapper.doorFloorLeft;
-                }
-                else if (i == (roomSizeY / 2) && j == (roomSizeX - 1) && room.doorRight)
-                {
-                    roomTile.tag = "innerDoorRight";
-                    roomTile.AddComponent(typeof(TileTrigger));
-                    groundTrigger = roomTile.AddComponent(typeof(BoxCollider2D)) as BoxCollider2D;
-                    groundTrigger.size = new Vector2(1, 1);
-                    groundTrigger.isTrigger = true;
+	//                rend.sprite = mapper.doorFloorUp;
+	//            }
+	//            else if (i == (roomSizeY / 2) && j == 0 && room.doorLeft)
+	//            {
+	//                roomTile.tag = "innerDoorLeft";
+	//                roomTile.AddComponent(typeof(TileTrigger));
+	//                groundTrigger = roomTile.AddComponent(typeof(BoxCollider2D)) as BoxCollider2D;
+	//                groundTrigger.size = new Vector2(1, 1);
+	//                groundTrigger.isTrigger = true;
 
-                    rend.sprite = mapper.doorFloorRight;
-                }
-                else if (i == 0)
-                {
-                    if (j == 0)
-                        rend.sprite = mapper.outerDownLeftCorner;
-                    else if (j == roomSizeX - 1)
-                        rend.sprite = mapper.outerDownRightCorner;
-                    else
-                        rend.sprite = mapper.downFloor;
-                }
-                else if (i == roomSizeY - 1)
-                {
-                    if (j == 0)
-                        rend.sprite = mapper.outerUpLeftCorner;
-                    else if (j == roomSizeX - 1)
-                        rend.sprite = mapper.outerUpRightCorner;
-                    else
-                        rend.sprite = mapper.upFloor;
-                }
-                else
-                {
-                    if (j == 0)
-                        rend.sprite = mapper.leftFloor;
-                    else if (j == roomSizeX - 1)
-                        rend.sprite = mapper.rightFloor;
-                    else
-                        rend.sprite = mapper.floorTile;
-                }
-                drawPos.x++;
+	//                rend.sprite = mapper.doorFloorLeft;
+	//            }
+	//            else if (i == (roomSizeY / 2) && j == (roomSizeX - 1) && room.doorRight)
+	//            {
+	//                roomTile.tag = "innerDoorRight";
+	//                roomTile.AddComponent(typeof(TileTrigger));
+	//                groundTrigger = roomTile.AddComponent(typeof(BoxCollider2D)) as BoxCollider2D;
+	//                groundTrigger.size = new Vector2(1, 1);
+	//                groundTrigger.isTrigger = true;
 
-            }
-            drawPos.x = room.gridPos.x;
-            drawPos.y++;
-        }
-    }
+	//                rend.sprite = mapper.doorFloorRight;
+	//            }
+	//            else if (i == 0)
+	//            {
+	//                if (j == 0)
+	//                    rend.sprite = mapper.outerDownLeftCorner;
+	//                else if (j == roomSizeX - 1)
+	//                    rend.sprite = mapper.outerDownRightCorner;
+	//                else
+	//                    rend.sprite = mapper.downFloor;
+	//            }
+	//            else if (i == roomSizeY - 1)
+	//            {
+	//                if (j == 0)
+	//                    rend.sprite = mapper.outerUpLeftCorner;
+	//                else if (j == roomSizeX - 1)
+	//                    rend.sprite = mapper.outerUpRightCorner;
+	//                else
+	//                    rend.sprite = mapper.upFloor;
+	//            }
+	//            else
+	//            {
+	//                if (j == 0)
+	//                    rend.sprite = mapper.leftFloor;
+	//                else if (j == roomSizeX - 1)
+	//                    rend.sprite = mapper.rightFloor;
+	//                else
+	//                    rend.sprite = mapper.floorTile;
+	//            }
+	//            drawPos.x++;
 
-    //Disegna i muri delle stanze e ne imposta i collider
-    void DrawWalls(Room room)
+	//        }
+	//        drawPos.x = room.gridPos.x;
+	//        drawPos.y++;
+	//    }
+	//}
+	void DrawRoom(Room room)
+	{
+		Vector2 drawPos = room.gridPos;
+		for (int i = 0; i < roomSizeY; i++)
+		{
+			for (int j = 0; j < roomSizeX; j++)
+			{
+				GameObject roomTile = Instantiate(tileToRend, drawPos, Quaternion.identity) as GameObject;
+
+				roomTile.tag = "Floor";
+				roomTile.layer = LayerMask.NameToLayer("Ground");
+				TileSpriteSelector mapper = roomTile.GetComponent<TileSpriteSelector>();
+				SpriteRenderer rend = roomTile.GetComponent<SpriteRenderer>();
+				rend.sortingLayerName = "Ground";
+				room.roomTiles.Add(roomTile);
+				
+				//di fronte alla porta inferiore
+				if (i == 0 && j == (roomSizeX / 2) && room.doorBot)
+				{
+					roomTile.tag = "innerDoorDown";
+					roomTile.AddComponent(typeof(TileTrigger));
+					groundTrigger = roomTile.AddComponent(typeof(BoxCollider2D)) as BoxCollider2D;
+					groundTrigger.size = new Vector2(1, 1);
+					groundTrigger.isTrigger = true;
+
+					rend.sprite = mapper.doorFloorDown;
+				}
+				//di fronte alla porta superiore
+				else if (i == (roomSizeY - 1) && j == (roomSizeX / 2) && room.doorTop)
+				{
+					roomTile.tag = "innerDoorUp";
+					roomTile.AddComponent(typeof(TileTrigger));
+					groundTrigger = roomTile.AddComponent(typeof(BoxCollider2D)) as BoxCollider2D;
+					groundTrigger.size = new Vector2(1, 1);
+					groundTrigger.isTrigger = true;
+
+					rend.sprite = mapper.doorFloorUp;
+				}
+				//di fronte alla porta a sinistra
+				else if (i == (roomSizeY / 2) && j == 0 && room.doorLeft)
+				{
+					roomTile.tag = "innerDoorLeft";
+					roomTile.AddComponent(typeof(TileTrigger));
+					groundTrigger = roomTile.AddComponent(typeof(BoxCollider2D)) as BoxCollider2D;
+					groundTrigger.size = new Vector2(1, 1);
+					groundTrigger.isTrigger = true;
+
+					rend.sprite = mapper.doorFloorLeft;
+				}
+				//di fronte alla porta a destra
+				else if (i == (roomSizeY / 2) && j == (roomSizeX - 1) && room.doorRight)
+				{
+					roomTile.tag = "innerDoorRight";
+					roomTile.AddComponent(typeof(TileTrigger));
+					groundTrigger = roomTile.AddComponent(typeof(BoxCollider2D)) as BoxCollider2D;
+					groundTrigger.size = new Vector2(1, 1);
+					groundTrigger.isTrigger = true;
+
+					rend.sprite = mapper.doorFloorRight;
+				}
+				else if (i == 0)
+				{
+					//angolo giù a sinistra
+					if (j == 0)
+						rend.sprite = mapper.outerDownLeftCorner;
+					//angolo giù a destra
+					else if (j == roomSizeX - 1)
+						rend.sprite = mapper.outerDownRightCorner;
+					//bordo giù
+					else
+						rend.sprite = mapper.downFloor;
+				}
+				else if (i == roomSizeY - 1)
+				{
+					//angolo su a sinistra
+					if (j == 0)
+						rend.sprite = mapper.outerUpLeftCorner;
+					//angolo su a destra
+					else if (j == roomSizeX - 1)
+						rend.sprite = mapper.outerUpRightCorner;
+					//bordo su
+					else
+						rend.sprite = mapper.upFloor;
+				}
+				else
+				{
+					//bordo a sinistra
+					if (j == 0)
+						rend.sprite = mapper.leftFloor;
+					//bordo a destra
+					else if (j == roomSizeX - 1)
+						rend.sprite = mapper.rightFloor;
+					//pavimento interno
+					else
+						rend.sprite = mapper.floorTile;
+				}
+				
+				drawPos.x++;
+				
+			}
+			drawPos.x = room.gridPos.x;
+			drawPos.y++;
+		}
+
+		if (room.startRoom)
+		{
+			Vector2 altarPos = new Vector2(room.gridPos.x + roomSizeX / 2, room.gridPos.y + roomSizeY / 2);
+			Vector2 writingPos = new Vector2(altarPos.x, altarPos.y + 0.6f);
+			altar = Instantiate(altarPref, altarPos, Quaternion.identity) as GameObject;
+			writings = Instantiate(writingsPref, writingPos, Quaternion.identity) as GameObject;
+			room.toSort.Add(altar);
+		}
+	}
+
+
+	//Disegna i muri delle stanze e ne imposta i collider
+	void DrawWalls(Room room)
     {
         Vector2 drawPos = new Vector2(room.gridPos.x - 1, room.gridPos.y - 1);
         for (int i = 0; i < roomSizeY + 4; i++) //altezza stanza + muro basso (1) + muro alto (3)
@@ -971,10 +1100,10 @@ public class LevelManager : MonoBehaviour {
         }
         else
         {
-			room.enemyCounter = rnd.Next(3, 6);
-			room.enemyWaves = 1;
-			//room.enemyCounter = 0;
-			//room.enemyWaves = 0;
+			//room.enemyCounter = rnd.Next(3, 6);
+			//room.enemyWaves = 1;
+			room.enemyCounter = 0;
+			room.enemyWaves = 0;
 		}
     }
 

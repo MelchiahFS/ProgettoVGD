@@ -113,6 +113,7 @@ MonoBehaviour:
   openDoorRight: {fileID: 21300302, guid: 23169271a9eddcf4385a397044a86642, type: 3}
   obstacles: {fileID: 21300046, guid: 1d9b6b3dde254cd4c8c604c65bf7850b, type: 3}
   stairs: {fileID: 21300138, guid: 23169271a9eddcf4385a397044a86642, type: 3}
+  greyBlock: {fileID: 21300278, guid: 23169271a9eddcf4385a397044a86642, type: 3}
 --- !u!212 &212329567723278208
 SpriteRenderer:
   m_ObjectHideFlags: 1

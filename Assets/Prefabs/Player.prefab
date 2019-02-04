@@ -984,6 +984,10 @@ MonoBehaviour:
     hasGenReward: 0
   pricePrefab: {fileID: 1683817329368016, guid: 927e2b69c21dcbc43a1f073aa5c87694,
     type: 2}
+  altarPrefab: {fileID: 1188444826736520, guid: a3045a2e01b921b46a2dfecdad5fffa3,
+    type: 2}
+  writingsPrefab: {fileID: 1305874933481658, guid: db1054c348172a149aa72ffc51882cbc,
+    type: 2}
 --- !u!114 &114398144825452080
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -1414,7 +1418,6 @@ MonoBehaviour:
   hd: 0
   hitColor: {fileID: 2100000, guid: af4c9394002c4d84fb2f48fc93c94540, type: 2}
   defaultMaterial: {fileID: 0}
-  playerMoney: 0
   hurt: {fileID: 8300000, guid: 60243ba39af8c904f9ce0b36744f09ee, type: 3}
   hurt1: {fileID: 8300000, guid: 342679cfd91b57f4b84d64c1e15dabf8, type: 3}
   hurt2: {fileID: 8300000, guid: 6d66058704ff4714c849ad9e4db62120, type: 3}

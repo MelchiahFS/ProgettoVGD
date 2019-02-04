@@ -1,7 +1,5 @@
 fileFormatVersion: 2
 guid: 23169271a9eddcf4385a397044a86642
-timeCreated: 1523717409
-licenseType: Free
 TextureImporter:
   fileIDToRecycleName:
     21300000: dungeon tileset calciumtrice_0
@@ -304,7 +302,7 @@ TextureImporter:
     21300594: dungeon tileset calciumtrice_515
     21300596: dungeon tileset calciumtrice_516
   externalObjects: {}
-  serializedVersion: 4
+  serializedVersion: 6
   mipmaps:
     mipMapMode: 0
     enableMipMap: 0
@@ -322,6 +320,8 @@ TextureImporter:
     heightScale: 0.25
     normalMapFilter: 0
   isReadable: 0
+  streamingMipmaps: 0
+  streamingMipmapsPriority: 0
   grayScaleToAlpha: 0
   generateCubemap: 6
   cubemapConvolution: 0
@@ -332,7 +332,7 @@ TextureImporter:
     serializedVersion: 2
     filterMode: 0
     aniso: -1
-    mipBias: -1
+    mipBias: -100
     wrapU: 1
     wrapV: 1
     wrapW: 1
@@ -344,18 +344,21 @@ TextureImporter:
   spriteMeshType: 1
   alignment: 0
   spritePivot: {x: 0.5, y: 0.5}
-  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
   spritePixelsToUnits: 16
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spriteGenerateFallbackPhysicsShape: 1
   alphaUsage: 1
   alphaIsTransparency: 1
   spriteTessellationDetail: -1
   textureType: 8
   textureShape: 1
+  singleChannelComponent: 0
   maxTextureSizeSet: 0
   compressionQualitySet: 0
   textureFormatSet: 0
   platformSettings:
-  - buildTarget: DefaultTexturePlatform
+  - serializedVersion: 2
+    buildTarget: DefaultTexturePlatform
     maxTextureSize: 2048
     resizeAlgorithm: 0
     textureFormat: -1
@@ -365,7 +368,8 @@ TextureImporter:
     allowsAlphaSplitting: 0
     overridden: 0
     androidETC2FallbackOverride: 0
-  - buildTarget: Standalone
+  - serializedVersion: 2
+    buildTarget: Standalone
     maxTextureSize: 2048
     resizeAlgorithm: 0
     textureFormat: -1
@@ -375,7 +379,8 @@ TextureImporter:
     allowsAlphaSplitting: 0
     overridden: 0
     androidETC2FallbackOverride: 0
-  - buildTarget: Android
+  - serializedVersion: 2
+    buildTarget: Android
     maxTextureSize: 2048
     resizeAlgorithm: 0
     textureFormat: -1
@@ -410,6 +415,12 @@ TextureImporter:
         - {x: 8, y: -8}
         - {x: 8, y: 8}
       tessellationDetail: 0
+      bones: []
+      spriteID: c49ce9460ccc63d44ab8aec0b053ba28
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: dungeon tileset calciumtrice_5
       rect:
@@ -432,6 +443,12 @@ TextureImporter:
         - {x: 8, y: -8}
         - {x: 8, y: 8}
       tessellationDetail: 0
+      bones: []
+      spriteID: 4e2a3e0218ec9ae4dbcb00121494842c
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: dungeon tileset calciumtrice_6
       rect:
@@ -454,6 +471,12 @@ TextureImporter:
         - {x: 8, y: -8}
         - {x: 8, y: 8}
       tessellationDetail: 0
+      bones: []
+      spriteID: b6a085e391246eb438800eed40f7df14
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: dungeon tileset calciumtrice_7
       rect:
@@ -476,6 +499,12 @@ TextureImporter:
         - {x: 8, y: -8}
         - {x: 8, y: 8}
       tessellationDetail: 0
+      bones: []
+      spriteID: 1f015f8d0f71c0f489c303abe255e798
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: dungeon tileset calciumtrice_8
       rect:
@@ -498,6 +527,12 @@ TextureImporter:
         - {x: 8, y: -8}
         - {x: 8, y: 8}
       tessellationDetail: 0
+      bones: []
+      spriteID: 68f97cc8abcfcd54bacc413d4e3c78f5
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: dungeon tileset calciumtrice_9
       rect:
@@ -520,6 +555,12 @@ TextureImporter:
         - {x: 8, y: -8}
         - {x: 8, y: 8}
       tessellationDetail: 0
+      bones: []
+      spriteID: fccb5337a1e80114e9ad22604f6fb506
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: dungeon tileset calciumtrice_10
       rect:
@@ -542,6 +583,12 @@ TextureImporter:
         - {x: 8, y: -8}
         - {x: 8, y: 8}
       tessellationDetail: 0
+      bones: []
+      spriteID: 7c1afbf0a14392144a6f6700498b203b
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: dungeon tileset calciumtrice_11
       rect:
@@ -564,6 +611,12 @@ TextureImporter:
         - {x: 8, y: -8}
         - {x: 8, y: 8}
       tessellationDetail: 0
+      bones: []
+      spriteID: 6b68e245d4e7c224cbae42fc3e71bdf1
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: dungeon tileset calciumtrice_12
       rect:
@@ -586,6 +639,12 @@ TextureImporter:
         - {x: 8, y: -8}
         - {x: 8, y: 8}
       tessellationDetail: 0
+      bones: []
+      spriteID: 9fa90e54b7ce34148ab6ff54db36f761
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: dungeon tileset calciumtrice_13
       rect:
@@ -608,6 +667,12 @@ TextureImporter:
         - {x: 8, y: -8}
         - {x: 8, y: 8}
       tessellationDetail: 0
+      bones: []
+      spriteID: 15ce6df64317bd842a445e0b1438e91d
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: dungeon tileset calciumtrice_14
       rect:
@@ -630,6 +695,12 @@ TextureImporter:
         - {x: 8, y: -8}
         - {x: 8, y: 8}
       tessellationDetail: 0
+      bones: []
+      spriteID: 66cffd02b46505547b46367298fdc496
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: dungeon tileset calciumtrice_15
       rect:
@@ -652,6 +723,12 @@ TextureImporter:
         - {x: 8, y: -8}
         - {x: 8, y: 8}
       tessellationDetail: 0
+      bones: []
+      spriteID: 55264b585ee2687489f1718cbfe74039
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: dungeon tileset calciumtrice_16
       rect:
@@ -674,6 +751,12 @@ TextureImporter:
         - {x: 8, y: -8}
         - {x: 8, y: 8}
       tessellationDetail: 0
+      bones: []
+      spriteID: 14973a09a31d790419f600b57905268c
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: dungeon tileset calciumtrice_17
       rect:
@@ -696,6 +779,12 @@ TextureImporter:
         - {x: 8, y: -8}
         - {x: 8, y: 8}
       tessellationDetail: 0
+      bones: []
+      spriteID: e410359576845df4b9c78fa8408a8173
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: dungeon tileset calciumtrice_18
       rect:
@@ -718,6 +807,12 @@ TextureImporter:
         - {x: 8, y: -8}
         - {x: 8, y: 8}
       tessellationDetail: 0
+      bones: []
+      spriteID: 6ba894cdc2c82154b95dc4776bfc8e85
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: dungeon tileset calciumtrice_19
       rect:
@@ -740,6 +835,12 @@ TextureImporter:
         - {x: 8, y: -8}
         - {x: 8, y: 8}
       tessellationDetail: 0
+      bones: []
+      spriteID: e17d4eb25f3c6ad489f0c72e0335ce18
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: dungeon tileset calciumtrice_20
       rect:
@@ -762,6 +863,12 @@ TextureImporter:
         - {x: 8, y: -8}
         - {x: 8, y: 8}
       tessellationDetail: 0
+      bones: []
+      spriteID: a921ac0cbc3f3a144b0bd46df533b3a8
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: dungeon tileset calciumtrice_21
       rect:
@@ -784,6 +891,12 @@ TextureImporter:
         - {x: 8, y: -8}
         - {x: 8, y: 8}
       tessellationDetail: 0
+      bones: []
+      spriteID: 6f0e24da6e1c38948a985ba0a64149f7
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: dungeon tileset calciumtrice_22
       rect:
@@ -806,6 +919,12 @@ TextureImporter:
         - {x: 8, y: -8}
         - {x: 8, y: 8}
       tessellationDetail: 0
+      bones: []
+      spriteID: 287a8ffa276afc94aa391c55bdf5b1b4
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: dungeon tileset calciumtrice_23
       rect:
@@ -828,6 +947,12 @@ TextureImporter:
         - {x: 8, y: -8}
         - {x: 8, y: 8}
       tessellationDetail: 0
+      bones: []
+      spriteID: db99558799080d04283bd3ac3a533509
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: dungeon tileset calciumtrice_24
       rect:
@@ -850,6 +975,12 @@ TextureImporter:
         - {x: 8, y: -8}
         - {x: 8, y: 8}
       tessellationDetail: 0
+      bones: []
+      spriteID: 96efafb169d51074495bc3e36609dbd0
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: dungeon tileset calciumtrice_25
       rect:
@@ -872,6 +1003,12 @@ TextureImporter:
         - {x: 8, y: -8}
         - {x: 8, y: 8}
       tessellationDetail: 0
+      bones: []
+      spriteID: 7672ce3087841f14b98e17dc54f28831
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: dungeon tileset calciumtrice_26
       rect:
@@ -894,6 +1031,12 @@ TextureImporter:
         - {x: 8, y: -8}
         - {x: 8, y: 8}
       tessellationDetail: 0
+      bones: []
+      spriteID: 43e51fd9bc4ef0949abe13ab1c9e070b
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: dungeon tileset calciumtrice_27
       rect:
@@ -916,6 +1059,12 @@ TextureImporter:
         - {x: 8, y: -8}
         - {x: 8, y: 8}
       tessellationDetail: 0
+      bones: []
+      spriteID: 383f15f9254fed647a19808e45ee3a83
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: dungeon tileset calciumtrice_28
       rect:
@@ -938,6 +1087,12 @@ TextureImporter:
         - {x: 8, y: -8}
         - {x: 8, y: 8}
       tessellationDetail: 0
+      bones: []
+      spriteID: 3827248e4a5fb174ab7dc97f21e87d7d
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: dungeon tileset calciumtrice_29
       rect:
@@ -960,6 +1115,12 @@ TextureImporter:
         - {x: 8, y: -8}
         - {x: 8, y: 8}
       tessellationDetail: 0
+      bones: []
+      spriteID: 22c6122d7d8124f4292a6af735491369
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: dungeon tileset calciumtrice_30
       rect:
@@ -982,6 +1143,12 @@ TextureImporter:
         - {x: 8, y: -8}
         - {x: 8, y: 8}
       tessellationDetail: 0
+      bones: []
+      spriteID: 8cc9366bc7044144cab365b291ef553a
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: dungeon tileset calciumtrice_31
       rect:
@@ -1004,6 +1171,12 @@ TextureImporter:
         - {x: 8, y: -8}
         - {x: 8, y: 8}
       tessellationDetail: 0
+      bones: []
+      spriteID: 107625b3ce4b26d4498076bd72ca878d
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: dungeon tileset calciumtrice_32
       rect:
@@ -1026,6 +1199,12 @@ TextureImporter:
         - {x: 8, y: -8}
         - {x: 8, y: 8}
       tessellationDetail: 0
+      bones: []
+      spriteID: 99252d11559c8244990d572a844eb11c
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: dungeon tileset calciumtrice_33
       rect:
@@ -1048,6 +1227,12 @@ TextureImporter:
         - {x: 8, y: -8}
         - {x: 8, y: 8}
       tessellationDetail: 0
+      bones: []
+      spriteID: 09e0d244f2abe5f49a916fa6b9d6c11d
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: dungeon tileset calciumtrice_34
       rect:
@@ -1070,6 +1255,12 @@ TextureImporter:
         - {x: 8, y: -8}
         - {x: 8, y: 8}
       tessellationDetail: 0
+      bones: []
+      spriteID: 66177f806f8e87d40a79d4f33036e2ba
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: dungeon tileset calciumtrice_35
       rect:
@@ -1092,6 +1283,12 @@ TextureImporter:
         - {x: 8, y: -8}
         - {x: 8, y: 8}
       tessellationDetail: 0
+      bones: []
+      spriteID: 99efd709e8cc55345a50364304b410d1
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: dungeon tileset calciumtrice_36
       rect:
@@ -1114,6 +1311,12 @@ TextureImporter:
         - {x: 8, y: -8}
         - {x: 8, y: 8}
       tessellationDetail: 0
+      bones: []
+      spriteID: 28aab36f082c9de4d9ed448547a3831f
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: dungeon tileset calciumtrice_37
       rect:
@@ -1136,6 +1339,12 @@ TextureImporter:
         - {x: 8, y: -8}
         - {x: 8, y: 8}
       tessellationDetail: 0
+      bones: []
+      spriteID: e16e9799631b5dc49bcaafa913758f15
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: dungeon tileset calciumtrice_38
       rect:
@@ -1158,6 +1367,12 @@ TextureImporter:
         - {x: 8, y: -8}
         - {x: 8, y: 8}
       tessellationDetail: 0
+      bones: []
+      spriteID: 4a65d0375eb41f943980ea49afdcd72f
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: dungeon tileset calciumtrice_39
       rect:
@@ -1180,6 +1395,12 @@ TextureImporter:
         - {x: 8, y: -8}
         - {x: 8, y: 8}
       tessellationDetail: 0
+      bones: []
+      spriteID: 7efc9d7534785054287153227e0e539d
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: dungeon tileset calciumtrice_40
       rect:
@@ -1202,6 +1423,12 @@ TextureImporter:
         - {x: 8, y: -8}
         - {x: 8, y: 8}
       tessellationDetail: 0
+      bones: []
+      spriteID: be3d16ed7fa736545af095ef4e8482d0
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: dungeon tileset calciumtrice_41
       rect:
@@ -1224,6 +1451,12 @@ TextureImporter:
         - {x: 8, y: -8}
         - {x: 8, y: 8}
       tessellationDetail: 0
+      bones: []
+      spriteID: 589878eeda2bd89438db6774a564db57
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: dungeon tileset calciumtrice_42
       rect:
@@ -1246,6 +1479,12 @@ TextureImporter:
         - {x: 8, y: -8}
         - {x: 8, y: 8}
       tessellationDetail: 0
+      bones: []
+      spriteID: d18a4645c4f540c4e9efe50d6dcebfe5
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: dungeon tileset calciumtrice_43
       rect:
@@ -1268,6 +1507,12 @@ TextureImporter:
         - {x: 8, y: -8}
         - {x: 8, y: 8}
       tessellationDetail: 0
+      bones: []
+      spriteID: 215230fb228594d4ea789c21261c011b
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: dungeon tileset calciumtrice_44
       rect:
@@ -1290,6 +1535,12 @@ TextureImporter:
         - {x: 8, y: -8}
         - {x: 8, y: 8}
       tessellationDetail: 0
+      bones: []
+      spriteID: a95295e907ed2eb4a830ebac5c879e0e
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: dungeon tileset calciumtrice_45
       rect:
@@ -1312,6 +1563,12 @@ TextureImporter:
         - {x: 8, y: -8}
         - {x: 8, y: 8}
       tessellationDetail: 0
+      bones: []
+      spriteID: 78b3aaaa298b2704eb217ff7217aa933
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: dungeon tileset calciumtrice_46
       rect:
@@ -1334,6 +1591,12 @@ TextureImporter:
         - {x: 8, y: -8}
         - {x: 8, y: 8}
       tessellationDetail: 0
+      bones: []
+      spriteID: 901f88a002475274ba9c93ee63c9f684
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: dungeon tileset calciumtrice_47
       rect:
@@ -1356,6 +1619,12 @@ TextureImporter:
         - {x: 8, y: -8}
         - {x: 8, y: 8}
       tessellationDetail: 0
+      bones: []
+      spriteID: 1ed3fce4057c94645aece77331d5b45e
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: dungeon tileset calciumtrice_48
       rect:
@@ -1378,6 +1647,12 @@ TextureImporter:
         - {x: 8, y: -8}
         - {x: 8, y: 8}
       tessellationDetail: 0
+      bones: []
+      spriteID: 9c3b88be6649a204099226d0396ba6c6
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: dungeon tileset calciumtrice_49
       rect:
@@ -1400,6 +1675,12 @@ TextureImporter:
         - {x: 8, y: -8}
         - {x: 8, y: 8}
       tessellationDetail: 0
+      bones: []
+      spriteID: 91fe58a22679f334db86f6bfdaca727d
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: dungeon tileset calciumtrice_50
       rect:
@@ -1422,6 +1703,12 @@ TextureImporter:
         - {x: 8, y: -8}
         - {x: 8, y: 8}
       tessellationDetail: 0
+      bones: []
+      spriteID: f7f3114909356514fafb9bf4ac77d98b
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: dungeon tileset calciumtrice_51
       rect:
@@ -1444,6 +1731,12 @@ TextureImporter:
         - {x: 8, y: -8}
         - {x: 8, y: 8}
       tessellationDetail: 0
+      bones: []
+      spriteID: 1769a19b0a4118748bb7baa34d303e6d
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: dungeon tileset calciumtrice_52
       rect:
@@ -1466,6 +1759,12 @@ TextureImporter:
         - {x: 8, y: -8}
         - {x: 8, y: 8}
       tessellationDetail: 0
+      bones: []
+      spriteID: 692a66f783ef53141a1bdee93da2a15f
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: dungeon tileset calciumtrice_53
       rect:
@@ -1488,6 +1787,12 @@ TextureImporter:
         - {x: 8, y: -8}
         - {x: 8, y: 8}
       tessellationDetail: 0
+      bones: []
+      spriteID: e52d18ad6b3d0644abb659a684ca1366
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: dungeon tileset calciumtrice_54
       rect:
@@ -1510,6 +1815,12 @@ TextureImporter:
         - {x: 8, y: -8}
         - {x: 8, y: 8}
       tessellationDetail: 0
+      bones: []
+      spriteID: 25e54737cf79d1e4a9b0bf5d0c8c290b
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: dungeon tileset calciumtrice_55
       rect:
@@ -1532,6 +1843,12 @@ TextureImporter:
         - {x: 8, y: -8}
         - {x: 8, y: 8}
       tessellationDetail: 0
+      bones: []
+      spriteID: 15d72b344ef821545806f5d521808ea3
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: dungeon tileset calciumtrice_56
       rect:
@@ -1554,6 +1871,12 @@ TextureImporter:
         - {x: 8, y: -8}
         - {x: 8, y: 8}
       tessellationDetail: 0
+      bones: []
+      spriteID: ccaecebe7d4f5954097da9d9c6476471
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: dungeon tileset calciumtrice_57
       rect:
@@ -1576,6 +1899,12 @@ TextureImporter:
         - {x: 8, y: -8}
         - {x: 8, y: 8}
       tessellationDetail: 0
+      bones: []
+      spriteID: 078570dd54f9bd94898713e84c7df6e0
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: dungeon tileset calciumtrice_58
       rect:
@@ -1598,6 +1927,12 @@ TextureImporter:
         - {x: 8, y: -8}
         - {x: 8, y: 8}
       tessellationDetail: 0
+      bones: []
+      spriteID: 850067b5f3c7adb49be4b3ce1055447e
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: dungeon tileset calciumtrice_59
       rect:
@@ -1620,6 +1955,12 @@ TextureImporter:
         - {x: 8, y: -8}
         - {x: 8, y: 8}
       tessellationDetail: 0
+      bones: []
+      spriteID: 4d656378026d250459c3f3407739dffe
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: dungeon tileset calciumtrice_60
       rect:
@@ -1642,6 +1983,12 @@ TextureImporter:
         - {x: 8, y: -8}
         - {x: 8, y: 8}
       tessellationDetail: 0
+      bones: []
+      spriteID: b5f243f00f0394f489d0beec4fe4c9e4
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: dungeon tileset calciumtrice_64
       rect:
@@ -1664,6 +2011,12 @@ TextureImporter:
         - {x: 8, y: -16}
         - {x: 8, y: 16}
       tessellationDetail: 0
+      bones: []
+      spriteID: 988723a171dfcb0438783230cf46d09d
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: dungeon tileset calciumtrice_65
       rect:
@@ -1686,6 +2039,12 @@ TextureImporter:
         - {x: 8, y: -16}
         - {x: 8, y: 16}
       tessellationDetail: 0
+      bones: []
+      spriteID: 0ba9cde33a22f63469697d48d1032086
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: dungeon tileset calciumtrice_66
       rect:
@@ -1708,6 +2067,12 @@ TextureImporter:
         - {x: 8, y: -16}
         - {x: 8, y: 16}
       tessellationDetail: 0
+      bones: []
+      spriteID: 076a8dcad1395e543836ad62302c4d44
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: dungeon tileset calciumtrice_67
       rect:
@@ -1730,6 +2095,12 @@ TextureImporter:
         - {x: 8, y: -16}
         - {x: 8, y: 16}
       tessellationDetail: 0
+      bones: []
+      spriteID: 929f515544c2aa84092cfcf994a7f9a1
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: dungeon tileset calciumtrice_68
       rect:
@@ -1752,6 +2123,12 @@ TextureImporter:
         - {x: 8, y: -16}
         - {x: 8, y: 16}
       tessellationDetail: 0
+      bones: []
+      spriteID: 58648ec9a4dd8f14788af23a1cf7b62e
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: dungeon tileset calciumtrice_69
       rect:
@@ -1774,6 +2151,12 @@ TextureImporter:
         - {x: 8, y: -16}
         - {x: 8, y: 16}
       tessellationDetail: 0
+      bones: []
+      spriteID: 1819c1ccf607c3049b17a71bee6ba2d7
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: dungeon tileset calciumtrice_70
       rect:
@@ -1796,6 +2179,12 @@ TextureImporter:
         - {x: 8, y: -16}
         - {x: 8, y: 16}
       tessellationDetail: 0
+      bones: []
+      spriteID: 1acd015b0505cdf44b06687f6bd4782d
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: dungeon tileset calciumtrice_71
       rect:
@@ -1818,6 +2207,12 @@ TextureImporter:
         - {x: 8, y: -16}
         - {x: 8, y: 16}
       tessellationDetail: 0
+      bones: []
+      spriteID: e31d8e0ca40eee14eab35af6edf50260
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: dungeon tileset calciumtrice_72
       rect:
@@ -1840,6 +2235,12 @@ TextureImporter:
         - {x: 8, y: -16}
         - {x: 8, y: 16}
       tessellationDetail: 0
+      bones: []
+      spriteID: 90e84f869fda0c4428eadad001b09650
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: dungeon tileset calciumtrice_85
       rect:
@@ -1862,6 +2263,12 @@ TextureImporter:
         - {x: 8, y: -8}
         - {x: 8, y: 8}
       tessellationDetail: 0
+      bones: []
+      spriteID: c170a1ddca6ca21439c204e07e4c874c
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: dungeon tileset calciumtrice_86
       rect:
@@ -1884,6 +2291,12 @@ TextureImporter:
         - {x: 8, y: -8}
         - {x: 8, y: 8}
       tessellationDetail: 0
+      bones: []
+      spriteID: 03dab427c9eb5214eb14abf35a4452c3
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: dungeon tileset calciumtrice_87
       rect:
@@ -1906,6 +2319,12 @@ TextureImporter:
         - {x: 8, y: -8}
         - {x: 8, y: 8}
       tessellationDetail: 0
+      bones: []
+      spriteID: f92410e960b89594491d16bcb04ec2ed
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: dungeon tileset calciumtrice_88
       rect:
@@ -1928,6 +2347,12 @@ TextureImporter:
         - {x: 8, y: -8}
         - {x: 8, y: 8}
       tessellationDetail: 0
+      bones: []
+      spriteID: 1b8ae09b500700e4a887032a9d3e41e9
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: dungeon tileset calciumtrice_89
       rect:
@@ -1950,6 +2375,12 @@ TextureImporter:
         - {x: 8, y: -8}
         - {x: 8, y: 8}
       tessellationDetail: 0
+      bones: []
+      spriteID: 32057d5651f0a4842a0e285011fe9246
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: dungeon tileset calciumtrice_90
       rect:
@@ -1972,6 +2403,12 @@ TextureImporter:
         - {x: 8, y: -8}
         - {x: 8, y: 8}
       tessellationDetail: 0
+      bones: []
+      spriteID: 89bcb4a1b4dcbd5429c85bd1467429fe
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: dungeon tileset calciumtrice_91
       rect:
@@ -1994,6 +2431,12 @@ TextureImporter:
         - {x: 8, y: -8}
         - {x: 8, y: 8}
       tessellationDetail: 0
+      bones: []
+      spriteID: d22f8b2dd8152064395183e899031739
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: dungeon tileset calciumtrice_92
       rect:
@@ -2016,6 +2459,12 @@ TextureImporter:
         - {x: 8, y: -8}
         - {x: 8, y: 8}
       tessellationDetail: 0
+      bones: []
+      spriteID: d8e9a0b0798a72545ad03a40adcd5858
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: dungeon tileset calciumtrice_93
       rect:
@@ -2038,6 +2487,12 @@ TextureImporter:
         - {x: 8, y: -8}
         - {x: 8, y: 8}
       tessellationDetail: 0
+      bones: []
+      spriteID: 99e279ae7356c464eb5ca67aaa05f311
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: dungeon tileset calciumtrice_94
       rect:
@@ -2060,6 +2515,12 @@ TextureImporter:
         - {x: 8, y: -8}
         - {x: 8, y: 8}
       tessellationDetail: 0
+      bones: []
+      spriteID: 890ee290664a5af48af4a5644c100bbf
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: dungeon tileset calciumtrice_95
       rect:
@@ -2082,6 +2543,12 @@ TextureImporter:
         - {x: 8, y: -8}
         - {x: 8, y: 8}
       tessellationDetail: 0
+      bones: []
+      spriteID: 665e0efae64aa1e41869937cfcc39cbf
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: dungeon tileset calciumtrice_96
       rect:
@@ -2104,6 +2571,12 @@ TextureImporter:
         - {x: 8, y: -8}
         - {x: 8, y: 8}
       tessellationDetail: 0
+      bones: []
+      spriteID: 94bdd4a73118cae408e1a14faa596721
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: dungeon tileset calciumtrice_97
       rect:
@@ -2126,6 +2599,12 @@ TextureImporter:
         - {x: 8, y: -8}
         - {x: 8, y: 8}
       tessellationDetail: 0
+      bones: []
+      spriteID: 712aa6c886d5c99419ae4efae2b85737
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: dungeon tileset calciumtrice_98
       rect:
@@ -2148,6 +2627,12 @@ TextureImporter:
         - {x: 8, y: -8}
         - {x: 8, y: 8}
       tessellationDetail: 0
+      bones: []
+      spriteID: 50c852f5e513b3642961ea211ac47f95
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: dungeon tileset calciumtrice_99
       rect:
@@ -2170,6 +2655,12 @@ TextureImporter:
         - {x: 8, y: -8}
         - {x: 8, y: 8}
       tessellationDetail: 0
+      bones: []
+      spriteID: ab04d897167406146a9009896e5fa0e9
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: dungeon tileset calciumtrice_100
       rect:
@@ -2192,6 +2683,12 @@ TextureImporter:
         - {x: 8, y: -8}
         - {x: 8, y: 8}
       tessellationDetail: 0
+      bones: []
+      spriteID: cecf47575a2d4fc44852bc65cccd0645
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: dungeon tileset calciumtrice_101
       rect:
@@ -2214,6 +2711,12 @@ TextureImporter:
         - {x: 8, y: -8}
         - {x: 8, y: 8}
       tessellationDetail: 0
+      bones: []
+      spriteID: 137be29b94de32f46abc4bf81a29ef1f
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: dungeon tileset calciumtrice_102
       rect:
@@ -2236,6 +2739,12 @@ TextureImporter:
         - {x: 8, y: -8}
         - {x: 8, y: 8}
       tessellationDetail: 0
+      bones: []
+      spriteID: 88a171ebe58470946844a621952ee56d
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: dungeon tileset calciumtrice_103
       rect:
@@ -2258,6 +2767,12 @@ TextureImporter:
         - {x: 8, y: -8}
         - {x: 8, y: 8}
       tessellationDetail: 0
+      bones: []
+      spriteID: 59106f4ba5653074cb73aa94472f43d3
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: dungeon tileset calciumtrice_104
       rect:
@@ -2280,6 +2795,12 @@ TextureImporter:
         - {x: 8, y: -8}
         - {x: 8, y: 8}
       tessellationDetail: 0
+      bones: []
+      spriteID: fbaa8a8f83225644aa7b1c8462bc416f
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: dungeon tileset calciumtrice_105
       rect:
@@ -2302,6 +2823,12 @@ TextureImporter:
         - {x: 8, y: -8}
         - {x: 8, y: 8}
       tessellationDetail: 0
+      bones: []
+      spriteID: 85cc59094aad1b24bbb45b2cd097d4c8
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: dungeon tileset calciumtrice_106
       rect:
@@ -2324,6 +2851,12 @@ TextureImporter:
         - {x: 8, y: -8}
         - {x: 8, y: 8}
       tessellationDetail: 0
+      bones: []
+      spriteID: a2539cb2a88c7974e865ba3eba469e1f
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: dungeon tileset calciumtrice_107
       rect:
@@ -2346,6 +2879,12 @@ TextureImporter:
         - {x: 8, y: -8}
         - {x: 8, y: 8}
       tessellationDetail: 0
+      bones: []
+      spriteID: 8ed78fbddb3a4ab43a95eea1655c0324
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: dungeon tileset calciumtrice_108
       rect:
@@ -2368,6 +2907,12 @@ TextureImporter:
         - {x: 8, y: -8}
         - {x: 8, y: 8}
       tessellationDetail: 0
+      bones: []
+      spriteID: c0364a16592927c4abcf5a0af3e9b385
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: dungeon tileset calciumtrice_109
       rect:
@@ -2390,6 +2935,12 @@ TextureImporter:
         - {x: 8, y: -8}
         - {x: 8, y: 8}
       tessellationDetail: 0
+      bones: []
+      spriteID: 76a1b2864b122644388e9cb452de58ee
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: dungeon tileset calciumtrice_110
       rect:
@@ -2412,6 +2963,12 @@ TextureImporter:
         - {x: 8, y: -8}
         - {x: 8, y: 8}
       tessellationDetail: 0
+      bones: []
+      spriteID: cb2a86549de92424f92f397a8a5ab544
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: dungeon tileset calciumtrice_111
       rect:
@@ -2434,6 +2991,12 @@ TextureImporter:
         - {x: 8, y: -8}
         - {x: 8, y: 8}
       tessellationDetail: 0
+      bones: []
+      spriteID: 0e2b1def3f627e74eaccbcacc5bdd842
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: dungeon tileset calciumtrice_112
       rect:
@@ -2456,6 +3019,12 @@ TextureImporter:
         - {x: 8, y: -8}
         - {x: 8, y: 8}
       tessellationDetail: 0
+      bones: []
+      spriteID: 63a9cdd6a33951b478dbb0f9f951d7de
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: dungeon tileset calciumtrice_113
       rect:
@@ -2478,6 +3047,12 @@ TextureImporter:
         - {x: 8, y: -8}
         - {x: 8, y: 8}
       tessellationDetail: 0
+      bones: []
+      spriteID: e822d8c9595c4da4cadec813908d5617
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: dungeon tileset calciumtrice_114
       rect:
@@ -2500,6 +3075,12 @@ TextureImporter:
         - {x: 8, y: -8}
         - {x: 8, y: 8}
       tessellationDetail: 0
+      bones: []
+      spriteID: 967360ab2b107cb46af22dcfb460998c
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: dungeon tileset calciumtrice_115
       rect:
@@ -2522,6 +3103,12 @@ TextureImporter:
         - {x: 8, y: -8}
         - {x: 8, y: 8}
       tessellationDetail: 0
+      bones: []
+      spriteID: d334f5712cbd26d4ca28d07cccfd3482
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: dungeon tileset calciumtrice_116
       rect:
@@ -2544,6 +3131,12 @@ TextureImporter:
         - {x: 8, y: -8}
         - {x: 8, y: 8}
       tessellationDetail: 0
+      bones: []
+      spriteID: fd3b82379f0e4e14fa1620ea06966805
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: dungeon tileset calciumtrice_117
       rect:
@@ -2566,6 +3159,12 @@ TextureImporter:
         - {x: 8, y: -8}
         - {x: 8, y: 8}
       tessellationDetail: 0
+      bones: []
+      spriteID: 2eb5c310866b6b348a7e695d07b79dc2
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: dungeon tileset calciumtrice_118
       rect:
@@ -2588,6 +3187,12 @@ TextureImporter:
         - {x: 8, y: -8}
         - {x: 8, y: 8}
       tessellationDetail: 0
+      bones: []
+      spriteID: 99a5be83f0fd07f4bb1722153692b808
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: dungeon tileset calciumtrice_119
       rect:
@@ -2610,6 +3215,12 @@ TextureImporter:
         - {x: 8, y: -8}
         - {x: 8, y: 8}
       tessellationDetail: 0
+      bones: []
+      spriteID: 7065f9f3d04b1bf40b8b2e304239918b
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: dungeon tileset calciumtrice_120
       rect:
@@ -2632,6 +3243,12 @@ TextureImporter:
         - {x: 8, y: -8}
         - {x: 8, y: 8}
       tessellationDetail: 0
+      bones: []
+      spriteID: 2c59422de2a1d034bad6875f8de8ddf1
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: dungeon tileset calciumtrice_121
       rect:
@@ -2654,6 +3271,12 @@ TextureImporter:
         - {x: 8, y: -8}
         - {x: 8, y: 8}
       tessellationDetail: 0
+      bones: []
+      spriteID: a5c6cde77afba1b4eb44eff7aa94437a
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: dungeon tileset calciumtrice_122
       rect:
@@ -2676,6 +3299,12 @@ TextureImporter:
         - {x: 8, y: -8}
         - {x: 8, y: 8}
       tessellationDetail: 0
+      bones: []
+      spriteID: 1291a67f8c438674491d202395d97176
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: dungeon tileset calciumtrice_123
       rect:
@@ -2698,6 +3327,12 @@ TextureImporter:
         - {x: 8, y: -8}
         - {x: 8, y: 8}
       tessellationDetail: 0
+      bones: []
+      spriteID: 79d8ea70862285d42a75eb3a3039c509
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: dungeon tileset calciumtrice_124
       rect:
@@ -2720,6 +3355,12 @@ TextureImporter:
         - {x: 8, y: -8}
         - {x: 8, y: 8}
       tessellationDetail: 0
+      bones: []
+      spriteID: d5efb45cd767c1b4daccfd6bcbdc0abd
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: dungeon tileset calciumtrice_125
       rect:
@@ -2742,6 +3383,12 @@ TextureImporter:
         - {x: 8, y: -8}
         - {x: 8, y: 8}
       tessellationDetail: 0
+      bones: []
+      spriteID: 136d87dbbc3b9994bbd9e41a6bf38e29
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: dungeon tileset calciumtrice_126
       rect:
@@ -2764,6 +3411,12 @@ TextureImporter:
         - {x: 8, y: -8}
         - {x: 8, y: 8}
       tessellationDetail: 0
+      bones: []
+      spriteID: d0b9e6282ead9d545a7a01e994b12c5c
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: dungeon tileset calciumtrice_127
       rect:
@@ -2786,6 +3439,12 @@ TextureImporter:
         - {x: 8, y: -8}
         - {x: 8, y: 8}
       tessellationDetail: 0
+      bones: []
+      spriteID: dd24be84a1d25e64c8a342ceec95ae00
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: dungeon tileset calciumtrice_128
       rect:
@@ -2808,6 +3467,12 @@ TextureImporter:
         - {x: 8, y: -8}
         - {x: 8, y: 8}
       tessellationDetail: 0
+      bones: []
+      spriteID: 64bcabd3116fc294880d8c296661fab3
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: dungeon tileset calciumtrice_129
       rect:
@@ -2830,6 +3495,12 @@ TextureImporter:
         - {x: 8, y: -8}
         - {x: 8, y: 8}
       tessellationDetail: 0
+      bones: []
+      spriteID: b7ba6e2e15dcb4d4884f77202be662f4
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: dungeon tileset calciumtrice_130
       rect:
@@ -2852,6 +3523,12 @@ TextureImporter:
         - {x: 8, y: -8}
         - {x: 8, y: 8}
       tessellationDetail: 0
+      bones: []
+      spriteID: 8d30fbab5a1c1124791ac12b7331259a
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: dungeon tileset calciumtrice_131
       rect:
@@ -2874,6 +3551,12 @@ TextureImporter:
         - {x: 8, y: -8}
         - {x: 8, y: 8}
       tessellationDetail: 0
+      bones: []
+      spriteID: ad83b71012cefb84a9d5b3a6d540baf7
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: dungeon tileset calciumtrice_132
       rect:
@@ -2896,6 +3579,12 @@ TextureImporter:
         - {x: 8, y: -8}
         - {x: 8, y: 8}
       tessellationDetail: 0
+      bones: []
+      spriteID: a94ffb89e2104c14da556e5a4a4fe5ca
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: dungeon tileset calciumtrice_133
       rect:
@@ -2918,6 +3607,12 @@ TextureImporter:
         - {x: 8, y: -8}
         - {x: 8, y: 8}
       tessellationDetail: 0
+      bones: []
+      spriteID: 3a4c557453223b9449b874d23ffef223
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: dungeon tileset calciumtrice_134
       rect:
@@ -2940,6 +3635,12 @@ TextureImporter:
         - {x: 8, y: -8}
         - {x: 8, y: 8}
       tessellationDetail: 0
+      bones: []
+      spriteID: c34fdc516bad02349be55e6aa58e555f
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: dungeon tileset calciumtrice_135
       rect:
@@ -2962,6 +3663,12 @@ TextureImporter:
         - {x: 8, y: -8}
         - {x: 8, y: 8}
       tessellationDetail: 0
+      bones: []
+      spriteID: 65e53be9c8a411f4896d93dda4a248e9
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: dungeon tileset calciumtrice_136
       rect:
@@ -2984,6 +3691,12 @@ TextureImporter:
         - {x: 8, y: -8}
         - {x: 8, y: 8}
       tessellationDetail: 0
+      bones: []
+      spriteID: 27c7c3f309ed6bf44a32046aeaa1e14d
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: dungeon tileset calciumtrice_137
       rect:
@@ -3006,6 +3719,12 @@ TextureImporter:
         - {x: 8, y: -8}
         - {x: 8, y: 8}
       tessellationDetail: 0
+      bones: []
+      spriteID: b9d03224ea263684b8aef746da3fe587
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: dungeon tileset calciumtrice_138
       rect:
@@ -3028,6 +3747,12 @@ TextureImporter:
         - {x: 8, y: -8}
         - {x: 8, y: 8}
       tessellationDetail: 0
+      bones: []
+      spriteID: 3724703b43fb4154dad2f96c787a0c70
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: dungeon tileset calciumtrice_139
       rect:
@@ -3050,6 +3775,12 @@ TextureImporter:
         - {x: 8, y: -8}
         - {x: 8, y: 8}
       tessellationDetail: 0
+      bones: []
+      spriteID: 8749bc0bffd01ca40b89c9ce03abbcc3
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: dungeon tileset calciumtrice_140
       rect:
@@ -3072,6 +3803,12 @@ TextureImporter:
         - {x: 8, y: -8}
         - {x: 8, y: 8}
       tessellationDetail: 0
+      bones: []
+      spriteID: bcafff53e98b6484ca4dcc26cde7c542
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: dungeon tileset calciumtrice_141
       rect:
@@ -3094,6 +3831,12 @@ TextureImporter:
         - {x: 8, y: -8}
         - {x: 8, y: 8}
       tessellationDetail: 0
+      bones: []
+      spriteID: 1cbe58ab653a75f4d902d6a8a636572e
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: dungeon tileset calciumtrice_142
       rect:
@@ -3116,6 +3859,12 @@ TextureImporter:
         - {x: 8, y: -8}
         - {x: 8, y: 8}
       tessellationDetail: 0
+      bones: []
+      spriteID: 12c623632105dd045a8b2a38ae78af5d
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: dungeon tileset calciumtrice_143
       rect:
@@ -3138,6 +3887,12 @@ TextureImporter:
         - {x: 8, y: -8}
         - {x: 8, y: 8}
       tessellationDetail: 0
+      bones: []
+      spriteID: c4e5ba3483494734986be2735793ee3f
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: dungeon tileset calciumtrice_144
       rect:
@@ -3160,6 +3915,12 @@ TextureImporter:
         - {x: 8, y: -8}
         - {x: 8, y: 8}
       tessellationDetail: 0
+      bones: []
+      spriteID: cf9adc9ef2767494192617b7705f34b6
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: dungeon tileset calciumtrice_145
       rect:
@@ -3182,6 +3943,12 @@ TextureImporter:
         - {x: 8, y: -8}
         - {x: 8, y: 8}
       tessellationDetail: 0
+      bones: []
+      spriteID: d0b14920390ff3c4792c8728793d0737
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: dungeon tileset calciumtrice_146
       rect:
@@ -3204,6 +3971,12 @@ TextureImporter:
         - {x: 8, y: -8}
         - {x: 8, y: 8}
       tessellationDetail: 0
+      bones: []
+      spriteID: 9b80681955a89d246b789e4d89f375eb
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: dungeon tileset calciumtrice_147
       rect:
@@ -3226,6 +3999,12 @@ TextureImporter:
         - {x: 8, y: -8}
         - {x: 8, y: 8}
       tessellationDetail: 0
+      bones: []
+      spriteID: 38f99e1939e0316458c3adc7252d2f7e
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: dungeon tileset calciumtrice_148
       rect:
@@ -3248,6 +4027,12 @@ TextureImporter:
         - {x: 8, y: -8}
         - {x: 8, y: 8}
       tessellationDetail: 0
+      bones: []
+      spriteID: a9dbed602f05e1240b985b857f4b5c43
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: dungeon tileset calciumtrice_149
       rect:
@@ -3270,6 +4055,12 @@ TextureImporter:
         - {x: 8, y: -8}
         - {x: 8, y: 8}
       tessellationDetail: 0
+      bones: []
+      spriteID: 893a76459c7a48b4fa0e4d7ea9a7666d
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: dungeon tileset calciumtrice_150
       rect:
@@ -3292,6 +4083,12 @@ TextureImporter:
         - {x: 8, y: -8}
         - {x: 8, y: 8}
       tessellationDetail: 0
+      bones: []
+      spriteID: d893220c2c4233b4994c3e6d337ab200
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: dungeon tileset calciumtrice_151
       rect:
@@ -3314,6 +4111,12 @@ TextureImporter:
         - {x: 8, y: -8}
         - {x: 8, y: 8}
       tessellationDetail: 0
+      bones: []
+      spriteID: 00558327af1d019469e9c5c037d6af99
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: dungeon tileset calciumtrice_152
       rect:
@@ -3336,6 +4139,12 @@ TextureImporter:
         - {x: 8, y: -8}
         - {x: 8, y: 8}
       tessellationDetail: 0
+      bones: []
+      spriteID: 05f70876e943a81449f430658ae9a12a
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: dungeon tileset calciumtrice_153
       rect:
@@ -3358,6 +4167,12 @@ TextureImporter:
         - {x: 8, y: -8}
         - {x: 8, y: 8}
       tessellationDetail: 0
+      bones: []
+      spriteID: eaa02a418b74fa741b7953b36ed9693f
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: dungeon tileset calciumtrice_154
       rect:
@@ -3380,6 +4195,12 @@ TextureImporter:
         - {x: 8, y: -8}
         - {x: 8, y: 8}
       tessellationDetail: 0
+      bones: []
+      spriteID: cdfbb5c274891a945aaee9be31130605
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: dungeon tileset calciumtrice_155
       rect:
@@ -3402,6 +4223,12 @@ TextureImporter:
         - {x: 8, y: -8}
         - {x: 8, y: 8}
       tessellationDetail: 0
+      bones: []
+      spriteID: e7ecc37fcf96a8449a7120b89eca709c
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: dungeon tileset calciumtrice_156
       rect:
@@ -3424,6 +4251,12 @@ TextureImporter:
         - {x: 8, y: -8}
         - {x: 8, y: 8}
       tessellationDetail: 0
+      bones: []
+      spriteID: 1fa6a3a00e96b954082e25cc60be6aae
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: dungeon tileset calciumtrice_167
       rect:
@@ -3450,6 +4283,12 @@ TextureImporter:
         - {x: 8, y: 6}
         - {x: -3, y: 6}
       tessellationDetail: 0
+      bones: []
+      spriteID: db3eae46a5d48f94e84bdc538b1ac9ca
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: dungeon tileset calciumtrice_168
       rect:
@@ -3472,6 +4311,12 @@ TextureImporter:
         - {x: 8, y: 6}
         - {x: -8, y: 6}
       tessellationDetail: 0
+      bones: []
+      spriteID: 4a90d80056b11da44bc0b97a73891c77
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: dungeon tileset calciumtrice_169
       rect:
@@ -3494,6 +4339,12 @@ TextureImporter:
         - {x: 8, y: 6}
         - {x: -8, y: 6}
       tessellationDetail: 0
+      bones: []
+      spriteID: 0e08f4498b2765a4f937c5150ba4ac3e
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: dungeon tileset calciumtrice_170
       rect:
@@ -3516,6 +4367,12 @@ TextureImporter:
         - {x: 8, y: 6}
         - {x: -8, y: 6}
       tessellationDetail: 0
+      bones: []
+      spriteID: 0098147f520b26649943fe24c843d0eb
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: dungeon tileset calciumtrice_171
       rect:
@@ -3538,6 +4395,12 @@ TextureImporter:
         - {x: 8, y: 6}
         - {x: -8, y: 6}
       tessellationDetail: 0
+      bones: []
+      spriteID: f48432f8ae9108844aa10a97689379b9
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: dungeon tileset calciumtrice_172
       rect:
@@ -3564,6 +4427,12 @@ TextureImporter:
         - {x: 2, y: 4}
         - {x: 0, y: 6}
       tessellationDetail: 0
+      bones: []
+      spriteID: b9a3e2930dc3c9e4182b4f63568fb0d4
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: dungeon tileset calciumtrice_173
       rect:
@@ -3586,6 +4455,12 @@ TextureImporter:
         - {x: 8, y: -16}
         - {x: 8, y: 16}
       tessellationDetail: 0
+      bones: []
+      spriteID: 9f1676e27fe77644fbde0b5a61cb3e6b
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: dungeon tileset calciumtrice_174
       rect:
@@ -3608,6 +4483,12 @@ TextureImporter:
         - {x: 8, y: -16}
         - {x: 8, y: 16}
       tessellationDetail: 0
+      bones: []
+      spriteID: 2d1fa01227a10884692792466132a180
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: dungeon tileset calciumtrice_175
       rect:
@@ -3630,6 +4511,12 @@ TextureImporter:
         - {x: 8, y: -16}
         - {x: 8, y: 16}
       tessellationDetail: 0
+      bones: []
+      spriteID: 4bc043e42f25e7242b646da7feeb74c2
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: dungeon tileset calciumtrice_176
       rect:
@@ -3652,6 +4539,12 @@ TextureImporter:
         - {x: 8, y: -16}
         - {x: 8, y: 16}
       tessellationDetail: 0
+      bones: []
+      spriteID: 55f8f0f8f49d7cb4daca12c5188f3741
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: dungeon tileset calciumtrice_177
       rect:
@@ -3674,6 +4567,12 @@ TextureImporter:
         - {x: 8, y: -16}
         - {x: 8, y: 16}
       tessellationDetail: 0
+      bones: []
+      spriteID: ec921b5cb1127ef48a592c4ce3c4db7d
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: dungeon tileset calciumtrice_178
       rect:
@@ -3696,6 +4595,12 @@ TextureImporter:
         - {x: 8, y: -16}
         - {x: 8, y: 16}
       tessellationDetail: 0
+      bones: []
+      spriteID: 841ae16a51e3a3243a63a8535df16a37
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: dungeon tileset calciumtrice_179
       rect:
@@ -3720,6 +4625,12 @@ TextureImporter:
         - {x: -1, y: -19}
         - {x: -1, y: 24}
       tessellationDetail: 0
+      bones: []
+      spriteID: 11c216e40a074eb45bf6fa4ecf3d640f
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: dungeon tileset calciumtrice_180
       rect:
@@ -3742,6 +4653,12 @@ TextureImporter:
         - {x: 8, y: -24}
         - {x: 8, y: 24}
       tessellationDetail: 0
+      bones: []
+      spriteID: 1ae1c60914ea6e24ea94141757633b30
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: dungeon tileset calciumtrice_181
       rect:
@@ -3764,6 +4681,12 @@ TextureImporter:
         - {x: -1, y: -24}
         - {x: -1, y: 24}
       tessellationDetail: 0
+      bones: []
+      spriteID: acf04be5e3aa077498dbc6aa65c7d626
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: dungeon tileset calciumtrice_182
       rect:
@@ -3772,8 +4695,8 @@ TextureImporter:
         y: 336
         width: 16
         height: 48
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      alignment: 9
+      pivot: {x: 0.5, y: 0.25}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline:
       - - {x: 1, y: -24}
@@ -3786,6 +4709,12 @@ TextureImporter:
         - {x: 8, y: 24}
         - {x: 1, y: 24}
       tessellationDetail: 0
+      bones: []
+      spriteID: 39ec64c791472b141a39a3c17235ca2c
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: dungeon tileset calciumtrice_183
       rect:
@@ -3810,6 +4739,12 @@ TextureImporter:
         - {x: -3, y: -24}
         - {x: -3, y: 17}
       tessellationDetail: 0
+      bones: []
+      spriteID: 47e27169a5211144ebcc9be681861159
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: dungeon tileset calciumtrice_184
       rect:
@@ -3836,6 +4771,12 @@ TextureImporter:
         - {x: 8, y: -24}
         - {x: 8, y: 24}
       tessellationDetail: 0
+      bones: []
+      spriteID: 0404aa0d9c076244c801802cb6417d60
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: dungeon tileset calciumtrice_185
       rect:
@@ -3864,6 +4805,12 @@ TextureImporter:
         - {x: 8, y: -12}
         - {x: 8, y: 24}
       tessellationDetail: 0
+      bones: []
+      spriteID: 32d2263fadb873e469b63f4f54eb8199
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: dungeon tileset calciumtrice_186
       rect:
@@ -3890,6 +4837,12 @@ TextureImporter:
         - {x: 8, y: 21}
         - {x: 3, y: 24}
       tessellationDetail: 0
+      bones: []
+      spriteID: 03645db99f2da9744945dffc6a619be8
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: dungeon tileset calciumtrice_187
       rect:
@@ -3914,6 +4867,12 @@ TextureImporter:
         - {x: 8, y: 14}
         - {x: -1, y: 24}
       tessellationDetail: 0
+      bones: []
+      spriteID: 881334a3ec6b8ea4ea1ca617890852c9
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: dungeon tileset calciumtrice_188
       rect:
@@ -3938,6 +4897,12 @@ TextureImporter:
         - {x: 8, y: -24}
         - {x: 8, y: 24}
       tessellationDetail: 0
+      bones: []
+      spriteID: 46a2090605f95ee4c8fe163a24ed39f1
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: dungeon tileset calciumtrice_189
       rect:
@@ -3946,8 +4911,8 @@ TextureImporter:
         y: 352
         width: 16
         height: 32
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      alignment: 9
+      pivot: {x: 0.5, y: 0.25}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline:
       - - {x: -8, y: 15}
@@ -3964,6 +4929,12 @@ TextureImporter:
         - {x: 8, y: -15}
         - {x: 8, y: 15}
       tessellationDetail: 0
+      bones: []
+      spriteID: b2c3fb5d7df39734687bb09e433856df
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: dungeon tileset calciumtrice_190
       rect:
@@ -3972,8 +4943,8 @@ TextureImporter:
         y: 352
         width: 16
         height: 32
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      alignment: 9
+      pivot: {x: 0.5, y: 0.25}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline:
       - - {x: -8, y: 15}
@@ -3988,6 +4959,12 @@ TextureImporter:
         - {x: 8, y: -9}
         - {x: 8, y: 15}
       tessellationDetail: 0
+      bones: []
+      spriteID: 42a1057dfa03a3c4e968f2264bfd8e99
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: dungeon tileset calciumtrice_191
       rect:
@@ -3996,8 +4973,8 @@ TextureImporter:
         y: 352
         width: 16
         height: 32
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      alignment: 9
+      pivot: {x: 0.5, y: 0.25}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline:
       - - {x: -8, y: 15}
@@ -4014,6 +4991,12 @@ TextureImporter:
         - {x: 8, y: -15}
         - {x: 8, y: 15}
       tessellationDetail: 0
+      bones: []
+      spriteID: 0cb2d1115c8aff146bfbb62ff9a24f98
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: dungeon tileset calciumtrice_192
       rect:
@@ -4022,8 +5005,8 @@ TextureImporter:
         y: 352
         width: 16
         height: 32
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      alignment: 9
+      pivot: {x: 0.5, y: 0.25}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline:
       - - {x: -8, y: 15}
@@ -4038,6 +5021,12 @@ TextureImporter:
         - {x: 8, y: -9}
         - {x: 8, y: 15}
       tessellationDetail: 0
+      bones: []
+      spriteID: 4c2cdb94302957446a8ecfa3f0128039
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: dungeon tileset calciumtrice_193
       rect:
@@ -4046,8 +5035,8 @@ TextureImporter:
         y: 352
         width: 16
         height: 32
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      alignment: 9
+      pivot: {x: 0.5, y: 0.25}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline:
       - - {x: -8, y: 15}
@@ -4064,6 +5053,12 @@ TextureImporter:
         - {x: 8, y: -15}
         - {x: 8, y: 15}
       tessellationDetail: 0
+      bones: []
+      spriteID: f3071591553187a44915ba4660d84981
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: dungeon tileset calciumtrice_194
       rect:
@@ -4072,8 +5067,8 @@ TextureImporter:
         y: 352
         width: 16
         height: 32
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      alignment: 9
+      pivot: {x: 0.5, y: 0.25}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline:
       - - {x: -8, y: 15}
@@ -4088,6 +5083,12 @@ TextureImporter:
         - {x: 8, y: -9}
         - {x: 8, y: 15}
       tessellationDetail: 0
+      bones: []
+      spriteID: 5833e257651820d4c8dc215adc19e637
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: dungeon tileset calciumtrice_195
       rect:
@@ -4096,8 +5097,8 @@ TextureImporter:
         y: 352
         width: 16
         height: 32
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      alignment: 9
+      pivot: {x: 0.5, y: 0.25}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline:
       - - {x: -8, y: 16}
@@ -4114,6 +5115,12 @@ TextureImporter:
         - {x: -4, y: 15}
         - {x: -5, y: 16}
       tessellationDetail: 0
+      bones: []
+      spriteID: 5925f72a407f9b64c8104efa5ac9debd
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: dungeon tileset calciumtrice_196
       rect:
@@ -4122,8 +5129,8 @@ TextureImporter:
         y: 352
         width: 16
         height: 32
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      alignment: 9
+      pivot: {x: 0.5, y: 0.25}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline:
       - - {x: 5, y: 16}
@@ -4140,6 +5147,12 @@ TextureImporter:
         - {x: 8, y: -16}
         - {x: 8, y: 16}
       tessellationDetail: 0
+      bones: []
+      spriteID: 0fe99aef4bb4f33428d9ab7ee0cb1c9e
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: dungeon tileset calciumtrice_197
       rect:
@@ -4148,8 +5161,8 @@ TextureImporter:
         y: 352
         width: 16
         height: 32
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      alignment: 9
+      pivot: {x: 0.5, y: 0.25}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline:
       - - {x: -8, y: 16}
@@ -4166,6 +5179,12 @@ TextureImporter:
         - {x: -4, y: 15}
         - {x: -5, y: 16}
       tessellationDetail: 0
+      bones: []
+      spriteID: 25dda8ae1a91d3447a566ddfc0a790fb
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: dungeon tileset calciumtrice_198
       rect:
@@ -4174,8 +5193,8 @@ TextureImporter:
         y: 352
         width: 16
         height: 32
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      alignment: 9
+      pivot: {x: 0.5, y: 0.25}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline:
       - - {x: 5, y: 16}
@@ -4192,6 +5211,12 @@ TextureImporter:
         - {x: 8, y: -16}
         - {x: 8, y: 16}
       tessellationDetail: 0
+      bones: []
+      spriteID: a0989a0b211bc204da7498e703a1ff9d
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: dungeon tileset calciumtrice_199
       rect:
@@ -4200,8 +5225,8 @@ TextureImporter:
         y: 352
         width: 16
         height: 32
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      alignment: 9
+      pivot: {x: 0.5, y: 0.25}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline:
       - - {x: -8, y: 16}
@@ -4218,6 +5243,12 @@ TextureImporter:
         - {x: -4, y: 15}
         - {x: -5, y: 16}
       tessellationDetail: 0
+      bones: []
+      spriteID: 7ccd23044e4a13641b6d3566b2c94126
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: dungeon tileset calciumtrice_200
       rect:
@@ -4226,8 +5257,8 @@ TextureImporter:
         y: 352
         width: 16
         height: 32
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      alignment: 9
+      pivot: {x: 0.5, y: 0.25}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline:
       - - {x: 5, y: 16}
@@ -4244,6 +5275,12 @@ TextureImporter:
         - {x: 8, y: -16}
         - {x: 8, y: 16}
       tessellationDetail: 0
+      bones: []
+      spriteID: 53ebe349029fc9648b6af2f20162f25c
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: dungeon tileset calciumtrice_263
       rect:
@@ -4266,6 +5303,12 @@ TextureImporter:
         - {x: 16, y: -16}
         - {x: 16, y: 16}
       tessellationDetail: 0
+      bones: []
+      spriteID: 0a87669c1a6001a4587394ebddf0ec88
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: dungeon tileset calciumtrice_265
       rect:
@@ -4296,6 +5339,12 @@ TextureImporter:
         - {x: 8, y: -4}
         - {x: 8, y: 8}
       tessellationDetail: 0
+      bones: []
+      spriteID: 60b4e132adb0f1b4f8968b07f13d4ecf
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: dungeon tileset calciumtrice_266
       rect:
@@ -4326,6 +5375,12 @@ TextureImporter:
         - {x: 8, y: 6}
         - {x: 3, y: 8}
       tessellationDetail: 0
+      bones: []
+      spriteID: e5b45a451c3173449aca2b95ada4be3c
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: dungeon tileset calciumtrice_267
       rect:
@@ -4356,6 +5411,12 @@ TextureImporter:
         - {x: 8, y: -6}
         - {x: 8, y: 3}
       tessellationDetail: 0
+      bones: []
+      spriteID: 139b2c11a135b9f44a37cca34a98d8b9
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: dungeon tileset calciumtrice_268
       rect:
@@ -4384,6 +5445,12 @@ TextureImporter:
         - {x: 7, y: 7}
         - {x: 5, y: 8}
       tessellationDetail: 0
+      bones: []
+      spriteID: ebe21a22f872f0d44b5a05ed27a62e75
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: dungeon tileset calciumtrice_269
       rect:
@@ -4410,6 +5477,12 @@ TextureImporter:
         - {x: 6, y: -2}
         - {x: -4, y: 8}
       tessellationDetail: 0
+      bones: []
+      spriteID: 7bdda11ece028e949a360803029d6538
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: dungeon tileset calciumtrice_270
       rect:
@@ -4436,6 +5509,12 @@ TextureImporter:
         - {x: 5, y: 4}
         - {x: -4, y: 4}
       tessellationDetail: 0
+      bones: []
+      spriteID: dc28d7ed20b57784c9463c76e282b3dc
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: dungeon tileset calciumtrice_271
       rect:
@@ -4462,6 +5541,12 @@ TextureImporter:
         - {x: 4, y: 8}
         - {x: -5, y: 8}
       tessellationDetail: 0
+      bones: []
+      spriteID: 562e2d87abf54b44794f7f911a24af23
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: dungeon tileset calciumtrice_272
       rect:
@@ -4484,6 +5569,12 @@ TextureImporter:
         - {x: -16, y: -16}
         - {x: 16, y: -16}
       tessellationDetail: 0
+      bones: []
+      spriteID: 98a70a8ecdb2d4745ab8cc194b70a5d0
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: dungeon tileset calciumtrice_274
       rect:
@@ -4508,6 +5599,12 @@ TextureImporter:
         - {x: 8, y: -17}
         - {x: 8, y: 24}
       tessellationDetail: 0
+      bones: []
+      spriteID: 11f2baf12a2039443b72bcabe5f18561
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: dungeon tileset calciumtrice_306
       rect:
@@ -4534,6 +5631,12 @@ TextureImporter:
         - {x: 8, y: 7}
         - {x: 7, y: 8}
       tessellationDetail: 0
+      bones: []
+      spriteID: 142f52cf719bd804598257b055922856
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: dungeon tileset calciumtrice_307
       rect:
@@ -4560,6 +5663,12 @@ TextureImporter:
         - {x: 8, y: 7}
         - {x: 7, y: 8}
       tessellationDetail: 0
+      bones: []
+      spriteID: 8103bfddab7b14c47a00e9e6cfef23b5
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: dungeon tileset calciumtrice_308
       rect:
@@ -4586,6 +5695,12 @@ TextureImporter:
         - {x: 8, y: 6}
         - {x: 7, y: 7}
       tessellationDetail: 0
+      bones: []
+      spriteID: 8800cc2df2e41fd4ab8aa93465d3af9b
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: dungeon tileset calciumtrice_309
       rect:
@@ -4608,6 +5723,12 @@ TextureImporter:
         - {x: 8, y: -8}
         - {x: 8, y: 8}
       tessellationDetail: 0
+      bones: []
+      spriteID: 51ede5bd377c2824bbfb518c8ee9e447
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: dungeon tileset calciumtrice_310
       rect:
@@ -4638,6 +5759,12 @@ TextureImporter:
         - {x: 7, y: 5}
         - {x: 4, y: 8}
       tessellationDetail: 0
+      bones: []
+      spriteID: 9377d72a6915ec64bb5d31825ac29d7d
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: dungeon tileset calciumtrice_311
       rect:
@@ -4668,6 +5795,12 @@ TextureImporter:
         - {x: 7, y: 5}
         - {x: 4, y: 8}
       tessellationDetail: 0
+      bones: []
+      spriteID: 2dcc6c76d6ff8b5459dfeefc9f134875
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: dungeon tileset calciumtrice_312
       rect:
@@ -4696,6 +5829,12 @@ TextureImporter:
         - {x: 6, y: 2}
         - {x: 5, y: 4}
       tessellationDetail: 0
+      bones: []
+      spriteID: 87bb5d850cf883a46a77b477689acee3
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: dungeon tileset calciumtrice_313
       rect:
@@ -4722,6 +5861,12 @@ TextureImporter:
         - {x: 7, y: -3}
         - {x: 5, y: 6}
       tessellationDetail: 0
+      bones: []
+      spriteID: bf10f382706e16b4cac09091593d5685
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: dungeon tileset calciumtrice_314
       rect:
@@ -4752,6 +5897,12 @@ TextureImporter:
         - {x: 8, y: 3}
         - {x: 7, y: 6}
       tessellationDetail: 0
+      bones: []
+      spriteID: 3143692e5bed6a04790066bd24900743
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: dungeon tileset calciumtrice_315
       rect:
@@ -4780,6 +5931,12 @@ TextureImporter:
         - {x: 4, y: -2}
         - {x: 2, y: 0}
       tessellationDetail: 0
+      bones: []
+      spriteID: f65373ca629e16f48909867944a9631b
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: dungeon tileset calciumtrice_316
       rect:
@@ -4808,6 +5965,12 @@ TextureImporter:
         - {x: 4, y: 3}
         - {x: 0, y: 5}
       tessellationDetail: 0
+      bones: []
+      spriteID: 4653b3e12d5547a40a177e68b5f406c0
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: dungeon tileset calciumtrice_317
       rect:
@@ -4834,6 +5997,12 @@ TextureImporter:
         - {x: 4, y: 4}
         - {x: 1, y: 5}
       tessellationDetail: 0
+      bones: []
+      spriteID: 26c1cb1005ab7964598bc1c0cce1adee
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: dungeon tileset calciumtrice_318
       rect:
@@ -4862,6 +6031,12 @@ TextureImporter:
         - {x: 3, y: 1}
         - {x: 1, y: 6}
       tessellationDetail: 0
+      bones: []
+      spriteID: 3d1ca5fc09a83664f8375cd09da7f7e9
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: dungeon tileset calciumtrice_319
       rect:
@@ -4888,6 +6063,12 @@ TextureImporter:
         - {x: 7, y: 0}
         - {x: -4, y: 5}
       tessellationDetail: 0
+      bones: []
+      spriteID: acdbdf9d2ab870e4e8508dd0243b6618
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: dungeon tileset calciumtrice_320
       rect:
@@ -4912,6 +6093,12 @@ TextureImporter:
         - {x: 1, y: 3}
         - {x: -8, y: 1}
       tessellationDetail: 0
+      bones: []
+      spriteID: 16a5d05363ad4a54b83029411eb77f8b
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: dungeon tileset calciumtrice_321
       rect:
@@ -4920,8 +6107,8 @@ TextureImporter:
         y: 224
         width: 16
         height: 32
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      alignment: 9
+      pivot: {x: 0.5, y: 0.25}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline:
       - - {x: -5, y: 16}
@@ -4936,6 +6123,12 @@ TextureImporter:
         - {x: 8, y: -16}
         - {x: 8, y: 16}
       tessellationDetail: 0
+      bones: []
+      spriteID: cd7a395561619044aac9fd4440c898ce
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: dungeon tileset calciumtrice_322
       rect:
@@ -4944,8 +6137,8 @@ TextureImporter:
         y: 224
         width: 16
         height: 32
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      alignment: 9
+      pivot: {x: 0.5, y: 0.25}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline:
       - - {x: -4, y: 16}
@@ -4960,6 +6153,12 @@ TextureImporter:
         - {x: 8, y: -16}
         - {x: 8, y: 16}
       tessellationDetail: 0
+      bones: []
+      spriteID: 66b4f7c5ece5eff40a79b41f648f86a2
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: dungeon tileset calciumtrice_323
       rect:
@@ -4968,8 +6167,8 @@ TextureImporter:
         y: 224
         width: 16
         height: 32
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      alignment: 9
+      pivot: {x: 0.5, y: 0.25}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline:
       - - {x: -5, y: 14}
@@ -4988,6 +6187,12 @@ TextureImporter:
         - {x: 8, y: 12}
         - {x: 6, y: 14}
       tessellationDetail: 0
+      bones: []
+      spriteID: a86fda1481a038a4f950d0fb7c5eed75
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: dungeon tileset calciumtrice_324
       rect:
@@ -4996,8 +6201,8 @@ TextureImporter:
         y: 224
         width: 16
         height: 32
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      alignment: 9
+      pivot: {x: 0.5, y: 0.25}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline:
       - - {x: -7, y: 4}
@@ -5014,6 +6219,12 @@ TextureImporter:
         - {x: 8, y: 3}
         - {x: 7, y: 4}
       tessellationDetail: 0
+      bones: []
+      spriteID: 3db86ab12564af34f9f0ec8464c4c053
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: dungeon tileset calciumtrice_325
       rect:
@@ -5022,8 +6233,8 @@ TextureImporter:
         y: 224
         width: 32
         height: 32
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      alignment: 9
+      pivot: {x: 0.5, y: 0.25}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline:
       - - {x: -14, y: 16}
@@ -5040,6 +6251,12 @@ TextureImporter:
         - {x: 16, y: 9}
         - {x: 7, y: 16}
       tessellationDetail: 0
+      bones: []
+      spriteID: 52c5af4be4fb61c4a9cd95f573154b54
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: dungeon tileset calciumtrice_327
       rect:
@@ -5048,8 +6265,8 @@ TextureImporter:
         y: 224
         width: 32
         height: 32
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      alignment: 9
+      pivot: {x: 0.5, y: 0.25}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline:
       - - {x: -15, y: 4}
@@ -5066,6 +6283,12 @@ TextureImporter:
         - {x: 16, y: 3}
         - {x: 15, y: 4}
       tessellationDetail: 0
+      bones: []
+      spriteID: 8bcbab5b1d30bf64499338608d69ad4f
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: dungeon tileset calciumtrice_351
       rect:
@@ -5094,6 +6317,12 @@ TextureImporter:
         - {x: 7, y: -5}
         - {x: 5, y: 1}
       tessellationDetail: 0
+      bones: []
+      spriteID: 2a47fe26bf63e9a459034c5861fb3f47
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: dungeon tileset calciumtrice_352
       rect:
@@ -5122,6 +6351,12 @@ TextureImporter:
         - {x: 8, y: 6}
         - {x: 5, y: 7}
       tessellationDetail: 0
+      bones: []
+      spriteID: 4b1d286c1770ef643ac446e5b1c8d2a8
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: dungeon tileset calciumtrice_353
       rect:
@@ -5150,6 +6385,12 @@ TextureImporter:
         - {x: 3, y: -5}
         - {x: 2, y: -3}
       tessellationDetail: 0
+      bones: []
+      spriteID: 024cbbb8de7932946b59d3f7c1713619
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: dungeon tileset calciumtrice_354
       rect:
@@ -5178,6 +6419,12 @@ TextureImporter:
         - {x: 4, y: -5}
         - {x: 1, y: -3}
       tessellationDetail: 0
+      bones: []
+      spriteID: d31136452b9caba4facbe5c9136a4f06
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: dungeon tileset calciumtrice_355
       rect:
@@ -5206,6 +6453,12 @@ TextureImporter:
         - {x: 1, y: -1}
         - {x: 0, y: -1}
       tessellationDetail: 0
+      bones: []
+      spriteID: 22b72840ee0a94d4ca20cdbe0a57c44c
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: dungeon tileset calciumtrice_356
       rect:
@@ -5234,6 +6487,12 @@ TextureImporter:
         - {x: 3, y: -5}
         - {x: 0, y: -3}
       tessellationDetail: 0
+      bones: []
+      spriteID: c84f3bc31eb09dd43801d8ca5a969fb1
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: dungeon tileset calciumtrice_357
       rect:
@@ -5260,6 +6519,12 @@ TextureImporter:
         - {x: 1, y: -2}
         - {x: 0, y: -2}
       tessellationDetail: 0
+      bones: []
+      spriteID: 59948c136aed1e84badcb8f50772273b
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: dungeon tileset calciumtrice_358
       rect:
@@ -5286,6 +6551,12 @@ TextureImporter:
         - {x: 1, y: -4}
         - {x: -3, y: -4}
       tessellationDetail: 0
+      bones: []
+      spriteID: c46603f48b8ba034095bb9e33fff5a36
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: dungeon tileset calciumtrice_359
       rect:
@@ -5316,6 +6587,12 @@ TextureImporter:
         - {x: 5, y: -4}
         - {x: -1, y: -3}
       tessellationDetail: 0
+      bones: []
+      spriteID: 9bbb3e23da8ead742808896438ec0863
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: dungeon tileset calciumtrice_360
       rect:
@@ -5344,6 +6621,12 @@ TextureImporter:
         - {x: 5, y: -4}
         - {x: -3, y: -3}
       tessellationDetail: 0
+      bones: []
+      spriteID: 5c9421f32c518c94fb0a2480c399b6e7
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: dungeon tileset calciumtrice_361
       rect:
@@ -5370,6 +6653,12 @@ TextureImporter:
         - {x: 3, y: -4}
         - {x: -4, y: -4}
       tessellationDetail: 0
+      bones: []
+      spriteID: 5bc1cf39fee9cba4d9fac0f400dc00fe
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: dungeon tileset calciumtrice_362
       rect:
@@ -5396,6 +6685,12 @@ TextureImporter:
         - {x: 8, y: -6}
         - {x: 5, y: 0}
       tessellationDetail: 0
+      bones: []
+      spriteID: c036d7a3c35b236498c283c4331e8aec
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: dungeon tileset calciumtrice_363
       rect:
@@ -5422,6 +6717,12 @@ TextureImporter:
         - {x: 7, y: -5}
         - {x: 7, y: 2}
       tessellationDetail: 0
+      bones: []
+      spriteID: 800d7bc2c896d98459233285fd3cb67a
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: dungeon tileset calciumtrice_364
       rect:
@@ -5448,6 +6749,12 @@ TextureImporter:
         - {x: 7, y: 0}
         - {x: 6, y: 2}
       tessellationDetail: 0
+      bones: []
+      spriteID: ed5886f859013fd48a9843132f2f3c5d
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: dungeon tileset calciumtrice_365
       rect:
@@ -5474,6 +6781,12 @@ TextureImporter:
         - {x: 7, y: 0}
         - {x: 6, y: 2}
       tessellationDetail: 0
+      bones: []
+      spriteID: 8af319ee6a9399241a677906d9123d09
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: dungeon tileset calciumtrice_366
       rect:
@@ -5500,6 +6813,12 @@ TextureImporter:
         - {x: 7, y: 0}
         - {x: 6, y: 2}
       tessellationDetail: 0
+      bones: []
+      spriteID: 10b67e9a0efca4a43a72f1855fae95e8
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: dungeon tileset calciumtrice_367
       rect:
@@ -5526,6 +6845,12 @@ TextureImporter:
         - {x: 7, y: 0}
         - {x: 6, y: 2}
       tessellationDetail: 0
+      bones: []
+      spriteID: 937c13810c4b22b459fbed2b66caa3d1
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: dungeon tileset calciumtrice_368
       rect:
@@ -5552,6 +6877,12 @@ TextureImporter:
         - {x: 7, y: 0}
         - {x: 6, y: 2}
       tessellationDetail: 0
+      bones: []
+      spriteID: 7855be8b886cb8d4bbc4f425afec1409
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: dungeon tileset calciumtrice_369
       rect:
@@ -5578,6 +6909,12 @@ TextureImporter:
         - {x: 3, y: 3}
         - {x: -4, y: 3}
       tessellationDetail: 0
+      bones: []
+      spriteID: f5f2051d77ede464294e13bee69da242
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: dungeon tileset calciumtrice_370
       rect:
@@ -5604,6 +6941,12 @@ TextureImporter:
         - {x: 3, y: 3}
         - {x: -3, y: 3}
       tessellationDetail: 0
+      bones: []
+      spriteID: 599ba79327dd62f41adf63ed689b97eb
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: dungeon tileset calciumtrice_371
       rect:
@@ -5632,6 +6975,12 @@ TextureImporter:
         - {x: 4, y: 4}
         - {x: 0, y: 5}
       tessellationDetail: 0
+      bones: []
+      spriteID: 8d503f616c8f99040b0a3872fa870766
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: dungeon tileset calciumtrice_372
       rect:
@@ -5660,6 +7009,12 @@ TextureImporter:
         - {x: 7, y: -5}
         - {x: 7, y: 0}
       tessellationDetail: 0
+      bones: []
+      spriteID: 21a51165c9c4cd9418dd748fbd30b675
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: dungeon tileset calciumtrice_381
       rect:
@@ -5690,6 +7045,12 @@ TextureImporter:
         - {x: 3, y: -1}
         - {x: 0, y: 2}
       tessellationDetail: 0
+      bones: []
+      spriteID: b6bbb16631ce950499c50f5b8c95f60e
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: dungeon tileset calciumtrice_382
       rect:
@@ -5720,6 +7081,12 @@ TextureImporter:
         - {x: 3, y: -1}
         - {x: 0, y: 2}
       tessellationDetail: 0
+      bones: []
+      spriteID: 7f076c15ad8d8c54ab398fe59b692db4
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: dungeon tileset calciumtrice_383
       rect:
@@ -5750,6 +7117,12 @@ TextureImporter:
         - {x: 3, y: -1}
         - {x: 0, y: 2}
       tessellationDetail: 0
+      bones: []
+      spriteID: 0931bdc14e38165428f71456250db288
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: dungeon tileset calciumtrice_384
       rect:
@@ -5780,6 +7153,12 @@ TextureImporter:
         - {x: 3, y: -1}
         - {x: 0, y: 2}
       tessellationDetail: 0
+      bones: []
+      spriteID: feb72fbc85099024f91f1d40763b98a9
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: dungeon tileset calciumtrice_385
       rect:
@@ -5810,6 +7189,12 @@ TextureImporter:
         - {x: 3, y: -1}
         - {x: 0, y: 2}
       tessellationDetail: 0
+      bones: []
+      spriteID: eec03c6e466774743acd7ff909d1a757
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: dungeon tileset calciumtrice_386
       rect:
@@ -5840,6 +7225,12 @@ TextureImporter:
         - {x: 3, y: -1}
         - {x: 0, y: 2}
       tessellationDetail: 0
+      bones: []
+      spriteID: 38a54f160c2517b48ba819357240187e
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: dungeon tileset calciumtrice_387
       rect:
@@ -5870,6 +7261,12 @@ TextureImporter:
         - {x: 3, y: -1}
         - {x: 0, y: 2}
       tessellationDetail: 0
+      bones: []
+      spriteID: 23603e6f95d087c449e1dfe11f59cb3a
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: dungeon tileset calciumtrice_388
       rect:
@@ -5898,6 +7295,12 @@ TextureImporter:
         - {x: 8, y: 1}
         - {x: 5, y: 2}
       tessellationDetail: 0
+      bones: []
+      spriteID: 00b048a23c422434a93294e6aba38c76
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: dungeon tileset calciumtrice_389
       rect:
@@ -5922,6 +7325,12 @@ TextureImporter:
         - {x: -2, y: -4}
         - {x: -7, y: -5}
       tessellationDetail: 0
+      bones: []
+      spriteID: b0fb336ae900e8c448cac2eca1c037ae
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: dungeon tileset calciumtrice_390
       rect:
@@ -5948,6 +7357,12 @@ TextureImporter:
         - {x: 8, y: -5}
         - {x: 6, y: -3}
       tessellationDetail: 0
+      bones: []
+      spriteID: a7a76ea56c9b54d4bbe905939622189b
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: dungeon tileset calciumtrice_391
       rect:
@@ -5976,6 +7391,12 @@ TextureImporter:
         - {x: 8, y: -4}
         - {x: 7, y: -3}
       tessellationDetail: 0
+      bones: []
+      spriteID: 2e43b7aa359d52346a75bab34a59502b
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: dungeon tileset calciumtrice_392
       rect:
@@ -6000,6 +7421,12 @@ TextureImporter:
         - {x: -5, y: -4}
         - {x: -7, y: -6}
       tessellationDetail: 0
+      bones: []
+      spriteID: 5cc0f373b5124e64d9eee4300e804949
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: dungeon tileset calciumtrice_393
       rect:
@@ -6026,6 +7453,12 @@ TextureImporter:
         - {x: 2, y: -4}
         - {x: -4, y: -4}
       tessellationDetail: 0
+      bones: []
+      spriteID: a7bc963c8a4aad64899dee8af3d9c151
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: dungeon tileset calciumtrice_394
       rect:
@@ -6052,6 +7485,12 @@ TextureImporter:
         - {x: -7, y: -3}
         - {x: -8, y: -5}
       tessellationDetail: 0
+      bones: []
+      spriteID: 14e55ca463e1e494c933183b0989f09a
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: dungeon tileset calciumtrice_395
       rect:
@@ -6076,6 +7515,12 @@ TextureImporter:
         - {x: 1, y: -1}
         - {x: -8, y: -1}
       tessellationDetail: 0
+      bones: []
+      spriteID: 6fdeed1cbff3e8b4ebbe417007c2ffc8
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: dungeon tileset calciumtrice_396
       rect:
@@ -6100,6 +7545,12 @@ TextureImporter:
         - {x: 8, y: -8}
         - {x: 8, y: -1}
       tessellationDetail: 0
+      bones: []
+      spriteID: 5cfeca1343755eb44b881f6d43ed24d6
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: dungeon tileset calciumtrice_397
       rect:
@@ -6136,6 +7587,12 @@ TextureImporter:
         - {x: -1, y: -6}
         - {x: 1, y: -8}
       tessellationDetail: 0
+      bones: []
+      spriteID: 04394b66ac36e4840917ec68327bd92a
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: dungeon tileset calciumtrice_398
       rect:
@@ -6162,6 +7619,12 @@ TextureImporter:
         - {x: 8, y: -4}
         - {x: -5, y: 8}
       tessellationDetail: 0
+      bones: []
+      spriteID: f75ef3dbe9b600846b03bdc0a45eceda
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: dungeon tileset calciumtrice_399
       rect:
@@ -6188,6 +7651,12 @@ TextureImporter:
         - {x: 8, y: -3}
         - {x: 3, y: -1}
       tessellationDetail: 0
+      bones: []
+      spriteID: 74931f7d30376e14695737943a90ef12
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: dungeon tileset calciumtrice_400
       rect:
@@ -6218,6 +7687,12 @@ TextureImporter:
         - {x: 8, y: -3}
         - {x: 1, y: 2}
       tessellationDetail: 0
+      bones: []
+      spriteID: 5e1209cb16944744aa267209d3c57144
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: dungeon tileset calciumtrice_401
       rect:
@@ -6248,6 +7723,12 @@ TextureImporter:
         - {x: 7, y: -3}
         - {x: 5, y: 0}
       tessellationDetail: 0
+      bones: []
+      spriteID: 6fbe97f3e19cb9240b4e37e3a2e18621
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: dungeon tileset calciumtrice_402
       rect:
@@ -6274,6 +7755,12 @@ TextureImporter:
         - {x: 5, y: -4}
         - {x: -2, y: -3}
       tessellationDetail: 0
+      bones: []
+      spriteID: f384d85c53f2eed438888f7e6770922d
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: dungeon tileset calciumtrice_403
       rect:
@@ -6298,6 +7785,12 @@ TextureImporter:
         - {x: 7, y: -8}
         - {x: 7, y: -3}
       tessellationDetail: 0
+      bones: []
+      spriteID: 23822493414fe234b912e165b112599f
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: dungeon tileset calciumtrice_404
       rect:
@@ -6324,6 +7817,12 @@ TextureImporter:
         - {x: 5, y: -5}
         - {x: 1, y: -3}
       tessellationDetail: 0
+      bones: []
+      spriteID: 498c361d9c374214eb6c6f325d84122e
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: dungeon tileset calciumtrice_410
       rect:
@@ -6350,6 +7849,12 @@ TextureImporter:
         - {x: 8, y: 14}
         - {x: 7, y: 16}
       tessellationDetail: 0
+      bones: []
+      spriteID: 3916a61162d38054cb7f89b75d02234f
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: dungeon tileset calciumtrice_411
       rect:
@@ -6374,6 +7879,12 @@ TextureImporter:
         - {x: 8, y: -16}
         - {x: 8, y: 16}
       tessellationDetail: 0
+      bones: []
+      spriteID: 9dd1ecd5c9613104ea36ece06e4d748b
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: dungeon tileset calciumtrice_412
       rect:
@@ -6400,6 +7911,12 @@ TextureImporter:
         - {x: 8, y: 10}
         - {x: 6, y: 16}
       tessellationDetail: 0
+      bones: []
+      spriteID: 13f55d3e23a67ca469467bd4bbdb50bb
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: dungeon tileset calciumtrice_413
       rect:
@@ -6426,6 +7943,12 @@ TextureImporter:
         - {x: 8, y: 12}
         - {x: 7, y: 16}
       tessellationDetail: 0
+      bones: []
+      spriteID: 5f92f63416b3a9844bc257c27eddf397
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: dungeon tileset calciumtrice_414
       rect:
@@ -6450,6 +7973,12 @@ TextureImporter:
         - {x: 8, y: 10}
         - {x: 6, y: 16}
       tessellationDetail: 0
+      bones: []
+      spriteID: df92010bb04b2e045ad6af82d0397547
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: dungeon tileset calciumtrice_415
       rect:
@@ -6476,6 +8005,12 @@ TextureImporter:
         - {x: 8, y: 13}
         - {x: 5, y: 16}
       tessellationDetail: 0
+      bones: []
+      spriteID: e8058837aaa55f54ebfc95b9fb51b48f
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: dungeon tileset calciumtrice_416
       rect:
@@ -6502,6 +8037,12 @@ TextureImporter:
         - {x: 8, y: -15}
         - {x: 8, y: 16}
       tessellationDetail: 0
+      bones: []
+      spriteID: 7dab4a01d1015774e8f876c3f1d73875
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: dungeon tileset calciumtrice_417
       rect:
@@ -6526,6 +8067,12 @@ TextureImporter:
         - {x: 8, y: -16}
         - {x: 8, y: 16}
       tessellationDetail: 0
+      bones: []
+      spriteID: a4f109201b85dac45ad9319004cbe24d
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: dungeon tileset calciumtrice_418
       rect:
@@ -6554,6 +8101,12 @@ TextureImporter:
         - {x: 8, y: 7}
         - {x: 6, y: 16}
       tessellationDetail: 0
+      bones: []
+      spriteID: 9be471530119318448e8c379d6992282
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: dungeon tileset calciumtrice_419
       rect:
@@ -6578,6 +8131,12 @@ TextureImporter:
         - {x: 8, y: -16}
         - {x: 8, y: 16}
       tessellationDetail: 0
+      bones: []
+      spriteID: 06aa51691f97e1c40b3544cfdaa5a62d
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: dungeon tileset calciumtrice_420
       rect:
@@ -6606,6 +8165,12 @@ TextureImporter:
         - {x: 8, y: 10}
         - {x: 4, y: 16}
       tessellationDetail: 0
+      bones: []
+      spriteID: 2446cbabde8a3d7439e2813d86ea680d
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: dungeon tileset calciumtrice_421
       rect:
@@ -6630,6 +8195,12 @@ TextureImporter:
         - {x: 8, y: -16}
         - {x: 8, y: 16}
       tessellationDetail: 0
+      bones: []
+      spriteID: 75057152c94e1c54ea18f9e35d49e3b4
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: dungeon tileset calciumtrice_422
       rect:
@@ -6656,6 +8227,12 @@ TextureImporter:
         - {x: 8, y: 10}
         - {x: 6, y: 16}
       tessellationDetail: 0
+      bones: []
+      spriteID: 8193f1d8466ccc04ebf5b62ad6f70fe8
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: dungeon tileset calciumtrice_423
       rect:
@@ -6682,6 +8259,12 @@ TextureImporter:
         - {x: 8, y: 12}
         - {x: 7, y: 16}
       tessellationDetail: 0
+      bones: []
+      spriteID: f6f82e4bb1248764faa6c83065663ebc
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: dungeon tileset calciumtrice_424
       rect:
@@ -6708,6 +8291,12 @@ TextureImporter:
         - {x: 8, y: 15}
         - {x: 7, y: 16}
       tessellationDetail: 0
+      bones: []
+      spriteID: 1f312b16dca27704a8fcae21e63a759b
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: dungeon tileset calciumtrice_425
       rect:
@@ -6736,6 +8325,12 @@ TextureImporter:
         - {x: 8, y: 14}
         - {x: 7, y: 16}
       tessellationDetail: 0
+      bones: []
+      spriteID: f6766b6eafea98d44acda349e40ca4c0
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: dungeon tileset calciumtrice_426
       rect:
@@ -6762,6 +8357,12 @@ TextureImporter:
         - {x: 8, y: -15}
         - {x: 8, y: 16}
       tessellationDetail: 0
+      bones: []
+      spriteID: 59ea35497e1e35e47a63c98eeaccd840
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: dungeon tileset calciumtrice_427
       rect:
@@ -6786,6 +8387,12 @@ TextureImporter:
         - {x: 8, y: -16}
         - {x: 8, y: 16}
       tessellationDetail: 0
+      bones: []
+      spriteID: 37a40e708a2e1fd4b969fc9d218574f8
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: dungeon tileset calciumtrice_428
       rect:
@@ -6814,6 +8421,12 @@ TextureImporter:
         - {x: 8, y: 7}
         - {x: 6, y: 16}
       tessellationDetail: 0
+      bones: []
+      spriteID: e554f84eb5b66ff49b074a3d524b027a
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: dungeon tileset calciumtrice_429
       rect:
@@ -6838,6 +8451,12 @@ TextureImporter:
         - {x: 8, y: -16}
         - {x: 8, y: 16}
       tessellationDetail: 0
+      bones: []
+      spriteID: bb5d9340669082e45b4979e8432fd09a
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: dungeon tileset calciumtrice_463
       rect:
@@ -6866,6 +8485,12 @@ TextureImporter:
         - {x: 7, y: 1}
         - {x: 6, y: 5}
       tessellationDetail: 0
+      bones: []
+      spriteID: 881b692e989ed4643bfd1535a46ebff6
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: dungeon tileset calciumtrice_464
       rect:
@@ -6894,6 +8519,12 @@ TextureImporter:
         - {x: -7, y: 3}
         - {x: -8, y: 2}
       tessellationDetail: 0
+      bones: []
+      spriteID: 95be9e4fc8a4ec743b6045c8ef564666
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: dungeon tileset calciumtrice_465
       rect:
@@ -6920,6 +8551,12 @@ TextureImporter:
         - {x: 8, y: 2}
         - {x: 8, y: 8}
       tessellationDetail: 0
+      bones: []
+      spriteID: a0f80aa458ac30a489ac3cb9282f13a2
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: dungeon tileset calciumtrice_466
       rect:
@@ -6950,6 +8587,12 @@ TextureImporter:
         - {x: 8, y: 1}
         - {x: 5, y: 4}
       tessellationDetail: 0
+      bones: []
+      spriteID: 9ba016531565d304d9a5d883c6553879
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: dungeon tileset calciumtrice_467
       rect:
@@ -6980,6 +8623,12 @@ TextureImporter:
         - {x: 8, y: 1}
         - {x: 5, y: 4}
       tessellationDetail: 0
+      bones: []
+      spriteID: d678c9a3e122e364499bac6f741cc7c2
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: dungeon tileset calciumtrice_468
       rect:
@@ -7010,6 +8659,12 @@ TextureImporter:
         - {x: 8, y: 1}
         - {x: 5, y: 4}
       tessellationDetail: 0
+      bones: []
+      spriteID: 55cd0e249d325ab478ce08456419a567
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: dungeon tileset calciumtrice_469
       rect:
@@ -7040,6 +8695,12 @@ TextureImporter:
         - {x: 8, y: 1}
         - {x: 5, y: 4}
       tessellationDetail: 0
+      bones: []
+      spriteID: 941586aca90405544b179a36c512f246
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: dungeon tileset calciumtrice_470
       rect:
@@ -7068,6 +8729,12 @@ TextureImporter:
         - {x: 8, y: 4}
         - {x: 7, y: 8}
       tessellationDetail: 0
+      bones: []
+      spriteID: a91657fd3ff5d2146b20b8941a3dabc6
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: dungeon tileset calciumtrice_471
       rect:
@@ -7096,6 +8763,12 @@ TextureImporter:
         - {x: 8, y: 4}
         - {x: 6, y: 8}
       tessellationDetail: 0
+      bones: []
+      spriteID: ae7fe723ba7eb33499a26b7008778599
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: dungeon tileset calciumtrice_472
       rect:
@@ -7126,6 +8799,12 @@ TextureImporter:
         - {x: 8, y: 4}
         - {x: 7, y: 8}
       tessellationDetail: 0
+      bones: []
+      spriteID: 00f8d783ea0c7034ba782e242c555ee8
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: dungeon tileset calciumtrice_473
       rect:
@@ -7152,6 +8831,12 @@ TextureImporter:
         - {x: 8, y: 4}
         - {x: 6, y: 8}
       tessellationDetail: 0
+      bones: []
+      spriteID: 4a424dc684d90d7458d492be27990c8e
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: dungeon tileset calciumtrice_474
       rect:
@@ -7180,6 +8865,12 @@ TextureImporter:
         - {x: 8, y: 9}
         - {x: 5, y: 16}
       tessellationDetail: 0
+      bones: []
+      spriteID: f85959a7eee8d5e41bc49ae24bfd8e16
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: dungeon tileset calciumtrice_475
       rect:
@@ -7204,6 +8895,12 @@ TextureImporter:
         - {x: 8, y: -16}
         - {x: 8, y: 16}
       tessellationDetail: 0
+      bones: []
+      spriteID: 7402a6bae335ea8488e4cc0320ecfeb3
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: dungeon tileset calciumtrice_476
       rect:
@@ -7230,6 +8927,12 @@ TextureImporter:
         - {x: 8, y: 15}
         - {x: 5, y: 16}
       tessellationDetail: 0
+      bones: []
+      spriteID: c63c70c5680fea4469dca2a1f6f1a782
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: dungeon tileset calciumtrice_477
       rect:
@@ -7254,6 +8957,12 @@ TextureImporter:
         - {x: 8, y: 10}
         - {x: 5, y: 16}
       tessellationDetail: 0
+      bones: []
+      spriteID: e2eca7716d95d78469e325e73c6cb64e
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: dungeon tileset calciumtrice_478
       rect:
@@ -7280,6 +8989,12 @@ TextureImporter:
         - {x: 8, y: 15}
         - {x: 5, y: 16}
       tessellationDetail: 0
+      bones: []
+      spriteID: e93773432d49fa54a80a2fd4b5c9b89e
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: dungeon tileset calciumtrice_479
       rect:
@@ -7310,6 +9025,12 @@ TextureImporter:
         - {x: 16, y: 8}
         - {x: 14, y: 16}
       tessellationDetail: 0
+      bones: []
+      spriteID: c49b578d11b1a8f43a2ecfc2ba31940b
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: dungeon tileset calciumtrice_481
       rect:
@@ -7336,6 +9057,12 @@ TextureImporter:
         - {x: 16, y: 8}
         - {x: 14, y: 16}
       tessellationDetail: 0
+      bones: []
+      spriteID: 482251e400fb3294a919f36c9a1df413
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: dungeon tileset calciumtrice_483
       rect:
@@ -7358,6 +9085,12 @@ TextureImporter:
         - {x: -2, y: 8}
         - {x: 0, y: 5}
       tessellationDetail: 0
+      bones: []
+      spriteID: 9bf6bc8847ee8e746be44f2042038d2f
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: dungeon tileset calciumtrice_508
       rect:
@@ -7380,6 +9113,12 @@ TextureImporter:
         - {x: 8, y: -5}
         - {x: 8, y: 3}
       tessellationDetail: 0
+      bones: []
+      spriteID: eb5381f0ed5b8ae49857026b157f6613
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: dungeon tileset calciumtrice_509
       rect:
@@ -7402,6 +9141,12 @@ TextureImporter:
         - {x: 8, y: -8}
         - {x: 8, y: 8}
       tessellationDetail: 0
+      bones: []
+      spriteID: fcd89b6b4bc27224eb14f069f7b93999
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: dungeon tileset calciumtrice_510
       rect:
@@ -7430,6 +9175,12 @@ TextureImporter:
         - {x: 16, y: 3}
         - {x: 14, y: 5}
       tessellationDetail: 0
+      bones: []
+      spriteID: 7e353b0ffb961c64784a4f275fc4fb04
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: dungeon tileset calciumtrice_512
       rect:
@@ -7453,6 +9204,12 @@ TextureImporter:
         - {x: 16, y: -8}
         - {x: 16, y: 8}
       tessellationDetail: 0
+      bones: []
+      spriteID: 402e460e1c773404eb9f4822cda5b98b
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: dungeon tileset calciumtrice_514
       rect:
@@ -7481,6 +9238,12 @@ TextureImporter:
         - {x: 8, y: 4}
         - {x: 2, y: 7}
       tessellationDetail: 0
+      bones: []
+      spriteID: fb680b7e6435b79408512346e4f39591
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: dungeon tileset calciumtrice_515
       rect:
@@ -7515,6 +9278,12 @@ TextureImporter:
         - {x: -1, y: 8}
         - {x: -3, y: 6}
       tessellationDetail: 0
+      bones: []
+      spriteID: 3fa0a1903d358af489f7a294e981fdd2
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: dungeon tileset calciumtrice_516
       rect:
@@ -7541,8 +9310,20 @@ TextureImporter:
         - {x: 8, y: 6}
         - {x: 7, y: 7}
       tessellationDetail: 0
+      bones: []
+      spriteID: ffd2b607f556d7d4eab44fccb2a5b3f7
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     outline: []
     physicsShape: []
+    bones: []
+    spriteID: 65ec59718bed01346b8eb58981bd8c11
+    vertices: []
+    indices: 
+    edges: []
+    weights: []
   spritePackingTag: 
   userData: 
   assetBundleName: 

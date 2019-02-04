@@ -9,8 +9,9 @@ public class GameManager : MonoBehaviour {
     public LevelManager lvlManager;
     private Room actualRoom = null;
     public Vector2Int actualPos;
-    public bool gamePause = false, inventoryActive = false, inventoryMenuActive = false, pauseMenuActive = false;
+    public bool gamePause = false, inventoryActive = false, inventoryMenuActive = false, pauseMenuActive = false, signboardActive = false;
     public bool dead = false, isDying = false;
+	public bool signboardContact = false;
 
 
 	private void Awake()
@@ -28,6 +29,7 @@ public class GameManager : MonoBehaviour {
 		lvlManager.DrawMap();
 		actualPos = lvlManager.ActualPos;
 		ActualRoom = lvlManager.InstantiatePlayer();
+		GetComponent<MiniMapController>().enabled = false;
 	}
 
     //Carica il nuovo livello

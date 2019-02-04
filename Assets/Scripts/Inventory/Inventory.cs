@@ -39,7 +39,7 @@ public class Inventory : MonoBehaviour {
 
 
 
-private void Awake()
+	private void Awake()
     {
         if (instance == null)
         {
@@ -85,8 +85,8 @@ private void Awake()
     {
 		if (!GameManager.manager.isDying)
 		{
-			//prevengo che sia possibile aprire l'inventario se il menu di pausa è attivo
-			if (!GameManager.manager.pauseMenuActive)
+			//impedisco di aprire l'inventario se il menu di pausa è attivo o se il player sta leggendo un cartello
+			if (!GameManager.manager.pauseMenuActive && !GameManager.manager.signboardActive)
 			{
 				if (Input.GetKeyDown(KeyCode.Tab))
 				{

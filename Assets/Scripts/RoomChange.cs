@@ -9,13 +9,12 @@ public class RoomChange : MonoBehaviour {
     private TileSpriteSelector selector;
     private MiniMapController minimap;
     private int roomSizeX, roomSizeY;
-    private static System.Random rnd = new System.Random((int)DateTime.Now.Ticks);
 
 
     public bool passUp = false, passDown = false, passLeft = false, passRight = false;
 
     public bool chRoom = false;
-    //public bool hasKey = false;
+    //public bool hasKey = false; //DA RISETTARE A FALSE ----------------------------------
     public bool hasKey = true;
 
     public float fadeTime = 0.3f;
@@ -31,20 +30,26 @@ public class RoomChange : MonoBehaviour {
         roomSizeX = GameManager.manager.lvlManager.roomSizeX;
         roomSizeY = GameManager.manager.lvlManager.roomSizeY;
         source = GetComponent<AudioSource>();
-    }
+	}
 
     void Update ()
     {
+		//se non è in atto un cambio di stanza
         if (!chRoom)
         {
+			//se i trigger del corridoio sono entrambi attivi
             if (passUp && passDown)
             {
+				//se mi trovo più in basso della stanza attuale
                 if (transform.localPosition.y < actualRoom.gridPos.y)
                 {
+					//allora sono nel corridoio di giù e sto andando nella stanza sottostante
                     StartCoroutine(UpdateRoom('d'));
                 }
+				//se invece sono più in alto del limite superiore della stanza attuale
                 else if (transform.position.y > (actualRoom.gridPos.y + GameManager.manager.lvlManager.roomSizeY))
                 {
+					//allora sono nel corridoio di sù e sto andando alla stanza superiore
                     StartCoroutine(UpdateRoom('u'));
                 }
             }
@@ -60,41 +65,49 @@ public class RoomChange : MonoBehaviour {
                 }
             }
 
-            //se il player è effettivamente dentro la stanza
+            //se il player è effettivamente dentro i confini della stanza (non nei corridoi)
             if (transform.position.x > actualRoom.gridPos.x && transform.position.x < (actualRoom.gridPos.x + roomSizeX)
                 && transform.position.y > actualRoom.gridPos.y && transform.position.y < (actualRoom.gridPos.y + roomSizeY))
             {
+				//se non sono nella boss room
                 if (!actualRoom.bossRoom)
                 {
-                    //se ci sono nemici nella stanza attuale e le porte non sono chiuse allora sigillo la stanza
+                    //se ci sono nemici da uccidere nella stanza attuale
                     if (actualRoom.enemyWaves > 0)
                     {
+						//se le porte ancora non sono chiuse le sigillo
                         if (!actualRoom.locked)
                         {
                             LockRoom(actualRoom);
                             source.PlayOneShot(doorLocked);
                         }
+						//istanzio infine i nemici da uccidere
                         GameManager.manager.lvlManager.InstantiateEnemies(GameManager.manager.actualPos.x, GameManager.manager.actualPos.y);
                     }
                 }
+				//se invece sono nella boss room
                 else
                 {
+					//se ci sono ancora nemici da uccidere
                     if (actualRoom.enemyWaves > 0 && actualRoom.enemyNumber == 0)
                     {
+						//se le porte non sono chiuse le sigillo
                         if (!actualRoom.locked)
                         {
                             LockRoom(actualRoom);
                             source.PlayOneShot(doorLocked);
                         }
+						//istanzio i nemici
                         GameManager.manager.lvlManager.InstantiateEnemies(GameManager.manager.actualPos.x, GameManager.manager.actualPos.y);
                     }
+					//se invece non ci sono più nemici da uccidere mostro il passaggio per il prossimo livello
                     else if (actualRoom.enemyWaves == 0 && actualRoom.enemyNumber == 0)
                     {
                         GameManager.manager.lvlManager.ShowExit();
                     }
                 }
             }
-            //se non ci sono più nemici sblocco le porte della stanza
+            //se infine non ci sono più nemici sblocco le porte della stanza
             if (actualRoom.enemyNumber == 0 && actualRoom.enemyWaves == 0 && actualRoom.locked)
             {
                 source.PlayOneShot(doorUnlocked);
@@ -162,7 +175,6 @@ public class RoomChange : MonoBehaviour {
         yield return null;
     }
 
-
     private void OnCollisionEnter2D(Collision2D other)
     {
         //Se l'oggetto con cui il player ha sbattuto è l'uscita
@@ -176,45 +188,63 @@ public class RoomChange : MonoBehaviour {
         //se non è in atto un cambio di stanza e la stanza non è sigillata
         if (!chRoom && !actualRoom.locked)
         {
+			//se l'oggetto toccato è la porta superiore
             if (other.gameObject.tag == "DoorUp")
             {
+				//se sono già entrato nella stanza
                 if (actualRoom.visited)
                 {
+					//se la porta è della boss room
                     if (GameManager.manager.GetAdiacentRoom('u').bossRoom)
                     {
+						//se sono in possesso della chiave
                         if (hasKey)
                         {
+							//se la porta non è ancora aperta
                             if (!actualRoom.openUp)
                             {
                                 source.PlayOneShot(doorUnlocked);
+								//apro la porta
                                 SetRoomDoor('u', other.gameObject);
+								//prendo il riferimento alla stanza sopra
                                 adiacentRoom = GameManager.manager.GetAdiacentRoom('u');
+								//illumino il passaggio sopra
                                 GameManager.manager.lvlManager.LightUpPassage(adiacentRoom.doorSpriteDown, actualRoom.passageUpTiles, true);
                             }
                             
                         }
+						//se invece non ho la chiave non posso aprire la porta
                         else if (!actualRoom.openUp)
                         {
                             source.PlayOneShot(cantOpen);
                         }
                     }
+					//se la stanza adiacente non è quella del boss
                     else
                     {
-                        if (!actualRoom.openUp)
+						//se la porta non è ancora aperta
+						if (!actualRoom.openUp)
                         {
                             source.PlayOneShot(doorOpen);
+							//apro la porta
                             SetRoomDoor('u', other.gameObject);
-                            adiacentRoom = GameManager.manager.GetAdiacentRoom('u');
-                            GameManager.manager.lvlManager.LightUpPassage(adiacentRoom.doorSpriteDown, actualRoom.passageUpTiles, true);
+							//prendo il riferimento alla stanza sopra
+							adiacentRoom = GameManager.manager.GetAdiacentRoom('u');
+							//illumino il passaggio sopra
+							GameManager.manager.lvlManager.LightUpPassage(adiacentRoom.doorSpriteDown, actualRoom.passageUpTiles, true);
                         }
                     }
                 }
+				//altrimenti se ancora non sono entrato (ad esempio sono nel corridoio di su e sto scendendo)
                 else
                 {
+					//se la porta non è aperta
                     if (!actualRoom.openUp)
                     {
                         source.PlayOneShot(doorOpen);
+						//apro la porta
                         SetRoomDoor('u', other.gameObject);
+						//illumino la stanza attuale e la imposto come visitata
                         GameManager.manager.lvlManager.LightUpRoom(actualRoom, true);
                     }
                 }
@@ -356,155 +386,6 @@ public class RoomChange : MonoBehaviour {
         }
         
     }
-
-    //private void OnCollisionStay2D(Collision2D other)
-    //{
-    //    //se non è in atto un cambio di stanza e la stanza non è sigillata
-    //    if (!chRoom && !actualRoom.locked)
-    //    {
-    //        if (other.gameObject.tag == "DoorUp")
-    //        {
-    //            if (actualRoom.visited)
-    //            {
-    //                if (GameManager.manager.GetAdiacentRoom('u').bossRoom)
-    //                {
-    //                    if (hasKey)
-    //                    {
-    //                        if (!actualRoom.openUp)
-    //                        {
-    //                            SetRoomDoor('u', other.gameObject);
-    //                            adiacentRoom = GameManager.manager.GetAdiacentRoom('u');
-    //                            GameManager.manager.lvlManager.LightUpPassage(adiacentRoom.doorSpriteDown, actualRoom.passageUpTiles, true);
-    //                        }
-    //                    }
-    //                }
-    //                else
-    //                {
-    //                    if (!actualRoom.openUp)
-    //                    {
-    //                        SetRoomDoor('u', other.gameObject);
-    //                        adiacentRoom = GameManager.manager.GetAdiacentRoom('u');
-    //                        GameManager.manager.lvlManager.LightUpPassage(adiacentRoom.doorSpriteDown, actualRoom.passageUpTiles, true);
-    //                    }
-    //                }
-    //            }
-    //            else
-    //            {
-    //                if (!actualRoom.openUp)
-    //                {
-    //                    SetRoomDoor('u', other.gameObject);
-    //                    GameManager.manager.lvlManager.LightUpRoom(actualRoom, true);
-    //                }
-    //            }
-    //        }
-    //        else if (other.gameObject.tag == "DoorDown")
-    //        {
-    //            if (actualRoom.visited)
-    //            {
-    //                if (GameManager.manager.GetAdiacentRoom('d').bossRoom)
-    //                {
-    //                    if (hasKey)
-    //                    {
-    //                        if (!actualRoom.openDown)
-    //                        {
-    //                            SetRoomDoor('d', other.gameObject);
-    //                            adiacentRoom = GameManager.manager.GetAdiacentRoom('d');
-    //                            GameManager.manager.lvlManager.LightUpPassage(adiacentRoom.doorSpriteUp, actualRoom.passageDownTiles, true);
-    //                        }
-    //                    }
-    //                }
-    //                else
-    //                {
-    //                    if (!actualRoom.openDown)
-    //                    {
-    //                        SetRoomDoor('d', other.gameObject);
-    //                        adiacentRoom = GameManager.manager.GetAdiacentRoom('d');
-    //                        GameManager.manager.lvlManager.LightUpPassage(adiacentRoom.doorSpriteUp, actualRoom.passageDownTiles, true);
-    //                    }
-    //                }
-    //            }
-    //            else
-    //            {
-    //                if (!actualRoom.openDown)
-    //                {
-    //                    SetRoomDoor('d', other.gameObject);
-    //                    GameManager.manager.lvlManager.LightUpRoom(actualRoom, true);
-    //                }
-    //            }
-    //        }
-    //        else if (other.gameObject.tag == "DoorLeft")
-    //        {
-    //            if (actualRoom.visited)
-    //            {
-    //                if (GameManager.manager.GetAdiacentRoom('l').bossRoom)
-    //                {
-    //                    if (hasKey)
-    //                    {
-    //                        if (!actualRoom.openLeft)
-    //                        {
-    //                            SetRoomDoor('l', other.gameObject);
-    //                            adiacentRoom = GameManager.manager.GetAdiacentRoom('l');
-    //                            GameManager.manager.lvlManager.LightUpPassage(adiacentRoom.doorSpriteRight, actualRoom.passageLeftTiles, true);
-    //                        }
-    //                    }
-    //                }
-    //                else
-    //                {
-    //                    if (!actualRoom.openLeft)
-    //                    {
-    //                        SetRoomDoor('l', other.gameObject);
-    //                        adiacentRoom = GameManager.manager.GetAdiacentRoom('l');
-    //                        GameManager.manager.lvlManager.LightUpPassage(adiacentRoom.doorSpriteRight, actualRoom.passageLeftTiles, true);
-    //                    }
-    //                }
-    //            }
-    //            else
-    //            {
-    //                if (!actualRoom.openLeft)
-    //                {
-    //                    SetRoomDoor('l', other.gameObject);
-    //                    GameManager.manager.lvlManager.LightUpRoom(actualRoom, true);
-    //                }
-    //            }
-    //        }
-    //        else if (other.gameObject.tag == "DoorRight")
-    //        {
-    //            if (actualRoom.visited)
-    //            {
-    //                if (GameManager.manager.GetAdiacentRoom('r').bossRoom)
-    //                {
-    //                    if (hasKey)
-    //                    {
-    //                        if (!actualRoom.openRight)
-    //                        {
-    //                            SetRoomDoor('r', other.gameObject);
-    //                            adiacentRoom = GameManager.manager.GetAdiacentRoom('r');
-    //                            GameManager.manager.lvlManager.LightUpPassage(adiacentRoom.doorSpriteLeft, actualRoom.passageRightTiles, true);
-    //                        }
-    //                    }
-    //                }
-    //                else
-    //                {
-    //                    if (!actualRoom.openRight)
-    //                    {
-    //                        SetRoomDoor('r', other.gameObject);
-    //                        adiacentRoom = GameManager.manager.GetAdiacentRoom('r');
-    //                        GameManager.manager.lvlManager.LightUpPassage(adiacentRoom.doorSpriteLeft, actualRoom.passageRightTiles, true);
-    //                    }
-    //                }
-    //            }
-    //            else
-    //            {
-    //                if (!actualRoom.openRight)
-    //                {
-    //                    SetRoomDoor('r', other.gameObject);
-    //                    GameManager.manager.lvlManager.LightUpRoom(actualRoom, true);
-    //                }
-    //            }
-    //        }
-            
-    //    }
-    //}
 
     //controlla quale porta è stata aperta per entrare nella stanza e la richiude,
     //sigillando poi tutte le stanze finché restano nemici vivi nella stanza

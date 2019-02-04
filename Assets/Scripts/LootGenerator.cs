@@ -11,7 +11,6 @@ public class LootGenerator : MonoBehaviour {
     private Array enumValues;
     public List<Item> consumablesSO;
     public List<ItemStats> consumables;
-    private List<ItemStats> items = new List<ItemStats>();
     public GameObject sceneItemPrefab;
     private SceneItem si;
     private ItemSpriteSelector select;
@@ -19,7 +18,7 @@ public class LootGenerator : MonoBehaviour {
     private ItemStats actualItem;
     public Room actualRoom;
     private PlayerHealth ph;
-    public GameObject pricePrefab;
+    public GameObject pricePrefab, altarPrefab, writingsPrefab;
     private bool keyGen = false;
 
     private int roomsWithEnemies = 0;
@@ -69,36 +68,25 @@ public class LootGenerator : MonoBehaviour {
 
     void Update()
     {
-
-        if (Input.GetKeyDown(KeyCode.Alpha2))
-        {
-            if (consumables.Count > 0)
-            {
-                actualItem = consumables[0];
-                Debug.Log(actualItem.consumableType.ToString());
-                
-                ApplyEffect(actualItem.consumableType);
-                consumables.Remove(consumables[0]);
-            }
-            
-        }
         //se la stanza è lo shop
         if (actualRoom.shopRoom && !actualRoom.hasGenReward)
         {
-            //e se il player è effettivamente dentro la stanza allora genero una ricompensa
+            //e se il player è effettivamente dentro la stanza allora genero gli oggetti da acquistare
             if (transform.position.x > actualRoom.gridPos.x && transform.position.x < (actualRoom.gridPos.x + GameManager.manager.lvlManager.roomSizeX)
                 && transform.position.y > actualRoom.gridPos.y && transform.position.y < (actualRoom.gridPos.y + GameManager.manager.lvlManager.roomSizeY))
             {
                 int i = 0;
+				//per ogni posizione relativa agli oggetti spawno armi in una riga e consumables nelle altre
                 foreach (Vector2 pos in actualRoom.freePositions)
                 {
                     if (i < 3)
-                        InstantiateWeapon(pos, true);
+                        InstantiateWeapon(pos);
                     else
-                        InstantiateConsumable(pos, true);
+                        InstantiateConsumable(pos);
                     i++;
                 }
                 i = 0;
+				//impedisco che vengano generati altri oggetti
                 actualRoom.hasGenReward = true;
             }
             
@@ -107,46 +95,104 @@ public class LootGenerator : MonoBehaviour {
         //se la stanza non ha nemici e la ricompensa non è ancora stata generata
         else if (!actualRoom.startRoom && !actualRoom.hasGenReward && actualRoom.enemyNumber == 0 && actualRoom.enemyWaves == 0)
         {
-            //e se il player è effettivamente dentro la stanza allora genero una ricompensa
+            //e se il player è effettivamente dentro la stanza
             if (transform.position.x > actualRoom.gridPos.x && transform.position.x < (actualRoom.gridPos.x + GameManager.manager.lvlManager.roomSizeX)
                 && transform.position.y > actualRoom.gridPos.y && transform.position.y < (actualRoom.gridPos.y + GameManager.manager.lvlManager.roomSizeY))
             {
+				//se la chiave ancora non è stata generata
                 if (!keyGen)
                 {
+					//imposto una probabilità di spawn per la chiave che aumenta con le stanze ripulite dai nemici
                     float keyProb = (float) 1 / roomsWithEnemies * 100;
                     int randomValue = rnd.Next(100);
+					//se il valore casuale rientra nel range precedentemente calcolato spawno la chiave
                     if (randomValue <= (int)keyProb)
                     {
                         InstantiateKey(actualRoom.freePositions[rnd.Next(actualRoom.freePositions.Count)]);
                         keyGen = true;
                     }
+					//altrimenti decremento il counter delle stanze con nemici
                     else
                     {
                         roomsWithEnemies--;
                     }
                 }
-                //ho il 50% di ottenere o no una ricompensa
-                if (rnd.Next(100) >= 0)
-                {
-                    int seed = rnd.Next(100);
-                    if (seed < 100)
-                        InstantiateWeapon(actualRoom.freePositions[rnd.Next(actualRoom.freePositions.Count)], false);
-                    else
-                        InstantiateConsumable(actualRoom.freePositions[rnd.Next(actualRoom.freePositions.Count)], false);
-                }
-                actualRoom.hasGenReward = true;
-            }   
+				//-------------------------------------------------------------------------------
+
+
+				if (actualRoom.bossRoom)
+				{
+					//CONTROLLARE CHE NELLA POSIZIONE NON CI SIA IL PLAYER
+					GameObject altar = Instantiate(altarPrefab, new Vector2(actualRoom.gridPos.x + GameManager.manager.lvlManager.roomSizeX / 2, actualRoom.gridPos.y + GameManager.manager.lvlManager.roomSizeY / 2), Quaternion.identity) as GameObject;
+
+					render = altar.GetComponent<SpriteRenderer>();
+					
+					StartCoroutine(GameManager.manager.lvlManager.FadeIn(render, 0.3f));
+
+					actualRoom.toSort.Add(altar);
+					if (GameStats.stats.levelNumber < 5)
+					{
+						Vector2 pos = actualRoom.freePositions[0];
+						pos = new Vector2(pos.x, pos.y + 0.4f);
+						InstantiateWeapon(pos);
+					}
+					else
+					{
+						Vector2 pos = actualRoom.freePositions[0];
+						pos = new Vector2(pos.x, pos.y + 0.6f);
+						GameObject writings = Instantiate(writingsPrefab, pos, Quaternion.identity) as GameObject;
+						Color c = Color.red;
+						c.a = 0;
+						writings.GetComponent<SpriteRenderer>().color = c;
+
+						StartCoroutine(GameManager.manager.lvlManager.FadeIn(writings.GetComponent<SpriteRenderer>(), 0.3f));
+					}
+				}
+				else
+				{
+					//ho il 50% di ottenere o no una ricompensa
+					if (rnd.Next(100) >= 0)
+					{
+						//se sono nel 50% di probabilità di spawn della ricompensa, imposto una probabilità per decidere che ricompensa spawnare
+						int seed = rnd.Next(100);
+						if (seed < 100)
+							InstantiateWeapon(actualRoom.freePositions[rnd.Next(actualRoom.freePositions.Count)]);
+						else
+							InstantiateConsumable(actualRoom.freePositions[rnd.Next(actualRoom.freePositions.Count)]);
+					}
+				}
+				
+				//impedisco che vengano generate altre ricompense per la stanza attuale
+				actualRoom.hasGenReward = true;
+
+
+
+				//-------------------------------------------------------------------------------------
+
+				//            //ho il 50% di ottenere o no una ricompensa
+				//            if (rnd.Next(100) >= 0)
+				//            {
+				//	//se sono nel 50% di probabilità di spawn della ricompensa, imposto una probabilità per decidere che ricompensa spawnare
+				//                int seed = rnd.Next(100);
+				//                if (seed < 100)
+				//                    InstantiateWeapon(actualRoom.freePositions[rnd.Next(actualRoom.freePositions.Count)], false);
+				//                else
+				//                    InstantiateConsumable(actualRoom.freePositions[rnd.Next(actualRoom.freePositions.Count)], false);
+				//            }
+				////impedisco che vengano generate altre ricompense per la stanza attuale
+				//            actualRoom.hasGenReward = true;
+			}   
         }
     }
 
-    public void InstantiateConsumable(Vector3 pos, bool isShop)
+    public void InstantiateConsumable(Vector3 pos)
     {
         GameObject cons = Instantiate(sceneItemPrefab, pos, Quaternion.identity) as GameObject;
         si = cons.GetComponent<SceneItem>();
         si.Info = consumables[rnd.Next(consumables.Count)];
         render = cons.GetComponent<SpriteRenderer>();
         render.sprite = si.Info.sprite;
-        if (isShop)
+        if (actualRoom.shopRoom)
         {
             GameObject price = Instantiate(pricePrefab, cons.transform) as GameObject;
             si.Info.toBuy = true;
@@ -163,13 +209,13 @@ public class LootGenerator : MonoBehaviour {
         StartCoroutine(GameManager.manager.lvlManager.FadeIn(render, 0.3f));
     }
 
-    public void InstantiateWeapon(Vector3 pos, bool isShop)
+    public void InstantiateWeapon(Vector3 pos)
     {
         GameObject weapon = Instantiate(sceneItemPrefab, pos, Quaternion.identity) as GameObject;
         si = weapon.GetComponent<SceneItem>();
         render = weapon.GetComponent<SpriteRenderer>();
         SetWeaponStats(si);
-        if (isShop)
+        if (actualRoom.shopRoom)
         {
             GameObject price = Instantiate(pricePrefab, weapon.transform) as GameObject;
             si.Info.toBuy = true;
@@ -177,6 +223,10 @@ public class LootGenerator : MonoBehaviour {
             price.GetComponentInChildren<Text>().text = si.Info.price.ToString();
             price.transform.SetParent(weapon.transform, false);
         }
+		else if (actualRoom.bossRoom)
+		{
+			render.sortingLayerName = "HUD";
+		}
 
         //imposto i consumable come trasparenti, per poi fare un effetto di fade-in quando verranno attivati 
         Color color = render.color;
