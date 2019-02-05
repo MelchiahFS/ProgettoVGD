@@ -43,7 +43,7 @@ public class PlayerController : Character
 			Vector2 movement = new Vector2(x, y);
 
 			//se il player attacca o sta morendo non può muoversi
-			if (!weapon.isAttacking && !GameManager.manager.isDying)
+			if (!weapon.isAttacking && !GameManager.manager.isDying && !GameManager.manager.ending)
 				rb2d.velocity = movement * speed;
 			else
 				rb2d.velocity = movement * 0;

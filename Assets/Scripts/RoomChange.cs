@@ -103,7 +103,8 @@ public class RoomChange : MonoBehaviour {
 					//se invece non ci sono più nemici da uccidere mostro il passaggio per il prossimo livello
                     else if (actualRoom.enemyWaves == 0 && actualRoom.enemyNumber == 0)
                     {
-                        GameManager.manager.lvlManager.ShowExit();
+						if (GameStats.stats.levelNumber < 5)
+							GameManager.manager.lvlManager.ShowExit();
                     }
                 }
             }
@@ -180,9 +181,9 @@ public class RoomChange : MonoBehaviour {
         //Se l'oggetto con cui il player ha sbattuto è l'uscita
         if (other.gameObject.tag == "Exit")
         {
-            //Invoco la funzione restart con delay di due secondi
-            GameManager.manager.Invoke("NewLevel", 2);  //---------------------------------------------------------------
-        }
+			GameStats.stats.levelNumber++;
+			StartCoroutine(GameManager.manager.lvlManager.FadeOffToNewScene(1f, "LoadingScreen"));
+		}
 
         
         //se non è in atto un cambio di stanza e la stanza non è sigillata

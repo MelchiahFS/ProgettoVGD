@@ -10,7 +10,7 @@ public class GameManager : MonoBehaviour {
     private Room actualRoom = null;
     public Vector2Int actualPos;
     public bool gamePause = false, inventoryActive = false, inventoryMenuActive = false, pauseMenuActive = false, signboardActive = false;
-    public bool dead = false, isDying = false;
+    public bool dead = false, isDying = false, ending = false;
 	public bool signboardContact = false;
 
 
@@ -36,8 +36,7 @@ public class GameManager : MonoBehaviour {
     private void NewLevel()
     {
 		//Carica la schermata di caricamento
-		GameStats.stats.levelNumber++;
-		SceneManager.LoadScene("LoadingScreen", LoadSceneMode.Single);
+		StartCoroutine(GameManager.manager.lvlManager.FadeOffToNewScene(1f, "LoadingScreen"));
 	}
 
     private void ReturnToMenu()

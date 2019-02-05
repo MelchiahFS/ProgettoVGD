@@ -26,8 +26,82 @@ public class LootGenerator : MonoBehaviour {
     void Start()
     {
         roomsWithEnemies = GameManager.manager.lvlManager.roomNumber - 3; //tolgo la stanza iniziale, lo shop e la stanza del boss
-        maxMeeleDmg = 100;
 
+		if (GameStats.stats.levelNumber == 1)
+		{
+			minMeeleDmg = 10;
+			maxMeeleDmg = 25;
+			minRangedDmg = 10;
+			maxRangedDmg = 25;
+			minRng = 20;
+			maxRng = 30;
+			minFR = 0.8f;
+			maxFR = 1.5f;
+			minSP = 5;
+			maxSP = 10;
+
+		}
+		else
+		{
+			if (GameStats.stats.levelNumber == 2)
+			{
+				minMeeleDmg = 15;
+				maxMeeleDmg = 35;
+				minRangedDmg = 15;
+				maxRangedDmg = 30;
+				minRng = 30;
+				maxRng = 40;
+				minFR = 0.6f;
+				maxFR = 1.3f;
+				minSP = 10;
+				maxSP = 18;
+			}
+			else
+			{
+				if (GameStats.stats.levelNumber == 3)
+				{
+					minMeeleDmg = 20;
+					maxMeeleDmg = 45;
+					minRangedDmg = 20;
+					maxRangedDmg = 37;
+					minRng = 50;
+					maxRng = 70;
+					minFR = 0.4f;
+					maxFR = 1.1f;
+					minSP = 15;
+					maxSP = 26;
+				}
+				else
+				{
+					if (GameStats.stats.levelNumber == 4)
+					{
+						minMeeleDmg = 25;
+						maxMeeleDmg = 55;
+						minRangedDmg = 27;
+						maxRangedDmg = 42;
+						minRng = 60;
+						maxRng = 80;
+						minFR = 0.2f;
+						maxFR = 0.9f;
+						minSP = 20;
+						maxSP = 40;
+					}
+					else
+					{
+						//minMeeleDmg = 33;
+						//maxMeeleDmg = 80;
+						//minRangedDmg = 35;
+						//maxRangedDmg = 60;
+						//minRng = 80;
+						//maxRng = 100;
+						//minFR = 0.0f;
+						//maxFR = 0.6f;
+						//minSP = 30;
+						//maxSP = 60;
+					}
+				}
+			}
+		}
 
         ph = GetComponentInParent<PlayerHealth>();
 

@@ -22,6 +22,7 @@ public class GameOver : MonoBehaviour
 		{
 			gameOverScreen.SetActive(true);
 			hidingPanel.SetActive(true);
+			hidingPanel.GetComponent<CanvasGroup>().alpha = 0.4f;
 			isGameOver = true;
 			Time.timeScale = 0;
 			GameManager.manager.gamePause = true;
@@ -51,14 +52,14 @@ public class GameOver : MonoBehaviour
 	{
 		source.PlayOneShot(select);
 		Destroy(GameStats.stats.gameObject);
-		SceneManager.LoadScene("LoadingScreen", LoadSceneMode.Single);
+		StartCoroutine(GameManager.manager.lvlManager.FadeOffToNewScene(1f, "LoadingScreen"));
 	}
 
 	public void BackToMainMenu()
 	{
 		source.PlayOneShot(select);
 		Destroy(GameStats.stats.gameObject);
-		SceneManager.LoadScene("Menu", LoadSceneMode.Single);
+		StartCoroutine(GameManager.manager.lvlManager.FadeOffToNewScene(1f, "Menu"));
 	}
 
 	

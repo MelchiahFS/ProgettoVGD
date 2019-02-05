@@ -16,7 +16,6 @@ public class Inventory : MonoBehaviour {
     private ItemStats emptySlot;
     
     public int index;
-    private int count;
     public Text itemName;  //Nome
     public Text use; //Tasto Usa - Equipaggia
     public Text isWeaponEquipped; //L'arma è equipaggiata?
@@ -68,7 +67,6 @@ public class Inventory : MonoBehaviour {
         loot = GameObject.Find("EquippedWeapon").GetComponent<LootGenerator>();
         weapon = GameObject.Find("EquippedWeapon").GetComponent<Weapon>();
         source = GetComponent<AudioSource>();
-        count = 0;
     }
 
     private bool IsInventoryEmpty()
@@ -83,7 +81,7 @@ public class Inventory : MonoBehaviour {
 
     void Update()
     {
-		if (!GameManager.manager.isDying)
+		if (!GameManager.manager.isDying && !GameManager.manager.ending)
 		{
 			//impedisco di aprire l'inventario se il menu di pausa è attivo o se il player sta leggendo un cartello
 			if (!GameManager.manager.pauseMenuActive && !GameManager.manager.signboardActive)
@@ -165,17 +163,17 @@ public class Inventory : MonoBehaviour {
 
     public void Use()
     {
-		if (GameStats.stats.itemList[index].itemType == ItemStats.ItemType.consumable)
+		if (GameStats.stats.itemList[GameStats.stats.index].itemType == ItemStats.ItemType.consumable)
 		{
-			loot.ApplyEffect(GameStats.stats.itemList[index].consumableType);
+			loot.ApplyEffect(GameStats.stats.itemList[GameStats.stats.index].consumableType);
 			
-			if (GameStats.stats.itemList[index].currentStack == 1)
+			if (GameStats.stats.itemList[GameStats.stats.index].currentStack == 1)
 			{
-				JsonUtility.FromJsonOverwrite(JsonUtility.ToJson(emptySlot), GameStats.stats.itemList[index]);
+				JsonUtility.FromJsonOverwrite(JsonUtility.ToJson(emptySlot), GameStats.stats.itemList[GameStats.stats.index]);
 			}
             else
             {
-				GameStats.stats.itemList[index].currentStack--;
+				GameStats.stats.itemList[GameStats.stats.index].currentStack--;
 			}
             source.PlayOneShot(useItem);
         }
@@ -190,8 +188,8 @@ public class Inventory : MonoBehaviour {
 
     public void Equip()
     {
-		weapon.EquipWeapon(GameStats.stats.itemList[index]);
-		GameStats.stats.equippedSlot = index;
+		weapon.EquipWeapon(GameStats.stats.itemList[GameStats.stats.index]);
+		GameStats.stats.equippedSlot = GameStats.stats.index;
 	}
 
     private void Add(ItemStats item)
@@ -210,7 +208,7 @@ public class Inventory : MonoBehaviour {
 			else if (GameStats.stats.itemList[i].itemType == ItemStats.ItemType.emptyslot) //se invece lo slot è vuoto aggiungo qui l'oggetto
 			{
 				JsonUtility.FromJsonOverwrite(JsonUtility.ToJson(item), GameStats.stats.itemList[i]);
-				count++;
+				GameStats.stats.count++;
 				return;
 			}
 		}
@@ -226,14 +224,14 @@ public class Inventory : MonoBehaviour {
 
     public void DropItem()
     {
-		if (GameStats.stats.itemList[index].currentStack == 1)
+		if (GameStats.stats.itemList[GameStats.stats.index].currentStack == 1)
 		{
-			JsonUtility.FromJsonOverwrite(JsonUtility.ToJson(emptySlot), GameStats.stats.itemList[index]);
-			count--;
+			JsonUtility.FromJsonOverwrite(JsonUtility.ToJson(emptySlot), GameStats.stats.itemList[GameStats.stats.index]);
+			GameStats.stats.count--;
 		}
 		else
 		{
-			GameStats.stats.itemList[index].currentStack--;
+			GameStats.stats.itemList[GameStats.stats.index].currentStack--;
 		}
 		source.PlayOneShot(dropItem);
         UpdateSlotUI();
@@ -266,7 +264,7 @@ public class Inventory : MonoBehaviour {
             EventSystem.current.SetSelectedGameObject(buttonMenu);
 			description.text = GameStats.stats.itemList[i].description;
 			itemName.text = GameStats.stats.itemList[i].itemName;
-			index = i;
+			GameStats.stats.index = i;
             source.PlayOneShot(enter);
             Canvas.ForceUpdateCanvases();
         }
@@ -319,12 +317,13 @@ public class Inventory : MonoBehaviour {
 
     public bool AddSlot(ItemStats info)
     {
-        if (count < 20)
+		if (GameStats.stats.count < 20)
         {
             Add(info);
 
             //playerStats.Inizializate(info);
             UpdateSlotUI();
+			Debug.Log("numero oggetti inventario:" + GameStats.stats.count);
 
             return true;
         }

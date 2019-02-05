@@ -6,15 +6,15 @@ using UnityEngine.SceneManagement;
 
 public class Signboard : MonoBehaviour {
 
-	private bool boardActive = false;
-	public GameObject signboard, inputHint;
+	private bool boardActive = false, ending = false;
+	public GameObject signboard, inputHint, hidingPanel;
 	public Text signboardText;
 
 	private string[] levelBoards = { "you are in level 1", "this is the end" };
 
 	void Update()
 	{
-		if (!GameManager.manager.inventoryActive && !GameManager.manager.pauseMenuActive)
+		if (!GameManager.manager.inventoryActive && !GameManager.manager.pauseMenuActive && !GameManager.manager.ending)
 		{
 			if (GameManager.manager.signboardContact)
 			{
@@ -48,17 +48,22 @@ public class Signboard : MonoBehaviour {
 						inputHint.SetActive(false);
 						GameManager.manager.signboardActive = false;
 						GameManager.manager.gamePause = false;
-						Time.timeScale = 1;
-
-						//SI PUO' FARE UNA COROUTINE PER UN FADE-OFF DELLA SCENA ALLA CUI FINE VIENE CARICATO IL MENU PRINCIPALE
+						
 						if (GameStats.stats.levelNumber == 5 && GameManager.manager.ActualRoom.bossRoom)
 						{
-							Destroy(GameStats.stats.gameObject);
-							SceneManager.LoadScene("Menu", LoadSceneMode.Single);
+							if (!GameManager.manager.ending)
+							{
+								Destroy(GameStats.stats.gameObject);
+								StartCoroutine(GameManager.manager.lvlManager.FadeOffToNewScene(1f, "Menu"));
+							}
+								
 						}
+
+						Time.timeScale = 1;
 					}
 				}
 			}
 		}
 	}
+
 }

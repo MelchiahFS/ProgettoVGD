@@ -10,9 +10,11 @@ public class GameStats : MonoBehaviour
 	public int playerMoney;
 	public float maxHealth;
 	public float playerHealth;
+	public int count;
+	public int index;
 
 	public ItemStats[] itemList = new ItemStats[20];
-	public int equippedSlot = 21;
+	public int equippedSlot;
 
 
 	void Awake()

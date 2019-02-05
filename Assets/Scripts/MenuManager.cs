@@ -3,61 +3,84 @@ using System.Collections.Generic;
 using UnityEngine.SceneManagement;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using TMPro;
 
 public class MenuManager : MonoBehaviour 
 {
 
     public GameObject button;
-	public GameObject commands, mainMenu, inputHint;
+	public GameObject commands, mainMenu, inputHint, hidingPanel;
     public AudioSource sound;
     public AudioClip move, select, music;
     public float time = 0.5f;
-	private bool menu = true, comm = false;
+	private bool menu = true, comm = false, fadeIn = true, fadeOff = false;
+	private bool glowInEnd = false, glowOffEnd = false;
+	public TMP_Text title;
+	private Material titleMaterial;
 
-    public void Start()
+	void Awake()
+	{
+		titleMaterial = title.fontSharedMaterial;
+		Time.timeScale = 1;
+	}
+		
+    void Start()
     {
-        EventSystem.current.SetSelectedGameObject(button);
-        sound = GetComponent<AudioSource>();
-        sound.clip = music;
-        sound.Play();
-    }
+		StartCoroutine(StartMenu(1.2f));
+		StartCoroutine(GlowingInTitle(0.5f));
+	}
 
     void Update()
     {
-		if (menu)
+		if (glowInEnd)
 		{
-			if (Input.GetKeyDown(KeyCode.UpArrow) || Input.GetKeyDown(KeyCode.DownArrow) || Input.GetKeyDown(KeyCode.W) || Input.GetKeyDown(KeyCode.S))
+			glowInEnd = false;
+			StartCoroutine(GlowingOffTitle(0.5f));
+		}
+		else if (glowOffEnd)
+		{
+			glowOffEnd = false;
+			StartCoroutine(GlowingInTitle(0.5f));
+		}
+		if (!fadeIn && !fadeOff)
+		{
+			if (menu)
 			{
-				sound.PlayOneShot(move, 0.5f);
-			}
-			else if (Input.GetKeyDown(KeyCode.Return))
-			{
-				sound.PlayOneShot(select, 0.5f);
-			}
+				if (Input.GetKeyDown(KeyCode.UpArrow) || Input.GetKeyDown(KeyCode.DownArrow) || Input.GetKeyDown(KeyCode.W) || Input.GetKeyDown(KeyCode.S))
+				{
+					sound.PlayOneShot(move, 0.5f);
+				}
+				else if (Input.GetKeyDown(KeyCode.Return))
+				{
+					sound.PlayOneShot(select, 0.5f);
+				}
 
-			if (EventSystem.current.currentSelectedGameObject == null)
-			{
-				EventSystem.current.SetSelectedGameObject(button);
+				if (EventSystem.current.currentSelectedGameObject == null)
+				{
+					EventSystem.current.SetSelectedGameObject(button);
+				}
+				else
+				{
+					button = EventSystem.current.currentSelectedGameObject;
+				}
 			}
-			else
+			else if (comm)
 			{
-				button = EventSystem.current.currentSelectedGameObject;
+				if (Input.GetKeyDown(KeyCode.E))
+				{
+					DeactivateCommandWindow();
+					sound.PlayOneShot(select, 0.5f);
+				}
 			}
 		}
-		else if (comm)
-		{
-			if (Input.GetKeyDown(KeyCode.Escape))
-			{
-				DeactivateCommandWindow();
-				sound.PlayOneShot(select, 0.5f);
-			}
-		}
+		
 	}
 
 
-    public void NewGameBtn(string newGameLevel)
+    public void NewGameBtn()
 	{
-        StartCoroutine(NewGame(newGameLevel));
+        StartCoroutine(FadeOffMusic(1f));
+		StartCoroutine(EnterGame(1f));
 	}
 
 	public void ExitGameBtn()
@@ -66,15 +89,14 @@ public class MenuManager : MonoBehaviour
 	}
 
 
-    public IEnumerator NewGame(string newGameLevel)
+    public IEnumerator FadeOffMusic(float fadeTime)
     {
-        float rate = 1 / 1.5f;
+        float rate = 1 / fadeTime;
         while (sound.volume > 0)
         {
             sound.volume -= rate * Time.deltaTime;
             yield return 0;
         }
-		SceneManager.LoadScene("LoadingScreen");
 		yield break;
     }
 
@@ -99,5 +121,72 @@ public class MenuManager : MonoBehaviour
 		sound.PlayOneShot(select, 0.5f);
 		EventSystem.current.SetSelectedGameObject(null);
 		EventSystem.current.SetSelectedGameObject(button);
+	}
+
+	private IEnumerator StartMenu(float fadeTime)
+	{
+		CanvasGroup cg = hidingPanel.GetComponent<CanvasGroup>();
+		cg.alpha = 1;
+		float alpha = 1;
+		float rate = 1 / fadeTime;
+		while (alpha > 0)
+		{
+			alpha -= Time.deltaTime * rate;
+			cg.alpha = alpha;
+			yield return null;
+		}
+		hidingPanel.SetActive(false);
+		mainMenu.GetComponent<CanvasGroup>().interactable = true;
+		fadeIn = false;
+		EventSystem.current.SetSelectedGameObject(button);
+		sound = GetComponent<AudioSource>();
+		sound.clip = music;
+		sound.Play();
+		yield break;
+	}
+
+	private IEnumerator EnterGame(float fadeTime)
+	{
+		fadeOff = true;
+		mainMenu.GetComponent<CanvasGroup>().interactable = false;
+		hidingPanel.SetActive(true);
+		CanvasGroup cg = hidingPanel.GetComponent<CanvasGroup>();
+		cg.alpha = 0;
+		float alpha = 0;
+		float rate = 1 / fadeTime;
+		while (alpha < 1)
+		{
+			alpha += Time.deltaTime * rate;
+			cg.alpha = alpha;
+			yield return null;
+		}
+		SceneManager.LoadScene("LoadingScreen");
+		yield break;
+	}
+
+	private IEnumerator GlowingInTitle(float fadeTime)
+	{
+		float glow = 1;
+		float rate = 1 / fadeTime;
+		while (glow > 0)
+		{
+			glow -= Time.deltaTime * rate;
+			titleMaterial.SetFloat("_GlowPower", glow);
+			yield return null;
+		}
+		glowInEnd = true;
+	}
+
+	private IEnumerator GlowingOffTitle(float fadeTime)
+	{
+		float glow = 0;
+		float rate = 1 / fadeTime;
+		while (glow < 1)
+		{
+			glow += Time.deltaTime * rate;
+			titleMaterial.SetFloat("_GlowPower", glow);
+			yield return null;
+		}
+		glowOffEnd = true;
 	}
 }

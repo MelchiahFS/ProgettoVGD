@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
+using UnityEngine.SceneManagement;
 
 public class PauseMenu : MonoBehaviour {
 
@@ -10,7 +11,7 @@ public class PauseMenu : MonoBehaviour {
 
 	public GameObject pauseMenuUI;
     public GameObject button, lastButton, lastInventoryButton;
-    public GameObject inventory, inventoryMenu;
+    public GameObject inventory, inventoryMenu, signboard;
 	public GameObject hidingPanel;
 
     public AudioClip move, select, enter, exit;
@@ -27,33 +28,36 @@ public class PauseMenu : MonoBehaviour {
 
     void Update ()
     {
-		if (!GameManager.manager.isDying)
+		if (!GameManager.manager.ending)
 		{
-			if (Input.GetKeyDown(KeyCode.Escape))
+			if (!GameManager.manager.isDying)
 			{
-				if (GameIsPaused)
-					Resume();
-				else
-					Pause();
+				if (Input.GetKeyDown(KeyCode.Escape))
+				{
+					if (GameIsPaused)
+						Resume();
+					else
+						Pause();
+				}
+
+				else if (GameIsPaused)
+				{
+					if (EventSystem.current.currentSelectedGameObject == null)
+					{
+						EventSystem.current.SetSelectedGameObject(lastButton);
+					}
+					else
+					{
+						lastButton = EventSystem.current.currentSelectedGameObject;
+					}
+
+					if (Input.GetKeyDown(KeyCode.UpArrow) || Input.GetKeyDown(KeyCode.DownArrow) || Input.GetKeyDown(KeyCode.W) || Input.GetKeyDown(KeyCode.S))
+					{
+						source.PlayOneShot(move);
+					}
+				}
+
 			}
-
-			else if (GameIsPaused)
-			{
-				if (EventSystem.current.currentSelectedGameObject == null)
-				{
-					EventSystem.current.SetSelectedGameObject(lastButton);
-				}
-				else
-				{
-					lastButton = EventSystem.current.currentSelectedGameObject;
-				}
-
-				if (Input.GetKeyDown(KeyCode.UpArrow) || Input.GetKeyDown(KeyCode.DownArrow) || Input.GetKeyDown(KeyCode.W) || Input.GetKeyDown(KeyCode.S))
-				{
-					source.PlayOneShot(move);
-				}
-			}
-
 		}
 
 	}
@@ -102,6 +106,7 @@ public class PauseMenu : MonoBehaviour {
         }
 
 		hidingPanel.SetActive(true);
+		hidingPanel.GetComponent<CanvasGroup>().alpha = 0.4f;
         pauseMenuUI.SetActive(true);
         EventSystem.current.SetSelectedGameObject(button);
         Time.timeScale = 0f;
@@ -114,7 +119,19 @@ public class PauseMenu : MonoBehaviour {
 
     public void QuitGame()
 	{
-        source.PlayOneShot(exit);
-        Application.Quit();
+		Time.timeScale = 1;
+		GameIsPaused = false;
+		source.PlayOneShot(exit);
+		pauseMenuUI.SetActive(false);
+		inventory.SetActive(false);
+		inventoryMenu.SetActive(false);
+		signboard.SetActive(false);
+		GameManager.manager.signboardActive = false;
+		GameManager.manager.pauseMenuActive = false;
+		GameManager.manager.inventoryMenuActive = false;
+		GameManager.manager.inventoryActive = false;
+		GameManager.manager.gamePause = false;
+		Destroy(GameStats.stats.gameObject);
+		StartCoroutine(GameManager.manager.lvlManager.FadeOffToNewScene(1f, "Menu"));
 	}
 }
