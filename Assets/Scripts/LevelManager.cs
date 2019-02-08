@@ -166,7 +166,7 @@ public class LevelManager : MonoBehaviour {
             //scelgo casualmente il tipo di nemico da istanziare
             enemyType = rnd.Next(0, enemyPrefabs.Count);
 
-            GameObject enemy = Instantiate(enemyPrefabs[enemyType], room.spawnPoints[enemyPosition], Quaternion.identity) as GameObject;
+            GameObject enemy = Instantiate(enemyPrefabs[enemyType], room.spawnPoints[enemyPosition] + new Vector2(0, 0.5f), Quaternion.identity) as GameObject;
             enemy.name = enemyPrefabs[enemyType].name;
 
             //imposto il sorting layer dei nemici
@@ -187,12 +187,21 @@ public class LevelManager : MonoBehaviour {
             //rimuovo lo spawn point dalla lista di quelli disponinili per la stanza attuale
             room.spawnPoints.RemoveAt(enemyPosition);
 
-            StartCoroutine(FadeIn(enemy.GetComponent<SpriteRenderer>(), fadeTime));
+			//--------------------------------------------------------------------------------------
+
+			StartCoroutine(WaitEnemyForFadeIn(enemy));
+			//StartCoroutine(FadeIn(enemy.GetComponent<SpriteRenderer>(), fadeTime));
         }
         room.enemyNumber = room.enemyCounter;
         room.enemyWaves--;
         
     }
+
+
+
+
+
+
 
     //Istanzia il player nella stanza di partenza
     public Room InstantiatePlayer()
@@ -1061,10 +1070,57 @@ public class LevelManager : MonoBehaviour {
 		}
 		else
 		{
-			//room.enemyCounter = rnd.Next(3, 6);
-			//room.enemyWaves = 1;
-			room.enemyCounter = 0;
-			room.enemyWaves = 0;
+			room.enemyCounter = rnd.Next(3, 6);
+			room.enemyWaves = 1;
+			//room.enemyCounter = 0;
+			//room.enemyWaves = 0;
 		}
+	}
+
+	private void DisableEnemyScripts(GameObject enemy)
+	{
+		foreach (Collider2D coll in enemy.GetComponents<Collider2D>())
+			coll.enabled = false;
+		enemy.GetComponent<EnemyController>().enabled = false;
+		enemy.GetComponent<MovementPattern>().enabled = false;
+		if (enemy.GetComponent<AStarAI>() != null)
+			enemy.GetComponent<AStarAI>().enabled = false;
+		if (enemy.GetComponent<ShootPlayer>() != null)
+			enemy.GetComponent<ShootPlayer>().enabled = false;
+		if (enemy.GetComponent<ShootBurst>() != null)
+			enemy.GetComponent<ShootBurst>().enabled = false;
+		if (enemy.GetComponent<ShootMultiple>() != null)
+			enemy.GetComponent<ShootMultiple>().enabled = false;
+		if (enemy.GetComponent<ShootBidirectional>() != null)
+			enemy.GetComponent<ShootBidirectional>().enabled = false;
+		if (enemy.GetComponent<ShootCircle>() != null)
+			enemy.GetComponent<ShootCircle>().enabled = false;
+	}
+
+	private void EnableEnemyScripts(GameObject enemy)
+	{
+		foreach (Collider2D coll in enemy.GetComponents<Collider2D>())
+			coll.enabled = true;
+		enemy.GetComponent<EnemyController>().enabled = true;
+		enemy.GetComponent<MovementPattern>().enabled = true;
+		if (enemy.GetComponent<AStarAI>() != null)
+			enemy.GetComponent<AStarAI>().enabled = true;
+		if (enemy.GetComponent<ShootPlayer>() != null)
+			enemy.GetComponent<ShootPlayer>().enabled = true;
+		if (enemy.GetComponent<ShootBurst>() != null)
+			enemy.GetComponent<ShootBurst>().enabled = true;
+		if (enemy.GetComponent<ShootMultiple>() != null)
+			enemy.GetComponent<ShootMultiple>().enabled = true;
+		if (enemy.GetComponent<ShootBidirectional>() != null)
+			enemy.GetComponent<ShootBidirectional>().enabled = true;
+		if (enemy.GetComponent<ShootCircle>() != null)
+			enemy.GetComponent<ShootCircle>().enabled = true;
+	}
+
+	private IEnumerator WaitEnemyForFadeIn(GameObject enemy)
+	{
+		DisableEnemyScripts(enemy);
+		yield return FadeIn(enemy.GetComponent<SpriteRenderer>(), fadeTime);
+		EnableEnemyScripts(enemy);
 	}
 }

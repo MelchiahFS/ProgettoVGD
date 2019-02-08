@@ -3306,6 +3306,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 114264991956529208, guid: 5c478da0bf70c4d48a52b4ef9d4df227,
         type: 3}
+      propertyPath: enemyPrefabs.Array.size
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 114264991956529208, guid: 5c478da0bf70c4d48a52b4ef9d4df227,
+        type: 3}
       propertyPath: altar
       value: 
       objectReference: {fileID: 1188444826736520, guid: a3045a2e01b921b46a2dfecdad5fffa3,
@@ -3333,6 +3338,18 @@ PrefabInstance:
       propertyPath: hidingPanel
       value: 
       objectReference: {fileID: 1308758424}
+    - target: {fileID: 114264991956529208, guid: 5c478da0bf70c4d48a52b4ef9d4df227,
+        type: 3}
+      propertyPath: enemyPrefabs.Array.data[1]
+      value: 
+      objectReference: {fileID: 1183940118386976, guid: 6bd695610acadb54cbc881d65742d829,
+        type: 3}
+    - target: {fileID: 114264991956529208, guid: 5c478da0bf70c4d48a52b4ef9d4df227,
+        type: 3}
+      propertyPath: enemyPrefabs.Array.data[0]
+      value: 
+      objectReference: {fileID: 1276624243195242, guid: 00ee180fc2e04a144ba2961050ec20d7,
+        type: 3}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 5c478da0bf70c4d48a52b4ef9d4df227, type: 3}
 --- !u!1001 &1148698549
