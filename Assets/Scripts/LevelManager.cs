@@ -187,7 +187,7 @@ public class LevelManager : MonoBehaviour {
             //rimuovo lo spawn point dalla lista di quelli disponinili per la stanza attuale
             room.spawnPoints.RemoveAt(enemyPosition);
 
-            StartCoroutine(GameManager.manager.lvlManager.FadeIn(enemy.GetComponent<SpriteRenderer>(), fadeTime));
+            StartCoroutine(FadeIn(enemy.GetComponent<SpriteRenderer>(), fadeTime));
         }
         room.enemyNumber = room.enemyCounter;
         room.enemyWaves--;
@@ -203,16 +203,17 @@ public class LevelManager : MonoBehaviour {
             {
                 if (map[i, j] != null && map[i, j].startRoom) 
                 {
-					GameObject player = Instantiate(playerPrefab, new Vector2(map[i, j].gridPos.x + (float)(roomSizeX / 2), map[i, j].gridPos.y + (float)(roomSizeY / 2) - 3), Quaternion.identity) as GameObject;
-                    player.name = playerPrefab.name;
-                    playerPrefab.GetComponent<SpriteRenderer>().sortingLayerName = "Characters";
-					map[i, j].toSort.Add(player);
+					
 
 					LightUpRoom(map[i, j], true);
 					StartCoroutine(EnterLevel(0.3f));
 					StartCoroutine(FadeIn(altar.GetComponent<SpriteRenderer>(), 0.3f));
 					StartCoroutine(FadeIn(writings.GetComponent<SpriteRenderer>(), 0.3f));
-					
+
+					GameObject player = Instantiate(playerPrefab, new Vector2(map[i, j].gridPos.x + (float)(roomSizeX / 2), map[i, j].gridPos.y + (float)(roomSizeY / 2) - 3), Quaternion.identity) as GameObject;
+					player.name = playerPrefab.name;
+					playerPrefab.GetComponent<SpriteRenderer>().sortingLayerName = "Characters";
+					map[i, j].toSort.Add(player);
 					minimap.SetEnterRoom(map[i, j]);
                     return map[i, j];
                 }
@@ -340,6 +341,7 @@ public class LevelManager : MonoBehaviour {
 	//Disegna i muri delle stanze e ne imposta i collider
 	void DrawWalls(Room room)
     {
+		Debug.Log("zacco i muri");
         Vector2 drawPos = new Vector2(room.gridPos.x - 1, room.gridPos.y - 1);
         for (int i = 0; i < roomSizeY + 4; i++) //altezza stanza + muro basso (1) + muro alto (3)
         {
@@ -372,35 +374,33 @@ public class LevelManager : MonoBehaviour {
                     rend.sortingLayerName = "Ground";
                     room.roomTiles.Add(wallTile);
 
-                    //se è la stanza del boss creo l'uscita
-					if (GameStats.stats.levelNumber < 5)
+                    //se è la stanza del boss e non è l'ultimo livello creo il passaggio per il livello successivo
+					if (GameStats.stats.levelNumber < 5 && room.bossRoom && i == (roomSizeY + 1) && j == (roomSizeX / 2) + 1)
 					{
-						if (room.bossRoom && i == (roomSizeY + 1) && j == (roomSizeX / 2) + 1)
-						{
-							wallTile.tag = "Exit";
-							rend.sprite = mapper.stairs;
-							wallCollider.size = new Vector2(1, 1);
-							wallCollider.offset = new Vector2(0, 1);
-							exit = wallTile;
-							room.roomTiles.Add(wallTile);
+						wallTile.tag = "Exit";
+						rend.sprite = mapper.stairs;
+						wallCollider.size = new Vector2(1, 1);
+						wallCollider.offset = new Vector2(0, 1);
+						exit = wallTile;
+						room.roomTiles.Add(wallTile);
 
 
 
-							hideExit = Instantiate(tileToRend, drawPos, Quaternion.identity) as GameObject;
-							hideExit.tag = "Wall";
-							hideExit.layer = LayerMask.NameToLayer("InnerWalls");
+						hideExit = Instantiate(tileToRend, drawPos, Quaternion.identity) as GameObject;
+						hideExit.tag = "Wall";
+						hideExit.layer = LayerMask.NameToLayer("InnerWalls");
 
-							BoxCollider2D hideExitCollider = hideExit.AddComponent(typeof(BoxCollider2D)) as BoxCollider2D;
-							hideExitCollider.size = new Vector2(1, 2);
-							hideExitCollider.offset = new Vector2(0, 0.5f);
+						BoxCollider2D hideExitCollider = hideExit.AddComponent(typeof(BoxCollider2D)) as BoxCollider2D;
+						hideExitCollider.size = new Vector2(1, 2);
+						hideExitCollider.offset = new Vector2(0, 0.5f);
 
-							TileSpriteSelector HEmapper = hideExit.GetComponent<TileSpriteSelector>();
-							SpriteRenderer HErend = hideExit.GetComponent<SpriteRenderer>();
-							HErend.sortingLayerName = "Ground";
-							HErend.sprite = HEmapper.innerWallCenter;
-							room.roomTiles.Add(hideExit);
-						}
+						TileSpriteSelector HEmapper = hideExit.GetComponent<TileSpriteSelector>();
+						SpriteRenderer HErend = hideExit.GetComponent<SpriteRenderer>();
+						HErend.sortingLayerName = "Ground";
+						HErend.sprite = HEmapper.innerWallCenter;
+						room.roomTiles.Add(hideExit);
 					}
+					
                     
                     //se il muro è quello frontale
                     else if (i == roomSizeY + 1)

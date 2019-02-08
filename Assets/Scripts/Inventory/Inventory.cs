@@ -10,7 +10,6 @@ public class Inventory : MonoBehaviour {
     public LootGenerator loot;
     public Weapon weapon;
 
-    //public ItemStats[] itemList = new ItemStats[20];
     public InventorySlot[] inventorySlots = new InventorySlot[20];
 
     private ItemStats emptySlot;
@@ -31,6 +30,8 @@ public class Inventory : MonoBehaviour {
     private GameObject lastButton; //ultimo tasto premuto
     private GameObject lastInventoryButton; //ultimo oggetto selezionato dell'inventario
 
+	public GameObject dropButton;
+
     public AudioClip pickKey, pickItem, buyItem, useItem, dropItem, enter, exit, move, select, empty;
     private AudioSource source;
 
@@ -39,22 +40,26 @@ public class Inventory : MonoBehaviour {
 
 
 	private void Awake()
-    {
-        if (instance == null)
-        {
-            instance = this;
-        }
-        else
-        {
-            if (instance != this)
-            {
-                Destroy(this);
-            }
-        }
-        //DontDestroyOnLoad(this);
-    }
+	{
+		if (instance == null)
+		{
+			instance = this;
+		}
+		else
+		{
+			if (instance != this)
+			{
+				Destroy(this);
+			}
+		}
 
-    void Start()
+		loot = GameObject.Find("EquippedWeapon").GetComponent<LootGenerator>();
+		weapon = GameObject.Find("EquippedWeapon").GetComponent<Weapon>();
+		source = GetComponent<AudioSource>();
+
+	}
+
+	void Start()
     {
         menuShown = false;
         isWeaponEquipped.text = "";
@@ -64,11 +69,11 @@ public class Inventory : MonoBehaviour {
         UpdateSlotUI();
         if(IsInventoryEmpty())
             ResetAllSlots();
-        loot = GameObject.Find("EquippedWeapon").GetComponent<LootGenerator>();
-        weapon = GameObject.Find("EquippedWeapon").GetComponent<Weapon>();
-        source = GetComponent<AudioSource>();
-    }
 
+
+	}
+
+	//Controlla se l'inventario è vuoto
     private bool IsInventoryEmpty()
     {
 		for (int i = 0; i < GameStats.stats.itemList.Length; i++)
@@ -81,11 +86,13 @@ public class Inventory : MonoBehaviour {
 
     void Update()
     {
+		//impedisco qualsiasi operazione sull'inventario se il player è morto o se la scena attuale sta cambiando
 		if (!GameManager.manager.isDying && !GameManager.manager.ending)
 		{
 			//impedisco di aprire l'inventario se il menu di pausa è attivo o se il player sta leggendo un cartello
 			if (!GameManager.manager.pauseMenuActive && !GameManager.manager.signboardActive)
 			{
+				//se l'inventario è già aperto lo chiudo, altrimenti lo apro
 				if (Input.GetKeyDown(KeyCode.Tab))
 				{
 					if (inventoryActive)
@@ -101,7 +108,8 @@ public class Inventory : MonoBehaviour {
 
 				//se il menu dell'inventario è attivo
 				if (menuShown)
-				{
+				{	
+					//posso chiuderlo muovendo verso destra
 					if (Input.GetKeyDown(KeyCode.RightArrow) || Input.GetKeyDown(KeyCode.D))
 					{
 						HideMenu();
@@ -112,6 +120,7 @@ public class Inventory : MonoBehaviour {
 						source.PlayOneShot(move);
 					}
 				}
+				//altrimenti se è attiva solo la schermata principale dell'inventario
 				else if (inventoryActive)
 				{
 					if (Input.GetKeyDown(KeyCode.UpArrow) || Input.GetKeyDown(KeyCode.DownArrow) || Input.GetKeyDown(KeyCode.LeftArrow) || Input.GetKeyDown(KeyCode.RightArrow) ||
@@ -122,7 +131,7 @@ public class Inventory : MonoBehaviour {
 				}
 			}
 
-
+			//reimposto la selezione dei tasti per evitare la perdita di focus
 			if (inventoryActive)
 			{
 
@@ -163,20 +172,25 @@ public class Inventory : MonoBehaviour {
 
     public void Use()
     {
+		//se l'oggetto selezionato è un consumable
 		if (GameStats.stats.itemList[GameStats.stats.index].itemType == ItemStats.ItemType.consumable)
 		{
+			//applica gli effetti
 			loot.ApplyEffect(GameStats.stats.itemList[GameStats.stats.index].consumableType);
 			
+			//se c'è solo un oggetto nello stack lo rimuovo dall'inventario
 			if (GameStats.stats.itemList[GameStats.stats.index].currentStack == 1)
 			{
 				JsonUtility.FromJsonOverwrite(JsonUtility.ToJson(emptySlot), GameStats.stats.itemList[GameStats.stats.index]);
 			}
+			//altrimenti decremento lo stack
             else
             {
 				GameStats.stats.itemList[GameStats.stats.index].currentStack--;
 			}
             source.PlayOneShot(useItem);
         }
+		//se invece è un'arma la equipaggio
         else
         {
             Equip();
@@ -192,7 +206,27 @@ public class Inventory : MonoBehaviour {
 		GameStats.stats.equippedSlot = GameStats.stats.index;
 	}
 
-    private void Add(ItemStats item)
+	public bool AddSlot(ItemStats info)
+	{
+		if (GameStats.stats.count < 20)
+		{
+			Add(info);
+
+			//playerStats.Inizializate(info);
+			UpdateSlotUI();
+			Debug.Log("numero oggetti inventario:" + GameStats.stats.count);
+
+			return true;
+		}
+		else
+		{
+			//source.PlayOneShot(empty);
+			//Debug.Log("inventario pieno");
+			return false;
+		}
+	}
+
+	private void Add(ItemStats item)
     {
 		for (int i = 0; i < GameStats.stats.itemList.Length; i++)
 		{
@@ -214,32 +248,10 @@ public class Inventory : MonoBehaviour {
 		}
 	}
 
-    private void ResetAllSlots()
-    {
-		for (int i = 0; i < GameStats.stats.itemList.Length; i++)
-		{
-			JsonUtility.FromJsonOverwrite(JsonUtility.ToJson(emptySlot), GameStats.stats.itemList[i]);
-		}
-	}
-
-    public void DropItem()
-    {
-		if (GameStats.stats.itemList[GameStats.stats.index].currentStack == 1)
-		{
-			JsonUtility.FromJsonOverwrite(JsonUtility.ToJson(emptySlot), GameStats.stats.itemList[GameStats.stats.index]);
-			GameStats.stats.count--;
-		}
-		else
-		{
-			GameStats.stats.itemList[GameStats.stats.index].currentStack--;
-		}
-		source.PlayOneShot(dropItem);
-        UpdateSlotUI();
-        HideMenu();
-    }
 
     public void ShowMenu(int i)
     {
+		Debug.Log("numero cella: " + i);
 		if (GameStats.stats.itemList[i].itemType != ItemStats.ItemType.emptyslot)
 		{
             lastInventoryButton = EventSystem.current.currentSelectedGameObject;
@@ -257,9 +269,15 @@ public class Inventory : MonoBehaviour {
             }
 			
 			if (i == GameStats.stats.equippedSlot)
+			{
 				isWeaponEquipped.text = "Equipped";
+				dropButton.SetActive(false);
+			}
             else
-                isWeaponEquipped.text = "";
+			{
+				isWeaponEquipped.text = "";
+				dropButton.SetActive(true);
+			}
 
             EventSystem.current.SetSelectedGameObject(buttonMenu);
 			description.text = GameStats.stats.itemList[i].description;
@@ -274,75 +292,60 @@ public class Inventory : MonoBehaviour {
         }
     }
 
-    public void HideMenu()
-    {
-        menuShown = false;
-        GameManager.manager.inventoryMenuActive = false;
-        inventoryMenu.SetActive(false);
-        //EventSystem.current.SetSelectedGameObject(button);
-        EventSystem.current.SetSelectedGameObject(lastInventoryButton);
-    }
 
-    public void PlayExitSound()
-    {
-        source.PlayOneShot(exit);
-    }
+	//private void InitializeItemList()
+	//{
+	//    for (int i = 0; i < GameManager.manager.itemList.Length; i++)
+	//    {
+	//        GameManager.manager.itemList[i] = new ItemStats();
+	//        GameManager.manager.itemList[i].itemType = ItemStats.ItemType.emptyslot;
+	//    }
+	//}
 
-    public void UpdateSlotUI()
-    {
-        for (int i = 0; i < inventorySlots.Length; i++)
-        {
+	public void HideMenu()
+	{
+		menuShown = false;
+		GameManager.manager.inventoryMenuActive = false;
+		inventoryMenu.SetActive(false);
+		//EventSystem.current.SetSelectedGameObject(button);
+		EventSystem.current.SetSelectedGameObject(lastInventoryButton);
+	}
+
+	public void PlayExitSound()
+	{
+		source.PlayOneShot(exit);
+	}
+
+	public void UpdateSlotUI()
+	{
+		for (int i = 0; i < inventorySlots.Length; i++)
+		{
 			inventorySlots[i].UpdateSlot(GameStats.stats.itemList[i]);
 		}
-    }
+	}
 
-    //public void AddSlot(ItemStats info)
-    //{
-    //    if (count < 20)
-    //    {
-    //        bool hasAdded = Add(info);
-    //        if (hasAdded)
-    //        {
-    //            //playerStats.Inizializate(info);
-    //            UpdateSlotUI();
-    //            source.PlayOneShot(pickItem);
-    //        }
-    //    }
-    //    else
-    //    {
-    //        source.PlayOneShot(empty);
-    //            Debug.Log("inventario pieno");
-    //    }
-    //}
+	private void ResetAllSlots()
+	{
+		for (int i = 0; i < GameStats.stats.itemList.Length; i++)
+		{
+			JsonUtility.FromJsonOverwrite(JsonUtility.ToJson(emptySlot), GameStats.stats.itemList[i]);
+		}
+	}
 
-    public bool AddSlot(ItemStats info)
-    {
-		if (GameStats.stats.count < 20)
-        {
-            Add(info);
-
-            //playerStats.Inizializate(info);
-            UpdateSlotUI();
-			Debug.Log("numero oggetti inventario:" + GameStats.stats.count);
-
-            return true;
-        }
-        else
-        {
-            //source.PlayOneShot(empty);
-            //Debug.Log("inventario pieno");
-            return false;
-        }
-    }
-
-    //private void InitializeItemList()
-    //{
-    //    for (int i = 0; i < GameManager.manager.itemList.Length; i++)
-    //    {
-    //        GameManager.manager.itemList[i] = new ItemStats();
-    //        GameManager.manager.itemList[i].itemType = ItemStats.ItemType.emptyslot;
-    //    }
-    //}
-
+	public void DropItem()
+	{
+		if (GameStats.stats.itemList[GameStats.stats.index].currentStack == 1)
+		{
+			JsonUtility.FromJsonOverwrite(JsonUtility.ToJson(emptySlot), GameStats.stats.itemList[GameStats.stats.index]);
+			GameStats.stats.count--;
+		}
+		else
+		{
+			GameStats.stats.itemList[GameStats.stats.index].currentStack--;
+		}
+		source.PlayOneShot(dropItem);
+		UpdateSlotUI();
+		HideMenu();
+	}
 }
 

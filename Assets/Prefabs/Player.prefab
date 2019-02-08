@@ -398,6 +398,8 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 3d230396071eda44195e15b48b8218df, type: 2}
   - {fileID: 11400000, guid: d73647b8eb5f3474ea056be5826faaec, type: 2}
   - {fileID: 11400000, guid: 89804c3b50f3ceb4996b3d8546d5d4ff, type: 2}
+  startingMeeleSO: {fileID: 11400000, guid: bc1f0352090b1e045b15854fa0516d8d, type: 2}
+  startingRangedSO: {fileID: 11400000, guid: a1b88d7d312697b41863be827078ceec, type: 2}
   consumables: []
   sceneItemPrefab: {fileID: 1670819977172170, guid: 8596697453f85bb4fb1b9b990c035f07,
     type: 3}

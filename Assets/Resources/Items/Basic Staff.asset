@@ -10,11 +10,11 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: e296643ffe087af458ed7bef108f13f6, type: 3}
-  m_Name: Basic Sword
+  m_Name: Basic Staff
   m_EditorClassIdentifier: 
-  itemName: Basic Sword
-  itemDescription: New Description
-  icon: {fileID: 21300592, guid: ed62e3a340fcca64fa5544f7ef404b6f, type: 3}
+  itemName: Basic Staff
+  itemDescription: 
+  icon: {fileID: 21300546, guid: ed62e3a340fcca64fa5544f7ef404b6f, type: 3}
   currentStack: 1
   maxStack: 1
   code: 0
@@ -23,5 +23,5 @@ MonoBehaviour:
   fireRate: 0
   shotSpeed: 0
   type: 2
-  weaponType: 0
+  weaponType: 1
   consumableType: 0

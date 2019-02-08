@@ -10,6 +10,7 @@ public class LootGenerator : MonoBehaviour {
     public float minMeeleDmg, maxMeeleDmg, minRangedDmg, maxRangedDmg, minRng, maxRng, minFR, maxFR, minSP, maxSP; //minimo e massimo danno (per meele e ranged), range, fire rate e shot speed
     private Array enumValues;
     public List<Item> consumablesSO;
+	public Item startingMeeleSO, startingRangedSO;
     public List<ItemStats> consumables;
     public GameObject sceneItemPrefab;
     private SceneItem si;
@@ -22,17 +23,17 @@ public class LootGenerator : MonoBehaviour {
     private bool keyGen = false;
 
     private int roomsWithEnemies = 0;
-   
+
     void Start()
     {
         roomsWithEnemies = GameManager.manager.lvlManager.roomNumber - 3; //tolgo la stanza iniziale, lo shop e la stanza del boss
 
 		if (GameStats.stats.levelNumber == 1)
 		{
-			minMeeleDmg = 10;
-			maxMeeleDmg = 25;
+			minMeeleDmg = 15;
+			maxMeeleDmg = 30;
 			minRangedDmg = 10;
-			maxRangedDmg = 25;
+			maxRangedDmg = 20;
 			minRng = 20;
 			maxRng = 30;
 			minFR = 0.8f;
@@ -41,74 +42,65 @@ public class LootGenerator : MonoBehaviour {
 			maxSP = 10;
 
 		}
+		else if (GameStats.stats.levelNumber == 2)
+		{
+			minMeeleDmg = 20;
+			maxMeeleDmg = 40;
+			minRangedDmg = 15;
+			maxRangedDmg = 30;
+			minRng = 30;
+			maxRng = 40;
+			minFR = 0.6f;
+			maxFR = 1.3f;
+			minSP = 10;
+			maxSP = 18;
+		}
+		else if (GameStats.stats.levelNumber == 3)
+		{
+			minMeeleDmg = 20;
+			maxMeeleDmg = 45;
+			minRangedDmg = 20;
+			maxRangedDmg = 37;
+			minRng = 50;
+			maxRng = 70;
+			minFR = 0.4f;
+			maxFR = 1.1f;
+			minSP = 15;
+			maxSP = 26;
+		}
+		else if (GameStats.stats.levelNumber == 4)
+		{
+			minMeeleDmg = 25;
+			maxMeeleDmg = 55;
+			minRangedDmg = 27;
+			maxRangedDmg = 42;
+			minRng = 60;
+			maxRng = 80;
+			minFR = 0.2f;
+			maxFR = 0.9f;
+			minSP = 20;
+			maxSP = 40;
+		}
 		else
 		{
-			if (GameStats.stats.levelNumber == 2)
-			{
-				minMeeleDmg = 15;
-				maxMeeleDmg = 35;
-				minRangedDmg = 15;
-				maxRangedDmg = 30;
-				minRng = 30;
-				maxRng = 40;
-				minFR = 0.6f;
-				maxFR = 1.3f;
-				minSP = 10;
-				maxSP = 18;
-			}
-			else
-			{
-				if (GameStats.stats.levelNumber == 3)
-				{
-					minMeeleDmg = 20;
-					maxMeeleDmg = 45;
-					minRangedDmg = 20;
-					maxRangedDmg = 37;
-					minRng = 50;
-					maxRng = 70;
-					minFR = 0.4f;
-					maxFR = 1.1f;
-					minSP = 15;
-					maxSP = 26;
-				}
-				else
-				{
-					if (GameStats.stats.levelNumber == 4)
-					{
-						minMeeleDmg = 25;
-						maxMeeleDmg = 55;
-						minRangedDmg = 27;
-						maxRangedDmg = 42;
-						minRng = 60;
-						maxRng = 80;
-						minFR = 0.2f;
-						maxFR = 0.9f;
-						minSP = 20;
-						maxSP = 40;
-					}
-					else
-					{
-						//minMeeleDmg = 33;
-						//maxMeeleDmg = 80;
-						//minRangedDmg = 35;
-						//maxRangedDmg = 60;
-						//minRng = 80;
-						//maxRng = 100;
-						//minFR = 0.0f;
-						//maxFR = 0.6f;
-						//minSP = 30;
-						//maxSP = 60;
-					}
-				}
-			}
+			minMeeleDmg = 33;
+			maxMeeleDmg = 80;
+			minRangedDmg = 35;
+			maxRangedDmg = 60;
+			minRng = 80;
+			maxRng = 100;
+			minFR = 0.1f;
+			maxFR = 0.6f;
+			minSP = 30;
+			maxSP = 60;
 		}
-
-        ph = GetComponentInParent<PlayerHealth>();
+		
+		ph = GetComponentInParent<PlayerHealth>();
 
         select = GetComponent<ItemSpriteSelector>();
         consumables = new List<ItemStats>();
 
-        //converto gli scriptableObject in oggetti utilizzabili nel gioco
+        //converto gli scriptableObject in oggetti utilizzabili nel gioco ---------------------------------- SI PUO' FARE UN METODO APPOSITO
         foreach (Item c in consumablesSO)
         {
             ItemStats item = new ItemStats();
@@ -137,8 +129,46 @@ public class LootGenerator : MonoBehaviour {
             consumables.Add(item);
         }
 
-        actualRoom = GameManager.manager.ActualRoom;
-    }
+		//se è il primo livello assegno le armi di base al player
+		if (GameStats.stats.levelNumber == 1)
+		{
+			//imposto l'arma meele iniziale
+			ItemStats startingMeele = new ItemStats();
+			startingMeele.itemType = startingMeeleSO.type;
+			startingMeele.weaponType = startingMeeleSO.weaponType;
+			startingMeele.itemName = startingMeeleSO.itemName;
+			startingMeele.description = startingMeeleSO.itemDescription;
+
+			startingMeele.damage = (minMeeleDmg + maxMeeleDmg) / 2;
+
+			startingMeele.sprite = startingMeeleSO.icon;
+
+			//imposto l'arma ranged iniziale
+			ItemStats startingRanged = new ItemStats();
+			startingRanged.itemType = startingRangedSO.type;
+			startingRanged.weaponType = startingRangedSO.weaponType;
+			startingRanged.itemName = startingRangedSO.itemName;
+			startingRanged.description = startingRangedSO.itemDescription;
+
+			startingRanged.damage = (minRangedDmg + maxRangedDmg) / 2;
+			startingRanged.range = (minRng + maxRng) / 2;
+			startingRanged.fireRate = (minFR + maxFR) / 2;
+			startingRanged.shotSpeed = (minSP + maxSP) / 2;
+
+			startingRanged.sprite = startingRangedSO.icon;
+
+			Inventory.instance.AddSlot(startingMeele);
+			Inventory.instance.AddSlot(startingRanged);
+
+			//equipaggio l'arma nel primo slot
+			GameStats.stats.index = 0;
+			Debug.Log(GameStats.stats.itemList[GameStats.stats.index].itemName);
+			Inventory.instance.Equip();
+		}
+
+
+		actualRoom = GameManager.manager.ActualRoom;
+	}
 
     void Update()
     {

@@ -13,7 +13,13 @@ public class Item : ScriptableObject
     public int maxStack = 1;
     public int code;
 
-    public ItemStats.ItemType type = ItemStats.ItemType.basic ;
+	public float damage;
+	public float range;
+	public float fireRate;
+	public float shotSpeed;
+
+	public ItemStats.ItemType type = ItemStats.ItemType.basic ;
+	public ItemStats.WeaponType weaponType; 
     public ItemStats.ConsumableType consumableType;
 
 }
