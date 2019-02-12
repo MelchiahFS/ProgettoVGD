@@ -190,7 +190,6 @@ public class LevelManager : MonoBehaviour {
 			//--------------------------------------------------------------------------------------
 
 			StartCoroutine(WaitEnemyForFadeIn(enemy));
-			//StartCoroutine(FadeIn(enemy.GetComponent<SpriteRenderer>(), fadeTime));
         }
         room.enemyNumber = room.enemyCounter;
         room.enemyWaves--;
@@ -350,7 +349,6 @@ public class LevelManager : MonoBehaviour {
 	//Disegna i muri delle stanze e ne imposta i collider
 	void DrawWalls(Room room)
     {
-		Debug.Log("zacco i muri");
         Vector2 drawPos = new Vector2(room.gridPos.x - 1, room.gridPos.y - 1);
         for (int i = 0; i < roomSizeY + 4; i++) //altezza stanza + muro basso (1) + muro alto (3)
         {
@@ -1036,6 +1034,9 @@ public class LevelManager : MonoBehaviour {
 		float rate = 1 / fadeTime;
 		while (alpha < 1)
 		{
+			if (MusicManager.mm.musicController.volume > 0)
+				MusicManager.mm.musicController.volume -= Time.deltaTime * rate;
+
 			alpha += Time.deltaTime * rate;
 			cg.alpha = alpha;
 			yield return null;
@@ -1070,10 +1071,10 @@ public class LevelManager : MonoBehaviour {
 		}
 		else
 		{
-			room.enemyCounter = rnd.Next(3, 6);
-			room.enemyWaves = 1;
-			//room.enemyCounter = 0;
-			//room.enemyWaves = 0;
+			//room.enemyCounter = rnd.Next(3, 6);
+			//room.enemyWaves = 1;
+			room.enemyCounter = 0;
+			room.enemyWaves = 0;
 		}
 	}
 

@@ -9,9 +9,7 @@ public class LootGenerator : MonoBehaviour {
     private static System.Random rnd = new System.Random((int)DateTime.Now.Ticks);
     public float minMeeleDmg, maxMeeleDmg, minRangedDmg, maxRangedDmg, minRng, maxRng, minFR, maxFR, minSP, maxSP; //minimo e massimo danno (per meele e ranged), range, fire rate e shot speed
     private Array enumValues;
-    public List<Item> consumablesSO;
 	public Item startingMeeleSO, startingRangedSO;
-    public List<ItemStats> consumables;
     public GameObject sceneItemPrefab;
     private SceneItem si;
     private ItemSpriteSelector select;
@@ -98,75 +96,18 @@ public class LootGenerator : MonoBehaviour {
 		ph = GetComponentInParent<PlayerHealth>();
 
         select = GetComponent<ItemSpriteSelector>();
-        consumables = new List<ItemStats>();
-
-        //converto gli scriptableObject in oggetti utilizzabili nel gioco ---------------------------------- SI PUO' FARE UN METODO APPOSITO
-        foreach (Item c in consumablesSO)
-        {
-            ItemStats item = new ItemStats();
-
-            if (c.itemName == "Little Health Potion" || c.itemName == "Big Health Potion")
-            {
-                item.itemName = c.itemName;
-                item.sprite = c.icon;
-            }
-            else
-            {
-                if (rnd.Next(2) == 0)
-                {
-                    item.itemName = "Book of " + c.itemName;
-                    item.sprite = select.books[rnd.Next(select.books.Count)];
-                }
-                else
-                {
-                    item.itemName = "Scroll of " + c.itemName;
-                    item.sprite = select.scrolls[rnd.Next(select.scrolls.Count)];
-                }
-            }
-            item.description = c.itemDescription;
-            item.itemType = c.type;
-            item.consumableType = c.consumableType;
-            consumables.Add(item);
-        }
-
-		//se è il primo livello assegno le armi di base al player
+        
 		if (GameStats.stats.levelNumber == 1)
 		{
-			//imposto l'arma meele iniziale
-			ItemStats startingMeele = new ItemStats();
-			startingMeele.itemType = startingMeeleSO.type;
-			startingMeele.weaponType = startingMeeleSO.weaponType;
-			startingMeele.itemName = startingMeeleSO.itemName;
-			startingMeele.description = startingMeeleSO.itemDescription;
+			GameStats.stats.consumables = new List<ItemStats>();
 
-			startingMeele.damage = (minMeeleDmg + maxMeeleDmg) / 2;
+			//converto gli scriptableObject in oggetti utilizzabili nel gioco
+			InitializeConsumables();
 
-			startingMeele.sprite = startingMeeleSO.icon;
-
-			//imposto l'arma ranged iniziale
-			ItemStats startingRanged = new ItemStats();
-			startingRanged.itemType = startingRangedSO.type;
-			startingRanged.weaponType = startingRangedSO.weaponType;
-			startingRanged.itemName = startingRangedSO.itemName;
-			startingRanged.description = startingRangedSO.itemDescription;
-
-			startingRanged.damage = (minRangedDmg + maxRangedDmg) / 2;
-			startingRanged.range = (minRng + maxRng) / 2;
-			startingRanged.fireRate = (minFR + maxFR) / 2;
-			startingRanged.shotSpeed = (minSP + maxSP) / 2;
-
-			startingRanged.sprite = startingRangedSO.icon;
-
-			Inventory.instance.AddSlot(startingMeele);
-			Inventory.instance.AddSlot(startingRanged);
-
-			//equipaggio l'arma nel primo slot
-			GameStats.stats.index = 0;
-			Debug.Log(GameStats.stats.itemList[GameStats.stats.index].itemName);
-			Inventory.instance.Equip();
+			//assegno le armi di base al player
+			SetStartingWeapons();
 		}
-
-
+		
 		actualRoom = GameManager.manager.ActualRoom;
 	}
 
@@ -248,7 +189,7 @@ public class LootGenerator : MonoBehaviour {
 						Color c = Color.red;
 						c.a = 0;
 						writings.GetComponent<SpriteRenderer>().color = c;
-
+						MusicManager.mm.Victory();
 						StartCoroutine(GameManager.manager.lvlManager.FadeIn(writings.GetComponent<SpriteRenderer>(), 0.3f));
 					}
 				}
@@ -260,9 +201,10 @@ public class LootGenerator : MonoBehaviour {
 						//se sono nel 50% di probabilità di spawn della ricompensa, imposto una probabilità per decidere che ricompensa spawnare
 						int seed = rnd.Next(100);
 						if (seed < 100)
-							InstantiateWeapon(actualRoom.freePositions[rnd.Next(actualRoom.freePositions.Count)]);
-						else
-							InstantiateConsumable(actualRoom.freePositions[rnd.Next(actualRoom.freePositions.Count)]);
+							//	InstantiateWeapon(actualRoom.freePositions[rnd.Next(actualRoom.freePositions.Count)]);
+							//else
+							//InstantiateConsumable(actualRoom.freePositions[rnd.Next(actualRoom.freePositions.Count)]);
+							InstantiateMoney(actualRoom.freePositions[rnd.Next(actualRoom.freePositions.Count)]);
 					}
 				}
 				
@@ -289,11 +231,12 @@ public class LootGenerator : MonoBehaviour {
         }
     }
 
+	//spawna un consumable
     public void InstantiateConsumable(Vector3 pos)
     {
         GameObject cons = Instantiate(sceneItemPrefab, pos, Quaternion.identity) as GameObject;
         si = cons.GetComponent<SceneItem>();
-        si.Info = consumables[rnd.Next(consumables.Count)];
+        si.Info = GameStats.stats.consumables[rnd.Next(GameStats.stats.consumables.Count)];
         render = cons.GetComponent<SpriteRenderer>();
         render.sprite = si.Info.sprite;
         if (actualRoom.shopRoom)
@@ -313,6 +256,7 @@ public class LootGenerator : MonoBehaviour {
         StartCoroutine(GameManager.manager.lvlManager.FadeIn(render, 0.3f));
     }
 
+	//spawna un'arma
     public void InstantiateWeapon(Vector3 pos)
     {
         GameObject weapon = Instantiate(sceneItemPrefab, pos, Quaternion.identity) as GameObject;
@@ -340,6 +284,7 @@ public class LootGenerator : MonoBehaviour {
         StartCoroutine(GameManager.manager.lvlManager.FadeIn(render, 0.3f));
     }
 
+	//setta le statistiche dell'arma da spawnare
     private void SetWeaponStats(SceneItem i)
     {
         i.Info = new ItemStats();
@@ -401,6 +346,41 @@ public class LootGenerator : MonoBehaviour {
         }
         
     }
+
+	private void InstantiateMoney(Vector3 pos)
+	{
+		GameObject money = Instantiate(sceneItemPrefab, pos, Quaternion.identity) as GameObject;
+		si = money.GetComponent<SceneItem>();
+		ItemSpriteSelector selector = GetComponent<ItemSpriteSelector>();
+		render = money.GetComponent<SpriteRenderer>();
+		si.Info = new ItemStats();
+		si.Info.itemType = ItemStats.ItemType.money;
+		si.GetComponent<SpriteRenderer>().sortingLayerName = "Items";
+		si.Info.itemName = "Money";
+
+		if (rnd.Next(100) < 75)
+		{
+			si.Info.moneyAmount = 5;
+			si.Info.sprite = selector.money[rnd.Next(0,3)];
+		}
+		else if (rnd.Next(100) < 75)
+		{
+			si.Info.moneyAmount = 10;
+			si.Info.sprite = selector.money[rnd.Next(3,6)];
+		}
+		else
+		{
+			si.Info.moneyAmount = 20;
+			si.Info.sprite = selector.money[rnd.Next(6,9)];
+		}
+		si.GetComponent<SpriteRenderer>().sprite = si.Info.sprite;
+
+		Color color = render.color;
+		color.a = 0;
+		render.color = color;
+
+		StartCoroutine(GameManager.manager.lvlManager.FadeIn(render, 0.3f));
+	}
 
     private void InstantiateKey(Vector3 pos)
     {
@@ -540,4 +520,69 @@ public class LootGenerator : MonoBehaviour {
         }
     }
 
+	private void InitializeConsumables()
+	{
+		foreach (Item c in GameStats.stats.consumablesSO)
+		{
+			ItemStats item = new ItemStats();
+
+			if (c.itemName == "Little Health Potion" || c.itemName == "Big Health Potion")
+			{
+				item.itemName = c.itemName;
+				item.sprite = c.icon;
+			}
+			else
+			{
+				if (rnd.Next(2) == 0)
+				{
+					item.itemName = "Book of " + c.itemName;
+					item.sprite = select.books[rnd.Next(select.books.Count)];
+				}
+				else
+				{
+					item.itemName = "Scroll of " + c.itemName;
+					item.sprite = select.scrolls[rnd.Next(select.scrolls.Count)];
+				}
+			}
+			item.description = c.itemDescription;
+			item.itemType = c.type;
+			item.consumableType = c.consumableType;
+			GameStats.stats.consumables.Add(item);
+		}
+	}
+
+	private void SetStartingWeapons()
+	{
+		//imposto l'arma meele iniziale
+		ItemStats startingMeele = new ItemStats();
+		startingMeele.itemType = startingMeeleSO.type;
+		startingMeele.weaponType = startingMeeleSO.weaponType;
+		startingMeele.itemName = startingMeeleSO.itemName;
+		startingMeele.description = startingMeeleSO.itemDescription;
+
+		startingMeele.damage = (minMeeleDmg + maxMeeleDmg) / 2;
+
+		startingMeele.sprite = startingMeeleSO.icon;
+
+		//imposto l'arma ranged iniziale
+		ItemStats startingRanged = new ItemStats();
+		startingRanged.itemType = startingRangedSO.type;
+		startingRanged.weaponType = startingRangedSO.weaponType;
+		startingRanged.itemName = startingRangedSO.itemName;
+		startingRanged.description = startingRangedSO.itemDescription;
+
+		startingRanged.damage = (minRangedDmg + maxRangedDmg) / 2;
+		startingRanged.range = (minRng + maxRng) / 2;
+		startingRanged.fireRate = (minFR + maxFR) / 2;
+		startingRanged.shotSpeed = (minSP + maxSP) / 2;
+
+		startingRanged.sprite = startingRangedSO.icon;
+
+		Inventory.instance.AddSlot(startingMeele);
+		Inventory.instance.AddSlot(startingRanged);
+
+		//equipaggio l'arma nel primo slot
+		GameStats.stats.index = 0;
+		Inventory.instance.Equip();
+	}
 }

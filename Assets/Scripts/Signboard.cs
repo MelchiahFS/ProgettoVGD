@@ -6,11 +6,19 @@ using UnityEngine.SceneManagement;
 
 public class Signboard : MonoBehaviour {
 
-	private bool boardActive = false, ending = false;
+	private bool boardActive = false;
 	public GameObject signboard, inputHint, hidingPanel;
 	public Text signboardText;
 
+	public AudioClip open, close;
+	private AudioSource source;
+
 	private string[] levelBoards = { "you are in level 1", "this is the end" };
+
+	void Start()
+	{
+		source = GetComponent<AudioSource>();
+	}
 
 	void Update()
 	{
@@ -22,6 +30,7 @@ public class Signboard : MonoBehaviour {
 				{
 					if (!boardActive)
 					{
+						source.PlayOneShot(open);
 						boardActive = true;
 						signboard.SetActive(true);
 						inputHint.SetActive(true);
@@ -43,6 +52,7 @@ public class Signboard : MonoBehaviour {
 					}
 					else
 					{
+						source.PlayOneShot(close);
 						boardActive = false;
 						signboard.SetActive(false);
 						inputHint.SetActive(false);

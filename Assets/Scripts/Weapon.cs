@@ -11,7 +11,7 @@ public class Weapon : MonoBehaviour {
     private BulletController bulletStats;
     Collider2D[] hitObjects;
     public bool isAttacking = false, isShooting = false;
-    private float attackDuration = 0.5f;
+    public float attackDuration = 0.4f;
     private float shootTimer = 0;
     private float attackTimer = 0;
     public List<ItemStats> weaponsStats; //contiene le informazioni delle armi in possesso
@@ -38,7 +38,6 @@ public class Weapon : MonoBehaviour {
         ph = GetComponentInParent<PlayerHealth>();
         weaponsStats = new List<ItemStats>();
         source = GetComponentInParent<AudioSource>();
-
         //si potrebber creare uno scriptableObject per le armi iniziali 
         ItemStats meele = new ItemStats(ItemStats.ItemType.weapon, ItemStats.WeaponType.meele, 15);
         weaponsStats.Add(meele);
@@ -183,7 +182,7 @@ public class Weapon : MonoBehaviour {
         }
     }
 
-    //Arma da fuoco
+    //esegue l'attacco relativo al tipo di arma da fuoco equipaggiata
     public void Shoot(string direction, Vector3 playerPos, float shotSpeed)
     {
         source.PlayOneShot(shoot);
@@ -372,6 +371,7 @@ public class Weapon : MonoBehaviour {
                 }
 
             }
+
             if (hitEnemy)
             {
                 source.PlayOneShot(cut);
@@ -385,6 +385,7 @@ public class Weapon : MonoBehaviour {
         }
 
     }
+
 
     public void SplitBullet(ItemStats weapon, Vector3 position)
     {
@@ -434,16 +435,17 @@ public class Weapon : MonoBehaviour {
         actualRoom.toSort.Add(bullet4);
     }
 
+	//disegna un cerchio nel raggio d'azione dell'attacco meele
     void OnDrawGizmos()
     {
         if (isAttacking)
         {
             Gizmos.color = Color.white;
             Gizmos.DrawWireSphere(attackStart, radius);
-        }
-        
+        } 
     }
 
+	//utilizzata da Inventory per equipaggiare un'arma dell'inventario
     public void EquipWeapon(ItemStats weapon)
     {
         JsonUtility.FromJsonOverwrite(JsonUtility.ToJson(weapon), actualWeapon);

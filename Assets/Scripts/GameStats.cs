@@ -8,10 +8,14 @@ public class GameStats : MonoBehaviour
 
 	public int levelNumber;
 	public int playerMoney;
+	public int playerPoints;
 	public float maxHealth;
 	public float playerHealth;
 	public int count;
 	public int index;
+
+	public List<Item> consumablesSO;
+	public List<ItemStats> consumables;
 
 	public ItemStats[] itemList = new ItemStats[20];
 	public int equippedSlot;

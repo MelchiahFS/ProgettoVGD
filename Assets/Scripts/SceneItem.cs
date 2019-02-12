@@ -12,12 +12,20 @@ public class SceneItem : MonoBehaviour
     public Sprite sprite;
     private ItemStats info;
     private bool contact = false;
+	private GameObject player;
+	private Text money;
 
     private AudioSource source;
 
     void Start()
     {
         source = GameObject.Find("InventoryHandler").GetComponent<AudioSource>();
+		player = GameObject.Find("Player");
+		foreach (Text t in player.GetComponentsInChildren<Text>())
+		{
+			if (t.gameObject.name == "Money")
+				money = t;
+		}
     }
 
     void Update()
@@ -28,20 +36,17 @@ public class SceneItem : MonoBehaviour
             {
                 if (info.toBuy)
                 {
-                    PlayerHealth ph = GameObject.Find("Player").GetComponent<PlayerHealth>();
-
-					//if (GameManager.manager.playerMoney >= info.price)
+                    PlayerHealth ph = player.GetComponent<PlayerHealth>();
+					
 					if (GameStats.stats.playerMoney >= info.price)
 					{
                         ItemStats item = new ItemStats();
                         JsonUtility.FromJsonOverwrite(JsonUtility.ToJson(info), item);
                         if (Inventory.instance.AddSlot(item))
                         {
-							//GameManager.manager.playerMoney -= info.price;
 							GameStats.stats.playerMoney -= info.price;
-
-							//ph.gameObject.GetComponentInChildren<Text>().text = GameManager.manager.playerMoney.ToString();
-							ph.gameObject.GetComponentInChildren<Text>().text = GameStats.stats.playerMoney.ToString();
+							
+							money.text = "$" + GameStats.stats.playerMoney.ToString();
 
 							source.PlayOneShot(Inventory.instance.buyItem);
                             Destroy(gameObject);
@@ -59,35 +64,48 @@ public class SceneItem : MonoBehaviour
                 }
                 else
                 {
-                    if (info.itemType != ItemStats.ItemType.key)
-                    {
-                        ItemStats item = new ItemStats();
-                        JsonUtility.FromJsonOverwrite(JsonUtility.ToJson(info), item);
-                        if (Inventory.instance.AddSlot(item))
-                        {
-                            source.PlayOneShot(Inventory.instance.pickItem);
-                            Destroy(gameObject);
-                        }
-                        else
-                        {
-                            source.PlayOneShot(Inventory.instance.empty);
-                        }
 
-                    }
-                    else
-                    {
-                        GameObject player = GameObject.Find("Player");
-                        GameObject container = player.transform.Find("HealthBar").gameObject;
-                        GameObject key = container.transform.Find("Key").gameObject;
-                        key.GetComponent<Image>().sprite = info.sprite;
-                        key.GetComponent<Image>().enabled = true;
+					if (info.itemType == ItemStats.ItemType.key)
+					{
+						GameObject container = player.transform.Find("HealthBar").gameObject;
+						GameObject key = container.transform.Find("Key").gameObject;
+						key.GetComponent<Image>().sprite = info.sprite;
+						key.GetComponent<Image>().enabled = true;
 
-                        source.PlayOneShot(Inventory.instance.pickKey);
+						source.PlayOneShot(Inventory.instance.pickKey);
 
-                        player.GetComponent<RoomChange>().hasKey = true;
-                        Destroy(gameObject);
-                    }
-                }
+						player.GetComponent<RoomChange>().hasKey = true;
+						Destroy(gameObject);
+
+					}
+					else
+					{
+						if (info.itemType == ItemStats.ItemType.money)
+						{
+							GameStats.stats.playerMoney += info.moneyAmount;
+
+							money.text = "$" + GameStats.stats.playerMoney.ToString();
+
+							source.PlayOneShot(Inventory.instance.buyItem);
+							Destroy(gameObject);
+						}
+						else
+						{
+							ItemStats item = new ItemStats();
+							JsonUtility.FromJsonOverwrite(JsonUtility.ToJson(info), item);
+							if (Inventory.instance.AddSlot(item))
+							{
+								source.PlayOneShot(Inventory.instance.pickItem);
+								Destroy(gameObject);
+							}
+							else
+							{
+								source.PlayOneShot(Inventory.instance.empty);
+							}
+						}
+						
+					}
+				}
 
             }
         }

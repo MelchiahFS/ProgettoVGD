@@ -65,6 +65,7 @@ public class PauseMenu : MonoBehaviour {
 	public void Resume()
 	{
         source.PlayOneShot(exit);
+		MusicManager.mm.DimMusic(false);
 		pauseMenuUI.SetActive(false);
 		hidingPanel.SetActive(false);
 		EventSystem.current.SetSelectedGameObject(null);
@@ -92,7 +93,8 @@ public class PauseMenu : MonoBehaviour {
     public void Pause()
     {
         source.PlayOneShot(enter);
-        if (GameManager.manager.inventoryActive)
+		MusicManager.mm.DimMusic(true);
+		if (GameManager.manager.inventoryActive)
         {
             lastInventoryButton = EventSystem.current.currentSelectedGameObject;
             

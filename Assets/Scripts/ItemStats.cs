@@ -5,12 +5,13 @@ using UnityEngine;
 [System.Serializable]
 public class ItemStats {
 
-    public enum ItemType { emptyslot, basic, weapon, consumable, key}; //il tipo di oggetto
+    public enum ItemType { emptyslot, basic, weapon, consumable, key, money}; //il tipo di oggetto
     public enum ConsumableType { healthUp25, healthUp50, slowDownAll, slowDownSelf, poisonAll, poisonSelf, damageAll, damageSelf,
         flipAttack, flipMovement, invincible, speedUpSelf, speedUpAll, doubleDamage, halfDamage, getDoubleDamage};
     public enum WeaponType { meele, ranged }; //il tipo di arma
     public enum FireType { single, multiple, splitShot, bidirectional}; //se l'arma è ranged allora viene controllato il tipo di fuoco
     public enum BulletType { normal, poisonous, slowing, burning }; //il tipo di proiettile;
+
 
     public ItemType itemType;
     public ConsumableType consumableType;
@@ -18,17 +19,24 @@ public class ItemStats {
     public FireType fireType;
     public BulletType bulletType;
 
+	//informazioni sull'oggetto per la gestione dell'inventario
     public Sprite sprite;
     public string itemName;
     public string description;
     public int currentStack = 1;
     public int maxStack = 5;
+	public bool used = false;
 
+	//valore relativo al quantitativo di soldi
+	public int moneyAmount;
+
+	//valori relativi alle armi
     public float damage;
     public float range;
     public float fireRate;
     public float shotSpeed;
 
+	//valori per la gestione dello shop
     public bool toBuy;
     public int price;
 

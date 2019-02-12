@@ -7,7 +7,7 @@ using UnityEngine.UI;
 public class PlayerHealth : MonoBehaviour {
 
     private static System.Random rnd = new System.Random((int)DateTime.Now.Ticks);
-    private float startingHealth = 300, invTimer = 0, poisonDamageRate = 1, poisonDamage = 3, actualSpeed;
+    private float invTimer = 0, poisonDamageRate = 1, poisonDamage = 3, actualSpeed;
     private float invincibilityTime = 1.5f; //periodo di invulnerabilità dopo aver ricevuto danno
     public float currentHealth;
     private Animator animator;
@@ -23,6 +23,7 @@ public class PlayerHealth : MonoBehaviour {
     public Material hitColor, defaultMaterial;
     private GameObject iconsContainer, fastIcon, slowIcon, strongIcon, weakIcon, invIcon, vulnIcon, flipAttIcon, flipMovIcon, poisonIcon;
     private AnchorIcons anchor;
+	private Text money, points;
 
     private AudioSource source;
     public AudioClip hurt, hurt1, hurt2, dead;
@@ -48,7 +49,15 @@ public class PlayerHealth : MonoBehaviour {
 		//slider.value = 1000;
 		//currentHealth = 1000;
 
-		GetComponentInChildren<Text>().text = GameStats.stats.playerMoney.ToString();
+		foreach (Text t in GetComponentsInChildren<Text>())
+		{
+			if (t.gameObject.name == "Money")
+				money = t;
+			else if (t.gameObject.name == "Points")
+				points = t;
+		}
+		money.text = "$" + GameStats.stats.playerMoney.ToString();
+		points.text = "PP: " + GameStats.stats.playerPoints.ToString();
 
 		playerColor = rend.color;
 
@@ -114,22 +123,20 @@ public class PlayerHealth : MonoBehaviour {
 
     private void PlayerDeath()
     {
+		MusicManager.mm.musicController.Stop();
         source.PlayOneShot(dead);
-
-		//GameManager.manager.dead = true;
-		//isDead = true;
 		GameManager.manager.isDying = true;
 		animator.SetBool("isDead", true);
         this.enabled = false;
         foreach (Collider2D c in GetComponents<Collider2D>())
             c.enabled = false;
-        //GameManager.manager.Invoke("ReturnToMenu", 2f);
     }
 
 	public void SignalPlayerDeath()
 	{
 		GameManager.manager.dead = true;
 		isDead = true;
+		MusicManager.mm.GameOver();
 	}
 
     //crea un effetto flash intermittente quando il player viene colpito

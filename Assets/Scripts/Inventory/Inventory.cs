@@ -14,7 +14,6 @@ public class Inventory : MonoBehaviour {
 
     private ItemStats emptySlot;
     
-    public int index;
     public Text itemName;  //Nome
     public Text use; //Tasto Usa - Equipaggia
     public Text isWeaponEquipped; //L'arma è equipaggiata?
@@ -65,12 +64,10 @@ public class Inventory : MonoBehaviour {
         isWeaponEquipped.text = "";
         emptySlot = new ItemStats();
         emptySlot.itemType = ItemStats.ItemType.emptyslot;
-        //InitializeItemList();
         UpdateSlotUI();
         if(IsInventoryEmpty())
             ResetAllSlots();
-
-
+		
 	}
 
 	//Controlla se l'inventario è vuoto
@@ -175,6 +172,11 @@ public class Inventory : MonoBehaviour {
 		//se l'oggetto selezionato è un consumable
 		if (GameStats.stats.itemList[GameStats.stats.index].itemType == ItemStats.ItemType.consumable)
 		{
+
+			//setto il consumable come già utilizzato, in modo da mostrarne le info nel menu
+			ItemStats s = GameStats.stats.consumables.Find(x => x.itemName.Equals(GameStats.stats.itemList[GameStats.stats.index].itemName));
+			s.used = true;
+
 			//applica gli effetti
 			loot.ApplyEffect(GameStats.stats.itemList[GameStats.stats.index].consumableType);
 			
@@ -214,7 +216,6 @@ public class Inventory : MonoBehaviour {
 
 			//playerStats.Inizializate(info);
 			UpdateSlotUI();
-			Debug.Log("numero oggetti inventario:" + GameStats.stats.count);
 
 			return true;
 		}
@@ -251,7 +252,6 @@ public class Inventory : MonoBehaviour {
 
     public void ShowMenu(int i)
     {
-		Debug.Log("numero cella: " + i);
 		if (GameStats.stats.itemList[i].itemType != ItemStats.ItemType.emptyslot)
 		{
             lastInventoryButton = EventSystem.current.currentSelectedGameObject;
@@ -279,9 +279,28 @@ public class Inventory : MonoBehaviour {
 				dropButton.SetActive(true);
 			}
 
-            EventSystem.current.SetSelectedGameObject(buttonMenu);
-			description.text = GameStats.stats.itemList[i].description;
-			itemName.text = GameStats.stats.itemList[i].itemName;
+
+			//solo se il consumable è già stato utilizzato mostro le informazioni
+			if (GameStats.stats.itemList[i].itemType == ItemStats.ItemType.consumable)
+			{
+				if (GameStats.stats.consumables.Find(x => x.itemName.Equals(GameStats.stats.itemList[i].itemName)).used)
+				{
+					itemName.text = GameStats.stats.itemList[i].itemName;
+					description.text = GameStats.stats.itemList[i].description;
+				}
+				else
+				{
+					itemName.text = "???";
+					description.text = "Unknown effects";
+				}
+			}
+			else
+			{
+				itemName.text = GameStats.stats.itemList[i].itemName;
+				description.text = GameStats.stats.itemList[i].description;
+			}
+
+			EventSystem.current.SetSelectedGameObject(buttonMenu);
 			GameStats.stats.index = i;
             source.PlayOneShot(enter);
             Canvas.ForceUpdateCanvases();
@@ -293,21 +312,11 @@ public class Inventory : MonoBehaviour {
     }
 
 
-	//private void InitializeItemList()
-	//{
-	//    for (int i = 0; i < GameManager.manager.itemList.Length; i++)
-	//    {
-	//        GameManager.manager.itemList[i] = new ItemStats();
-	//        GameManager.manager.itemList[i].itemType = ItemStats.ItemType.emptyslot;
-	//    }
-	//}
-
 	public void HideMenu()
 	{
 		menuShown = false;
 		GameManager.manager.inventoryMenuActive = false;
 		inventoryMenu.SetActive(false);
-		//EventSystem.current.SetSelectedGameObject(button);
 		EventSystem.current.SetSelectedGameObject(lastInventoryButton);
 	}
 

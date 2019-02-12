@@ -34,7 +34,12 @@ public class EnemyHealth : MonoBehaviour {
     void Start ()
     {
         source = GetComponent<AudioSource>();
-        player = GameObject.FindGameObjectWithTag("Player");
+        player = GameObject.Find("Player");
+		foreach (Text t in player.GetComponentsInChildren<Text>())
+		{
+			if (t.gameObject.name == "Points")
+				playerPoints = t;
+		}
         if (!GetComponent<EnemyController>().flying)
             astar = GetComponent<AStarAI>();
         playerHealth = player.GetComponent<PlayerHealth>();
@@ -133,9 +138,8 @@ public class EnemyHealth : MonoBehaviour {
             slider.value = 0;
 
             //incremento il punteggio del player
-            playerPoints = player.GetComponentInChildren<Text>();
-			GameStats.stats.playerMoney += points;
-			playerPoints.text = GameStats.stats.playerMoney.ToString();
+			GameStats.stats.playerPoints += points;
+			playerPoints.text = "PP: " + GameStats.stats.playerPoints.ToString();
 			if (!dying)
                 StartCoroutine(Die());
         }
