@@ -34,10 +34,9 @@ public class GameOver : MonoBehaviour
 		{
 			EventSystem.current.SetSelectedGameObject(lastButton);
 		}
-		else
-		{
-			lastButton = EventSystem.current.currentSelectedGameObject;
-		}
+		
+		lastButton = EventSystem.current.currentSelectedGameObject;
+		
 
 		if (isGameOver)
 		{
@@ -50,6 +49,7 @@ public class GameOver : MonoBehaviour
 
 	public void NewGame()
 	{
+		gameOverScreen.SetActive(false);
 		source.PlayOneShot(select);
 		Destroy(GameStats.stats.gameObject);
 		StartCoroutine(GameManager.manager.lvlManager.FadeOffToNewScene(1f, "LoadingScreen"));
@@ -57,6 +57,7 @@ public class GameOver : MonoBehaviour
 
 	public void BackToMainMenu()
 	{
+		gameOverScreen.SetActive(false);
 		source.PlayOneShot(select);
 		Destroy(GameStats.stats.gameObject);
 		StartCoroutine(GameManager.manager.lvlManager.FadeOffToNewScene(1f, "Menu"));

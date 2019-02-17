@@ -24,6 +24,7 @@ public class RoomChange : MonoBehaviour {
 
     void Start()
     {
+		selector = TileSpriteSelector.tss;
         hasKey = true;
         minimap = GameManager.manager.GetComponent<MiniMapController>();
         actualRoom = GameManager.manager.ActualRoom;
@@ -419,14 +420,12 @@ public class RoomChange : MonoBehaviour {
         {
             if (actualRoom.openUp)
             {
-                selector = door.GetComponent<TileSpriteSelector>();
                 door.GetComponent<SpriteRenderer>().sprite = selector.closedDoorUp;
                 door.GetComponent<BoxCollider2D>().enabled = true;
                 actualRoom.openUp = false;
             }
             else
             {
-                selector = door.GetComponent<TileSpriteSelector>();
                 door.GetComponent<SpriteRenderer>().sprite = selector.openDoorUp;
                 door.GetComponent<BoxCollider2D>().enabled = false;
                 actualRoom.openUp = true;
@@ -437,14 +436,12 @@ public class RoomChange : MonoBehaviour {
         {
             if (actualRoom.openDown)
             {
-                selector = door.GetComponent<TileSpriteSelector>();
                 door.GetComponent<SpriteRenderer>().sprite = selector.closedDoorDown;
                 door.GetComponent<BoxCollider2D>().enabled = true;
                 actualRoom.openDown = false;
             }
             else
             {
-                selector = door.GetComponent<TileSpriteSelector>();
                 door.GetComponent<SpriteRenderer>().sprite = selector.openDoorDown;
                 door.GetComponent<BoxCollider2D>().enabled = false;
                 actualRoom.openDown = true;
@@ -454,14 +451,12 @@ public class RoomChange : MonoBehaviour {
         {
             if (actualRoom.openLeft)
             {
-                selector = door.GetComponent<TileSpriteSelector>();
                 door.GetComponent<SpriteRenderer>().sprite = selector.closedDoorLeft;
                 door.GetComponent<BoxCollider2D>().enabled = true;
                 actualRoom.openLeft = false;
             }
             else
             {
-                selector = door.GetComponent<TileSpriteSelector>();
                 door.GetComponent<SpriteRenderer>().sprite = selector.openDoorLeft;
                 door.GetComponent<BoxCollider2D>().enabled = false;
                 actualRoom.openLeft = true;
@@ -471,14 +466,12 @@ public class RoomChange : MonoBehaviour {
         {
             if (actualRoom.openRight)
             {
-                selector = door.GetComponent<TileSpriteSelector>();
                 door.GetComponent<SpriteRenderer>().sprite = selector.closedDoorRight;
                 door.GetComponent<BoxCollider2D>().enabled = true;
                 actualRoom.openRight = false;
             }
             else
             {
-                selector = door.GetComponent<TileSpriteSelector>();
                 door.GetComponent<SpriteRenderer>().sprite = selector.openDoorRight;
                 door.GetComponent<BoxCollider2D>().enabled = false;
                 actualRoom.openRight = true;

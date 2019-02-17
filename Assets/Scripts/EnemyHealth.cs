@@ -47,6 +47,28 @@ public class EnemyHealth : MonoBehaviour {
         defaultMaterial = rend.material;
         hb = transform.Find("EnemyHealthBar").gameObject;
         slider = GetComponentInChildren<Slider>();
+
+		switch (GameStats.stats.levelNumber)
+		{
+			case 2:
+				startingHealth += startingHealth / 2;
+				damage += damage * 20 / 100;
+				break;
+			case 3:
+				startingHealth += startingHealth;
+				damage += damage * 40 / 100;
+				break;
+			case 4:
+				startingHealth += startingHealth + startingHealth / 2;
+				damage += damage * 60 / 100;
+				break;
+			case 5:
+				startingHealth += startingHealth * 2;
+				damage += damage * 80 / 100;
+				break;
+
+		}
+
         slider.minValue = 0;
         slider.maxValue = startingHealth;
         slider.value = startingHealth;

@@ -35,9 +35,7 @@ public class SceneItem : MonoBehaviour
             if (Input.GetKeyDown(KeyCode.E))
             {
                 if (info.toBuy)
-                {
-                    PlayerHealth ph = player.GetComponent<PlayerHealth>();
-					
+                {					
 					if (GameStats.stats.playerMoney >= info.price)
 					{
                         ItemStats item = new ItemStats();

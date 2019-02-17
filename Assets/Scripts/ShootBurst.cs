@@ -1,10 +1,12 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System;
 
-public class ShootBurst : MonoBehaviour {
-
-    public float shotSpeed, timeBetweenBursts, bulletNumber, fireRate, damage, range, distance;
+public class ShootBurst : MonoBehaviour
+{
+	private static System.Random rnd = new System.Random((int)DateTime.Now.Ticks);
+	public float shotSpeed, timeBetweenBursts, bulletNumber, fireRate, damage, range, distance;
     private float counter, burstCounter;
     private EnemyBullet enemyBullet;
     private Transform playerTransform;
@@ -17,9 +19,11 @@ public class ShootBurst : MonoBehaviour {
 
     void Start()
     {
-        playerTransform = GameObject.FindGameObjectWithTag("Player").transform;
-        burstCounter = timeBetweenBursts;
-    }
+		//playerTransform = GameObject.FindGameObjectWithTag("Player").transform;
+		playerTransform = GameManager.manager.playerReference.transform;
+		burstCounter = timeBetweenBursts;
+		sprite = ItemSpriteSelector.iss.bullets[rnd.Next(ItemSpriteSelector.iss.bullets.Count)];
+	}
 
 
     void Update()

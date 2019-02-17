@@ -1,10 +1,12 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System;
 
-public class ShootBidirectional : MonoBehaviour {
-
-    public float shotSpeed, fireRate, damage, range;
+public class ShootBidirectional : MonoBehaviour
+{
+	private static System.Random rnd = new System.Random((int)DateTime.Now.Ticks);
+	public float shotSpeed, fireRate, damage, range;
     private float counter;
     private EnemyBullet enemyBullet;
     public GameObject bulletPrefab;
@@ -19,7 +21,8 @@ public class ShootBidirectional : MonoBehaviour {
         offset = new Vector3(0, GetComponent<EnemyController>().RealOffset, 0);
         counter = 0;
         lastFramePosition = transform.position + offset;
-    }
+		sprite = ItemSpriteSelector.iss.bullets[rnd.Next(ItemSpriteSelector.iss.bullets.Count)];
+	}
 
 
     void Update ()

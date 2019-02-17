@@ -21,6 +21,7 @@ GameObject:
   - component: {fileID: 114236140035576898}
   - component: {fileID: 114053256988536578}
   - component: {fileID: 82076256537180354}
+  - component: {fileID: 214141987093853898}
   m_Layer: 0
   m_Name: Death Knight
   m_TagString: Untagged
@@ -411,3 +412,23 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+--- !u!114 &214141987093853898
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1276624243195242}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f6c31a224a4aa2843942064d97f46ceb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  shotSpeed: 4
+  fireRate: 1
+  damage: 3
+  range: 5
+  distance: 5
+  bulletPrefab: {fileID: 1388309921085098, guid: baf262c6dfd82d8488e5c12aa4fb31de,
+    type: 3}
+  sprite: {fileID: 0}

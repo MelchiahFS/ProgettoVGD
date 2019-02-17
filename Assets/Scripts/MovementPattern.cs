@@ -14,12 +14,12 @@ public class MovementPattern : MonoBehaviour {
     private EnemyController controller;
     public Room actualRoom;
     public AStarAI astar;
-    private System.Random rnd;
-    
-    private float timeCounter = 0;
-    public float changeTargetTime = 3; //il periodo di tempo dopo cui il nemico cambia direzione
-    public float chargeTime = 3; //tempo di caricamento della carica verso il nemico
-    public float playerDistance = 5; //la distanza entro il quale il nemico inizia a seguire il player
+    private System.Random rnd = new System.Random((int)DateTime.Now.Ticks);
+
+	private float timeCounter = 0;
+    public float changeTargetTime; //il periodo di tempo dopo cui il nemico cambia direzione
+    public float chargeTime; //tempo di caricamento della carica verso il nemico
+    public float playerDistance; //la distanza entro il quale il nemico inizia a seguire il player
     public float speed; //velocità in unità al secondo
     private float customSpeed;
 
@@ -36,9 +36,8 @@ public class MovementPattern : MonoBehaviour {
     // Use this for initialization
     void Start ()
     {
-        player = GameObject.FindGameObjectWithTag("Player");
+		player = GameManager.manager.playerReference;
         actualRoom = GameManager.manager.ActualRoom;
-        rnd = new System.Random((int)DateTime.Now.Ticks);
         randomPosition = actualRoom.freePositions[rnd.Next(actualRoom.freePositions.Count)];
         controller = GetComponent<EnemyController>();
     }

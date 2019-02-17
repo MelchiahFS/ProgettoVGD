@@ -1,10 +1,12 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System;
 
-public class ShootMultiple : MonoBehaviour {
-
-    public float shotSpeed, fireRate, damage, range, distance;
+public class ShootMultiple : MonoBehaviour
+{
+	private static System.Random rnd = new System.Random((int)DateTime.Now.Ticks);
+	public float shotSpeed, fireRate, damage, range, distance;
     private float counter;
     private EnemyBullet enemyBullet;
     private Transform playerTransform;
@@ -16,9 +18,11 @@ public class ShootMultiple : MonoBehaviour {
 
     void Start()
     {
-        playerTransform = GameObject.FindGameObjectWithTag("Player").transform;
-        counter = fireRate;
-    }
+		//playerTransform = GameObject.FindGameObjectWithTag("Player").transform;
+		playerTransform = GameManager.manager.playerReference.transform;
+		counter = fireRate;
+		sprite = ItemSpriteSelector.iss.bullets[rnd.Next(ItemSpriteSelector.iss.bullets.Count)];
+	}
 
 
     void Update()

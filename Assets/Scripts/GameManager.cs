@@ -12,7 +12,7 @@ public class GameManager : MonoBehaviour {
     public bool gamePause = false, inventoryActive = false, inventoryMenuActive = false, pauseMenuActive = false, signboardActive = false;
     public bool dead = false, isDying = false, ending = false;
 	public bool signboardContact = false;
-
+	public GameObject playerReference;
 
 	private void Awake()
 	{
@@ -30,6 +30,7 @@ public class GameManager : MonoBehaviour {
 		actualPos = lvlManager.ActualPos;
 		ActualRoom = lvlManager.InstantiatePlayer();
 		GetComponent<MiniMapController>().enabled = false;
+		playerReference = GameObject.Find("Player");
 	}
 
     //Carica il nuovo livello
@@ -39,15 +40,6 @@ public class GameManager : MonoBehaviour {
 		StartCoroutine(GameManager.manager.lvlManager.FadeOffToNewScene(1f, "LoadingScreen"));
 	}
 
-    private void ReturnToMenu()
-    {
-        Destroy(gameObject);
-        SceneManager.LoadScene("Menu", LoadSceneMode.Single);
-    }
-
-
-
-    
     //viene aggiornata la posizione della stanza attuale nella griglia delle stanze
     public void UpdateActualRoom(char room)
     {

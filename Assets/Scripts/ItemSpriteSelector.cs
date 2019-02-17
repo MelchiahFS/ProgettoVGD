@@ -2,7 +2,9 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ItemSpriteSelector : MonoBehaviour {
+public class ItemSpriteSelector : MonoBehaviour
+{
+	public static ItemSpriteSelector iss;
 
     public List<Sprite> meeleWeapons;
     public List<Sprite> rangedWeapons;
@@ -11,4 +13,17 @@ public class ItemSpriteSelector : MonoBehaviour {
     public List<Sprite> scrolls;
     public List<Sprite> books;
     public List<Sprite> keys;
+	public List<Sprite> bullets;
+
+	void Awake()
+	{
+		if (iss == null)
+		{
+			iss = this;
+		}
+		else if (iss != this)
+		{
+			Destroy(gameObject);
+		}
+	}
 }

@@ -7,6 +7,7 @@ using UnityEngine.EventSystems;
 public class Inventory : MonoBehaviour {
 
     public static Inventory instance;
+
     public LootGenerator loot;
     public Weapon weapon;
 
@@ -51,16 +52,13 @@ public class Inventory : MonoBehaviour {
 				Destroy(this);
 			}
 		}
-
-		loot = GameObject.Find("EquippedWeapon").GetComponent<LootGenerator>();
-		weapon = GameObject.Find("EquippedWeapon").GetComponent<Weapon>();
+		
 		source = GetComponent<AudioSource>();
-
 	}
 
 	void Start()
     {
-        menuShown = false;
+		menuShown = false;
         isWeaponEquipped.text = "";
         emptySlot = new ItemStats();
         emptySlot.itemType = ItemStats.ItemType.emptyslot;
@@ -70,16 +68,6 @@ public class Inventory : MonoBehaviour {
 		
 	}
 
-	//Controlla se l'inventario è vuoto
-    private bool IsInventoryEmpty()
-    {
-		for (int i = 0; i < GameStats.stats.itemList.Length; i++)
-		{
-			if (GameStats.stats.itemList[i].itemType != ItemStats.ItemType.emptyslot)
-				return false;
-        }
-        return true;
-    }
 
     void Update()
     {
@@ -143,8 +131,19 @@ public class Inventory : MonoBehaviour {
 			}
 		}
 	}
+	
+	//Controlla se l'inventario è vuoto
+	private bool IsInventoryEmpty()
+	{
+		for (int i = 0; i < GameStats.stats.itemList.Length; i++)
+		{
+			if (GameStats.stats.itemList[i].itemType != ItemStats.ItemType.emptyslot)
+				return false;
+		}
+		return true;
+	}
 
-    public void ResumeI()
+	public void ResumeI()
     {
         inventoryUI.SetActive(false);
         Time.timeScale = 1f;
@@ -178,6 +177,7 @@ public class Inventory : MonoBehaviour {
 			s.used = true;
 
 			//applica gli effetti
+			loot = GameManager.manager.playerReference.GetComponentInChildren<LootGenerator>();
 			loot.ApplyEffect(GameStats.stats.itemList[GameStats.stats.index].consumableType);
 			
 			//se c'è solo un oggetto nello stack lo rimuovo dall'inventario
@@ -204,6 +204,7 @@ public class Inventory : MonoBehaviour {
 
     public void Equip()
     {
+		weapon = GameManager.manager.playerReference.GetComponentInChildren<Weapon>();
 		weapon.EquipWeapon(GameStats.stats.itemList[GameStats.stats.index]);
 		GameStats.stats.equippedSlot = GameStats.stats.index;
 	}

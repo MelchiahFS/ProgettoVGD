@@ -1,10 +1,12 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System;
 
-public class ShootPlayer : MonoBehaviour {
-
-    public float shotSpeed, actualShotSpeed, fireRate, damage, range, distance;
+public class ShootPlayer : MonoBehaviour
+{
+	private static System.Random rnd = new System.Random((int)DateTime.Now.Ticks);
+	public float shotSpeed/*, actualShotSpeed*/, fireRate, damage, range, distance;
     private float counter;
     private EnemyBullet enemyBullet;
     private Transform playerTransform;
@@ -16,8 +18,10 @@ public class ShootPlayer : MonoBehaviour {
 
 	void Start ()
     {
-        playerTransform = GameObject.FindGameObjectWithTag("Player").transform;
-        counter = fireRate;
+		//playerTransform = GameObject.FindGameObjectWithTag("Player").transform;
+		playerTransform = GameManager.manager.playerReference.transform;
+		sprite = ItemSpriteSelector.iss.bullets[rnd.Next(ItemSpriteSelector.iss.bullets.Count)];
+		counter = fireRate;
 	}
 	
 
@@ -32,8 +36,6 @@ public class ShootPlayer : MonoBehaviour {
                 Vector3 direction = playerTransform.position - centerPoint;
                 Vector3 shotStartPoint = centerPoint + direction.normalized / 2;
 
-                //Debug.DrawRay(shotStartPoint, direction, Color.white);
-
                 hit = Physics2D.Raycast(shotStartPoint, direction, range, ~LayerMask.GetMask("Enemy"));
                 if ((hit.collider != null && hit.collider.gameObject.tag == "Player") || GetComponent<EnemyController>().flying)
                 {
@@ -41,6 +43,7 @@ public class ShootPlayer : MonoBehaviour {
                     rb = bullet.GetComponent<Rigidbody2D>();
                     rb.velocity = direction.normalized * shotSpeed;
                     enemyBullet = bullet.GetComponent<EnemyBullet>();
+					
                     enemyBullet.SetStats(damage, range, sprite, transform.position, GetComponent<EnemyController>().flying);
 
                     actualRoom = GameManager.manager.ActualRoom;

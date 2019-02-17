@@ -3,6 +3,8 @@ using UnityEngine;
 
 public class TileSpriteSelector : MonoBehaviour
 {
+	public static TileSpriteSelector tss;
+
     //queste tiles sono tutte relative al pavimento
     public Sprite outerUpLeftCorner,
         //innerUpLeftCorner, 
@@ -75,5 +77,16 @@ public class TileSpriteSelector : MonoBehaviour
 
 	public Sprite greyBlock;
     
+	void Awake()
+	{
+		if (tss == null)
+		{
+			tss = this;
+		}
+		else if (tss != this)
+		{
+			Destroy(gameObject);
+		}
+	}
    
 }

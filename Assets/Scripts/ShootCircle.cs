@@ -1,14 +1,18 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System;
 
-public class ShootCircle : MonoBehaviour {
+public class ShootCircle : MonoBehaviour
+{
+	private static System.Random rnd = new System.Random((int)DateTime.Now.Ticks);
 
-    private Vector3[] directions = new Vector3[]
+	private Vector3[] directions = new Vector3[]
     {
         new Vector3(1,0,0), new Vector3(1,1,0), new Vector3(0,1,0), new Vector3(-1,1,0),
         new Vector3(-1,0,0), new Vector3(-1,-1,0), new Vector3(0,-1,0), new Vector3(1,-1,0)
     };
+
     public float shotSpeed, fireRate, damage, range;
     private float counter;
     private EnemyBullet enemyBullet;
@@ -22,7 +26,8 @@ public class ShootCircle : MonoBehaviour {
     {
         counter = fireRate;
         index = 0;
-    }
+		sprite = ItemSpriteSelector.iss.bullets[rnd.Next(ItemSpriteSelector.iss.bullets.Count)];
+	}
 	
 	void Update ()
     { 

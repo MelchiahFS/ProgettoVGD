@@ -95,7 +95,7 @@ public class LootGenerator : MonoBehaviour {
 		
 		ph = GetComponentInParent<PlayerHealth>();
 
-        select = GetComponent<ItemSpriteSelector>();
+        select = ItemSpriteSelector.iss;
         
 		if (GameStats.stats.levelNumber == 1)
 		{
@@ -292,11 +292,10 @@ public class LootGenerator : MonoBehaviour {
         i.Info.itemType = ItemStats.ItemType.weapon;
         Array enumValues = Enum.GetValues(typeof(ItemStats.WeaponType));
         i.Info.weaponType = (ItemStats.WeaponType) enumValues.GetValue(rnd.Next(enumValues.Length));
-        ItemSpriteSelector itemSelect = GetComponent<ItemSpriteSelector>();
 
         if (i.Info.weaponType == ItemStats.WeaponType.meele)
         {
-            i.Info.sprite = itemSelect.meeleWeapons[rnd.Next(itemSelect.meeleWeapons.Count)];
+            i.Info.sprite = select.meeleWeapons[rnd.Next(select.meeleWeapons.Count)];
             i.GetComponent<SpriteRenderer>().sprite = i.Info.sprite;
             i.GetComponent<SpriteRenderer>().sortingLayerName = "Items";
 
@@ -306,7 +305,7 @@ public class LootGenerator : MonoBehaviour {
         }
         else
         {
-            i.Info.sprite = itemSelect.rangedWeapons[rnd.Next(itemSelect.rangedWeapons.Count)];
+            i.Info.sprite = select.rangedWeapons[rnd.Next(select.rangedWeapons.Count)];
             i.GetComponent<SpriteRenderer>().sprite = i.Info.sprite;
             i.GetComponent<SpriteRenderer>().sortingLayerName = "Items";
 
@@ -351,7 +350,6 @@ public class LootGenerator : MonoBehaviour {
 	{
 		GameObject money = Instantiate(sceneItemPrefab, pos, Quaternion.identity) as GameObject;
 		si = money.GetComponent<SceneItem>();
-		ItemSpriteSelector selector = GetComponent<ItemSpriteSelector>();
 		render = money.GetComponent<SpriteRenderer>();
 		si.Info = new ItemStats();
 		si.Info.itemType = ItemStats.ItemType.money;
@@ -361,17 +359,17 @@ public class LootGenerator : MonoBehaviour {
 		if (rnd.Next(100) < 75)
 		{
 			si.Info.moneyAmount = 5;
-			si.Info.sprite = selector.money[rnd.Next(0,3)];
+			si.Info.sprite = select.money[rnd.Next(0,3)];
 		}
 		else if (rnd.Next(100) < 75)
 		{
 			si.Info.moneyAmount = 10;
-			si.Info.sprite = selector.money[rnd.Next(3,6)];
+			si.Info.sprite = select.money[rnd.Next(3,6)];
 		}
 		else
 		{
 			si.Info.moneyAmount = 20;
-			si.Info.sprite = selector.money[rnd.Next(6,9)];
+			si.Info.sprite = select.money[rnd.Next(6,9)];
 		}
 		si.GetComponent<SpriteRenderer>().sprite = si.Info.sprite;
 
@@ -386,11 +384,10 @@ public class LootGenerator : MonoBehaviour {
     {
         GameObject key = Instantiate(sceneItemPrefab, pos, Quaternion.identity) as GameObject;
         si = key.GetComponent<SceneItem>();
-        ItemSpriteSelector selector = GetComponent<ItemSpriteSelector>();
         render = key.GetComponent<SpriteRenderer>();
         si.Info = new ItemStats();
         si.Info.itemType = ItemStats.ItemType.key;
-        si.Info.sprite = selector.keys[rnd.Next(selector.keys.Count)];
+        si.Info.sprite = select.keys[rnd.Next(select.keys.Count)];
         si.GetComponent<SpriteRenderer>().sprite = si.Info.sprite;
         si.GetComponent<SpriteRenderer>().sortingLayerName = "Items";
         si.Info.itemName = "Boss Key";
@@ -583,6 +580,7 @@ public class LootGenerator : MonoBehaviour {
 
 		//equipaggio l'arma nel primo slot
 		GameStats.stats.index = 0;
-		Inventory.instance.Equip();
+		GetComponent<Weapon>().EquipWeapon(GameStats.stats.itemList[GameStats.stats.index]);
+		GameStats.stats.equippedSlot = GameStats.stats.index;
 	}
 }

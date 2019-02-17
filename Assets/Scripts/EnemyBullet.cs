@@ -7,13 +7,17 @@ public class EnemyBullet : MonoBehaviour {
     private float damage, range;
     private Vector3 enemyPosition;
     private bool flying;
+	private Room actualRoom;
 
+	void Start()
+	{
+		actualRoom = GameManager.manager.ActualRoom;
+	}
 
 	void Update ()
     {
         if (Vector3.Distance(enemyPosition, transform.position) > range)
         {
-            Room actualRoom = GameManager.manager.ActualRoom;
             actualRoom.toSort.Remove(gameObject);
             Destroy(gameObject);
         }
@@ -36,7 +40,6 @@ public class EnemyBullet : MonoBehaviour {
             if (coll.isTrigger)
             {
                 coll.gameObject.SendMessage("TakeDamage", damage);
-                Room actualRoom = GameManager.manager.ActualRoom;
                 actualRoom.toSort.Remove(gameObject);
                 Destroy(gameObject);
             }
@@ -45,14 +48,13 @@ public class EnemyBullet : MonoBehaviour {
         {
             if (!flying)
             {
-                Room actualRoom = GameManager.manager.ActualRoom;
+				Debug.Log("noFly hit obstacle");
                 actualRoom.toSort.Remove(gameObject);
                 Destroy(gameObject);
             }       
         }
         else if (coll.gameObject.tag != "Enemy" && coll.gameObject.tag != "DoorUp")
         {
-            Room actualRoom = GameManager.manager.ActualRoom;
             actualRoom.toSort.Remove(gameObject);
             Destroy(gameObject);
         }
@@ -63,7 +65,6 @@ public class EnemyBullet : MonoBehaviour {
     {
         if (coll.gameObject.tag == "DoorUp")
         {
-            Room actualRoom = GameManager.manager.ActualRoom;
             actualRoom.toSort.Remove(gameObject);
             Destroy(gameObject);
         }

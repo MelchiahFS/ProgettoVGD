@@ -33,12 +33,18 @@ public class LevelManager : MonoBehaviour {
 	private GameObject altar, writings;
 	public GameObject hidingPanel;
 
+	private TileSpriteSelector mapper;
 	private MiniMapController minimap;
+
+	void Awake()
+	{
+		
+	}
 
     //Si occupa di disegnare la mappa di gioco
     public void DrawMap()
     {
-
+		mapper = TileSpriteSelector.tss;
 		lvlGen = new LevelGenerator(roomSizeX, roomSizeY);
 		
         map = lvlGen.Rooms;
@@ -103,7 +109,6 @@ public class LevelManager : MonoBehaviour {
                     //imposto questo layer per il sistema di pathfinding
                     obsSprite.layer = LayerMask.NameToLayer("ObstacleLayer");
 
-                    TileSpriteSelector mapper = obsSprite.GetComponent<TileSpriteSelector>();
                     SpriteRenderer rend = obsSprite.GetComponent<SpriteRenderer>();
                     rend.sortingLayerName = "Obstacles";
                     rend.sprite = mapper.obstacles;
@@ -197,11 +202,6 @@ public class LevelManager : MonoBehaviour {
     }
 
 
-
-
-
-
-
     //Istanzia il player nella stanza di partenza
     public Room InstantiatePlayer()
     {
@@ -242,7 +242,6 @@ public class LevelManager : MonoBehaviour {
 
 				roomTile.tag = "Floor";
 				roomTile.layer = LayerMask.NameToLayer("Ground");
-				TileSpriteSelector mapper = roomTile.GetComponent<TileSpriteSelector>();
 				SpriteRenderer rend = roomTile.GetComponent<SpriteRenderer>();
 				rend.sortingLayerName = "Ground";
 				room.roomTiles.Add(roomTile);
@@ -376,7 +375,6 @@ public class LevelManager : MonoBehaviour {
                     //rendo tangibile il muro
                     wallCollider = wallTile.AddComponent(typeof(BoxCollider2D)) as BoxCollider2D;
 
-                    TileSpriteSelector mapper = wallTile.GetComponent<TileSpriteSelector>();
                     SpriteRenderer rend = wallTile.GetComponent<SpriteRenderer>();
                     rend.sortingLayerName = "Ground";
                     room.roomTiles.Add(wallTile);
@@ -401,10 +399,9 @@ public class LevelManager : MonoBehaviour {
 						hideExitCollider.size = new Vector2(1, 2);
 						hideExitCollider.offset = new Vector2(0, 0.5f);
 
-						TileSpriteSelector HEmapper = hideExit.GetComponent<TileSpriteSelector>();
 						SpriteRenderer HErend = hideExit.GetComponent<SpriteRenderer>();
 						HErend.sortingLayerName = "Ground";
-						HErend.sprite = HEmapper.innerWallCenter;
+						HErend.sprite = mapper.innerWallCenter;
 						room.roomTiles.Add(hideExit);
 					}
 					
@@ -516,7 +513,6 @@ public class LevelManager : MonoBehaviour {
 
                     GameObject passTile = Instantiate(tileToRend, drawPos, Quaternion.identity) as GameObject;
 
-                    TileSpriteSelector mapper = passTile.GetComponent<TileSpriteSelector>();
                     SpriteRenderer rend = passTile.GetComponent<SpriteRenderer>();
 
                     //aggiorno le liste delle tiles del passaggio delle due stanze che lo condividono
@@ -629,7 +625,6 @@ public class LevelManager : MonoBehaviour {
 
                     GameObject passTile = Instantiate(tileToRend, drawPos, Quaternion.identity) as GameObject;
 
-                    TileSpriteSelector mapper = passTile.GetComponent<TileSpriteSelector>();
                     SpriteRenderer rend = passTile.GetComponent<SpriteRenderer>();
 
                     //aggiorno le liste delle tiles del passaggio delle due stanze che lo condividono
@@ -758,7 +753,6 @@ public class LevelManager : MonoBehaviour {
 
             doorSprite.layer = LayerMask.NameToLayer("Doors");
 
-            TileSpriteSelector mapper = doorSprite.GetComponent<TileSpriteSelector>();
             SpriteRenderer rend = doorSprite.GetComponent<SpriteRenderer>();
             rend.sortingLayerName = "Doors";
             rend.sprite = mapper.closedDoorUp;
@@ -778,7 +772,6 @@ public class LevelManager : MonoBehaviour {
 
             doorSprite.layer = LayerMask.NameToLayer("Doors");
 
-            TileSpriteSelector mapper = doorSprite.GetComponent<TileSpriteSelector>();
             SpriteRenderer rend = doorSprite.GetComponent<SpriteRenderer>();
             rend.sortingLayerName = "Doors";
             rend.sprite = mapper.closedDoorDown;
@@ -798,7 +791,6 @@ public class LevelManager : MonoBehaviour {
 
             doorSprite.layer = LayerMask.NameToLayer("Doors");
 
-            TileSpriteSelector mapper = doorSprite.GetComponent<TileSpriteSelector>();
             SpriteRenderer rend = doorSprite.GetComponent<SpriteRenderer>();
             rend.sortingLayerName = "Doors";
             rend.sprite = mapper.closedDoorLeft;
@@ -818,7 +810,6 @@ public class LevelManager : MonoBehaviour {
 
             doorSprite.layer = LayerMask.NameToLayer("Doors");
 
-            TileSpriteSelector mapper = doorSprite.GetComponent<TileSpriteSelector>();
             SpriteRenderer rend = doorSprite.GetComponent<SpriteRenderer>();
             rend.sortingLayerName = "Doors";
             rend.sprite = mapper.closedDoorRight;
@@ -1035,9 +1026,9 @@ public class LevelManager : MonoBehaviour {
 		while (alpha < 1)
 		{
 			if (MusicManager.mm.musicController.volume > 0)
-				MusicManager.mm.musicController.volume -= Time.deltaTime * rate;
+				MusicManager.mm.musicController.volume -= 0.04f * rate;
 
-			alpha += Time.deltaTime * rate;
+			alpha += 0.04f * rate;
 			cg.alpha = alpha;
 			yield return null;
 		}
@@ -1071,10 +1062,10 @@ public class LevelManager : MonoBehaviour {
 		}
 		else
 		{
-			//room.enemyCounter = rnd.Next(3, 6);
-			//room.enemyWaves = 1;
-			room.enemyCounter = 0;
-			room.enemyWaves = 0;
+			room.enemyCounter = rnd.Next(3, 6);
+			room.enemyWaves = 1;
+			//room.enemyCounter = 0;
+			//room.enemyWaves = 0;
 		}
 	}
 
