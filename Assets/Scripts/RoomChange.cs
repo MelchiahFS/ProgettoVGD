@@ -383,7 +383,7 @@ public class RoomChange : MonoBehaviour {
         {
             if (other.gameObject.tag == "DoorUp" || other.gameObject.tag == "DoorDown" || other.gameObject.tag == "DoorLeft" || other.gameObject.tag == "DoorRight")
             {
-                source.PlayOneShot(doorLocked);
+                source.PlayOneShot(cantOpen);
             }
         }
         

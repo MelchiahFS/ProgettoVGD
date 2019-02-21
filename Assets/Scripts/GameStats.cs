@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -13,6 +14,10 @@ public class GameStats : MonoBehaviour
 	public float playerHealth;
 	public int count;
 	public int index;
+
+
+	//imposto la sprite dei proiettili per ogni tipo di nemico per tutta la partita
+	public Dictionary<string, Sprite> enemyBulletSprites = new Dictionary<string, Sprite>();
 
 	public List<Item> consumablesSO;
 	public List<ItemStats> consumables;

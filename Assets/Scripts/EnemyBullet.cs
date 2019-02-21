@@ -48,7 +48,6 @@ public class EnemyBullet : MonoBehaviour {
         {
             if (!flying)
             {
-				Debug.Log("noFly hit obstacle");
                 actualRoom.toSort.Remove(gameObject);
                 Destroy(gameObject);
             }       

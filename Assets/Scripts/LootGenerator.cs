@@ -107,6 +107,10 @@ public class LootGenerator : MonoBehaviour {
 			//assegno le armi di base al player
 			SetStartingWeapons();
 		}
+		else
+		{
+			GetComponent<Weapon>().EquipWeapon(GameStats.stats.itemList[GameStats.stats.index]);
+		}
 		
 		actualRoom = GameManager.manager.ActualRoom;
 	}
@@ -408,15 +412,15 @@ public class LootGenerator : MonoBehaviour {
 
         switch (consumable)
         {
-            case ItemStats.ConsumableType.healthUp25: //ok
+            case ItemStats.ConsumableType.healthUp25:
                 ph.HealthUp(25);
                 break;
 
-            case ItemStats.ConsumableType.healthUp50: //ok
+            case ItemStats.ConsumableType.healthUp50:
                 ph.HealthUp(50);
                 break;
 
-            case ItemStats.ConsumableType.slowDownAll: //ok
+            case ItemStats.ConsumableType.slowDownAll:
                 foreach (GameObject en in actualRoom.enemies)
                 {
                     EnemyHealth eh = en.GetComponent<EnemyHealth>();
@@ -428,7 +432,7 @@ public class LootGenerator : MonoBehaviour {
                 }
                 break;
 
-            case ItemStats.ConsumableType.speedUpAll: //ok
+            case ItemStats.ConsumableType.speedUpAll:
                 foreach (GameObject en in actualRoom.enemies)
                 {
                     EnemyHealth eh = en.GetComponent<EnemyHealth>();
@@ -439,7 +443,7 @@ public class LootGenerator : MonoBehaviour {
                 }
                 break;
 
-            case ItemStats.ConsumableType.poisonAll: //ok
+            case ItemStats.ConsumableType.poisonAll:
                 foreach (GameObject en in actualRoom.enemies)
                 {
                     EnemyHealth eh = en.GetComponent<EnemyHealth>();
@@ -447,50 +451,50 @@ public class LootGenerator : MonoBehaviour {
                 }
                 break;
 
-            case ItemStats.ConsumableType.poisonSelf: //ok
+            case ItemStats.ConsumableType.poisonSelf:
                 ph.poisonCO = ph. StartCoroutine(ph.Poisoned());
                 break;
 
-            case ItemStats.ConsumableType.damageAll: //ok
+            case ItemStats.ConsumableType.damageAll:
                 foreach (GameObject en in actualRoom.enemies)
                 {
                     en.GetComponent<EnemyHealth>().TakeDamage(20);
                 }
                 break;
 
-            case ItemStats.ConsumableType.damageSelf: //ok
+            case ItemStats.ConsumableType.damageSelf:
                 ph.ConsumableDamage(20);
                 break;
 
-            case ItemStats.ConsumableType.flipMovement: //ok
+			case ItemStats.ConsumableType.flipMovement:
                 ph.flipMovCO = ph.StartCoroutine(ph.FlipMovement());
                 break;
 
-            case ItemStats.ConsumableType.invincible: //ok
+            case ItemStats.ConsumableType.invincible:
                 ph.invCO = ph.StartCoroutine(ph.Invincible());
                 break;
 
-            case ItemStats.ConsumableType.getDoubleDamage: //ok
+            case ItemStats.ConsumableType.getDoubleDamage:
                 //se il player è invincibile il consumable non ha effetto
                 if (!ph.invincible)
                     ph.gddCO = ph.StartCoroutine(ph.GetDoubleDamage());
                 break;
 
-            case ItemStats.ConsumableType.slowDownSelf: //ok
+            case ItemStats.ConsumableType.slowDownSelf:
                 if (ph.faster)
                     ph.SetNormalSpeed();
                 else
                     ph.slowDownCO = ph.StartCoroutine(ph.SlowDown());
                 break;
 
-            case ItemStats.ConsumableType.speedUpSelf: //ok
+            case ItemStats.ConsumableType.speedUpSelf:
                 if (ph.slower)
                     ph.SetNormalSpeed();
                 else
                     ph.speedUpCO = ph.StartCoroutine(ph.SpeedUp());
                 break;
 
-            case ItemStats.ConsumableType.doubleDamage: //ok
+            case ItemStats.ConsumableType.doubleDamage:
                 //non posso duplicare più volte il danno
                 if (!ph.dd)
                 {
@@ -501,7 +505,7 @@ public class LootGenerator : MonoBehaviour {
                 }
                 break;
 
-            case ItemStats.ConsumableType.halfDamage: //ok
+            case ItemStats.ConsumableType.halfDamage:
                 if (!ph.hd)
                 {
                     if (ph.dd)
@@ -511,7 +515,7 @@ public class LootGenerator : MonoBehaviour {
                 }
                 break;
 
-            case ItemStats.ConsumableType.flipAttack: //ok
+            case ItemStats.ConsumableType.flipAttack:
                 ph.flipAttCO = ph.StartCoroutine(ph.FlipAttack());
                 break;
         }

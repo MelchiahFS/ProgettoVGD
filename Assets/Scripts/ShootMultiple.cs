@@ -3,25 +3,26 @@ using System.Collections.Generic;
 using UnityEngine;
 using System;
 
-public class ShootMultiple : MonoBehaviour
+public class ShootMultiple : ShootAbstract
 {
-	private static System.Random rnd = new System.Random((int)DateTime.Now.Ticks);
-	public float shotSpeed, fireRate, damage, range, distance;
-    private float counter;
+	public float shotSpeed, fireRate, range, distance;
+	private float damage;
+	private float counter;
     private EnemyBullet enemyBullet;
     private Transform playerTransform;
     public GameObject bulletPrefab;
     private Rigidbody2D rb;
-    public Sprite sprite;
     private RaycastHit2D hit;
     private Room actualRoom;
+	private Vector3 centerPoint, direction1, direction2, direction3, shotStartPoint;
 
-    void Start()
+	void Start()
     {
-		//playerTransform = GameObject.FindGameObjectWithTag("Player").transform;
 		playerTransform = GameManager.manager.playerReference.transform;
+		sprite = GetComponent<EnemyHealth>().bulletSprite;
+		damage = GetComponent<EnemyHealth>().bulletDamage;
 		counter = fireRate;
-		sprite = ItemSpriteSelector.iss.bullets[rnd.Next(ItemSpriteSelector.iss.bullets.Count)];
+
 	}
 
 
@@ -32,15 +33,15 @@ public class ShootMultiple : MonoBehaviour
             if (counter >= fireRate)
             {
 
-                Vector3 centerPoint = transform.position + new Vector3(0, GetComponent<EnemyController>().RealOffset, 0);
-                Vector3 direction1 = playerTransform.position - centerPoint;
-                Vector3 shotStartPoint = centerPoint + direction1.normalized / 2;
+                centerPoint = transform.position + new Vector3(0, GetComponent<EnemyController>().RealOffset, 0);
+                direction1 = playerTransform.position - centerPoint;
+                shotStartPoint = centerPoint + direction1.normalized / 2;
 
                 
-                Vector3 direction2 = Quaternion.AngleAxis(-30, Vector3.forward) * direction1;
-                Vector3 direction3 = Quaternion.AngleAxis(30, Vector3.forward) * direction1;                
+                direction2 = Quaternion.AngleAxis(-30, Vector3.forward) * direction1;
+                direction3 = Quaternion.AngleAxis(30, Vector3.forward) * direction1;                
 
-                hit = Physics2D.Raycast(shotStartPoint, direction1, range, ~LayerMask.GetMask("Enemy"));
+                hit = Physics2D.Raycast(centerPoint, direction1, range, ~LayerMask.GetMask("Enemy"));
                 if ((hit.collider != null && hit.collider.gameObject.tag == "Player") || GetComponent<EnemyController>().flying)
                 {
                     GameObject bullet1 = Instantiate(bulletPrefab, shotStartPoint, Quaternion.identity) as GameObject;

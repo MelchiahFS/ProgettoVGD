@@ -1,15 +1,17 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
 
 [RequireComponent(typeof(AnchorHealthBar))]
-public class EnemyHealth : MonoBehaviour {
-
-    public int damage = 10;
+public class EnemyHealth : MonoBehaviour
+{
+	private static System.Random rnd = new System.Random((int)DateTime.Now.Ticks);
+	public float damage, bulletDamage;
     private int tickNumber = 5;
-    public float currentHealth, startingHealth = 50;
+    public float currentHealth, startingHealth;
     private float slowDownTime = 5, poisonDamageRate = 1, poisonDamage = 3, fireDamageRate = 0.5f, fireDamage = 3, fireContact = 1.5f, counter = 0, speed, fadeTime = 1.5f;
     private PlayerHealth playerHealth;
     private PlayerController playerController;
@@ -24,17 +26,20 @@ public class EnemyHealth : MonoBehaviour {
     private GameObject player, hb, burnIcon, fastIcon, slowIcon, poisonIcon;
     public int points;
     private Text playerPoints;
-    
+	public Sprite bulletSprite;
+
     private AudioSource source;
     public AudioClip enemySound, enemyDeath;
     private float waitingTime, waitCounter = 0;
     private bool waiting = true;
+	private bool hasShootScript = false;
 
 
-    void Start ()
+
+	void Start ()
     {
         source = GetComponent<AudioSource>();
-        player = GameObject.Find("Player");
+		player = GameManager.manager.playerReference;
 		foreach (Text t in player.GetComponentsInChildren<Text>())
 		{
 			if (t.gameObject.name == "Points")
@@ -48,23 +53,41 @@ public class EnemyHealth : MonoBehaviour {
         hb = transform.Find("EnemyHealthBar").gameObject;
         slider = GetComponentInChildren<Slider>();
 
+		//se c'è uno script di attacco imposto la sprite del proiettile
+		if (GetComponent<ShootAbstract>() != null)
+		{
+			hasShootScript = true;
+			if (GameStats.stats.enemyBulletSprites.ContainsKey(gameObject.name))
+				bulletSprite = GameStats.stats.enemyBulletSprites[gameObject.name];
+			else
+			{
+				bulletSprite = ItemSpriteSelector.iss.bullets[rnd.Next(ItemSpriteSelector.iss.bullets.Count)];
+				GameStats.stats.enemyBulletSprites.Add(gameObject.name, bulletSprite);
+			}
+		}
+
+		//incremento il danno da contatto a seconda del livello
 		switch (GameStats.stats.levelNumber)
 		{
 			case 2:
 				startingHealth += startingHealth / 2;
 				damage += damage * 20 / 100;
+				bulletDamage += bulletDamage * 20 / 100;
 				break;
 			case 3:
 				startingHealth += startingHealth;
 				damage += damage * 40 / 100;
+				bulletDamage += bulletDamage * 40 / 100;
 				break;
 			case 4:
 				startingHealth += startingHealth + startingHealth / 2;
 				damage += damage * 60 / 100;
+				bulletDamage += bulletDamage * 60 / 100;
 				break;
 			case 5:
 				startingHealth += startingHealth * 2;
 				damage += damage * 80 / 100;
+				bulletDamage += bulletDamage * 80 / 100;
 				break;
 
 		}
@@ -79,7 +102,7 @@ public class EnemyHealth : MonoBehaviour {
         slowIcon = hb.transform.Find("Slow").gameObject;
         fastIcon = hb.transform.Find("Fast").gameObject;
 
-        waitingTime = Random.Range(2, 5);
+        waitingTime = UnityEngine.Random.Range(2, 5);
         waiting = true;
     }
 
@@ -87,10 +110,11 @@ public class EnemyHealth : MonoBehaviour {
     {
         if (!dying)
         {
+			//il nemico emetterà un verso a intervalli casuali
             if (!waiting)
             {
                 source.PlayOneShot(enemySound);
-                waitingTime = Random.Range(3, 7);
+                waitingTime = UnityEngine.Random.Range(3, 7);
                 waiting = true;
             }
             else
@@ -106,6 +130,7 @@ public class EnemyHealth : MonoBehaviour {
                 }
             }
 
+			//calcolo il tempo di contatto per poter "passare" il fuoco ad altri nemici
             if (contact)
             {
                 counter += Time.deltaTime;
@@ -140,6 +165,7 @@ public class EnemyHealth : MonoBehaviour {
         }
     }
 
+	//infligge danno standard al nemico
     public void TakeDamage(float amount)
     {
         //controllo se il player è sotto l'effetto di doubleDamage o halfDamage
@@ -161,13 +187,16 @@ public class EnemyHealth : MonoBehaviour {
 
             //incremento il punteggio del player
 			GameStats.stats.playerPoints += points;
-			playerPoints.text = "PP: " + GameStats.stats.playerPoints.ToString();
+			playerPoints.text = "PP" + GameStats.stats.playerPoints.ToString();
+
+			//uccido il nemico
 			if (!dying)
                 StartCoroutine(Die());
         }
             
     }
 
+	//disattiva coroutine e script vari del nemico e poi lo distrugge
     private IEnumerator Die()
     {
         dying = true;
@@ -262,7 +291,8 @@ public class EnemyHealth : MonoBehaviour {
         yield break;
     }
 
-    public IEnumerator SlowDown()
+	//decrementa la velocità del nemico e dei suoi proiettili
+	public IEnumerator SlowDown()
     {
         while (slowed)
             yield return null;
@@ -270,7 +300,9 @@ public class EnemyHealth : MonoBehaviour {
         GetComponent<AnchorHealthBar>().SetIconPosition(slowIcon, true);
         slowed = true;
 
-        gameObject.SendMessage("SetShotSpeed", -2);
+		if (hasShootScript)
+			gameObject.SendMessage("SetShotSpeed", -2);
+
         speed = GetComponent<MovementPattern>().speed;
         if (!GetComponent<EnemyController>().flying)
             astar.SetSpeed(1);
@@ -282,6 +314,7 @@ public class EnemyHealth : MonoBehaviour {
         yield break;
     }
 
+	//incrementa la velocità del nemico e dei suoi proiettili
     public IEnumerator SpeedUp()
     {
         while (faster)
@@ -290,7 +323,9 @@ public class EnemyHealth : MonoBehaviour {
         GetComponent<AnchorHealthBar>().SetIconPosition(fastIcon, true);
         faster = true;
 
-        gameObject.SendMessage("SetShotSpeed", 2);
+		if (hasShootScript)
+			gameObject.SendMessage("SetShotSpeed", 2);
+
         //incremento la velocità del nemico
         speed = GetComponent<MovementPattern>().speed;
         if (!GetComponent<EnemyController>().flying)
@@ -303,7 +338,8 @@ public class EnemyHealth : MonoBehaviour {
         yield break;
     }
 
-    public IEnumerator Poisoned()
+	//infligge danno da veleno al nemico per un determinato numero di tick
+	public IEnumerator Poisoned()
     {
         //aspetto che sia finita la precedente chiamata alla coroutine
         while (poisoned)
@@ -323,6 +359,7 @@ public class EnemyHealth : MonoBehaviour {
         yield break;
     }
 
+	//infligge danno da fuoco al nemico per un determinato numero di tick
     private IEnumerator Burn()
     {
         GetComponent<AnchorHealthBar>().SetIconPosition(burnIcon, true);
@@ -340,6 +377,7 @@ public class EnemyHealth : MonoBehaviour {
 
     }
 
+	//applica lo status relativo al proiettile che colpisce il nemico
     public void ApplyModifier(ItemStats.BulletType bullet)
     {
         if (bullet == ItemStats.BulletType.poisonous)
@@ -365,6 +403,7 @@ public class EnemyHealth : MonoBehaviour {
         }
     }
 
+	//ripristina la velocità normale dei nemici e dei relativi proiettili
     public void SetNormalSpeed()
     {
         if (faster)
@@ -372,14 +411,16 @@ public class EnemyHealth : MonoBehaviour {
             StopCoroutine(fastCO);
             faster = false;
             GetComponent<AnchorHealthBar>().SetIconPosition(fastIcon, false);
-            gameObject.SendMessage("SetShotSpeed", -2);
+			if (hasShootScript)
+				gameObject.SendMessage("SetShotSpeed", -2);
         }
         if (slowed)
         {
             StopCoroutine(slowCO);
             slowed = false;
             GetComponent<AnchorHealthBar>().SetIconPosition(slowIcon, false);
-            gameObject.SendMessage("SetShotSpeed", 2);
+			if (hasShootScript)
+				gameObject.SendMessage("SetShotSpeed", 2);
         }
 
         if (!GetComponent<EnemyController>().flying)
@@ -390,6 +431,7 @@ public class EnemyHealth : MonoBehaviour {
         
     }
 
+	//usato dall'animazione del nemico Slime
     public void PlayJumpSound()
     {
         source.PlayOneShot(enemySound);

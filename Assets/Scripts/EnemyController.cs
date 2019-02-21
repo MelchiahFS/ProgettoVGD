@@ -1,13 +1,14 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 [RequireComponent(typeof(MovementPattern))]
 public class EnemyController : Character
 {
+	public enum MovementType { charging, following, hybridWandering, pureWandering, bouncing };
 
-    public enum MovementType { charging, following, hybridWandering, pureWandering, bouncing };
-    public MovementType movementType;
+	public MovementType movementType;
     private GameObject player;
     private float posX, posY;
     private Vector3 lastFramePosition, movementDirection;
@@ -20,18 +21,19 @@ public class EnemyController : Character
     {
         mp = GetComponent<MovementPattern>();
         animator = GetComponent<Animator>();
-        player = GameObject.FindGameObjectWithTag("Player");
-        GetComponent<SpriteRenderer>().sortingLayerName = "Characters";
+		player = GameManager.manager.playerReference;
+		GetComponent<SpriteRenderer>().sortingLayerName = "Characters";
         gameObject.tag = "Enemy";
         SetRealOffset(gameObject);
 
-        if (!flying)
-            mp.astar = GetComponent<AStarAI>();
-        else
-            gameObject.layer = LayerMask.NameToLayer("Flying");
-
         lastFramePosition = transform.position;
-    }
+
+		if (!flying)
+			mp.astar = GetComponent<AStarAI>();
+		else
+			gameObject.layer = LayerMask.NameToLayer("Flying");
+
+	}
 
     // Update is called once per frame
     void Update()

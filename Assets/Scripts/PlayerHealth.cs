@@ -57,7 +57,7 @@ public class PlayerHealth : MonoBehaviour {
 				points = t;
 		}
 		money.text = "$" + GameStats.stats.playerMoney.ToString();
-		points.text = "PP: " + GameStats.stats.playerPoints.ToString();
+		points.text = "PP" + GameStats.stats.playerPoints.ToString();
 
 		playerColor = rend.color;
 
