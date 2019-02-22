@@ -110,7 +110,8 @@ public class PauseMenu : MonoBehaviour {
 		hidingPanel.SetActive(true);
 		hidingPanel.GetComponent<CanvasGroup>().alpha = 0.4f;
         pauseMenuUI.SetActive(true);
-        EventSystem.current.SetSelectedGameObject(button);
+		EventSystem.current.SetSelectedGameObject(null);
+		EventSystem.current.SetSelectedGameObject(button);
         Time.timeScale = 0f;
         
         GameIsPaused = true;

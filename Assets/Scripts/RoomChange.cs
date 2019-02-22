@@ -14,8 +14,7 @@ public class RoomChange : MonoBehaviour {
     public bool passUp = false, passDown = false, passLeft = false, passRight = false;
 
     public bool chRoom = false;
-    //public bool hasKey = false; //DA RISETTARE A FALSE ----------------------------------
-    public bool hasKey = true;
+    public bool hasKey = false;
 
     public float fadeTime = 0.3f;
 
@@ -25,7 +24,6 @@ public class RoomChange : MonoBehaviour {
     void Start()
     {
 		selector = TileSpriteSelector.tss;
-        hasKey = true;
         minimap = GameManager.manager.GetComponent<MiniMapController>();
         actualRoom = GameManager.manager.ActualRoom;
         roomSizeX = GameManager.manager.lvlManager.roomSizeX;

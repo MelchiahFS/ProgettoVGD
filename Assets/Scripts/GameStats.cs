@@ -21,6 +21,7 @@ public class GameStats : MonoBehaviour
 
 	public List<Item> consumablesSO;
 	public List<ItemStats> consumables;
+	public List<GameObject> enemyList;
 
 	public ItemStats[] itemList = new ItemStats[20];
 	public int equippedSlot;

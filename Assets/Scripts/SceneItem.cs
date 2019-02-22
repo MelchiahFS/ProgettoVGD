@@ -44,7 +44,7 @@ public class SceneItem : MonoBehaviour
                         {
 							GameStats.stats.playerMoney -= info.price;
 							
-							money.text = "$" + GameStats.stats.playerMoney.ToString();
+							money.text = "$ " + GameStats.stats.playerMoney.ToString();
 
 							source.PlayOneShot(Inventory.instance.buyItem);
                             Destroy(gameObject);
@@ -82,7 +82,7 @@ public class SceneItem : MonoBehaviour
 						{
 							GameStats.stats.playerMoney += info.moneyAmount;
 
-							money.text = "$" + GameStats.stats.playerMoney.ToString();
+							money.text = "$ " + GameStats.stats.playerMoney.ToString();
 
 							source.PlayOneShot(Inventory.instance.buyItem);
 							Destroy(gameObject);

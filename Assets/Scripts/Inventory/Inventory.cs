@@ -162,7 +162,8 @@ public class Inventory : MonoBehaviour {
         inventoryActive = true;
         GameManager.manager.gamePause = true;
         GameManager.manager.inventoryActive = true;
-        EventSystem.current.SetSelectedGameObject(button);
+		EventSystem.current.SetSelectedGameObject(null);
+		EventSystem.current.SetSelectedGameObject(button);
         source.PlayOneShot(enter);
     }
 

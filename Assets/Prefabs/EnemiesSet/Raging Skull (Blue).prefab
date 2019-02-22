@@ -258,7 +258,7 @@ MonoBehaviour:
   changeTargetTime: 3
   chargeTime: 2
   playerDistance: 3
-  speed: 5
+  speed: 4
 --- !u!114 &114529120351839734
 MonoBehaviour:
   m_ObjectHideFlags: 0

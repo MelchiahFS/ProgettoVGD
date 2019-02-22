@@ -26,14 +26,15 @@ public class LootGenerator : MonoBehaviour {
     {
         roomsWithEnemies = GameManager.manager.lvlManager.roomNumber - 3; //tolgo la stanza iniziale, lo shop e la stanza del boss
 
+		//imposto i valori dei range per le armi che verranno generate
 		if (GameStats.stats.levelNumber == 1)
 		{
 			minMeeleDmg = 15;
 			maxMeeleDmg = 30;
-			minRangedDmg = 10;
-			maxRangedDmg = 20;
-			minRng = 20;
-			maxRng = 30;
+			minRangedDmg = 5;
+			maxRangedDmg = 15;
+			minRng = 5;
+			maxRng = 7;
 			minFR = 0.8f;
 			maxFR = 1.5f;
 			minSP = 5;
@@ -43,11 +44,11 @@ public class LootGenerator : MonoBehaviour {
 		else if (GameStats.stats.levelNumber == 2)
 		{
 			minMeeleDmg = 20;
-			maxMeeleDmg = 40;
-			minRangedDmg = 15;
-			maxRangedDmg = 30;
-			minRng = 30;
-			maxRng = 40;
+			maxMeeleDmg = 35;
+			minRangedDmg = 10;
+			maxRangedDmg = 20;
+			minRng = 6;
+			maxRng = 9;
 			minFR = 0.6f;
 			maxFR = 1.3f;
 			minSP = 10;
@@ -55,12 +56,12 @@ public class LootGenerator : MonoBehaviour {
 		}
 		else if (GameStats.stats.levelNumber == 3)
 		{
-			minMeeleDmg = 20;
-			maxMeeleDmg = 45;
-			minRangedDmg = 20;
-			maxRangedDmg = 37;
-			minRng = 50;
-			maxRng = 70;
+			minMeeleDmg = 25;
+			maxMeeleDmg = 40;
+			minRangedDmg = 15;
+			maxRangedDmg = 25;
+			minRng = 7;
+			maxRng = 10;
 			minFR = 0.4f;
 			maxFR = 1.1f;
 			minSP = 15;
@@ -68,12 +69,12 @@ public class LootGenerator : MonoBehaviour {
 		}
 		else if (GameStats.stats.levelNumber == 4)
 		{
-			minMeeleDmg = 25;
-			maxMeeleDmg = 55;
-			minRangedDmg = 27;
-			maxRangedDmg = 42;
-			minRng = 60;
-			maxRng = 80;
+			minMeeleDmg = 30;
+			maxMeeleDmg = 45;
+			minRangedDmg = 18;
+			maxRangedDmg = 30;
+			minRng = 8;
+			maxRng = 12;
 			minFR = 0.2f;
 			maxFR = 0.9f;
 			minSP = 20;
@@ -81,12 +82,12 @@ public class LootGenerator : MonoBehaviour {
 		}
 		else
 		{
-			minMeeleDmg = 33;
-			maxMeeleDmg = 80;
-			minRangedDmg = 35;
-			maxRangedDmg = 60;
-			minRng = 80;
-			maxRng = 100;
+			minMeeleDmg = 35;
+			maxMeeleDmg = 50;
+			minRangedDmg = 22;
+			maxRangedDmg = 35;
+			minRng = 10;
+			maxRng = 14;
 			minFR = 0.1f;
 			maxFR = 0.6f;
 			minSP = 30;
@@ -171,7 +172,7 @@ public class LootGenerator : MonoBehaviour {
 
 				if (actualRoom.bossRoom)
 				{
-					//CONTROLLARE CHE NELLA POSIZIONE NON CI SIA IL PLAYER
+					//istanzio l'altare
 					GameObject altar = Instantiate(altarPrefab, new Vector2(actualRoom.gridPos.x + GameManager.manager.lvlManager.roomSizeX / 2, actualRoom.gridPos.y + GameManager.manager.lvlManager.roomSizeY / 2), Quaternion.identity) as GameObject;
 
 					render = altar.GetComponent<SpriteRenderer>();
@@ -179,12 +180,15 @@ public class LootGenerator : MonoBehaviour {
 					StartCoroutine(GameManager.manager.lvlManager.FadeIn(render, 0.3f));
 
 					actualRoom.toSort.Add(altar);
+
+					//se non è l'ultimo livello sull'altare apparirà un'arma
 					if (GameStats.stats.levelNumber < 5)
 					{
 						Vector2 pos = actualRoom.freePositions[0];
 						pos = new Vector2(pos.x, pos.y + 0.4f);
 						InstantiateWeapon(pos);
 					}
+					//altrimenti apparirà l'oggetto che farà finire il gioco
 					else
 					{
 						Vector2 pos = actualRoom.freePositions[0];
@@ -200,37 +204,23 @@ public class LootGenerator : MonoBehaviour {
 				else
 				{
 					//ho il 50% di ottenere o no una ricompensa
-					if (rnd.Next(100) >= 0)
+					if (rnd.Next(100) >= 50)
 					{
 						//se sono nel 50% di probabilità di spawn della ricompensa, imposto una probabilità per decidere che ricompensa spawnare
-						int seed = rnd.Next(100);
-						if (seed < 100)
-							//	InstantiateWeapon(actualRoom.freePositions[rnd.Next(actualRoom.freePositions.Count)]);
-							//else
-							//InstantiateConsumable(actualRoom.freePositions[rnd.Next(actualRoom.freePositions.Count)]);
-							InstantiateMoney(actualRoom.freePositions[rnd.Next(actualRoom.freePositions.Count)]);
+						if (rnd.Next(100) < 20)
+							InstantiateWeapon(actualRoom.freePositions[rnd.Next(actualRoom.freePositions.Count)]);
+						else
+						{
+							if (rnd.Next(100) < 40)
+								InstantiateConsumable(actualRoom.freePositions[rnd.Next(actualRoom.freePositions.Count)]);
+							else
+								InstantiateMoney(actualRoom.freePositions[rnd.Next(actualRoom.freePositions.Count)]);
+						}
 					}
 				}
 				
 				//impedisco che vengano generate altre ricompense per la stanza attuale
 				actualRoom.hasGenReward = true;
-
-
-
-				//-------------------------------------------------------------------------------------
-
-				//            //ho il 50% di ottenere o no una ricompensa
-				//            if (rnd.Next(100) >= 0)
-				//            {
-				//	//se sono nel 50% di probabilità di spawn della ricompensa, imposto una probabilità per decidere che ricompensa spawnare
-				//                int seed = rnd.Next(100);
-				//                if (seed < 100)
-				//                    InstantiateWeapon(actualRoom.freePositions[rnd.Next(actualRoom.freePositions.Count)], false);
-				//                else
-				//                    InstantiateConsumable(actualRoom.freePositions[rnd.Next(actualRoom.freePositions.Count)], false);
-				//            }
-				////impedisco che vengano generate altre ricompense per la stanza attuale
-				//            actualRoom.hasGenReward = true;
 			}   
         }
     }
@@ -304,7 +294,7 @@ public class LootGenerator : MonoBehaviour {
             i.GetComponent<SpriteRenderer>().sortingLayerName = "Items";
 
             i.Info.itemName = "Sword";
-            i.Info.damage = rnd.Next((int)minMeeleDmg * 100, (int)maxMeeleDmg * 100) / 100;
+			i.Info.damage = (float) Math.Truncate(UnityEngine.Random.Range(minMeeleDmg, maxMeeleDmg) * 10) / 10;
             i.Info.description = "Damage: " + i.Info.damage;
         }
         else
@@ -321,12 +311,12 @@ public class LootGenerator : MonoBehaviour {
             enumValues = Enum.GetValues(typeof(ItemStats.BulletType));
             i.Info.bulletType = (ItemStats.BulletType)enumValues.GetValue(rnd.Next(enumValues.Length));
 
-            i.Info.damage = rnd.Next((int)minRangedDmg * 100, (int)maxRangedDmg * 100) / 100;
-            i.Info.range = rnd.Next((int)minRng * 100, (int)maxRng * 100) / 100;
-            i.Info.fireRate = rnd.Next((int)minFR * 100, (int)maxFR * 100) / 100;
-            i.Info.shotSpeed = rnd.Next((int)minSP * 100, (int)maxSP * 100) / 100;
+			i.Info.damage = (float)Math.Truncate(UnityEngine.Random.Range(minRangedDmg, maxRangedDmg) * 10) / 10;
+			i.Info.range = (float)Math.Truncate(UnityEngine.Random.Range(minRng, maxRng) * 10) / 10;
+			i.Info.fireRate = (float)Math.Truncate(UnityEngine.Random.Range(minFR, maxFR) * 10) / 10;
+			i.Info.shotSpeed = (float)Math.Truncate(UnityEngine.Random.Range(minSP, maxSP) * 10) / 10;
 
-            if (i.Info.fireType == ItemStats.FireType.single)
+			if (i.Info.fireType == ItemStats.FireType.single)
                 i.Info.description += "Fire Type: Single Shot";
             else if (i.Info.fireType == ItemStats.FireType.multiple)
                 i.Info.description += "Fire Type: Triple Shot";
@@ -559,9 +549,9 @@ public class LootGenerator : MonoBehaviour {
 		startingMeele.itemType = startingMeeleSO.type;
 		startingMeele.weaponType = startingMeeleSO.weaponType;
 		startingMeele.itemName = startingMeeleSO.itemName;
-		startingMeele.description = startingMeeleSO.itemDescription;
-
-		startingMeele.damage = (minMeeleDmg + maxMeeleDmg) / 2;
+		
+		startingMeele.damage = (float)Math.Truncate(((minMeeleDmg + maxMeeleDmg) / 2) * 10) / 10;
+		startingMeele.description = "Damage: " + startingMeele.damage;
 
 		startingMeele.sprite = startingMeeleSO.icon;
 
@@ -570,13 +560,14 @@ public class LootGenerator : MonoBehaviour {
 		startingRanged.itemType = startingRangedSO.type;
 		startingRanged.weaponType = startingRangedSO.weaponType;
 		startingRanged.itemName = startingRangedSO.itemName;
-		startingRanged.description = startingRangedSO.itemDescription;
 
-		startingRanged.damage = (minRangedDmg + maxRangedDmg) / 2;
-		startingRanged.range = (minRng + maxRng) / 2;
-		startingRanged.fireRate = (minFR + maxFR) / 2;
-		startingRanged.shotSpeed = (minSP + maxSP) / 2;
+		startingRanged.damage = (float)Math.Truncate(((minRangedDmg + maxRangedDmg) / 2) * 10) / 10;
+		startingRanged.range = (float)Math.Truncate(((minRng + maxRng) / 2) * 10) / 10;
+		startingRanged.fireRate = (float)Math.Truncate(((minFR + maxFR) / 2) * 10) / 10;
+		startingRanged.shotSpeed = (float)Math.Truncate(((minSP + maxSP) / 2) * 10) / 10;
 
+		startingRanged.description = "Fire Type: Single Shot \r\nBullet Type: Standard \r\nDamage: " + startingRanged.damage + "\r\nRange: " + startingRanged.range
+			+ "\r\nFire Rate: " + startingRanged.fireRate + "\r\nShot Speed: " + startingRanged.shotSpeed;
 		startingRanged.sprite = startingRangedSO.icon;
 
 		Inventory.instance.AddSlot(startingMeele);

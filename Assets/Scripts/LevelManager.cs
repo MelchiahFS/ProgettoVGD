@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -15,9 +16,10 @@ public class LevelManager : MonoBehaviour {
     private BoxCollider2D doorCollider;
     private BoxCollider2D obsCollider;
     private BoxCollider2D groundTrigger;
+	private GameObject enemy;
     public GameObject tileToRend;
     public GameObject playerPrefab;
-    public List<GameObject> enemyPrefabs;
+	public List<GameObject> level1, level2, level3, level4, level5;
     public Room[,] map;
     public Vector2 mapSize;
     private Vector2Int actualPos;
@@ -38,7 +40,25 @@ public class LevelManager : MonoBehaviour {
 
 	void Awake()
 	{
-		
+		//imposto il set di nemici per ogni livello
+		switch (GameStats.stats.levelNumber)
+		{
+			case 1:
+				GameStats.stats.enemyList.AddRange(level1);
+				break;
+			case 2:
+				GameStats.stats.enemyList.AddRange(level2);
+				break;
+			case 3:
+				GameStats.stats.enemyList.AddRange(level3);
+				break;
+			case 4:
+				GameStats.stats.enemyList.AddRange(level4);
+				break;
+			case 5:
+				GameStats.stats.enemyList.AddRange(level5);
+				break;
+		}
 	}
 
     //Si occupa di disegnare la mappa di gioco
@@ -168,11 +188,11 @@ public class LevelManager : MonoBehaviour {
             //scelgo casualmente uno tra gli spawn point disponibili (sceglie da 0 a X - 1)
             enemyPosition = rnd.Next(0, room.spawnPoints.Count);
 
-            //scelgo casualmente il tipo di nemico da istanziare
-            enemyType = rnd.Next(0, enemyPrefabs.Count);
+			//scelgo casualmente il tipo di nemico da istanziare
+			enemyType = rnd.Next(0, GameStats.stats.enemyList.Count);
 
-            GameObject enemy = Instantiate(enemyPrefabs[enemyType], room.spawnPoints[enemyPosition] + new Vector2(0, 0.5f), Quaternion.identity) as GameObject;
-            enemy.name = enemyPrefabs[enemyType].name;
+			GameObject enemy = Instantiate(GameStats.stats.enemyList[enemyType], room.spawnPoints[enemyPosition] + new Vector2(0, 0.5f), Quaternion.identity) as GameObject;
+            enemy.name = GameStats.stats.enemyList[enemyType].name;
 
             //imposto il sorting layer dei nemici
             SpriteRenderer enemyRenderer = enemy.GetComponent<SpriteRenderer>();

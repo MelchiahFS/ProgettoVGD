@@ -187,7 +187,7 @@ public class EnemyHealth : MonoBehaviour
 
             //incremento il punteggio del player
 			GameStats.stats.playerPoints += points;
-			playerPoints.text = "PP" + GameStats.stats.playerPoints.ToString();
+			playerPoints.text = "PP " + GameStats.stats.playerPoints.ToString();
 
 			//uccido il nemico
 			if (!dying)
