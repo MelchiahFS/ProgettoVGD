@@ -9,10 +9,16 @@ using UnityEngine.UI;
 public class EnemyHealth : MonoBehaviour
 {
 	private static System.Random rnd = new System.Random((int)DateTime.Now.Ticks);
-	public float damage, bulletDamage;
-    private int tickNumber = 5;
-    public float currentHealth, startingHealth;
-    private float slowDownTime = 5, poisonDamageRate = 1, poisonDamage = 3, fireDamageRate = 0.5f, fireDamage = 3, fireContact = 1.5f, counter = 0, speed, fadeTime = 1.5f;
+	public float damage, bulletDamage; //danno da contatto e dei proiettili sparati
+    private int tickNumber = 5; //numero di tick di danno ricevuti sotto status alterato
+    public float currentHealth, startingHealth; //vita attuale e iniziale
+	private float speedStatusTime = 5; //durata status SlowDown e SpeedUp
+	private float poisonDamageRate = 1, fireDamageRate = 0.5f; //intervalli di tempo tra un tick e l'altro per gli status Poison e Fire
+	private float poisonDamage = 3, fireDamage = 3; //danno per tick per gli status Poison e Fire
+	private float fireContact = 1.5f; //durata minima di contatto per poter passare lo status Fire da un nemico a un altro nemico
+	private float counter = 0; //misura il tempo del contatto tra nemici con status Fire
+	private float speed; //conterrà temporaneamente la velocità del nemico prima di una alterazione di status SlowDown o SpeedUp
+	private float fadeTime = 1.5f; //la durata della transizione di fade-off alla morte del nemico
     private PlayerHealth playerHealth;
     private PlayerController playerController;
     private SpriteRenderer rend, burnR, slowR, poisonR, fastR;
@@ -24,15 +30,18 @@ public class EnemyHealth : MonoBehaviour
     public bool isFlashing = false, poisoned = false, faster = false, burning = false, slowed = false, contact = false, dying = false;
     public Coroutine flashCO, slowCO, poisonCO, burnCO, fastCO;
     private GameObject player, hb, burnIcon, fastIcon, slowIcon, poisonIcon;
-    public int points;
+    public int points; //valore in punti del nemico ucciso
     private Text playerPoints;
 	public Sprite bulletSprite;
 
     private AudioSource source;
     public AudioClip enemySound, enemyDeath;
+
+	//valori relativi all'attesa fino alla prossima emissione del verso nemico
     private float waitingTime, waitCounter = 0;
     private bool waiting = true;
-	private bool hasShootScript = false;
+
+	private bool hasShootScript = false; //controlla che il nemico abbia uno script di attacco
 
 
 
@@ -40,16 +49,22 @@ public class EnemyHealth : MonoBehaviour
     {
         source = GetComponent<AudioSource>();
 		player = GameManager.manager.playerReference;
+
+		//recupero il riferimento al testo dei punti del player
 		foreach (Text t in player.GetComponentsInChildren<Text>())
 		{
 			if (t.gameObject.name == "Points")
 				playerPoints = t;
 		}
+
+		//se il nemico non vola recupero il riferimento allo script di AI
         if (!GetComponent<EnemyController>().flying)
             astar = GetComponent<AStarAI>();
+
         playerHealth = player.GetComponent<PlayerHealth>();
         rend = GetComponent<SpriteRenderer>();
         defaultMaterial = rend.material;
+
         hb = transform.Find("EnemyHealthBar").gameObject;
         slider = GetComponentInChildren<Slider>();
 
@@ -71,32 +86,34 @@ public class EnemyHealth : MonoBehaviour
 		{
 			case 2:
 				startingHealth += startingHealth / 2;
-				damage += damage * 20 / 100;
-				bulletDamage += bulletDamage * 20 / 100;
+				damage += damage * 15 / 100;
+				bulletDamage += bulletDamage * 15 / 100;
 				break;
 			case 3:
 				startingHealth += startingHealth;
-				damage += damage * 40 / 100;
-				bulletDamage += bulletDamage * 40 / 100;
+				damage += damage * 30 / 100;
+				bulletDamage += bulletDamage * 30 / 100;
 				break;
 			case 4:
 				startingHealth += startingHealth + startingHealth / 2;
-				damage += damage * 60 / 100;
-				bulletDamage += bulletDamage * 60 / 100;
+				damage += damage * 45 / 100;
+				bulletDamage += bulletDamage * 45 / 100;
 				break;
 			case 5:
 				startingHealth += startingHealth * 2;
-				damage += damage * 80 / 100;
-				bulletDamage += bulletDamage * 80 / 100;
+				damage += damage * 60 / 100;
+				bulletDamage += bulletDamage * 60 / 100;
 				break;
 
 		}
 
+		//imposto i punti vita iniziali
         slider.minValue = 0;
         slider.maxValue = startingHealth;
         slider.value = startingHealth;
         currentHealth = startingHealth;
 
+		//recupero i riferimenti alle icone di status
         burnIcon = hb.transform.Find("Fire").gameObject;
         poisonIcon = hb.transform.Find("Poison").gameObject;
         slowIcon = hb.transform.Find("Slow").gameObject;
@@ -113,7 +130,8 @@ public class EnemyHealth : MonoBehaviour
 			//il nemico emetterà un verso a intervalli casuali
             if (!waiting)
             {
-                source.PlayOneShot(enemySound);
+				if (gameObject.name != "Slime")
+					source.PlayOneShot(enemySound);
                 waitingTime = UnityEngine.Random.Range(3, 7);
                 waiting = true;
             }
@@ -138,16 +156,20 @@ public class EnemyHealth : MonoBehaviour
         }
         
     }
+
 	
-    void OnCollisionStay2D(Collision2D collision)
+	void OnCollisionStay2D(Collision2D collision)
     {
+		//se il nemico sta a contatto col player questo riceve danno da contatto
         if (collision.gameObject.tag == "Player")
         {
             playerHealth.TakeDamage(damage);
         }
-        else if (collision.gameObject.tag == "Enemy" && burning)
+		//se un nemico sotto status Fire sta a contatto con un altro nemicoattivo il counter e il flag di contatto
+		else if (collision.gameObject.tag == "Enemy" && burning)
         {
             contact = true;
+			//se sta a contatto più del tempo limite azzero il counter e passo lo status Fire all'altro nemico
             if (counter >= fireContact)
             {
                 counter = 0;
@@ -156,6 +178,7 @@ public class EnemyHealth : MonoBehaviour
         }
     }
 
+	//se un nemico sotto status Fire abbandona il contatto con un altro nemico azzero il counter e il flag di contatto
     void OnCollisionExit2D(Collision2D collision)
     {
         if (collision.gameObject.tag == "Enemy" && burning)
@@ -174,12 +197,14 @@ public class EnemyHealth : MonoBehaviour
         else if (playerHealth.hd)
             amount /= 2;
 
+		//se il danno non uccide il nemico aggiorno i punti vita e lo slider
         if (currentHealth - amount > 0)
         {
             currentHealth -= amount;
             slider.value -= amount;
             StartCoroutine(Flash());
         }
+		//altrimenti elimino il nemico
         else
         {
             currentHealth = 0;
@@ -214,6 +239,8 @@ public class EnemyHealth : MonoBehaviour
         //termino eventuali coroutine attive
         if (slowed)
             StopCoroutine(slowCO);
+		if (faster)
+			StopCoroutine(fastCO);
         if (poisoned)
             StopCoroutine(poisonCO);
         if (burning)
@@ -308,7 +335,7 @@ public class EnemyHealth : MonoBehaviour
             astar.SetSpeed(1);
         else
             GetComponent<MovementPattern>().speed = 1;
-        yield return new WaitForSeconds(slowDownTime);
+        yield return new WaitForSeconds(speedStatusTime);
         
         SetNormalSpeed();
         yield break;
@@ -317,12 +344,14 @@ public class EnemyHealth : MonoBehaviour
 	//incrementa la velocità del nemico e dei suoi proiettili
     public IEnumerator SpeedUp()
     {
+		//finché è già attivo lo status SpeedUp non faccio nulla
         while (faster)
             yield return null;
 
         GetComponent<AnchorHealthBar>().SetIconPosition(fastIcon, true);
         faster = true;
 
+		//se è presente uno script d'attacco aumento la velocità dei proiettili nemici
 		if (hasShootScript)
 			gameObject.SendMessage("SetShotSpeed", 2);
 
@@ -332,7 +361,7 @@ public class EnemyHealth : MonoBehaviour
             astar.SetSpeed(speed + 2);
         else
             GetComponent<MovementPattern>().speed +=2;
-        yield return new WaitForSeconds(slowDownTime);
+        yield return new WaitForSeconds(speedStatusTime);
 
         SetNormalSpeed();
         yield break;
@@ -382,6 +411,7 @@ public class EnemyHealth : MonoBehaviour
     {
         if (bullet == ItemStats.BulletType.poisonous)
         {
+			//se non è già avvelenato avvelena il nemico
             if (!poisoned)
                 poisonCO = StartCoroutine(Poisoned());
         }
@@ -392,10 +422,13 @@ public class EnemyHealth : MonoBehaviour
         }
         else if (bullet == ItemStats.BulletType.slowing)
         {
+			//se non è già rallentato
             if (!slowed)
             {
+				//se il nemico era sotto status di velocità aumentata i due effetti si annullano
                 if (faster)
                     SetNormalSpeed();
+				//altrimenti lo rallento
                 else
                     slowCO = StartCoroutine(SlowDown());
             }
@@ -406,11 +439,13 @@ public class EnemyHealth : MonoBehaviour
 	//ripristina la velocità normale dei nemici e dei relativi proiettili
     public void SetNormalSpeed()
     {
+		//interrompo gli status di velocità alterata
         if (faster)
         {
             StopCoroutine(fastCO);
             faster = false;
             GetComponent<AnchorHealthBar>().SetIconPosition(fastIcon, false);
+			//se il nemico ha uno script d'attacco ripristino la velocità dei proiettili iniziale
 			if (hasShootScript)
 				gameObject.SendMessage("SetShotSpeed", -2);
         }
@@ -423,6 +458,7 @@ public class EnemyHealth : MonoBehaviour
 				gameObject.SendMessage("SetShotSpeed", 2);
         }
 
+		//ripristino la velocità di partenza del nemico
         if (!GetComponent<EnemyController>().flying)
             astar.SetSpeed(speed);
         else

@@ -1,21 +1,11 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!1001 &100100000
-Prefab:
-  m_ObjectHideFlags: 1
-  serializedVersion: 2
-  m_Modification:
-    m_TransformParent: {fileID: 0}
-    m_Modifications: []
-    m_RemovedComponents: []
-  m_SourcePrefab: {fileID: 0}
-  m_RootGameObject: {fileID: 1774591253979632}
-  m_IsPrefabAsset: 1
 --- !u!1 &1774591253979632
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4866998111175090}
@@ -29,9 +19,10 @@ GameObject:
   m_IsActive: 1
 --- !u!4 &4866998111175090
 Transform:
-  m_ObjectHideFlags: 1
+  m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1774591253979632}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
@@ -42,9 +33,10 @@ Transform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &114902965061862208
 MonoBehaviour:
-  m_ObjectHideFlags: 1
+  m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1774591253979632}
   m_Enabled: 1
   m_EditorHideFlags: 0
@@ -53,8 +45,31 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   levelNumber: 1
   playerMoney: 0
-  maxHealth: 300
-  playerHealth: 1
+  playerPoints: 0
+  maxHealth: 100
+  playerHealth: 25
+  count: 0
+  index: 0
+  consumablesSO:
+  - {fileID: 11400000, guid: aefca5fb8bf2a164e93767b4dbf43863, type: 2}
+  - {fileID: 11400000, guid: 15ce881c03f00fb4a8c2124add315b7c, type: 2}
+  - {fileID: 11400000, guid: f00115fc85965b5469879dbed104dbdf, type: 2}
+  - {fileID: 11400000, guid: 2a0bee009aa1e0540bf05b289d80d394, type: 2}
+  - {fileID: 11400000, guid: 2611daed24630ad44b9f1701d675a6f9, type: 2}
+  - {fileID: 11400000, guid: cea3edf0f8d3be6459c42ab2be6f4a91, type: 2}
+  - {fileID: 11400000, guid: 3e070b520d0959249bb426cae2738703, type: 2}
+  - {fileID: 11400000, guid: e26f6c0ccc4bdaa49b9a3e8cf1845d55, type: 2}
+  - {fileID: 11400000, guid: 061451c62d8b9874c83a2f7c228a6acc, type: 2}
+  - {fileID: 11400000, guid: b5ef3df2a2aa2f947a4fabd05e7fbf05, type: 2}
+  - {fileID: 11400000, guid: ee8d458794197b646b86841c61a03683, type: 2}
+  - {fileID: 11400000, guid: 948a3ccbf53396a4bab632c5317e32ab, type: 2}
+  - {fileID: 11400000, guid: 234c0f1e7923b724a9a19e89da80bf00, type: 2}
+  - {fileID: 11400000, guid: 3d230396071eda44195e15b48b8218df, type: 2}
+  - {fileID: 11400000, guid: d73647b8eb5f3474ea056be5826faaec, type: 2}
+  - {fileID: 11400000, guid: 89804c3b50f3ceb4996b3d8546d5d4ff, type: 2}
+  consumables: []
+  hpUp: []
+  enemyList: []
   itemList:
   - itemType: 0
     consumableType: 0
@@ -66,6 +81,8 @@ MonoBehaviour:
     description: 
     currentStack: 1
     maxStack: 5
+    used: 0
+    moneyAmount: 0
     damage: 0
     range: 0
     fireRate: 0
@@ -82,6 +99,8 @@ MonoBehaviour:
     description: 
     currentStack: 1
     maxStack: 5
+    used: 0
+    moneyAmount: 0
     damage: 0
     range: 0
     fireRate: 0
@@ -98,6 +117,8 @@ MonoBehaviour:
     description: 
     currentStack: 1
     maxStack: 5
+    used: 0
+    moneyAmount: 0
     damage: 0
     range: 0
     fireRate: 0
@@ -114,6 +135,8 @@ MonoBehaviour:
     description: 
     currentStack: 1
     maxStack: 5
+    used: 0
+    moneyAmount: 0
     damage: 0
     range: 0
     fireRate: 0
@@ -130,6 +153,8 @@ MonoBehaviour:
     description: 
     currentStack: 1
     maxStack: 5
+    used: 0
+    moneyAmount: 0
     damage: 0
     range: 0
     fireRate: 0
@@ -146,6 +171,8 @@ MonoBehaviour:
     description: 
     currentStack: 1
     maxStack: 5
+    used: 0
+    moneyAmount: 0
     damage: 0
     range: 0
     fireRate: 0
@@ -162,6 +189,8 @@ MonoBehaviour:
     description: 
     currentStack: 1
     maxStack: 5
+    used: 0
+    moneyAmount: 0
     damage: 0
     range: 0
     fireRate: 0
@@ -178,6 +207,8 @@ MonoBehaviour:
     description: 
     currentStack: 1
     maxStack: 5
+    used: 0
+    moneyAmount: 0
     damage: 0
     range: 0
     fireRate: 0
@@ -194,6 +225,8 @@ MonoBehaviour:
     description: 
     currentStack: 1
     maxStack: 5
+    used: 0
+    moneyAmount: 0
     damage: 0
     range: 0
     fireRate: 0
@@ -210,6 +243,8 @@ MonoBehaviour:
     description: 
     currentStack: 1
     maxStack: 5
+    used: 0
+    moneyAmount: 0
     damage: 0
     range: 0
     fireRate: 0
@@ -226,6 +261,8 @@ MonoBehaviour:
     description: 
     currentStack: 1
     maxStack: 5
+    used: 0
+    moneyAmount: 0
     damage: 0
     range: 0
     fireRate: 0
@@ -242,6 +279,8 @@ MonoBehaviour:
     description: 
     currentStack: 1
     maxStack: 5
+    used: 0
+    moneyAmount: 0
     damage: 0
     range: 0
     fireRate: 0
@@ -258,6 +297,8 @@ MonoBehaviour:
     description: 
     currentStack: 1
     maxStack: 5
+    used: 0
+    moneyAmount: 0
     damage: 0
     range: 0
     fireRate: 0
@@ -274,6 +315,8 @@ MonoBehaviour:
     description: 
     currentStack: 1
     maxStack: 5
+    used: 0
+    moneyAmount: 0
     damage: 0
     range: 0
     fireRate: 0
@@ -290,6 +333,8 @@ MonoBehaviour:
     description: 
     currentStack: 1
     maxStack: 5
+    used: 0
+    moneyAmount: 0
     damage: 0
     range: 0
     fireRate: 0
@@ -306,6 +351,8 @@ MonoBehaviour:
     description: 
     currentStack: 1
     maxStack: 5
+    used: 0
+    moneyAmount: 0
     damage: 0
     range: 0
     fireRate: 0
@@ -322,6 +369,8 @@ MonoBehaviour:
     description: 
     currentStack: 1
     maxStack: 5
+    used: 0
+    moneyAmount: 0
     damage: 0
     range: 0
     fireRate: 0
@@ -338,6 +387,8 @@ MonoBehaviour:
     description: 
     currentStack: 1
     maxStack: 5
+    used: 0
+    moneyAmount: 0
     damage: 0
     range: 0
     fireRate: 0
@@ -354,6 +405,8 @@ MonoBehaviour:
     description: 
     currentStack: 1
     maxStack: 5
+    used: 0
+    moneyAmount: 0
     damage: 0
     range: 0
     fireRate: 0
@@ -370,6 +423,8 @@ MonoBehaviour:
     description: 
     currentStack: 1
     maxStack: 5
+    used: 0
+    moneyAmount: 0
     damage: 0
     range: 0
     fireRate: 0

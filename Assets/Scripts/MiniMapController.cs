@@ -4,29 +4,29 @@ using UnityEngine;
 
 public class MiniMapController : MonoBehaviour {
 
-    public GameObject actualRoom, visitedRoom, actualBossRoom, visitedBossRoom, actualShopRoom, visitedShopRoom, unknownRoom;
+    public GameObject actualRoom, visitedRoom, actualBossRoom, actualShopRoom, unknownRoom;
     private Camera minimapCamera;
     public bool isCameraSet = false;
 
-
+	//Imposta la sprite della minimappa per la stanza corrente e quelle adiacenti
     public void SetEnterRoom(Room room)
     {
+		//recupero la minimapCamera
         if (!isCameraSet)
         {
             minimapCamera = GetComponentInChildren<Camera>();
             isCameraSet = true;
         }
 
+		//imposto la sprite per la stanza attuale
         if (room.bossRoom)
         {
             room.actualBossMapSprite.SetActive(true);
-            room.visitedBossMapSprite.SetActive(false);
             minimapCamera.transform.position = room.actualBossMapSprite.transform.position;
         }
         else if (room.shopRoom)
         {
             room.actualShopMapSprite.SetActive(true);
-            room.visitedShopMapSprite.SetActive(false);
             minimapCamera.transform.position = room.actualShopMapSprite.transform.position;
         }
         else
@@ -37,11 +37,13 @@ public class MiniMapController : MonoBehaviour {
             minimapCamera.transform.position = room.actualMapSprite.transform.position;
         }
 
+		//recupero le stanze adiacenti
         Room leftRoom = GameManager.manager.GetAdiacentRoom('l');
         Room rightRoom = GameManager.manager.GetAdiacentRoom('r');
         Room upRoom = GameManager.manager.GetAdiacentRoom('u');
         Room downRoom = GameManager.manager.GetAdiacentRoom('d');
 
+		//imposto le sprite delle stanze adiacenti a seconda che siano state visitate o no
         if (upRoom != null && !upRoom.visited)
         {
             if (upRoom.bossRoom)
@@ -105,20 +107,10 @@ public class MiniMapController : MonoBehaviour {
 
     }
 
+	//imposto la sprite della stanza visitata per la stanza attuala
     public void SetExitRoom(Room room)
     {
-
-        if (room.bossRoom)
-        {
-            room.actualBossMapSprite.SetActive(false);
-            room.visitedBossMapSprite.SetActive(true);
-        }
-        else if (room.shopRoom)
-        {
-            room.actualShopMapSprite.SetActive(false);
-            room.visitedShopMapSprite.SetActive(true);
-        }
-        else
+		if (!room.bossRoom && !room.shopRoom)
         {
             room.visitedMapSprite.SetActive(true);
             room.actualMapSprite.SetActive(false);

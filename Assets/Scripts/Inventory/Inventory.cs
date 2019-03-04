@@ -35,9 +35,7 @@ public class Inventory : MonoBehaviour {
     public AudioClip pickKey, pickItem, buyItem, useItem, dropItem, enter, exit, move, select, empty;
     private AudioSource source;
 
-    public static bool inventoryActive = false;
-
-
+    public bool inventoryActive = false;
 
 	private void Awake()
 	{
@@ -60,11 +58,19 @@ public class Inventory : MonoBehaviour {
     {
 		menuShown = false;
         isWeaponEquipped.text = "";
+
+		//creo un oggetto di tipo slot vuoto
         emptySlot = new ItemStats();
         emptySlot.itemType = ItemStats.ItemType.emptyslot;
-        UpdateSlotUI();
-        if(IsInventoryEmpty())
-            ResetAllSlots();
+
+		//se l'inventario è vuoto imposto tutti gli slot con degli oggetti "slot vuoto"
+		if (IsInventoryEmpty())
+		{
+			ResetAllSlots();
+		}
+		//aggiorno la visualizzazione dell'inventario
+		UpdateSlotUI();
+        
 		
 	}
 
@@ -143,6 +149,7 @@ public class Inventory : MonoBehaviour {
 		return true;
 	}
 
+	//chiude l'inventario
 	public void ResumeI()
     {
         inventoryUI.SetActive(false);
@@ -155,6 +162,7 @@ public class Inventory : MonoBehaviour {
         EventSystem.current.SetSelectedGameObject(null);
     }
 
+	//apre l'inventario
     public void PauseI()
     {
         inventoryUI.SetActive(true);
@@ -167,6 +175,7 @@ public class Inventory : MonoBehaviour {
         source.PlayOneShot(enter);
     }
 
+	//utilizza un oggetto o equipaggia un'arma
     public void Use()
     {
 		//se l'oggetto selezionato è un consumable
@@ -203,6 +212,7 @@ public class Inventory : MonoBehaviour {
         ResumeI();
     }
 
+	//equipaggia un'arma
     public void Equip()
     {
 		weapon = GameManager.manager.playerReference.GetComponentInChildren<Weapon>();
@@ -210,39 +220,40 @@ public class Inventory : MonoBehaviour {
 		GameStats.stats.equippedSlot = GameStats.stats.index;
 	}
 
+	//se c'è posto aggiunge uno slot all'inventario, in caso contrario restituisce false
 	public bool AddSlot(ItemStats info)
 	{
 		if (GameStats.stats.count < 20)
 		{
 			Add(info);
-
-			//playerStats.Inizializate(info);
 			UpdateSlotUI();
 
 			return true;
 		}
 		else
 		{
-			//source.PlayOneShot(empty);
-			//Debug.Log("inventario pieno");
 			return false;
 		}
 	}
 
+	//aggiunge un oggetto all'inventario
 	private void Add(ItemStats item)
     {
 		for (int i = 0; i < GameStats.stats.itemList.Length; i++)
 		{
-			if (GameStats.stats.itemList[i].itemName == item.itemName && GameStats.stats.itemList[i].itemType != ItemStats.ItemType.weapon) //se ci sono già oggetti identici
+			//se ci sono già oggetti identici
+			if (GameStats.stats.itemList[i].itemName == item.itemName && GameStats.stats.itemList[i].itemType != ItemStats.ItemType.weapon) 
 			{
-				if (GameStats.stats.itemList[i].currentStack < GameStats.stats.itemList[i].maxStack) //controllo che lo slot non sia pieno
+				//controllo che lo slot non sia pieno
+				if (GameStats.stats.itemList[i].currentStack < GameStats.stats.itemList[i].maxStack) 
 				{
 					GameStats.stats.itemList[i].currentStack++;
 					UpdateSlotUI();
 					return;
 				}
 			}
-			else if (GameStats.stats.itemList[i].itemType == ItemStats.ItemType.emptyslot) //se invece lo slot è vuoto aggiungo qui l'oggetto
+			//se invece lo slot è vuoto aggiungo qui l'oggetto
+			else if (GameStats.stats.itemList[i].itemType == ItemStats.ItemType.emptyslot)
 			{
 				JsonUtility.FromJsonOverwrite(JsonUtility.ToJson(item), GameStats.stats.itemList[i]);
 				GameStats.stats.count++;
@@ -251,9 +262,10 @@ public class Inventory : MonoBehaviour {
 		}
 	}
 
-
+	//mostra il menu delle opzioni disponibili per l'oggetto selezionato
     public void ShowMenu(int i)
     {
+		//se nello slot selezionato c'è un oggetto
 		if (GameStats.stats.itemList[i].itemType != ItemStats.ItemType.emptyslot)
 		{
             lastInventoryButton = EventSystem.current.currentSelectedGameObject;
@@ -261,6 +273,7 @@ public class Inventory : MonoBehaviour {
             GameManager.manager.inventoryMenuActive = true;
             inventoryMenu.SetActive(true);
 			
+			//imposto il testo adatto al tipo di oggetto
 			if (GameStats.stats.itemList[i].itemType == ItemStats.ItemType.consumable)
 			{
                 use.text = "Use";
@@ -270,11 +283,13 @@ public class Inventory : MonoBehaviour {
                 use.text = "Equip";
             }
 			
+			//se l'oggetto attuale è l'arma equipaggiata impedisco di dropparla (in modo da obbligare il player ad avere sempre almeno un'arma in mano)
 			if (i == GameStats.stats.equippedSlot)
 			{
 				isWeaponEquipped.text = "Equipped";
 				dropButton.SetActive(false);
 			}
+			//altrimenti può droppare l'oggetto
             else
 			{
 				isWeaponEquipped.text = "";
@@ -285,17 +300,20 @@ public class Inventory : MonoBehaviour {
 			//solo se il consumable è già stato utilizzato mostro le informazioni
 			if (GameStats.stats.itemList[i].itemType == ItemStats.ItemType.consumable)
 			{
+				//controllo se il tipo di consumable è già stato precedentemente utilizzato
 				if (GameStats.stats.consumables.Find(x => x.itemName.Equals(GameStats.stats.itemList[i].itemName)).used)
 				{
 					itemName.text = GameStats.stats.itemList[i].itemName;
 					description.text = GameStats.stats.itemList[i].description;
 				}
+				//se non è mai stato utilizzato non stampo le effettive informazioni
 				else
 				{
 					itemName.text = "???";
 					description.text = "Unknown effects";
 				}
 			}
+			//se non è un consumable stampo le informazioni dell'arma
 			else
 			{
 				itemName.text = GameStats.stats.itemList[i].itemName;
@@ -305,15 +323,18 @@ public class Inventory : MonoBehaviour {
 			EventSystem.current.SetSelectedGameObject(buttonMenu);
 			GameStats.stats.index = i;
             source.PlayOneShot(enter);
+
+			//obbligo i canvas ad aggiornarsi per permettere ai pannelli di ridimensionarsi a seconda della quantità di testo ed elementi contenuti
             Canvas.ForceUpdateCanvases();
         }
+		//se l'oggetto è di tipo slot vuoto non faccio niente
         else
         {
             source.PlayOneShot(empty);
         }
     }
 
-
+	//nasconde il menu delle opzioni dell'inventario
 	public void HideMenu()
 	{
 		menuShown = false;
@@ -322,11 +343,13 @@ public class Inventory : MonoBehaviour {
 		EventSystem.current.SetSelectedGameObject(lastInventoryButton);
 	}
 
+	//lanciato dal tasto Back nel menu dell'inventario
 	public void PlayExitSound()
 	{
 		source.PlayOneShot(exit);
 	}
 
+	//aggiorna la visualizzazione di tutti gli slot dell'inventario
 	public void UpdateSlotUI()
 	{
 		for (int i = 0; i < inventorySlots.Length; i++)
@@ -335,6 +358,7 @@ public class Inventory : MonoBehaviour {
 		}
 	}
 
+	//"riempie" l'inventario di oggetti di tipo slot vuoto
 	private void ResetAllSlots()
 	{
 		for (int i = 0; i < GameStats.stats.itemList.Length; i++)
@@ -343,13 +367,16 @@ public class Inventory : MonoBehaviour {
 		}
 	}
 
+	//elimina un oggetto dall'inventario
 	public void DropItem()
 	{
+		//se c'è solo un oggetto nello stack lo elimino
 		if (GameStats.stats.itemList[GameStats.stats.index].currentStack == 1)
 		{
 			JsonUtility.FromJsonOverwrite(JsonUtility.ToJson(emptySlot), GameStats.stats.itemList[GameStats.stats.index]);
 			GameStats.stats.count--;
 		}
+		//altrimenti decremento il valore dello stack
 		else
 		{
 			GameStats.stats.itemList[GameStats.stats.index].currentStack--;

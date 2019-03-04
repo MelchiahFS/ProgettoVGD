@@ -6,6 +6,7 @@ public class ItemSpriteSelector : MonoBehaviour
 {
 	public static ItemSpriteSelector iss;
 
+	//liste relative alle sprite degli oggetti e armi generati e dei proiettili nemici
     public List<Sprite> meeleWeapons;
     public List<Sprite> rangedWeapons;
     public List<Sprite> potions;

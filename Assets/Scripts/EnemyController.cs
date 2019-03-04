@@ -6,9 +6,10 @@ using UnityEngine;
 [RequireComponent(typeof(MovementPattern))]
 public class EnemyController : Character
 {
+	//elenco dei tipi di movimento nemici
 	public enum MovementType { charging, following, hybridWandering, pureWandering, bouncing };
 
-	public MovementType movementType;
+	public MovementType movementType; //pattern di movimento del nemico
     private GameObject player;
     private float posX, posY;
     private Vector3 lastFramePosition, movementDirection;
@@ -19,17 +20,19 @@ public class EnemyController : Character
         
     void Start()
     {
-        mp = GetComponent<MovementPattern>();
-        animator = GetComponent<Animator>();
-		player = GameManager.manager.playerReference;
+        mp = GetComponent<MovementPattern>(); //recupero il riferimento allo script di movimento
+		animator = GetComponent<Animator>();
+		player = GameManager.manager.playerReference; 
 		GetComponent<SpriteRenderer>().sortingLayerName = "Characters";
         gameObject.tag = "Enemy";
-        SetRealOffset(gameObject);
+        SetRealOffset(gameObject); //imposto l'offset del nemico
 
         lastFramePosition = transform.position;
 
+		//se il nemico non vola setto il riferimento allo script della AI nello script di movimento
 		if (!flying)
 			mp.astar = GetComponent<AStarAI>();
+		//altrimenti setto il layer Flying per evitare determinate collisioni
 		else
 			gameObject.layer = LayerMask.NameToLayer("Flying");
 
@@ -53,7 +56,7 @@ public class EnemyController : Character
             lastFramePosition = transform.position;
         }
 
-
+		//imposto lo script di movimento del nemico a seconda del tipo di movimento selezionato da editor
         if (movementType == MovementType.following)
         {
             if (flying)

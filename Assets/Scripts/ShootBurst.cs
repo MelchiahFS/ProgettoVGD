@@ -5,16 +5,20 @@ using System;
 
 public class ShootBurst : ShootAbstract
 {
-	public float shotSpeed, timeBetweenBursts, bulletNumber, fireRate, range, distance;
-	private float damage;
-	private float counter, burstCounter;
-    private EnemyBullet enemyBullet;
-    private Transform playerTransform;
-    public GameObject bulletPrefab;
-    private Rigidbody2D rb;
-    private RaycastHit2D hit;
-    private Room actualRoom;
-    private bool shooting;
+	public float shotSpeed, fireRate, range, distance; //caratteristiche dei proiettili specifiche di questo script
+	public float timeBetweenBursts; //tempo tra due raffiche
+	public float bulletNumber; //numero di proiettili sparati per raffica
+	private float damage; //danno del proiettile
+	private float counter, burstCounter; //timer per l'implementazione del fire rate nemico e del tempo tra due raffiche
+	private EnemyBullet enemyBullet; //script per il settaggio del proiettile
+	private Transform playerTransform;
+    public GameObject bulletPrefab; //prefab del proiettile
+	private Rigidbody2D rb;
+    private RaycastHit2D hit; //risultato del raycast verso il player
+	private Room actualRoom;
+    private bool shooting; //indica se il nemico sta sparando una raffica
+
+	//vettori utili al calcolo del punto di partenza del proiettile e la sua direzione
 	private Vector3 centerPoint, direction, shotStartPoint;
 
 
@@ -29,32 +33,41 @@ public class ShootBurst : ShootAbstract
 
     void Update()
     {
-        if (Vector3.Distance(playerTransform.position, transform.position) <= distance)
+		//se il nemico ha agganciato il player
+		if (Vector3.Distance(playerTransform.position, transform.position) <= distance)
         {
-            if (burstCounter >= timeBetweenBursts && !shooting)
+			//se può iniziare una nuova raffica
+			if (burstCounter >= timeBetweenBursts && !shooting)
             {
-
-                centerPoint = transform.position + new Vector3(0, GetComponent<EnemyController>().RealOffset, 0);
+				//calcolo punto di partenza e direzione del proiettile
+				centerPoint = transform.position + new Vector3(0, GetComponent<EnemyController>().RealOffset, 0);
                 direction = playerTransform.position - centerPoint;
                 shotStartPoint = centerPoint + direction.normalized / 2;
 
-                hit = Physics2D.Raycast(centerPoint, direction, range, ~LayerMask.GetMask("Enemy"));
-                if ((hit.collider != null && hit.collider.gameObject.tag == "Player") || GetComponent<EnemyController>().flying)
+				//controllo se tra player e nemico non ci siano ostacoli
+				hit = Physics2D.Raycast(centerPoint, direction, range, ~LayerMask.GetMask("Enemy"));
+
+				//se non ho trovato ostacoli (o se il nemico vola, in tal caso gli ostacoli saranno sotto di lui) allora sparo una raffica
+				if ((hit.collider != null && hit.collider.gameObject.tag == "Player") || GetComponent<EnemyController>().flying)
                 {
                     StartCoroutine(Burst());
                 }
             }
         }
+
+		//se non è in corso una raffica aggiorno il tempo per la prossima raffica
         if (!shooting)
         {
             burstCounter += Time.deltaTime;
         }
     }
 
+	//Permette al nemico di sparare una raffica di proiettili
     private IEnumerator Burst()
     {
-        shooting = true;
+        shooting = true; //segnalo l'inizio della raffica
 
+		//effettuo un ciclo per ogni proiettile
         for (int i = 0; i < bulletNumber; i++)
         {
             centerPoint = transform.position + new Vector3(0, GetComponent<EnemyController>().RealOffset, 0);
@@ -68,15 +81,17 @@ public class ShootBurst : ShootAbstract
             actualRoom = GameManager.manager.ActualRoom;
             actualRoom.toSort.Add(bullet);
 
+			//dopo aver sparato attendo per un istante dato
             yield return new WaitForSeconds(fireRate);    
         }
 
-        burstCounter = 0;
-        shooting = false;
+        burstCounter = 0; //azzero il tempo per la prossima raffica
+        shooting = false; //segnalo la fine della raffica
         yield break;
     }
 
-    public void SetShotSpeed(float amount)
+	//Modifica la velocità dell'attacco in caso di status alterato (slowDown o speedUp)
+	public void SetShotSpeed(float amount)
     {
         shotSpeed += amount;
     }

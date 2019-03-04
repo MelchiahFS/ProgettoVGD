@@ -27,8 +27,10 @@ public class PlayerController : Character
 	
 	void FixedUpdate()
 	{
+		//se il gioco non è in pausa
 		if (!GameManager.manager.gamePause)
 		{
+			//prendo i valori di input degli assi x e y
 			x = Input.GetAxisRaw("CustomHorizontal");
 
 			y = Input.GetAxisRaw("CustomVertical");
@@ -40,6 +42,7 @@ public class PlayerController : Character
 				y = -y;
 			}
 
+			//creo il vettore di movimento
 			Vector2 movement = new Vector2(x, y);
 
 			//se il player attacca o sta morendo non può muoversi

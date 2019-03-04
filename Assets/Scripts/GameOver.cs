@@ -18,6 +18,7 @@ public class GameOver : MonoBehaviour
 
 	void Update()
 	{
+		//se il player è morto e la schermata di gameOver non è ancora aperta la attivo
 		if (GameManager.manager.dead && !isGameOver)
 		{
 			gameOverScreen.SetActive(true);
@@ -28,15 +29,22 @@ public class GameOver : MonoBehaviour
 			GameManager.manager.gamePause = true;
 			EventSystem.current.SetSelectedGameObject(null);
 			EventSystem.current.SetSelectedGameObject(lastButton);
+			Canvas.ForceUpdateCanvases();
 		}
 
-		if (EventSystem.current.currentSelectedGameObject == null)
+		//se la schermata di gameOver è attiva tengo il focus sul tasto attivo
+		if (isGameOver)
 		{
-			EventSystem.current.SetSelectedGameObject(lastButton);
+			if (EventSystem.current.currentSelectedGameObject == null)
+			{
+				EventSystem.current.SetSelectedGameObject(lastButton);
+				Canvas.ForceUpdateCanvases();
+			}
+			else
+			{
+				lastButton = EventSystem.current.currentSelectedGameObject;
+			}
 		}
-		
-		lastButton = EventSystem.current.currentSelectedGameObject;
-		
 
 		if (isGameOver)
 		{
@@ -47,6 +55,7 @@ public class GameOver : MonoBehaviour
 		}
 	}
 
+	//inizia una nuova partita
 	public void NewGame()
 	{
 		gameOverScreen.SetActive(false);
@@ -55,6 +64,7 @@ public class GameOver : MonoBehaviour
 		StartCoroutine(GameManager.manager.lvlManager.FadeOffToNewScene(1f, "LoadingScreen"));
 	}
 
+	//ritorna al menu principale
 	public void BackToMainMenu()
 	{
 		gameOverScreen.SetActive(false);

@@ -16,6 +16,7 @@ public class EnemyBullet : MonoBehaviour {
 
 	void Update ()
     {
+		//se il proiettile supera il range lo distruggo
         if (Vector3.Distance(enemyPosition, transform.position) > range)
         {
             actualRoom.toSort.Remove(gameObject);
@@ -23,6 +24,7 @@ public class EnemyBullet : MonoBehaviour {
         }
     }
 
+	//imposta i valori del proiettile (chiamata dai vari script di attacco)
     public void SetStats(float damage, float range, Sprite sprite, Vector3 enemyPosition, bool isFlying)
     {
         this.damage = damage;
@@ -35,6 +37,7 @@ public class EnemyBullet : MonoBehaviour {
 
     void OnTriggerEnter2D(Collider2D coll)
     {
+		//se colpisce il triggerCollider del player infligge danno
         if (coll.gameObject.tag == "Player")
         {
             if (coll.isTrigger)
@@ -44,6 +47,7 @@ public class EnemyBullet : MonoBehaviour {
                 Destroy(gameObject);
             }
         }
+		//se colpisce un ostacolo, distruggo il proiettile solo se il nemico non vola
         else if (coll.gameObject.tag == "Obstacle")
         {
             if (!flying)
@@ -52,6 +56,7 @@ public class EnemyBullet : MonoBehaviour {
                 Destroy(gameObject);
             }       
         }
+		//infine distruggo il proiettile se colpisco qualsiasi cosa diversa da un altro nemico o la porta superiore
         else if (coll.gameObject.tag != "Enemy" && coll.gameObject.tag != "DoorUp")
         {
             actualRoom.toSort.Remove(gameObject);
@@ -60,6 +65,7 @@ public class EnemyBullet : MonoBehaviour {
 
     }
 
+	//distruggo il proiettile solo quando tocca il bordo superiore della porta (quando esce da essa)
     void OnTriggerExit2D(Collider2D coll)
     {
         if (coll.gameObject.tag == "DoorUp")

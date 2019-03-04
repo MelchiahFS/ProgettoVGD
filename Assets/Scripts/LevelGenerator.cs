@@ -8,24 +8,24 @@ public class LevelGenerator
 {
     Vector2Int worldSize;
     private Room[,] rooms;
-    List<Vector2Int> takenPositions = new List<Vector2Int>();
+    List<Vector2Int> takenPositions = new List<Vector2Int>(); //lista delle posizioni occupate dalle stanze generate
     int gridSizeX, gridSizeY;
-    private int roomSizeX, roomSizeY;
-    public int distRoomX = 6, distRoomY = 6;
+    private int roomSizeX, roomSizeY; //dimensione in x e y delle stanze
+    public int distRoomX = 6, distRoomY = 6; //distanza tra le stanze (utile alla generazione dei corridoi)
     private int numberOfRooms;
-    private bool bossIsSet = false, shopIsSet = false;
+    private bool bossIsSet = false, shopIsSet = false; //indica se shop e boss room sono già state generate
 	
+	//genera la mappa del livello
     public LevelGenerator(int sizeX, int sizeY)
     {
         this.roomSizeX = sizeX;
         this.roomSizeY = sizeY;
 	
-		numberOfRooms = UnityEngine.Random.Range(10, 15);
-		
-        //numberOfRooms = 16;
+		//genera un numero di stanze casuale
+		numberOfRooms = UnityEngine.Random.Range(10, 16);
 
         //NOTA: la dimensione della griglia delle stanze sarà il doppio in x e y 
-        //in modo che la prima stanza stia al centro della griglia
+        //in modo che la prima stanza stia al centro della griglia (0, 0)
         worldSize = new Vector2Int(UnityEngine.Random.Range(4, 5), UnityEngine.Random.Range(4, 5));
         
         //se il numero delle stanze eccede il numero delle celle nella griglia allora lo eguaglio a tale numero
@@ -37,23 +37,21 @@ public class LevelGenerator
         gridSizeY = worldSize.y;
 
 		//bug fix per forzare la generazione di un livello con le stanze boss e shop
-
 		while (!bossIsSet || !shopIsSet)
 		{
 			CreateRooms();
 			SetRoomDoors();
 			SetBossAndShop();
 		}
-
-
 	}
 
-
+	//crea la matrice delle stanze generando effettivamente una mappa
     private void CreateRooms()
     {
         //crea una matrice Room che rappresenta la griglia delle stanze
         rooms = new Room[gridSizeX * 2, gridSizeY * 2];
-        //crea una stanza al centro della griglia
+
+        //crea una stanza al centro della griglia e la imposta come stanza iniziale
         rooms[gridSizeX, gridSizeY] = new Room(Vector2Int.zero);
         rooms[gridSizeX, gridSizeY].startRoom = true;
 
@@ -68,65 +66,79 @@ public class LevelGenerator
         {
             //restituisce un valore inizialmente piccolo, che cresce a ogni iterazione
             float randomPerc = ((float)i) / ((float)numberOfRooms - 1);
-            //random compare è risultato di una interpolazione lineare usando il valore precedente
+            //ottengo un valore casuale dipendente dal valore precedentemente calcolato
             randomCompare = Mathf.Lerp(randomCompareStart, randomCompareEnd, randomPerc);
 
+			//seleziono una possibile posizione valida per una nuova stanza
+			//(ossia che non sia già occupata e che sia nei limiti della mappa)
             checkPos = NewPosition();
-            //se la nuova stanza avrà più di una stanza adiacente e ottengo un valore 
-            //casuale maggiore del risultato dell'interpolazione...
-            if (NumberOfNeighbors(checkPos, takenPositions) > 1 && UnityEngine.Random.value > randomCompare)
-            {
-                int iterations = 0;
-                do
-                {
-                    //cerco una nuova posizione per la nuova stanza
-                    checkPos = SelectiveNewPosition();
-                    iterations++;
-                }//ripeto finché non trovo una stanza che abbia al massimo una stanza adiacente
-                while (NumberOfNeighbors(checkPos, takenPositions) > 1 && iterations < 50);
-            }
 
-            //posiziono la stanza nella griglia delle stanze
-            rooms[(checkPos.x / (roomSizeX + distRoomX)) + gridSizeX, (checkPos.y / (roomSizeY + distRoomY)) + gridSizeY] = new Room(checkPos);
+			//se la nuova stanza avrà più di una stanza adiacente
+			if (NumberOfNeighbors(checkPos, takenPositions) > 1)
+			{
+				//se ottengo un valore casuale maggiore del risultato dell'interpolazione
+				if (UnityEngine.Random.value > randomCompare)
+				{
+					int iterations = 0;
+					do
+					{
+						//cerco una nuova posizione per la nuova stanza
+						checkPos = SelectiveNewPosition();
+						iterations++;
+					}//ripeto finché non trovo una stanza che abbia al massimo una stanza adiacente
+					while (NumberOfNeighbors(checkPos, takenPositions) > 1 && iterations < numberOfRooms);
+				}
+			}
 
-
+			//posiziono la stanza nella griglia delle stanze
+			rooms[(checkPos.x / (roomSizeX + distRoomX)) + gridSizeX, (checkPos.y / (roomSizeY + distRoomY)) + gridSizeY] = new Room(checkPos);
+			
             //inserisco la nuova stanza nella lista delle stanze visitate
             takenPositions.Insert(0, checkPos);
         }
     }
 
+	//seleziona una possibile posizione per una nuova stanza rispetto a una già generata
     Vector2Int NewPosition()
     {
         int x = 0, y = 0;
         Vector2Int checkingPos = Vector2Int.zero;
         do
-        {   //random.value restituisce un valore tra 0 e 1 compresi
+        {   //ottengo un indice casuale compreso nel range delle stanze già generate
             int index = Mathf.RoundToInt(UnityEngine.Random.value * (takenPositions.Count - 1));
-            x = (int)takenPositions[index].x;
-            y = (int)takenPositions[index].y;
+            x = takenPositions[index].x;
+            y = takenPositions[index].y;
+
+			//determino casualmente dove posizionare la nuova stanza rispetto a quella selezionata
             bool upDown = (UnityEngine.Random.value < 0.5f);
             bool positive = (UnityEngine.Random.value < 0.5f);
-            if (upDown) //determino se la nuova stanza andrà a destra o a sinistra di quella attuale
-            {
+
+			//aggiorno le coordinate della nuova stanza
+			if (upDown) 
+			{
                 if (positive)
                     y += roomSizeY + distRoomY;
                 else
                     y -= roomSizeY + distRoomY;
             }
-            else //determino se sarà sopra o sotto di quella attuale
-            {
+			else
+			{
                 if (positive)
                     x += roomSizeX + distRoomX;
                 else
                     x -= roomSizeX + distRoomX;
             }
             checkingPos = new Vector2Int(x, y);
+
         }//ripeto finché la nuova stanza non sarà dentro la griglia o la nuova posizione non sia diversa da una già occupata
-        while (takenPositions.Contains(checkingPos) || (x / (roomSizeX + distRoomX)) >= gridSizeX || (x / (roomSizeX + distRoomX)) < -gridSizeX || (y / (roomSizeY + distRoomY)) >= gridSizeY || (y / (roomSizeY + distRoomY)) < -gridSizeY);
+        while (takenPositions.Contains(checkingPos) || (x / (roomSizeX + distRoomX)) >= gridSizeX || (x / (roomSizeX + distRoomX)) < -gridSizeX 
+				|| (y / (roomSizeY + distRoomY)) >= gridSizeY || (y / (roomSizeY + distRoomY)) < -gridSizeY);
         
         return checkingPos;
     }
 
+	//metodo simile a NewPosition, differisce per il fatto che rende quasi certamente una posizione con una sola stanza adiacente
+	//(utile per creare delle ramificazioni nella mappa)
     Vector2Int SelectiveNewPosition()
     {
         int index = 0, inc = 0;
@@ -137,15 +149,21 @@ public class LevelGenerator
             inc = 0;
             do
             {
-                index = Mathf.RoundToInt(UnityEngine.Random.value * (takenPositions.Count - 1));
-                inc++;
+				//ottengo un indice casuale compreso nel range delle stanze già generate
+				index = Mathf.RoundToInt(UnityEngine.Random.value * (takenPositions.Count - 1));
+				x = takenPositions[index].x;
+				y = takenPositions[index].y;
+				inc++;
+
             }//controlla finché non trova una stanza che ha una sola stanza adiacente
-            while (NumberOfNeighbors(takenPositions[index], takenPositions) > 1 && inc < 50);
-            x = (int)takenPositions[index].x;
-            y = (int)takenPositions[index].y;
-            bool upDown = (UnityEngine.Random.value < 0.5f);
+            while (NumberOfNeighbors(takenPositions[index], takenPositions) > 1 && inc < numberOfRooms);
+
+			//determino casualmente dove posizionare la nuova stanza rispetto a quella selezionata
+			bool upDown = (UnityEngine.Random.value < 0.5f);
             bool positive = (UnityEngine.Random.value < 0.5f);
-            if (upDown)
+
+			//aggiorno le coordinate della nuova stanza
+			if (upDown)
             {
                 if (positive)
                     y += roomSizeY + distRoomY;
@@ -159,8 +177,8 @@ public class LevelGenerator
                 else
                     x -= roomSizeX + distRoomX;
             }
-            //sceglie dove mettere la nuova stanza rispetto a quella attuale
             checkingPos = new Vector2Int(x, y);
+
         }//ripeto finché la nuova stanza non sarà dentro la griglia o la nuova posizione non sia diversa da una già occupata
         while (takenPositions.Contains(checkingPos) || (x / (roomSizeX + distRoomX)) >= gridSizeX || (x / (roomSizeX + distRoomX)) < -gridSizeX || (y / (roomSizeY + distRoomY)) >= gridSizeY || (y / (roomSizeY + distRoomY)) < -gridSizeY);
         
@@ -173,13 +191,17 @@ public class LevelGenerator
     {
 
         int ret = 0;
+		//controllo se ci sono stanze a destra
         if (usedPositions.Contains(new Vector2Int(checkingPos.x + (roomSizeX + distRoomX), checkingPos.y)))
             ret++;
-        if (usedPositions.Contains(new Vector2Int(checkingPos.x - (roomSizeX + distRoomX), checkingPos.y)))
+		//controllo se ci sono stanze a sinistra
+		if (usedPositions.Contains(new Vector2Int(checkingPos.x - (roomSizeX + distRoomX), checkingPos.y)))
             ret++;
-        if (usedPositions.Contains(new Vector2Int(checkingPos.x, checkingPos.y + (roomSizeY + distRoomY))))
+		//controllo se ci sono stanze sopra
+		if (usedPositions.Contains(new Vector2Int(checkingPos.x, checkingPos.y + (roomSizeY + distRoomY))))
             ret++;
-        if (usedPositions.Contains(new Vector2Int(checkingPos.x, checkingPos.y - (roomSizeY + distRoomY))))
+		//controllo se ci sono stanze sotto
+		if (usedPositions.Contains(new Vector2Int(checkingPos.x, checkingPos.y - (roomSizeY + distRoomY))))
             ret++;
         return ret;
     }
@@ -217,7 +239,7 @@ public class LevelGenerator
         }
     }
 
-
+	//si occupa di cercare tra le stanze generate delle candidate boss e shop room
     void SetBossAndShop()
     {
         foreach (Room room in rooms)
@@ -243,6 +265,7 @@ public class LevelGenerator
         }
     }
 
+	//controlla la presenza di stanze adiacenti a una stanza data
     int AdiacentRooms(Room room)
     {
         int n = 0;
@@ -257,6 +280,7 @@ public class LevelGenerator
         return n;
     }
 
+	//restituisce la mappa generata
     public Room[,] Rooms
     {
         get
@@ -265,11 +289,13 @@ public class LevelGenerator
         }
     }
 
+	//restituisce la dimensione della mappa
     public Vector2Int GetMapSize()
     {
         return new Vector2Int(gridSizeX * 2, gridSizeY * 2);
     }
 
+	//restituisce il numero delle stanze
     public int GetRoomNumber()
     {
         return numberOfRooms;

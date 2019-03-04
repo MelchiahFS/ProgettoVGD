@@ -70,6 +70,8 @@ public class LevelManager : MonoBehaviour {
         map = lvlGen.Rooms;
         mapSize = lvlGen.GetMapSize();
         roomNumber = lvlGen.GetRoomNumber();
+
+		//imposto la posizione di partenza nella stanza iniziale al centro della mappa
 		ActualPos = new Vector2Int((int)mapSize.x / 2, (int)mapSize.y / 2);
 		
 		minimap = GetComponent<MiniMapController>();
@@ -78,7 +80,8 @@ public class LevelManager : MonoBehaviour {
         {
             for (int j = 0; j < mapSize.y; j++)
             {
-                if (map[i,j] != null) //salto le posizioni inoccupate della griglia
+				//disegno le stanze saltando le posizioni inoccupate della griglia
+				if (map[i,j] != null) 
                 {
                     DrawRoom(map[i, j]);
                     DrawWalls(map[i, j]);
@@ -88,7 +91,6 @@ public class LevelManager : MonoBehaviour {
 					CreateGridGraphs(map[i, j]);
 					DrawMinimapSprites(map[i, j]);
 					SetEnemyNumber(i, j);
-
 				}
             }
         }
@@ -99,10 +101,10 @@ public class LevelManager : MonoBehaviour {
     //Istanzia gli ostacoli nelle stanze
     void DrawObstacles(int x, int y)
     {
-        //ObstacleLayout.GetLayoutZero()
         Room room = map[x, y];
         Vector2 drawPos = room.gridPos;
 
+		//imposto il layout delle stanze
         if (room.startRoom)
             room.obsLayout = ObstacleLayout.GetLayoutZero();
         else if (room.shopRoom)
@@ -116,11 +118,11 @@ public class LevelManager : MonoBehaviour {
         //else
         //    room.obsLayout = ObstacleLayout.GetLayoutZero();
 
-        for (int i = 0; i < roomSizeY; i++)
+        for (int i = roomSizeY - 1; i >= 0; i--)
         {
             for (int j = 0; j < roomSizeX; j++)
             {                
-                
+                //nelle posizioni contrassegnate da 1 istanzio un ostacolo
                 if (room.obsLayout[i, j] == 1)
                 {
                     GameObject obsSprite = Instantiate(tileToRend, drawPos, Quaternion.identity) as GameObject;
@@ -132,6 +134,8 @@ public class LevelManager : MonoBehaviour {
                     SpriteRenderer rend = obsSprite.GetComponent<SpriteRenderer>();
                     rend.sortingLayerName = "Obstacles";
                     rend.sprite = mapper.obstacles;
+
+					//aggiungo un collider all'ostacolo
                     obsSprite.AddComponent(typeof(BoxCollider2D));
                     room.roomTiles.Add(obsSprite);
                 }
@@ -140,16 +144,18 @@ public class LevelManager : MonoBehaviour {
                     //aggiorno la lista delle posizioni prive di ostacoli
                     if (room.shopRoom)
                     {
-                        //se la stanza è lo shop, le posizioni libere saranno i punti in cui spawnare gli item da comprare
+                        //se la stanza è lo shop, le posizioni libere saranno i punti in cui spawnare gli item da comprare (valore 2)
                         if (room.obsLayout[i, j] == 2)
                             room.freePositions.Add(drawPos);
 
                     }
                     else if (room.bossRoom)
 					{
+						//nella bossRoom istanzio altare e ricompensa finale nella posizione con valore 3
 						if (room.obsLayout[i, j] == 3)
 							room.freePositions.Add(drawPos);
 					}
+					//se è una stanza normale spawno ricompense ovunque nella stanza
 					else
                         room.freePositions.Add(drawPos);  
                 }
@@ -212,11 +218,12 @@ public class LevelManager : MonoBehaviour {
             //rimuovo lo spawn point dalla lista di quelli disponinili per la stanza attuale
             room.spawnPoints.RemoveAt(enemyPosition);
 
-			//--------------------------------------------------------------------------------------
-
+			//obbliga il nemico a comparire completamente nella scena prima di essere tangibile, muoversi e attaccare
 			StartCoroutine(WaitEnemyForFadeIn(enemy));
         }
         room.enemyNumber = room.enemyCounter;
+
+		//una volta istanziati tutti i nemici decremento il counter delle ondate di nemici
         room.enemyWaves--;
         
     }
@@ -229,20 +236,25 @@ public class LevelManager : MonoBehaviour {
         {
             for (int j = 0; j < mapSize.y; j++)
             {
+				//se è la stanza iniziale
                 if (map[i, j] != null && map[i, j].startRoom) 
                 {
-					
-
-					LightUpRoom(map[i, j], true);
+					//creo un effetto di fade-in per la stanza
+					LightUpRoom(map[i, j]);
 					StartCoroutine(EnterLevel(0.3f));
 					StartCoroutine(FadeIn(altar.GetComponent<SpriteRenderer>(), 0.3f));
 					StartCoroutine(FadeIn(writings.GetComponent<SpriteRenderer>(), 0.3f));
 
+					//istanzio il player
 					GameObject player = Instantiate(playerPrefab, new Vector2(map[i, j].gridPos.x + (float)(roomSizeX / 2), map[i, j].gridPos.y + (float)(roomSizeY / 2) - 3), Quaternion.identity) as GameObject;
 					player.name = playerPrefab.name;
 					playerPrefab.GetComponent<SpriteRenderer>().sortingLayerName = "Characters";
 					map[i, j].toSort.Add(player);
+					
+					//imposto la minimappa per visualizzare la stanza iniziale
 					minimap.SetEnterRoom(map[i, j]);
+
+					//infine restituisco la stanza attuale
                     return map[i, j];
                 }
             }
@@ -266,7 +278,8 @@ public class LevelManager : MonoBehaviour {
 				rend.sortingLayerName = "Ground";
 				room.roomTiles.Add(roomTile);
 				
-				//di fronte alla porta inferiore
+				//imposto prima di tutto i vari trigger che serviranno allo script RoomChange per registrare il cambio di stanza
+				//trigger di fronte alla porta inferiore
 				if (i == 0 && j == (roomSizeX / 2) && room.doorBot)
 				{
 					roomTile.tag = "innerDoorDown";
@@ -277,7 +290,7 @@ public class LevelManager : MonoBehaviour {
 
 					rend.sprite = mapper.doorFloorDown;
 				}
-				//di fronte alla porta superiore
+				//trigger di fronte alla porta superiore
 				else if (i == (roomSizeY - 1) && j == (roomSizeX / 2) && room.doorTop)
 				{
 					roomTile.tag = "innerDoorUp";
@@ -288,7 +301,7 @@ public class LevelManager : MonoBehaviour {
 
 					rend.sprite = mapper.doorFloorUp;
 				}
-				//di fronte alla porta a sinistra
+				//trigger di fronte alla porta a sinistra
 				else if (i == (roomSizeY / 2) && j == 0 && room.doorLeft)
 				{
 					roomTile.tag = "innerDoorLeft";
@@ -299,7 +312,7 @@ public class LevelManager : MonoBehaviour {
 
 					rend.sprite = mapper.doorFloorLeft;
 				}
-				//di fronte alla porta a destra
+				//trigger di fronte alla porta a destra
 				else if (i == (roomSizeY / 2) && j == (roomSizeX - 1) && room.doorRight)
 				{
 					roomTile.tag = "innerDoorRight";
@@ -310,6 +323,7 @@ public class LevelManager : MonoBehaviour {
 
 					rend.sprite = mapper.doorFloorRight;
 				}
+				//infine disegno le altre tile della stanza
 				else if (i == 0)
 				{
 					//angolo giù a sinistra
@@ -354,6 +368,7 @@ public class LevelManager : MonoBehaviour {
 			drawPos.y++;
 		}
 
+		//se è la stanza iniziale istanzio l'altare con la pergamena contenente spezzoni di trama
 		if (room.startRoom)
 		{
 			Vector2 altarPos = new Vector2(room.gridPos.x + roomSizeX / 2, room.gridPos.y + roomSizeY / 2);
@@ -410,7 +425,7 @@ public class LevelManager : MonoBehaviour {
 						room.roomTiles.Add(wallTile);
 
 
-
+						//creo il muro che cela l'uscita dal livello
 						hideExit = Instantiate(tileToRend, drawPos, Quaternion.identity) as GameObject;
 						hideExit.tag = "Wall";
 						hideExit.layer = LayerMask.NameToLayer("InnerWalls");
@@ -460,7 +475,7 @@ public class LevelManager : MonoBehaviour {
                             wallCollider.size = new Vector2(1, 1);
                         }
                     }
-                        
+                    //altrimenti se è il muro esterno superiore    
                     else if (i == roomSizeY + 3)
                     {
                         if (j > 0 && j <= roomSizeX)
@@ -475,6 +490,7 @@ public class LevelManager : MonoBehaviour {
                             wallCollider.size = new Vector2(1, 1);
                         }
                     }
+					//se invece è il muro inferiore
                     else if (i == 0)
                     {
                         if (j > 0 && j <= roomSizeX)
@@ -489,6 +505,7 @@ public class LevelManager : MonoBehaviour {
                             wallCollider.size = new Vector2(1, 1);
                         }
                     }
+					//infine i muri a destra e a sinistra
                     else if (j == 0)
                     {
                         rend.sprite = mapper.leftWall;
@@ -546,7 +563,7 @@ public class LevelManager : MonoBehaviour {
                         map[x + 1, y].passageLeftTiles.Add(passTile);
                     }
 
-
+					//disegno i muri del passaggio orizzontale lasciando lo spazio per il passaggio del player
                     if (i != 1)
                     {
                         wallCollider = passTile.AddComponent(typeof(BoxCollider2D)) as BoxCollider2D;
@@ -658,6 +675,7 @@ public class LevelManager : MonoBehaviour {
                         map[x, y + 1].passageDownTiles.Add(passTile);
                     }
 
+					//disegno i muri a destra e a sinistra del passaggio
                     if (j != 1)
                     {
                         wallCollider = passTile.AddComponent(typeof(BoxCollider2D)) as BoxCollider2D;
@@ -716,6 +734,7 @@ public class LevelManager : MonoBehaviour {
                             }
                         }    
                     }
+					//imposto i trigger interni al corridoio
                     else
                     {
                         passTile.layer = LayerMask.NameToLayer("Ground");
@@ -843,16 +862,9 @@ public class LevelManager : MonoBehaviour {
     }
 
     //Illumina le stanze al loro accesso
-    public void LightUpRoom(Room actualRoom, bool light)
+    public void LightUpRoom(Room actualRoom)
     {
-        if (light)
-        {
-            alpha = full;
-        }
-        else
-        {
-            alpha = dim;
-        }
+		//illumino le tile della stanza
         foreach (GameObject g in actualRoom.roomTiles)
         {
             if (!ReferenceEquals(g,exit)) //se i due riferimenti rappresentano la stessa istanza
@@ -862,6 +874,7 @@ public class LevelManager : MonoBehaviour {
             }
             
         }
+		//illumino le porte della stanza
         if (actualRoom.doorSpriteUp != null)
         {
             SpriteRenderer s = actualRoom.doorSpriteUp.GetComponent<SpriteRenderer>();
@@ -887,17 +900,9 @@ public class LevelManager : MonoBehaviour {
     }
 
     //Illumina i passaggi tra le stanze al loro accesso
-    public void LightUpPassage(GameObject door, List<GameObject> passage, bool light)
+    public void LightUpPassage(GameObject door, List<GameObject> passage)
     {
         SpriteRenderer s = null;
-        if (light)
-        {
-            alpha = full;
-        }
-        else
-        {
-            alpha = dim;
-        }
         foreach (GameObject g in passage)
         {
             s = g.GetComponent<SpriteRenderer>();
@@ -914,22 +919,19 @@ public class LevelManager : MonoBehaviour {
         int posX = room.gridPos.x + roomSizeX / 2;
         int posY = room.gridPos.y + roomSizeY / 2;
         
+		//sprite rossa per bossRoom
         if (room.bossRoom)
         {
             room.actualBossMapSprite = Instantiate(minimap.actualBossRoom, new Vector2(posX, posY), Quaternion.identity);
-            room.visitedBossMapSprite = Instantiate(minimap.visitedBossRoom, new Vector2(posX, posY), Quaternion.identity);
-
             room.actualBossMapSprite.SetActive(false);
-            room.visitedBossMapSprite.SetActive(false);
         }
+		//sprite gialla per shopRoom
         else if (room.shopRoom)
         {
             room.actualShopMapSprite = Instantiate(minimap.actualShopRoom, new Vector2(posX, posY), Quaternion.identity);
-            room.visitedShopMapSprite = Instantiate(minimap.visitedShopRoom, new Vector2(posX, posY), Quaternion.identity);
-
             room.actualShopMapSprite.SetActive(false);
-            room.visitedShopMapSprite.SetActive(false);
         }
+		//sprite bianca (e celeste se la stanza è visitata) per le altre stanze
         else
         {
             room.actualMapSprite = Instantiate(minimap.actualRoom, new Vector2(posX, posY), Quaternion.identity);
@@ -959,14 +961,15 @@ public class LevelManager : MonoBehaviour {
     private void CreateGridGraphs(Room room)
     {
         AstarData data = AstarPath.active.data;
-        // This creates a Grid Graph
+        //aggiungo un GridGraph
         GridGraph gg = data.AddGraph(typeof(GridGraph)) as GridGraph;
 
-        // Setup a grid graph with some values
+        //imposto dimensione dei grafi e dei nodi utilizzati
         int width = (roomSizeX + 2) * 4;
         int depth = (roomSizeY + 4) * 4;
         float nodeSize = 0.25f;
 
+		//imposto posizione, orientamento e maschera del GridGraph
         gg.center = new Vector3(room.gridPos.x + roomSizeX / 2, room.gridPos.y + roomSizeY / 2 + 1, 0);
         gg.rotation = new Vector3(-90, 0, 0);
         gg.collision.diameter = 1f;
@@ -974,7 +977,7 @@ public class LevelManager : MonoBehaviour {
         gg.collision.use2D = true;
         gg.cutCorners = false;
 
-        // Updates internal size from the above values
+        //applico le dimensioni
         gg.SetDimensions(width, depth, nodeSize);
     }
 
@@ -1018,6 +1021,7 @@ public class LevelManager : MonoBehaviour {
         yield break;
     }
 
+	//Effetto di fadeIn all'ingresso del livello; sfrutta il gameObject hidingPanel
 	private IEnumerator EnterLevel(float fadeTime)
 	{
 		hidingPanel.SetActive(true);
@@ -1031,10 +1035,12 @@ public class LevelManager : MonoBehaviour {
 			cg.alpha = alpha;
 			yield return null;
 		}
+		GameManager.manager.startingLevel = true; //viene letto da Signboard per mostrare lo spezzone di trama all'inizio del livello
 		hidingPanel.SetActive(false);
 		yield break;
 	}
 
+	//Effetto di fadeOff sia visivo che musicale e carica la scena passata
 	public IEnumerator FadeOffToNewScene(float fadeTime, string scene)
 	{
 		GameManager.manager.ending = true;
@@ -1045,6 +1051,7 @@ public class LevelManager : MonoBehaviour {
 		float rate = 1 / fadeTime;
 		while (alpha < 1)
 		{
+			//NOTA: uso il valore 0.04f invece che Time.deltaTime per permettere il fadeOut pur con Time.timeScale a 0
 			if (MusicManager.mm.musicController.volume > 0)
 				MusicManager.mm.musicController.volume -= 0.04f * rate;
 
@@ -1058,6 +1065,7 @@ public class LevelManager : MonoBehaviour {
 		yield break;
 	}
 
+	//Mostra l'uscita dal livello
 	public void ShowExit()
     {
         StartCoroutine(FadeOff(hideExit.GetComponent<SpriteRenderer>(), 1));
@@ -1065,6 +1073,7 @@ public class LevelManager : MonoBehaviour {
         StartCoroutine(FadeIn(exit.GetComponent<SpriteRenderer>(), 1));
     }
 
+	//Imposta il numero dei nemici per i vari tipi di stanza
 	private void SetEnemyNumber(int x, int y)
 	{
 		Room room = map[x, y];
@@ -1075,20 +1084,19 @@ public class LevelManager : MonoBehaviour {
 		}
 		else if (room.bossRoom)
 		{
-			//room.enemyCounter = rnd.Next(4, 7);
-			//room.enemyWaves = 3;
-			room.enemyCounter = 0;
-			room.enemyWaves = 0;
+			room.enemyCounter = rnd.Next(4, 7);
+			room.enemyWaves = 3;
 		}
 		else
 		{
-			room.enemyCounter = rnd.Next(3, 5);
-			room.enemyWaves = 1;
-			//room.enemyCounter = 0;
-			//room.enemyWaves = 0;
+			//room.enemyCounter = rnd.Next(3, 5);
+			//room.enemyWaves = 1;
+			room.enemyCounter = 0;
+			room.enemyWaves = 0;
 		}
 	}
 
+	//Disabilita script e movimenti dei nemici
 	private void DisableEnemyScripts(GameObject enemy)
 	{
 		foreach (Collider2D coll in enemy.GetComponents<Collider2D>())
@@ -1109,6 +1117,7 @@ public class LevelManager : MonoBehaviour {
 			enemy.GetComponent<ShootCircle>().enabled = false;
 	}
 
+	//Abilita script e movimenti dei nemici
 	private void EnableEnemyScripts(GameObject enemy)
 	{
 		foreach (Collider2D coll in enemy.GetComponents<Collider2D>())
@@ -1129,6 +1138,7 @@ public class LevelManager : MonoBehaviour {
 			enemy.GetComponent<ShootCircle>().enabled = true;
 	}
 
+	//Obbliga il nemico a comparire completamente nella scena prima di essere tangibile, muoversi e attaccare
 	private IEnumerator WaitEnemyForFadeIn(GameObject enemy)
 	{
 		DisableEnemyScripts(enemy);

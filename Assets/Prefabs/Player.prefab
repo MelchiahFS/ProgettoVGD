@@ -192,8 +192,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7a0963ee370edaa428792249e6770d78, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  bulletSpriteUD: {fileID: 21300000, guid: b6de52fa87112f54d9be52f959e16fca, type: 3}
-  bulletSpriteLR: {fileID: 21300002, guid: b6de52fa87112f54d9be52f959e16fca, type: 3}
   bulletPrefab: {fileID: 1210087289902888, guid: 03763a9b3ebc8344da67e5c15fe3c1c9,
     type: 3}
   bullet: {fileID: 0}
@@ -203,13 +201,12 @@ MonoBehaviour:
   rearBullet: {fileID: 0}
   isAttacking: 0
   isShooting: 0
-  attackDuration: 0.4
-  weaponsStats: []
-  radius: 0.75
   upDistance: {x: 0, y: 0.75, z: 0}
   downDistance: {x: 0, y: -0.75, z: 0}
   leftDistance: {x: -0.75, y: 0, z: 0}
   rightDistance: {x: 0.75, y: 0, z: 0}
+  attackDuration: 0.4
+  radius: 0.75
   swing: {fileID: 8300000, guid: 66045c66d92862f419bd5165537ca2b0, type: 3}
   unsheathe: {fileID: 8300000, guid: 41ce59d91dc11d44195d2fc0da251f16, type: 3}
   cut: {fileID: 8300000, guid: 726b3608b22b59044a842bd376366d8d, type: 3}
@@ -270,13 +267,10 @@ MonoBehaviour:
     actualMapSprite: {fileID: 0}
     visitedMapSprite: {fileID: 0}
     actualBossMapSprite: {fileID: 0}
-    visitedBossMapSprite: {fileID: 0}
     actualShopMapSprite: {fileID: 0}
-    visitedShopMapSprite: {fileID: 0}
     unknownMapSprite: {fileID: 0}
     enemies: []
     toSort: []
-    obsNumber: 0
     enemyCounter: 0
     enemyNumber: 0
     enemyWaves: 0
@@ -550,7 +544,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 554eaf408c372f344b1f3d1d5e6aa0d7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  currentHealth: 0
   isDead: 0
   isFlashing: 0
   isConsFlashing: 0
@@ -610,13 +603,10 @@ MonoBehaviour:
     actualMapSprite: {fileID: 0}
     visitedMapSprite: {fileID: 0}
     actualBossMapSprite: {fileID: 0}
-    visitedBossMapSprite: {fileID: 0}
     actualShopMapSprite: {fileID: 0}
-    visitedShopMapSprite: {fileID: 0}
     unknownMapSprite: {fileID: 0}
     enemies: []
     toSort: []
-    obsNumber: 0
     enemyCounter: 0
     enemyNumber: 0
     enemyWaves: 0
@@ -893,7 +883,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: 
+  m_Text: $ 50
 --- !u!1 &1378521064521466
 GameObject:
   m_ObjectHideFlags: 0
@@ -924,13 +914,14 @@ RectTransform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 224448718219785380}
+  - {fileID: 961020227282657411}
   m_Father: {fileID: 224408581842541096}
   m_RootOrder: 9
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 120, y: -20}
-  m_SizeDelta: {x: 200, y: 20}
+  m_AnchoredPosition: {x: 100, y: -20}
+  m_SizeDelta: {x: 180, y: 30}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &222049602082822880
 CanvasRenderer:
@@ -1359,8 +1350,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0.5}
   m_AnchorMax: {x: 0, y: 0.5}
-  m_AnchoredPosition: {x: 100, y: 0}
-  m_SizeDelta: {x: 200, y: 20}
+  m_AnchoredPosition: {x: 90, y: 0}
+  m_SizeDelta: {x: 180, y: 30}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &114108626735420880
 MonoBehaviour:
@@ -1403,9 +1394,9 @@ MonoBehaviour:
   m_HandleRect: {fileID: 0}
   m_Direction: 0
   m_MinValue: 0
-  m_MaxValue: 300
+  m_MaxValue: 100
   m_WholeNumbers: 0
-  m_Value: 195
+  m_Value: 100
   m_OnValueChanged:
     m_PersistentCalls:
       m_Calls: []
@@ -1741,7 +1732,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 200, y: 18}
+  m_SizeDelta: {x: 178, y: 28}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &1897504415142626
 GameObject:
@@ -1817,6 +1808,85 @@ MonoBehaviour:
   m_FillClockwise: 1
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
+--- !u!1 &1984657295444300423
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 961020227282657411}
+  - component: {fileID: 6465341535326088197}
+  - component: {fileID: 2309331858830637165}
+  m_Layer: 5
+  m_Name: HealthPoints
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &961020227282657411
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1984657295444300423}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 224605863275211942}
+  m_RootOrder: 1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 51.820007, y: 41.14}
+  m_Pivot: {x: 0.5, y: 0.5}
+--- !u!222 &6465341535326088197
+CanvasRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1984657295444300423}
+  m_CullTransparentMesh: 0
+--- !u!114 &2309331858830637165
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1984657295444300423}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 708705254, guid: f70555f144d8491a825f0804e09c671c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Material: {fileID: 0}
+  m_Color: {r: 0.29578686, g: 0, b: 1, a: 1}
+  m_RaycastTarget: 1
+  m_OnCullStateChanged:
+    m_PersistentCalls:
+      m_Calls: []
+    m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
+      Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
+  m_FontData:
+    m_Font: {fileID: 12800000, guid: 8bf731b2848d7294ba481de17dd9dae0, type: 3}
+    m_FontSize: 30
+    m_FontStyle: 0
+    m_BestFit: 0
+    m_MinSize: 2
+    m_MaxSize: 40
+    m_Alignment: 4
+    m_AlignByGeometry: 0
+    m_RichText: 1
+    m_HorizontalOverflow: 0
+    m_VerticalOverflow: 0
+    m_LineSpacing: 1
+  m_Text: 100
 --- !u!1 &3643599743558775910
 GameObject:
   m_ObjectHideFlags: 0
@@ -1895,4 +1965,4 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: 
+  m_Text: PP 1000

@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+
+//classe utilizzata per creare degli scriptable object utilizzabili poi come consumables
 [CreateAssetMenu(fileName = "New Item", menuName ="Inventory/Item")]
 public class Item : ScriptableObject
 {
@@ -18,7 +20,7 @@ public class Item : ScriptableObject
 	public float fireRate;
 	public float shotSpeed;
 
-	public ItemStats.ItemType type = ItemStats.ItemType.basic ;
+	public ItemStats.ItemType type = ItemStats.ItemType.basic;
 	public ItemStats.WeaponType weaponType; 
     public ItemStats.ConsumableType consumableType;
 

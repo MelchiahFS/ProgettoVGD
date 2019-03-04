@@ -2,85 +2,58 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Weapon : MonoBehaviour {
-
-    public Sprite bulletSpriteUD, bulletSpriteLR;
+public class Weapon : MonoBehaviour
+{
     private SpriteRenderer bulletRend;
-    public GameObject bulletPrefab;
-    public GameObject bullet, straightBullet, diagBullet1, diagBullet2, rearBullet;
-    private BulletController bulletStats;
-    Collider2D[] hitObjects;
-    public bool isAttacking = false, isShooting = false;
-    public float attackDuration = 0.4f;
-    private float shootTimer = 0;
-    private float attackTimer = 0;
-    public List<ItemStats> weaponsStats; //contiene le informazioni delle armi in possesso
-    private ItemStats actualWeapon;
+    public GameObject bulletPrefab; //prefab dei proiettili del player
+    public GameObject bullet, straightBullet, diagBullet1, diagBullet2, rearBullet; //conterranno i riferimenti ai vari tipi di proiettili istanziati
+    private BulletController bulletStats; //usato per impostare i proiettili sparati
+    private Collider2D[] hitObjects; //contiene tutti i collider colpiti dall'attacco meele
+    public bool isAttacking = false, isShooting = false; //indicano se il player sta attaccando
+    private ItemStats actualWeapon; //contiene le informazioni dell'arma equipaggiata
     private Room actualRoom;
-    private int i = 0;
-    private Quaternion rot, rot1, rot2, rot3;
-    private Vector3 dir, dir1, dir2, dir3;
+    private Quaternion rot, rot1, rot2, rot3; //rotazioni dei proiettili
+    private Vector3 dir, dir1, dir2, dir3; //direzioni dei proiettili
     private PlayerHealth ph;
     private Animator animator;
-    public float radius = 0.75f;
+
+	//offset utilizzati per calcolare l'area d'attacco meele per le quattro direzioni
     public Vector3 upDistance = new Vector3(0, 0.75f, 0), downDistance = new Vector3(0, -0.75f, 0), leftDistance = new Vector3(-0.75f, 0, 0), rightDistance = new Vector3(0.75f, 0, 0);
-    private Vector3 attackStart;
-    private AudioSource source;
 
-    public AudioClip swing, unsheathe, cut; //arma meele
-    public AudioClip shoot, pickRanged; //arma ranged
+    private Vector3 attackStart; //effettiva posizione di partenza per l'attacco meele
+	public float attackDuration = 0.4f; //durata dell'attacco meele
+	private float shootTimer = 0;  //timer dell'attacco ranged
+	private float attackTimer = 0; //timer dell'attacco meele
+	public float radius = 0.75f; //range d'attacco meele
 
-    private bool hitEnemy = false;
+	private AudioSource source;
+
+    public AudioClip swing, unsheathe, cut; //suoni relativi all'arma meele
+    public AudioClip shoot, pickRanged; //suoni relativi all'arma ranged
+
+	private bool hitEnemy = false;
 
     void Start()
     {
         animator = GetComponentInParent<Animator>();
         ph = GetComponentInParent<PlayerHealth>();
-        weaponsStats = new List<ItemStats>();
-        source = GetComponentInParent<AudioSource>();
-        //si potrebber creare uno scriptableObject per le armi iniziali 
-        ItemStats meele = new ItemStats(ItemStats.ItemType.weapon, ItemStats.WeaponType.meele, 15);
-        weaponsStats.Add(meele);
-        ItemStats ranged = new ItemStats(ItemStats.ItemType.weapon, ItemStats.WeaponType.ranged, ItemStats.FireType.multiple, ItemStats.BulletType.normal, 30, 7, 0.5f, 5.5f);
-        weaponsStats.Add(ranged);
-        ItemStats ranged2 = new ItemStats(ItemStats.ItemType.weapon, ItemStats.WeaponType.ranged, ItemStats.FireType.splitShot, ItemStats.BulletType.slowing, 3, 7, 0.5f, 5.5f);
-        weaponsStats.Add(ranged2);
-        ItemStats ranged3 = new ItemStats(ItemStats.ItemType.weapon, ItemStats.WeaponType.ranged, ItemStats.FireType.bidirectional, ItemStats.BulletType.normal, 3, 7, 0.5f, 5.5f);
-        weaponsStats.Add(ranged3);
-        ItemStats ranged4 = new ItemStats(ItemStats.ItemType.weapon, ItemStats.WeaponType.ranged, ItemStats.FireType.single, ItemStats.BulletType.slowing, 3, 7, 0.5f, 5.5f);
-        weaponsStats.Add(ranged4);
-        ItemStats ranged5 = new ItemStats(ItemStats.ItemType.weapon, ItemStats.WeaponType.ranged, ItemStats.FireType.single, ItemStats.BulletType.poisonous, 3, 7, 0.5f, 5.5f);
-        weaponsStats.Add(ranged5);
-        ItemStats ranged6 = new ItemStats(ItemStats.ItemType.weapon, ItemStats.WeaponType.ranged, ItemStats.FireType.single, ItemStats.BulletType.burning, 3, 7, 0.5f, 5.5f);
-        weaponsStats.Add(ranged6);
-        actualWeapon = weaponsStats[0]; //l'arma predefinita è l'arma meele base
-        attackTimer = attackDuration;
-        shootTimer = actualWeapon.fireRate;
-    }
+		source = GetComponentInParent<AudioSource>();
+		actualWeapon = new ItemStats(); //inizializzo l'arma
+	}
 
     void Update()
     {
         if (!GameManager.manager.gamePause)
         {
-            if (Input.GetKeyDown(KeyCode.Alpha1))
-            {
-                if (weaponsStats[i % weaponsStats.Count] != null)
-                {
-                    actualWeapon = weaponsStats[i % weaponsStats.Count];
-                    if (actualWeapon.weaponType == ItemStats.WeaponType.meele)
-                        Debug.Log(actualWeapon.weaponType.ToString());
-                    else
-                        Debug.Log(actualWeapon.fireType.ToString() + ", " + actualWeapon.bulletType.ToString());
-                    i++;
-                }
-            }
-
+			//se un'arma è equipaggiata
             if (actualWeapon != null)
             {
+				//se l'arma è meele attacco nella direzione del tasto premuto
                 if (actualWeapon.weaponType == ItemStats.WeaponType.meele)
                 {
                     if (Input.GetKeyDown("up"))
                     {
+						//se lo status di attacco invertito è attivo attacco nella direzione opposta
                         if (!ph.flipAtt)
                             Attack("up", transform.position);
                         else
@@ -108,7 +81,7 @@ public class Weapon : MonoBehaviour {
                             Attack("left", transform.position);
                     }
                 }
-                //la differenza è solamente che con le armi ranged posso tenere premuto il tasto per sparare in modo continuo
+                //idem come sopra: la sola differenza è che con le armi ranged posso tenere premuto il tasto per sparare in modo continuo
                 else
                 {
                     if (Input.GetKey("up"))
@@ -143,35 +116,39 @@ public class Weapon : MonoBehaviour {
 
             }
 
+			//aggiorno i counter degli attacchi per implementare il giusto delay tra un attacco e l'altro
             attackTimer += Time.deltaTime;
             shootTimer += Time.deltaTime;
+
+			//se è passato il tempo relativo al fire rate dell'arma, segnalo che posso nuovamente attaccare
             if (actualWeapon.weaponType == ItemStats.WeaponType.ranged && shootTimer >= actualWeapon.fireRate)
                 isShooting = false;
-
             if (attackTimer >= attackDuration)
                 isAttacking = false;
         }
     }
 
-
+	//Esegue un attacco con l'arma equipaggiata nella direzione data
     public void Attack(string direction, Vector3 playerPos)
     {
         switch (actualWeapon.weaponType)
         {
             case ItemStats.WeaponType.meele:
-                if (attackTimer >= attackDuration)
-                {
-                    attackTimer = 0;
-                    isAttacking = true;
-                    Slash(direction, playerPos);
+				//se è passato il tempo relativo al fire rate dell'arma posso attaccare di nuovo
+				if (attackTimer >= attackDuration)
+				{
+					isAttacking = true; //segnalo che sto attaccando
+					attackTimer = 0; //riazzero il timer
+                    Slash(direction, playerPos); //eseguo l'attacco
                 }   
                 break;
             case ItemStats.WeaponType.ranged:
                 if (shootTimer >= actualWeapon.fireRate)
                 {
-                    isShooting = true;
-                    shootTimer = 0;
-                    if (ph.faster)
+                    isShooting = true; //segnalo che sto attaccando
+					shootTimer = 0; //riazzero il timer
+					//se sono attivi status che alterano la velocità modifico anche la velocità dei proiettili
+					if (ph.faster)
                         Shoot(direction, playerPos, actualWeapon.shotSpeed + 3);
                     else if (ph.slower)
                         Shoot(direction, playerPos, actualWeapon.shotSpeed -2);
@@ -182,19 +159,24 @@ public class Weapon : MonoBehaviour {
         }
     }
 
-    //esegue l'attacco relativo al tipo di arma da fuoco equipaggiata
+    //Esegue l'attacco relativo al tipo di arma da fuoco equipaggiata
     public void Shoot(string direction, Vector3 playerPos, float shotSpeed)
     {
         source.PlayOneShot(shoot);
 
+		//controllo il tipo di proiettile dell'arma equipaggiata
         switch (actualWeapon.fireType)
         {
+			//fuoco normale e splitShot hanno comportamento uguale, ma il secondo, quando esplode, si divide in quattro nuovi proiettili
             case ItemStats.FireType.single:
             case ItemStats.FireType.splitShot:
+				//controllo la direzione di fuoco
                 if (direction.Equals("left"))
                 {
+					//calcolo la rotazione del proiettile da istanziare
                     rot = Quaternion.AngleAxis(90, Vector3.forward);
                     dir = rot * Vector3.up;
+					//istanzio il proiettile nella giusta posizione rispetto al player
                     bullet = Instantiate(bulletPrefab, playerPos + new Vector3(-0.5f, -0.3f, 0), rot) as GameObject;
                 }
                 else if (direction.Equals("right"))
@@ -216,15 +198,17 @@ public class Weapon : MonoBehaviour {
                     bullet = Instantiate(bulletPrefab, playerPos + new Vector3(0, -0.5f, 0), Quaternion.identity) as GameObject;
                 }
 
-
+				//imposto le caratteristiche del proiettile
                 bulletStats = bullet.GetComponent<BulletController>();
                 bulletStats.SetStats(actualWeapon, transform.position);
                 bullet.GetComponent<Rigidbody2D>().velocity = dir.normalized * shotSpeed;
 
+				//aggiungo il proiettile alla lista degli spriteRenderer da ordinare
                 actualRoom = GameManager.manager.ActualRoom;
                 actualRoom.toSort.Add(bullet);
                 break;
 
+			//in caso di fuoco multiplo istanzio tre proiettili che andranno in tre direzioni diverse
             case ItemStats.FireType.multiple:
                 if (direction.Equals("left"))
                 {
@@ -293,6 +277,8 @@ public class Weapon : MonoBehaviour {
                 actualRoom.toSort.Add(diagBullet1);
                 actualRoom.toSort.Add(diagBullet2);
                 break;
+
+			//in caso di fuoco bidirezionale sparo anche nella direzione opposta a quella scelta
             case ItemStats.FireType.bidirectional:
                 if (direction.Equals("left") || direction.Equals("right"))
                 {
@@ -326,14 +312,18 @@ public class Weapon : MonoBehaviour {
            
     }
 
+	//Esegue l'attacco meele
     public void Slash(string direction, Vector3 playerPos)
     {
 
         switch (direction)
         {
             case "up":
-                animator.Play("SlashUp");
+				//faccio partire l'animazione dell'attacco
+                animator.Play("SlashUp"); 
+				//calcolo la posizione da cui parte l'attacco
                 attackStart = transform.position + new Vector3(0, GetComponentInParent<Character>().RealOffset, 0) + upDistance;
+				//salvo un elenco dei collider trovati nell'area dell'attacco
                 hitObjects = Physics2D.OverlapCircleAll(attackStart, radius);
                 break;
             case "down":
@@ -353,16 +343,19 @@ public class Weapon : MonoBehaviour {
                 break;
         }
 
-
+		//se l'elenco dei collider trovati non è vuoto
         if (hitObjects != null)
         {
-
+			//controllo ogni collider
             foreach (Collider2D coll in hitObjects)
             {
+				//se trovo delle hitBox nemiche tra i collider
                 if (coll.gameObject.tag == "Enemy" && coll.isTrigger)
                 {
+					//sparo un raycast verso il nemico per evitare di infliggere danno in caso ci siano ostacoli tra il player e il nemico
                     Vector3 dir = coll.gameObject.transform.position - (transform.position + new Vector3(0, GetComponentInParent<Character>().RealOffset, 0));
                     RaycastHit2D hit = Physics2D.Raycast(transform.position + new Vector3(0, GetComponentInParent<Character>().RealOffset, 0), dir);
+					//se la via è libera infliggo danno al nemico
                     if (hit.collider.tag == "Enemy")
                     {
                         hitEnemy = true;
@@ -386,7 +379,7 @@ public class Weapon : MonoBehaviour {
 
     }
 
-
+	//Genera quattro proiettili che vanno nelle quattro direzioni oblique
     public void SplitBullet(ItemStats weapon, Vector3 position)
     {
         Quaternion rot1 = Quaternion.AngleAxis(-45, Vector3.forward);
@@ -399,6 +392,7 @@ public class Weapon : MonoBehaviour {
         Vector3 dir4 = rot4 * Vector3.up;
         float shotSpeed;
 
+		//aggiorno la velocità dei proiettili se è attivo uno status speedUp o slowDown
         if (ph.faster)
             shotSpeed = weapon.shotSpeed + 3;
         else if (ph.slower)
@@ -406,6 +400,7 @@ public class Weapon : MonoBehaviour {
         else
             shotSpeed = weapon.shotSpeed;
 
+		//per creare i proiettili genero le statistiche dimezzate rispetto a quelle dell'arma equipaggiata dal player
         ItemStats newWeapon = new ItemStats(weapon.itemType, weapon.weaponType, ItemStats.FireType.single, weapon.bulletType, weapon.damage / 2, weapon.range / 2, weapon.fireRate, shotSpeed);
 
         GameObject bullet1 = Instantiate(bulletPrefab, position + new Vector3(0.3f, 0.3f, 0), rot1) as GameObject;
@@ -435,7 +430,7 @@ public class Weapon : MonoBehaviour {
         actualRoom.toSort.Add(bullet4);
     }
 
-	//disegna un cerchio nel raggio d'azione dell'attacco meele
+	//Disegna un cerchio nel raggio d'azione dell'attacco meele (viene visualizzato nell'editor)
     void OnDrawGizmos()
     {
         if (isAttacking)
@@ -445,7 +440,7 @@ public class Weapon : MonoBehaviour {
         } 
     }
 
-	//utilizzata da Inventory per equipaggiare un'arma dell'inventario
+	//Utilizzata da Inventory per equipaggiare un'arma dell'inventario
     public void EquipWeapon(ItemStats weapon)
     {
         JsonUtility.FromJsonOverwrite(JsonUtility.ToJson(weapon), actualWeapon);
@@ -457,5 +452,8 @@ public class Weapon : MonoBehaviour {
         {
             source.PlayOneShot(pickRanged);
         }
-    }
+
+		attackTimer = attackDuration;
+		shootTimer = actualWeapon.fireRate;
+	}
 }

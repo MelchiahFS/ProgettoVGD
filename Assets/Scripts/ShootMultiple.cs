@@ -5,15 +5,17 @@ using System;
 
 public class ShootMultiple : ShootAbstract
 {
-	public float shotSpeed, fireRate, range, distance;
-	private float damage;
-	private float counter;
-    private EnemyBullet enemyBullet;
-    private Transform playerTransform;
-    public GameObject bulletPrefab;
-    private Rigidbody2D rb;
-    private RaycastHit2D hit;
-    private Room actualRoom;
+	public float shotSpeed, fireRate, range, distance; //caratteristiche dei proiettili specifiche di questo script
+	private float damage; //danno del proiettile
+	private float counter; //timer per l'implementazione del fire rate nemico
+	private EnemyBullet enemyBullet; //script per il settaggio del proiettile
+	private Transform playerTransform; //posizione del player
+	public GameObject bulletPrefab; //prefab del proiettile
+	private Rigidbody2D rb;
+    private RaycastHit2D hit; //risultato del raycast verso il player
+	private Room actualRoom;
+
+	//vettori utili al calcolo del punto di partenza del proiettile e la sua direzione
 	private Vector3 centerPoint, direction1, direction2, direction3, shotStartPoint;
 
 	void Start()
@@ -28,23 +30,28 @@ public class ShootMultiple : ShootAbstract
 
     void Update()
     {
-        if (Vector3.Distance(playerTransform.position, transform.position) <= distance)
+		//se il nemico ha agganciato il player
+		if (Vector3.Distance(playerTransform.position, transform.position) <= distance)
         {
-            if (counter >= fireRate)
+			//se può nuovamente attaccare
+			if (counter >= fireRate)
             {
-
-                centerPoint = transform.position + new Vector3(0, GetComponent<EnemyController>().RealOffset, 0);
+				//calcolo punto di partenza e direzione dei proiettili
+				centerPoint = transform.position + new Vector3(0, GetComponent<EnemyController>().RealOffset, 0);
                 direction1 = playerTransform.position - centerPoint;
                 shotStartPoint = centerPoint + direction1.normalized / 2;
-
-                
+				
                 direction2 = Quaternion.AngleAxis(-30, Vector3.forward) * direction1;
-                direction3 = Quaternion.AngleAxis(30, Vector3.forward) * direction1;                
+                direction3 = Quaternion.AngleAxis(30, Vector3.forward) * direction1;
 
-                hit = Physics2D.Raycast(centerPoint, direction1, range, ~LayerMask.GetMask("Enemy"));
-                if ((hit.collider != null && hit.collider.gameObject.tag == "Player") || GetComponent<EnemyController>().flying)
+				//controllo se tra player e nemico non ci siano ostacoli
+				hit = Physics2D.Raycast(centerPoint, direction1, range, ~LayerMask.GetMask("Enemy"));
+
+				//se non ho trovato ostacoli (o se il nemico vola, in tal caso gli ostacoli saranno sotto di lui) allora sparo i proiettili
+				if ((hit.collider != null && hit.collider.gameObject.tag == "Player") || GetComponent<EnemyController>().flying)
                 {
-                    GameObject bullet1 = Instantiate(bulletPrefab, shotStartPoint, Quaternion.identity) as GameObject;
+					//istanzio i proiettili e ne imposto le caratteristiche
+					GameObject bullet1 = Instantiate(bulletPrefab, shotStartPoint, Quaternion.identity) as GameObject;
                     bullet1.GetComponent<EnemyBullet>().SetStats(damage, range, sprite, transform.position, GetComponent<EnemyController>().flying);
                     bullet1.GetComponent<Rigidbody2D>().velocity = direction1.normalized * shotSpeed;
 
@@ -61,15 +68,16 @@ public class ShootMultiple : ShootAbstract
                     actualRoom.toSort.Add(bullet2);
                     actualRoom.toSort.Add(bullet3);
 
-                    counter = 0;
-                }
+                    counter = 0; //azzero il counter per i prossimi proiettili
+				}
             }
         }
 
         counter += Time.deltaTime;
     }
 
-    public void SetShotSpeed(float amount)
+	//Modifica la velocità dell'attacco in caso di status alterato (slowDown o speedUp)
+	public void SetShotSpeed(float amount)
     {
         shotSpeed += amount;
     }

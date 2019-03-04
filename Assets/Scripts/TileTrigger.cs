@@ -8,7 +8,7 @@ public class TileTrigger : MonoBehaviour
 
     void Start()
     {
-        rc = GameObject.FindGameObjectWithTag("Player").GetComponent<RoomChange>();
+        rc = GameManager.manager.playerReference.GetComponent<RoomChange>();
     }
 
     //i trigger attivati permettono di aggiornare correttamente la posizione del player nelle stanze;

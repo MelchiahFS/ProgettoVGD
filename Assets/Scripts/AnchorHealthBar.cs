@@ -5,7 +5,7 @@ using UnityEngine;
 public class AnchorHealthBar : MonoBehaviour {
 
 
-    private RectTransform poisonRect, fastRect, slowRect, burnRect, healthBarRT, sliderRT;
+    private RectTransform healthBarRT, sliderRT;
     private Vector3 hbLocalScale, parentLocalScale;
     public GameObject slider, healthBar;
     private List<GameObject> iconList = new List<GameObject>();

@@ -7,20 +7,22 @@ using UnityEngine.UI;
 public class LootGenerator : MonoBehaviour {
 
     private static System.Random rnd = new System.Random((int)DateTime.Now.Ticks);
-    public float minMeeleDmg, maxMeeleDmg, minRangedDmg, maxRangedDmg, minRng, maxRng, minFR, maxFR, minSP, maxSP; //minimo e massimo danno (per meele e ranged), range, fire rate e shot speed
-    private Array enumValues;
-	public Item startingMeeleSO, startingRangedSO;
-    public GameObject sceneItemPrefab;
+	//valori minimi e massimi per generazione casuale delle caratteristiche delle armi
+	public float minMeeleDmg, maxMeeleDmg, minRangedDmg, maxRangedDmg, minRng, maxRng, minFR, maxFR, minSP, maxSP; 
+	private Array enumValues;
+	public Item startingMeeleSO, startingRangedSO; //scriptable objects delle armi di base
+    public GameObject sceneItemPrefab; //prefab usato per istanziare ricompense
     private SceneItem si;
-    private ItemSpriteSelector select;
+    private ItemSpriteSelector select; //contiene le sprite degli oggetti di scena
     private SpriteRenderer render;
     private ItemStats actualItem;
     public Room actualRoom;
     private PlayerHealth ph;
-    public GameObject pricePrefab, altarPrefab, writingsPrefab;
-    private bool keyGen = false;
+	public GameObject pricePrefab; //prefab dei prezzi degli oggetti acquistabili
+	public GameObject altarPrefab, writingsPrefab; //prefab di altare e pergamena contenente la trama
+    private bool keyGen = false; //indica se la chiave per la stanza del boss è già stata generata
 
-    private int roomsWithEnemies = 0;
+    private int roomsWithEnemies; //conterrà il numero di stanze del livello con nemici (usato per la generazione della chiave)
 
     void Start()
     {
@@ -35,8 +37,8 @@ public class LootGenerator : MonoBehaviour {
 			maxRangedDmg = 15;
 			minRng = 5;
 			maxRng = 7;
-			minFR = 0.8f;
-			maxFR = 1.5f;
+			minFR = 0.7f;
+			maxFR = 1.2f;
 			minSP = 5;
 			maxSP = 10;
 
@@ -50,7 +52,7 @@ public class LootGenerator : MonoBehaviour {
 			minRng = 6;
 			maxRng = 9;
 			minFR = 0.6f;
-			maxFR = 1.3f;
+			maxFR = 1.1f;
 			minSP = 10;
 			maxSP = 18;
 		}
@@ -62,8 +64,8 @@ public class LootGenerator : MonoBehaviour {
 			maxRangedDmg = 25;
 			minRng = 7;
 			maxRng = 10;
-			minFR = 0.4f;
-			maxFR = 1.1f;
+			minFR = 0.5f;
+			maxFR = 1f;
 			minSP = 15;
 			maxSP = 26;
 		}
@@ -75,7 +77,7 @@ public class LootGenerator : MonoBehaviour {
 			maxRangedDmg = 30;
 			minRng = 8;
 			maxRng = 12;
-			minFR = 0.2f;
+			minFR = 0.4f;
 			maxFR = 0.9f;
 			minSP = 20;
 			maxSP = 40;
@@ -88,8 +90,8 @@ public class LootGenerator : MonoBehaviour {
 			maxRangedDmg = 35;
 			minRng = 10;
 			maxRng = 14;
-			minFR = 0.1f;
-			maxFR = 0.6f;
+			minFR = 0.3f;
+			maxFR = 0.8f;
 			minSP = 30;
 			maxSP = 60;
 		}
@@ -98,9 +100,11 @@ public class LootGenerator : MonoBehaviour {
 
         select = ItemSpriteSelector.iss;
         
+		//se sono al primo livello
 		if (GameStats.stats.levelNumber == 1)
 		{
 			GameStats.stats.consumables = new List<ItemStats>();
+			GameStats.stats.hpUp = new List<ItemStats>();
 
 			//converto gli scriptableObject in oggetti utilizzabili nel gioco
 			InitializeConsumables();
@@ -108,6 +112,7 @@ public class LootGenerator : MonoBehaviour {
 			//assegno le armi di base al player
 			SetStartingWeapons();
 		}
+		//altrimenti equipaggio l'ultima arma equipaggiata nel livello precedente
 		else
 		{
 			GetComponent<Weapon>().EquipWeapon(GameStats.stats.itemList[GameStats.stats.index]);
@@ -129,9 +134,11 @@ public class LootGenerator : MonoBehaviour {
 				//per ogni posizione relativa agli oggetti spawno armi in una riga e consumables nelle altre
                 foreach (Vector2 pos in actualRoom.freePositions)
                 {
-                    if (i < 3)
-                        InstantiateWeapon(pos);
-                    else
+					if (i < 3)
+						InstantiateWeapon(pos);
+					else if (i == 5)
+						InstantiateHpUp(pos);
+					else
                         InstantiateConsumable(pos);
                     i++;
                 }
@@ -167,9 +174,8 @@ public class LootGenerator : MonoBehaviour {
                         roomsWithEnemies--;
                     }
                 }
-				//-------------------------------------------------------------------------------
 
-
+				//se la stanza attuale è la boss room
 				if (actualRoom.bossRoom)
 				{
 					//istanzio l'altare
@@ -197,22 +203,29 @@ public class LootGenerator : MonoBehaviour {
 						Color c = Color.red;
 						c.a = 0;
 						writings.GetComponent<SpriteRenderer>().color = c;
-						MusicManager.mm.Victory();
+						MusicManager.mm.Victory(); //suono la musica che indica la vittoria
 						StartCoroutine(GameManager.manager.lvlManager.FadeIn(writings.GetComponent<SpriteRenderer>(), 0.3f));
 					}
 				}
 				else
 				{
-					//ho il 50% di ottenere o no una ricompensa
-					if (rnd.Next(100) >= 50)
+					//ho il 70% di ottenere una ricompensa
+					if (rnd.Next(100) < 70)
 					{
-						//se sono nel 50% di probabilità di spawn della ricompensa, imposto una probabilità per decidere che ricompensa spawnare
-						if (rnd.Next(100) < 20)
+						//se spawna la ricompensa, imposto una probabilità per deciderne il tipo
+						if (rnd.Next(100) < 25)
 							InstantiateWeapon(actualRoom.freePositions[rnd.Next(actualRoom.freePositions.Count)]);
 						else
 						{
+							//ho il 40% di generare un consumable
 							if (rnd.Next(100) < 40)
-								InstantiateConsumable(actualRoom.freePositions[rnd.Next(actualRoom.freePositions.Count)]);
+							{
+								//ho il 15% di probabilità di generare un hpUp
+								if (rnd.Next(100) < 15)
+									InstantiateHpUp(actualRoom.freePositions[rnd.Next(actualRoom.freePositions.Count)]);
+								else
+									InstantiateConsumable(actualRoom.freePositions[rnd.Next(actualRoom.freePositions.Count)]);
+							}
 							else
 								InstantiateMoney(actualRoom.freePositions[rnd.Next(actualRoom.freePositions.Count)]);
 						}
@@ -225,14 +238,20 @@ public class LootGenerator : MonoBehaviour {
         }
     }
 
-	//spawna un consumable
+	//Spawna un consumable
     public void InstantiateConsumable(Vector3 pos)
     {
         GameObject cons = Instantiate(sceneItemPrefab, pos, Quaternion.identity) as GameObject;
         si = cons.GetComponent<SceneItem>();
+
+		//scelgo casualmente un consumable
         si.Info = GameStats.stats.consumables[rnd.Next(GameStats.stats.consumables.Count)];
         render = cons.GetComponent<SpriteRenderer>();
+
+		//imposto la sprite
         render.sprite = si.Info.sprite;
+
+		//se la stanza attuale è il negozio imposto il prezzo e rendo il consumable acquistabile
         if (actualRoom.shopRoom)
         {
             GameObject price = Instantiate(pricePrefab, cons.transform) as GameObject;
@@ -250,14 +269,48 @@ public class LootGenerator : MonoBehaviour {
         StartCoroutine(GameManager.manager.lvlManager.FadeIn(render, 0.3f));
     }
 
-	//spawna un'arma
+	public void InstantiateHpUp(Vector3 pos)
+	{
+		GameObject cons = Instantiate(sceneItemPrefab, pos, Quaternion.identity) as GameObject;
+		si = cons.GetComponent<SceneItem>();
+
+		//scelgo casualmente un consumable
+		si.Info = GameStats.stats.hpUp[rnd.Next(GameStats.stats.hpUp.Count)];
+		render = cons.GetComponent<SpriteRenderer>();
+
+		//imposto la sprite
+		render.sprite = si.Info.sprite;
+
+		//se la stanza attuale è il negozio imposto il prezzo e rendo il consumable acquistabile
+		if (actualRoom.shopRoom)
+		{
+			GameObject price = Instantiate(pricePrefab, cons.transform) as GameObject;
+			si.Info.toBuy = true;
+			si.Info.price = 30;
+			price.GetComponentInChildren<Text>().text = si.Info.price.ToString();
+			price.transform.SetParent(cons.transform, false);
+		}
+
+		//imposto i consumable come trasparenti, per poi fare un effetto di fade-in quando verranno attivati 
+		Color color = render.color;
+		color.a = 0;
+		render.color = color;
+
+		StartCoroutine(GameManager.manager.lvlManager.FadeIn(render, 0.3f));
+	}
+
+	//Spawna un'arma
     public void InstantiateWeapon(Vector3 pos)
     {
         GameObject weapon = Instantiate(sceneItemPrefab, pos, Quaternion.identity) as GameObject;
         si = weapon.GetComponent<SceneItem>();
         render = weapon.GetComponent<SpriteRenderer>();
+
+		//genero le caratteristiche dell'arma
         SetWeaponStats(si);
-        if (actualRoom.shopRoom)
+
+		//se la stanza attuale è il negozio imposto il prezzo e rendo l'arma acquistabile
+		if (actualRoom.shopRoom)
         {
             GameObject price = Instantiate(pricePrefab, weapon.transform) as GameObject;
             si.Info.toBuy = true;
@@ -278,68 +331,7 @@ public class LootGenerator : MonoBehaviour {
         StartCoroutine(GameManager.manager.lvlManager.FadeIn(render, 0.3f));
     }
 
-	//setta le statistiche dell'arma da spawnare
-    private void SetWeaponStats(SceneItem i)
-    {
-        i.Info = new ItemStats();
-
-        i.Info.itemType = ItemStats.ItemType.weapon;
-        Array enumValues = Enum.GetValues(typeof(ItemStats.WeaponType));
-        i.Info.weaponType = (ItemStats.WeaponType) enumValues.GetValue(rnd.Next(enumValues.Length));
-
-        if (i.Info.weaponType == ItemStats.WeaponType.meele)
-        {
-            i.Info.sprite = select.meeleWeapons[rnd.Next(select.meeleWeapons.Count)];
-            i.GetComponent<SpriteRenderer>().sprite = i.Info.sprite;
-            i.GetComponent<SpriteRenderer>().sortingLayerName = "Items";
-
-            i.Info.itemName = "Sword";
-			i.Info.damage = (float) Math.Truncate(UnityEngine.Random.Range(minMeeleDmg, maxMeeleDmg) * 10) / 10;
-            i.Info.description = "Damage: " + i.Info.damage;
-        }
-        else
-        {
-            i.Info.sprite = select.rangedWeapons[rnd.Next(select.rangedWeapons.Count)];
-            i.GetComponent<SpriteRenderer>().sprite = i.Info.sprite;
-            i.GetComponent<SpriteRenderer>().sortingLayerName = "Items";
-
-            i.Info.itemName = "Magic Staff";
-
-            enumValues = Enum.GetValues(typeof(ItemStats.FireType));
-            i.Info.fireType = (ItemStats.FireType)enumValues.GetValue(rnd.Next(enumValues.Length));
-
-            enumValues = Enum.GetValues(typeof(ItemStats.BulletType));
-            i.Info.bulletType = (ItemStats.BulletType)enumValues.GetValue(rnd.Next(enumValues.Length));
-
-			i.Info.damage = (float)Math.Truncate(UnityEngine.Random.Range(minRangedDmg, maxRangedDmg) * 10) / 10;
-			i.Info.range = (float)Math.Truncate(UnityEngine.Random.Range(minRng, maxRng) * 10) / 10;
-			i.Info.fireRate = (float)Math.Truncate(UnityEngine.Random.Range(minFR, maxFR) * 10) / 10;
-			i.Info.shotSpeed = (float)Math.Truncate(UnityEngine.Random.Range(minSP, maxSP) * 10) / 10;
-
-			if (i.Info.fireType == ItemStats.FireType.single)
-                i.Info.description += "Fire Type: Single Shot";
-            else if (i.Info.fireType == ItemStats.FireType.multiple)
-                i.Info.description += "Fire Type: Triple Shot";
-            else if (i.Info.fireType == ItemStats.FireType.splitShot)
-                i.Info.description += "Fire Type: Split Shot";
-            else if (i.Info.fireType == ItemStats.FireType.bidirectional)
-                i.Info.description += "Fire Type: Bidirectional Shot";
-
-            if (i.Info.bulletType == ItemStats.BulletType.normal)
-                i.Info.description += "\r\nBullet Type: Standard";
-            else if (i.Info.bulletType == ItemStats.BulletType.poisonous)
-                i.Info.description += "\r\nBullet Type: Poisonous";
-            else if (i.Info.bulletType == ItemStats.BulletType.burning)
-                i.Info.description += "\r\nBullet Type: Burning";
-            else if (i.Info.bulletType == ItemStats.BulletType.slowing)
-                i.Info.description += "\r\nBullet Type: Slowing";
-
-            i.Info.description +=  "\r\nDamage: " + i.Info.damage + "\r\nRange: " + i.Info.range + "\r\nFire Rate: " + i.Info.fireRate + "\r\nShot Speed: " + i.Info.shotSpeed ;
-
-        }
-        
-    }
-
+	//Istanzia casualmente una ricompensa in denaro
 	private void InstantiateMoney(Vector3 pos)
 	{
 		GameObject money = Instantiate(sceneItemPrefab, pos, Quaternion.identity) as GameObject;
@@ -350,12 +342,13 @@ public class LootGenerator : MonoBehaviour {
 		si.GetComponent<SpriteRenderer>().sortingLayerName = "Items";
 		si.Info.itemName = "Money";
 
-		if (rnd.Next(100) < 75)
+		//la probabilità di spawnare una ricompensa alta è minore
+		if (rnd.Next(100) < 70)
 		{
 			si.Info.moneyAmount = 5;
 			si.Info.sprite = select.money[rnd.Next(0,3)];
 		}
-		else if (rnd.Next(100) < 75)
+		else if (rnd.Next(100) < 70)
 		{
 			si.Info.moneyAmount = 10;
 			si.Info.sprite = select.money[rnd.Next(3,6)];
@@ -374,6 +367,7 @@ public class LootGenerator : MonoBehaviour {
 		StartCoroutine(GameManager.manager.lvlManager.FadeIn(render, 0.3f));
 	}
 
+	//Istanzia la chiave per aprire la bossRoom
     private void InstantiateKey(Vector3 pos)
     {
         GameObject key = Instantiate(sceneItemPrefab, pos, Quaternion.identity) as GameObject;
@@ -393,9 +387,7 @@ public class LootGenerator : MonoBehaviour {
         StartCoroutine(GameManager.manager.lvlManager.FadeIn(render, 0.3f));
     }
 
-    //------------------------------
     //Effetti relativi ai consumables
-
     public void ApplyEffect(ItemStats.ConsumableType consumable)
     {
         Room actualRoom = GameManager.manager.ActualRoom;
@@ -511,6 +503,88 @@ public class LootGenerator : MonoBehaviour {
         }
     }
 
+	//Imposta le statistiche dell'arma da spawnare
+	private void SetWeaponStats(SceneItem i)
+	{
+		i.Info = new ItemStats();
+
+		i.Info.itemType = ItemStats.ItemType.weapon; //l'oggetto sarà un'arma
+		Array enumValues = Enum.GetValues(typeof(ItemStats.WeaponType));
+		i.Info.weaponType = (ItemStats.WeaponType)enumValues.GetValue(rnd.Next(enumValues.Length)); //scelgo casualmente il tipo di arma
+
+		//imposto le statistiche e la descrizione delle armi
+		if (i.Info.weaponType == ItemStats.WeaponType.meele)
+		{
+			//scelgo casualmente la sprite dell'arma
+			i.Info.sprite = select.meeleWeapons[rnd.Next(select.meeleWeapons.Count)];
+			i.GetComponent<SpriteRenderer>().sprite = i.Info.sprite;
+			i.GetComponent<SpriteRenderer>().sortingLayerName = "Items";
+			i.Info.itemName = "Sword";
+
+			//imposto il danno tra i valori massimo e minimo
+			i.Info.damage = (float)Math.Truncate(UnityEngine.Random.Range(minMeeleDmg, maxMeeleDmg) * 10) / 10;
+			i.Info.description = "Damage: " + i.Info.damage;
+		}
+		else
+		{
+			i.Info.sprite = select.rangedWeapons[rnd.Next(select.rangedWeapons.Count)];
+			i.GetComponent<SpriteRenderer>().sprite = i.Info.sprite;
+			i.GetComponent<SpriteRenderer>().sortingLayerName = "Items";
+
+			i.Info.itemName = "Magic Staff";
+
+			//imposto il tipo di fuoco
+			enumValues = Enum.GetValues(typeof(ItemStats.FireType));
+			i.Info.fireType = (ItemStats.FireType)enumValues.GetValue(rnd.Next(enumValues.Length));
+
+			//imposto il tipo di proiettile
+			enumValues = Enum.GetValues(typeof(ItemStats.BulletType));
+
+			//ho il 30% di ottenere un'arma con proiettili speciali
+			if (rnd.Next(100) < 30)
+			{
+				do
+				{
+					i.Info.bulletType = (ItemStats.BulletType)enumValues.GetValue(rnd.Next(enumValues.Length));
+				}
+				while (i.Info.bulletType == ItemStats.BulletType.normal);
+			}
+			else
+			{
+				i.Info.bulletType = ItemStats.BulletType.normal;
+			}
+
+			i.Info.damage = (float)Math.Truncate(UnityEngine.Random.Range(minRangedDmg, maxRangedDmg) * 10) / 10;
+			i.Info.range = (float)Math.Truncate(UnityEngine.Random.Range(minRng, maxRng) * 10) / 10;
+			i.Info.fireRate = (float)Math.Truncate(UnityEngine.Random.Range(minFR, maxFR) * 10) / 10;
+			i.Info.shotSpeed = (float)Math.Truncate(UnityEngine.Random.Range(minSP, maxSP) * 10) / 10;
+
+			//creo la descrizione dell'arma
+			if (i.Info.fireType == ItemStats.FireType.single)
+				i.Info.description += "Fire Type: Single Shot";
+			else if (i.Info.fireType == ItemStats.FireType.multiple)
+				i.Info.description += "Fire Type: Triple Shot";
+			else if (i.Info.fireType == ItemStats.FireType.splitShot)
+				i.Info.description += "Fire Type: Split Shot";
+			else if (i.Info.fireType == ItemStats.FireType.bidirectional)
+				i.Info.description += "Fire Type: Bidirectional Shot";
+
+			if (i.Info.bulletType == ItemStats.BulletType.normal)
+				i.Info.description += "\r\nBullet Type: Standard";
+			else if (i.Info.bulletType == ItemStats.BulletType.poisonous)
+				i.Info.description += "\r\nBullet Type: Poisonous";
+			else if (i.Info.bulletType == ItemStats.BulletType.burning)
+				i.Info.description += "\r\nBullet Type: Burning";
+			else if (i.Info.bulletType == ItemStats.BulletType.slowing)
+				i.Info.description += "\r\nBullet Type: Slowing";
+
+			i.Info.description += "\r\nDamage: " + i.Info.damage + "\r\nRange: " + i.Info.range + "\r\nFire Rate: " + i.Info.fireRate + "\r\nShot Speed: " + i.Info.shotSpeed;
+
+		}
+
+	}
+
+	//Converte gli scriptable object dei consumable in oggetti di scena utilizzabili
 	private void InitializeConsumables()
 	{
 		foreach (Item c in GameStats.stats.consumablesSO)
@@ -521,6 +595,7 @@ public class LootGenerator : MonoBehaviour {
 			{
 				item.itemName = c.itemName;
 				item.sprite = c.icon;
+				GameStats.stats.hpUp.Add(item);
 			}
 			else
 			{
@@ -542,6 +617,7 @@ public class LootGenerator : MonoBehaviour {
 		}
 	}
 
+	//Converte gli scriptable object delle armi iniziali in oggetti di scena, le aggiunge all'inventario e le equipaggia
 	private void SetStartingWeapons()
 	{
 		//imposto l'arma meele iniziale

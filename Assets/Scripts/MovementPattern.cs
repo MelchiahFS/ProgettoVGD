@@ -2,14 +2,9 @@
 using System.Collections.Generic;
 using UnityEngine;
 using System;
-public class MovementPattern : MonoBehaviour {
 
-    //wandering indica un movimento casuale, in cui a ogni intervallo di tempo 
-    //prefissato (changeTargetTime) viene cambiata la direzione di movimento verso un punto della stanza scelto a caso
-    //-------
-    //following e AIfollowing indicano che i nemici seguiranno il player, rispettivamente senza e con il pathfinding A*
-    //-------
-
+public class MovementPattern : MonoBehaviour
+{
     private GameObject player;
     private EnemyController controller;
     public Room actualRoom;
@@ -23,13 +18,20 @@ public class MovementPattern : MonoBehaviour {
     public float speed; //velocità in unità al secondo
     private float customSpeed;
 
-    private bool lockPlayer = false, chargingPlayer = false, running = false, followingPlayer = false, followingTarget = false, bounceDir = false;
-    private bool u = false, d = false, l = false, r = false;
-    private Vector3 playerPosition;
-    private Vector3 randomPosition, straightLine;
-    Vector3 randDir;
-    Vector3[] dirs = new Vector3[] { new Vector3(1, 1, 0), new Vector3(1, -1, 0), new Vector3(-1, -1, 0), new Vector3(-1, 1, 0), };
-    RaycastHit2D hitLeft, hitRight, hitUp, hitDown;
+	private bool lockPlayer = false; //indica se il player è stato agganciato dal nemico (hybridWandering)
+	private bool chargingPlayer = false; //indica se il nemico sta caricando verso il player (charging)
+	private bool running = false; //indica se il nemico è partito in carica verso il player (charging)
+	private bool followingPlayer = false; //indica se il nemico segue il player (following - hybridWandering)
+	private bool followingTarget = false; //indica se il nemico si muove verso una posizione statica (following - hybridWandering)
+	private bool bounceDir = false; //indica se il nemico ha scelto una direzione di movimento (bouncing)
+    private bool u = false, d = false, l = false, r = false; //indicano quale lato ha colpito il nemico: u = up, d = down... (bouncing)
+    private Vector3 playerPosition; 
+	private Vector3 randomPosition; //posizione casuale seguita dal nemico (following - hybridWandering)
+	private Vector3 straightLine; //la direzione in linea retta verso il player che seguirà il nemico (charging)
+    Vector3 randDir; //conterrà la direzione iniziale verso cui si muoverà il nemico rimbalzante (bouncing)
+	//possibili direzioni iniziali del nemico rimbalzante (bouncing)
+    Vector3[] dirs = new Vector3[] { new Vector3(1, 1, 0), new Vector3(1, -1, 0), new Vector3(-1, -1, 0), new Vector3(-1, 1, 0), }; 
+    RaycastHit2D hitLeft, hitRight, hitUp, hitDown; //risultati dei raycast per le collisioni dei nemici rimbalzanti (bouncing)
     
     
     
@@ -42,7 +44,7 @@ public class MovementPattern : MonoBehaviour {
         controller = GetComponent<EnemyController>();
     }
 
-    //Usata dai nemici che volano per raggiungere il target
+    //Usata dai nemici che volano per raggiungere un target (statico o no)
     public void Follow(Vector3 pos)
     {
         if (running)
@@ -67,7 +69,7 @@ public class MovementPattern : MonoBehaviour {
         
     }
 
-    //Usata dai nemici che non volano per seguire un target in movimento
+    //Usata dai nemici che non volano per seguire il player
     //isTransform viene usato da AStarAI per determinare se seguire il player o una posizione statica
     public void FollowAI(Transform pos, bool isTransform)
     {
@@ -86,7 +88,7 @@ public class MovementPattern : MonoBehaviour {
     {
         timeCounter += Time.deltaTime;
 
-        //se è scaduto il tempo di cambio posizione oppure ho raggiunto la posizione, scelgo una nuova posizione
+        //se è scaduto il tempo di cambio posizione oppure ho raggiunto la destinazione, scelgo una nuova destinazione
         if (timeCounter >= changeTargetTime || astar.reachedEndOfPath || Vector3.Distance(transform.position, randomPosition) == 0)
         {
             followingTarget = false;
@@ -95,6 +97,7 @@ public class MovementPattern : MonoBehaviour {
             timeCounter = 0;
         }
 
+		//seguo la nuova posizione
         if (flying)
             Follow(randomPosition);
         else
@@ -106,7 +109,8 @@ public class MovementPattern : MonoBehaviour {
     {
         if (!lockPlayer)
         {
-            Wander(flying);
+			//se il nemico non è agganciato vado verso una posizione casuale
+			Wander(flying);
 
             //se entro nel raggio d'azione del player, inseguo il player
             if (Vector3.Distance(transform.position, player.transform.position) <= playerDistance)
@@ -118,11 +122,13 @@ public class MovementPattern : MonoBehaviour {
 
         if (lockPlayer)
         {
-            if (Vector3.Distance(transform.position, player.transform.position) > playerDistance * 3)
+			//se una volta agganciato, il player si allontana del doppio del range, lo perdo di vista e seguo una direzione random
+            if (Vector3.Distance(transform.position, player.transform.position) > playerDistance * 2)
             {
                 lockPlayer = false;
                 followingPlayer = false;
             }
+			//altrimenti seguo il player
             else
             {
                 if (flying)
@@ -175,13 +181,16 @@ public class MovementPattern : MonoBehaviour {
         }
     }
 
+	//Fa muovere in nemici in obliquo e li fa rimbalzare sui muri
     public void Bounce()
     {
+		//scelgo la direzione iniziale
         if (!bounceDir)
         {
             randDir = dirs[rnd.Next(dirs.Length)];
             bounceDir = true;
         }
+		//controllo quale muro ha colpito e modifico la direzione di conseguenza
         if (u || d)
         {
             randDir.y = -randDir.y;
@@ -197,10 +206,11 @@ public class MovementPattern : MonoBehaviour {
         GetComponent<Rigidbody2D>().velocity = randDir * speed;
     }
 
-    //permette al RagingSkull di terminare la sua carica solo quando sbatte col muro o le porte
+    
     void OnCollisionEnter2D(Collision2D collision)
     {
-        if (controller.movementType == EnemyController.MovementType.charging)
+		//permette al RagingSkull di terminare la sua carica solo quando sbatte col muro o le porte
+		if (controller.movementType == EnemyController.MovementType.charging)
         {
             if ((collision.gameObject.layer == LayerMask.NameToLayer("Walls")) ||
             (collision.gameObject.layer == LayerMask.NameToLayer("InnerWalls")) ||
@@ -211,6 +221,8 @@ public class MovementPattern : MonoBehaviour {
                 timeCounter = 0;
             }
         }
+
+		//ad ogni collisione spara un raycast dal nemico verso le quattro direzioni per capire quale lato ha toccato
         else if (controller.movementType == EnemyController.MovementType.bouncing)
         {
             hitUp = Physics2D.Raycast(transform.position + new Vector3(0, GetComponent<Character>().RealOffset, 0), Vector3.up);
@@ -218,7 +230,7 @@ public class MovementPattern : MonoBehaviour {
             hitLeft = Physics2D.Raycast(transform.position + new Vector3(0, GetComponent<Character>().RealOffset, 0), Vector3.left);
             hitRight = Physics2D.Raycast(transform.position + new Vector3(0, GetComponent<Character>().RealOffset, 0), Vector3.right);
 
-            
+            //controllo la distanza minore per determinare quale lato è stato colpito
             if (hitUp.distance < hitDown.distance)
             {
                 if (hitUp.distance < hitLeft.distance)
@@ -253,7 +265,6 @@ public class MovementPattern : MonoBehaviour {
                         r = true;
                 }
             }
-             
         }
     }
 

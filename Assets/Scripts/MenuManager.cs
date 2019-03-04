@@ -7,31 +7,31 @@ using TMPro;
 
 public class MenuManager : MonoBehaviour 
 {
-
-    public GameObject button;
+    public GameObject button; //primo tasto su cui effettuare il focus
 	public GameObject commands, mainMenu, inputHint, hidingPanel;
     public AudioSource sound;
     public AudioClip move, select, music;
-    public float time = 0.5f;
-	private bool menu = true, comm = false, fadeIn = true, fadeOff = false;
-	private bool glowInEnd = false, glowOffEnd = false;
+	private bool menu = true, comm = false; //indica se menu o schermata dei comandi sono attive
+	private bool fadeIn = true, fadeOff = false; //indica se la scena sta iniziando o finendo
+	private bool glowInEnd = false, glowOffEnd = false; //indica se il titolo ha finito di lampeggiare
 	public TMP_Text title;
 	private Material titleMaterial;
 
 	void Awake()
 	{
-		titleMaterial = title.fontSharedMaterial;
+		titleMaterial = title.fontSharedMaterial; //imposto il material per il titolo
 		Time.timeScale = 1;
 	}
 		
     void Start()
     {
-		StartCoroutine(StartMenu(1.2f));
-		StartCoroutine(GlowingInTitle(0.5f));
+		StartCoroutine(StartMenu(1.2f)); //effetto di fadeIn e focus sul primo tasto
+		StartCoroutine(GlowingInTitle(0.5f)); //fa lampeggiare il titolo
 	}
 
     void Update()
     {
+		//permette al titolo di lampeggiare continuamente
 		if (glowInEnd)
 		{
 			glowInEnd = false;
@@ -42,8 +42,10 @@ public class MenuManager : MonoBehaviour
 			glowOffEnd = false;
 			StartCoroutine(GlowingInTitle(0.5f));
 		}
+		//se la scena si è già aperta e non si sta chiudendo
 		if (!fadeIn && !fadeOff)
 		{
+			//se il menu è attivo
 			if (menu)
 			{
 				if (Input.GetKeyDown(KeyCode.UpArrow) || Input.GetKeyDown(KeyCode.DownArrow) || Input.GetKeyDown(KeyCode.W) || Input.GetKeyDown(KeyCode.S))
@@ -64,31 +66,34 @@ public class MenuManager : MonoBehaviour
 					button = EventSystem.current.currentSelectedGameObject;
 				}
 			}
+			//altrimenti se la schermata dei comandi è attiva
 			else if (comm)
 			{
+				//se premo E la chiudo
 				if (Input.GetKeyDown(KeyCode.E))
 				{
 					DeactivateCommandWindow();
-					sound.PlayOneShot(select, 0.5f);
 				}
 			}
 		}
 		
 	}
 
-
+	//Inizia una nuova partita creando un fadeOff sia musicale che visivo
     public void NewGameBtn()
 	{
-        StartCoroutine(FadeOffMusic(1f));
+		sound.PlayOneShot(select, 0.5f);
+		StartCoroutine(FadeOffMusic(1f));
 		StartCoroutine(EnterGame(1f));
 	}
 
+	//Chiude il gioco
 	public void ExitGameBtn()
 	{
         Application.Quit();
 	}
 
-
+	//Crea un fadeOff musicale
     public IEnumerator FadeOffMusic(float fadeTime)
     {
         float rate = 1 / fadeTime;
@@ -100,6 +105,7 @@ public class MenuManager : MonoBehaviour
 		yield break;
     }
 
+	//Apre la schermata dei comandi
 	public void ActivateCommandWindow()
 	{
 		button = EventSystem.current.currentSelectedGameObject;
@@ -111,6 +117,7 @@ public class MenuManager : MonoBehaviour
 		sound.PlayOneShot(select, 0.5f);
 	}
 
+	//Chiude la schermata dei comandi
 	public void DeactivateCommandWindow()
 	{
 		commands.SetActive(false);
@@ -123,6 +130,7 @@ public class MenuManager : MonoBehaviour
 		EventSystem.current.SetSelectedGameObject(button);
 	}
 
+	//Crea un effetto di fadeIn per il menu e lo rende interagibile
 	private IEnumerator StartMenu(float fadeTime)
 	{
 		CanvasGroup cg = hidingPanel.GetComponent<CanvasGroup>();
@@ -145,6 +153,7 @@ public class MenuManager : MonoBehaviour
 		yield break;
 	}
 
+	//Crea un fadeOff visivo e carica la schermata di caricamento della partita
 	private IEnumerator EnterGame(float fadeTime)
 	{
 		fadeOff = true;
@@ -164,6 +173,7 @@ public class MenuManager : MonoBehaviour
 		yield break;
 	}
 
+	//Aumenta la luminosità del titolo da 0 a 1
 	private IEnumerator GlowingInTitle(float fadeTime)
 	{
 		float glow = 1;
@@ -177,6 +187,7 @@ public class MenuManager : MonoBehaviour
 		glowInEnd = true;
 	}
 
+	//Abbassa la luminosità del titolo da 1 a 0
 	private IEnumerator GlowingOffTitle(float fadeTime)
 	{
 		float glow = 0;

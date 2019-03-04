@@ -5,15 +5,16 @@ using System;
 
 public class ShootBidirectional : ShootAbstract
 {
-	public float shotSpeed, fireRate, range;
-	private float damage;
-	private float counter;
-    private EnemyBullet enemyBullet;
-    public GameObject bulletPrefab;
-    private Rigidbody2D rb;
+	public float shotSpeed, fireRate, range; //caratteristiche dei proiettili specifiche di questo script
+	private float damage; //danno del proiettile
+	private float counter; //timer per l'implementazione del fire rate nemico
+	private EnemyBullet enemyBullet; //script per il settaggio del proiettile
+	public GameObject bulletPrefab; //prefab del proiettile
+	private Rigidbody2D rb;
     private Room actualRoom;
-    private Vector3 lastFramePosition;
-    private Vector3 offset;
+
+	//vettori utili al calcolo del punto di partenza del proiettile e la sua direzione
+	private Vector3 lastFramePosition, offset;
 
     void Start()
     {
@@ -28,18 +29,18 @@ public class ShootBidirectional : ShootAbstract
 
     void Update ()
     {
-        if (counter >= fireRate)
+		//se il nemico può nuovamente attaccare
+		if (counter >= fireRate)
         {
-
-            Vector3 centerPoint = transform.position + offset;
+			//calcolo punto di partenza e direzione di proiettili
+			Vector3 centerPoint = transform.position + offset;
             Vector3 direction1 = centerPoint - lastFramePosition;
             Vector3 direction2 = -direction1;
             Vector3 shotStartPoint1 = centerPoint + direction1.normalized / 2;
             Vector3 shotStartPoint2 = centerPoint + direction2.normalized / 2;
 
-            
-            
-            GameObject bullet1 = Instantiate(bulletPrefab, shotStartPoint1, Quaternion.identity) as GameObject;
+			//istanzio i proiettili e ne imposto le caratteristiche
+			GameObject bullet1 = Instantiate(bulletPrefab, shotStartPoint1, Quaternion.identity) as GameObject;
             bullet1.GetComponent<EnemyBullet>().SetStats(damage, range, sprite, transform.position, GetComponent<EnemyController>().flying);
             bullet1.GetComponent<Rigidbody2D>().velocity = direction1.normalized * shotSpeed;
 
@@ -51,15 +52,16 @@ public class ShootBidirectional : ShootAbstract
             actualRoom.toSort.Add(bullet1);
             actualRoom.toSort.Add(bullet2);
 
-            counter = 0;
-                
-            
-        }
-        lastFramePosition = transform.position + offset;
+            counter = 0; //azzero il counter per i prossimi proiettili
+
+
+		}
+        lastFramePosition = transform.position + offset; //aggiorno l'ultima posizione occupata per determinare la direzione di fuoco
         counter += Time.deltaTime;
     }
 
-    public void SetShotSpeed(float amount)
+	//Modifica la velocità dell'attacco in caso di status alterato (slowDown o speedUp)
+	public void SetShotSpeed(float amount)
     {
         shotSpeed += amount;
     }

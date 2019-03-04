@@ -33,8 +33,8 @@ public class AsyncLoader : MonoBehaviour {
     IEnumerator LoadNewScene()
 	{
 		loadScene = true;
-		// This line waits for 3 seconds before executing the next line in the coroutine.
-		// This line is only necessary for this demo. The scenes are so simple that they load too fast to read the "Loading..." text.
+		
+		//aspetta tre secondi per mostrare la scritta di caricamento
 		yield return new WaitForSeconds(3);
 		
         //Restituisce un'operazione asincrona che contiene informazioni sul progresso del caricamento

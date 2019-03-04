@@ -5,15 +5,11 @@ public class TileSpriteSelector : MonoBehaviour
 {
 	public static TileSpriteSelector tss;
 
-    //queste tiles sono tutte relative al pavimento
+    //tiles relative al pavimento
     public Sprite outerUpLeftCorner,
-        //innerUpLeftCorner, 
         outerDownLeftCorner, 
-        //innerDownLeftCorner, 
         outerUpRightCorner, 
-        //innerUpRightCorner, 
         outerDownRightCorner, 
-        //innerDownRightCorner, 
         upFloor, 
         downFloor,
         leftFloor, 
@@ -24,7 +20,7 @@ public class TileSpriteSelector : MonoBehaviour
         doorFloorUp,
         doorFloorDown;
 
-    //queste tiles sono tutte relative ai muri
+    //tiles relative ai muri
     public Sprite leftWall,
         rightWall,
         upWall,
@@ -52,7 +48,7 @@ public class TileSpriteSelector : MonoBehaviour
         innerWallCenter,
         innerWallRight;
 
-    //queste tile sono relative ai passaggi tra le stanze
+    //tiles relative ai passaggi tra le stanze
     public Sprite innerLeftDownWallCorner,
         innerLeftUpWallCorner,
         innerRightDownWallCorner,
@@ -60,6 +56,7 @@ public class TileSpriteSelector : MonoBehaviour
         horizontalPass,
         verticalPass;
 
+	//sprites relative alle porte
     public Sprite closedDoorUp,
         closedDoorDown,
         closedDoorLeft,
@@ -72,10 +69,8 @@ public class TileSpriteSelector : MonoBehaviour
     //sprite degli ostacoli all'interno delle stanze
     public Sprite obstacles;
 
-    //il passaggio al livello seguente
+    //sprite del passaggio al livello seguente
     public Sprite stairs;
-
-	public Sprite greyBlock;
     
 	void Awake()
 	{

@@ -9,10 +9,15 @@ public class GameManager : MonoBehaviour {
     public LevelManager lvlManager;
     private Room actualRoom = null;
     public Vector2Int actualPos;
+
+	//flag relativi allo stato delle varie schermate (pausa, inventario, gameOver...)
     public bool gamePause = false, inventoryActive = false, inventoryMenuActive = false, pauseMenuActive = false, signboardActive = false;
-    public bool dead = false, isDying = false, ending = false;
+
+	//flag relativi allo stato del player o del livello attuale
+    public bool dead = false, isDying = false, ending = false, startingLevel = false;
 	public bool signboardContact = false;
 	public GameObject playerReference;
+	public GameObject signBoard;
 
 	private void Awake()
 	{
@@ -26,11 +31,11 @@ public class GameManager : MonoBehaviour {
 		}
 
 		lvlManager = GetComponent<LevelManager>();
-		lvlManager.DrawMap();
-		actualPos = lvlManager.ActualPos;
-		ActualRoom = lvlManager.InstantiatePlayer();
+		lvlManager.DrawMap(); //disegna la mappa
+		actualPos = lvlManager.ActualPos; //recupera la posizione attuale nella mappa
+		ActualRoom = lvlManager.InstantiatePlayer(); //istanzia il player e restituisce la stanza in cui si trova
 		GetComponent<MiniMapController>().enabled = false;
-		playerReference = GameObject.Find("Player");
+		playerReference = GameObject.Find("Player"); //salvo il riferimento al player per l'accesso da parte degli altri script
 	}
 
     //Carica il nuovo livello
@@ -79,8 +84,11 @@ public class GameManager : MonoBehaviour {
     //restituisce la stanza adiacente a quella attuale nella direzione richiesta
     public Room GetAdiacentRoom(char dir)
     {
+		//ottengo la dimensione in x e y della mappa
         Vector2 mapSize = lvlManager.lvlGen.GetMapSize();
-        if (dir == 'u')
+
+		//se esiste una stanza sopra quella attuale, la restituisco
+		if (dir == 'u')
         {
             if (actualPos.y + 1 < mapSize.y)
             {
