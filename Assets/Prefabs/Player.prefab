@@ -258,6 +258,7 @@ MonoBehaviour:
     passageRightTiles: []
     passageUpTiles: []
     passageDownTiles: []
+    altarPos: {x: 0, y: 0}
     spawnPoints: []
     freePositions: []
     doorSpriteUp: {fileID: 0}
@@ -594,6 +595,7 @@ MonoBehaviour:
     passageRightTiles: []
     passageUpTiles: []
     passageDownTiles: []
+    altarPos: {x: 0, y: 0}
     spawnPoints: []
     freePositions: []
     doorSpriteUp: {fileID: 0}
@@ -1842,8 +1844,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 51.820007, y: 41.14}
+  m_AnchoredPosition: {x: 0.00000047683716, y: 0}
+  m_SizeDelta: {x: 64.47, y: 41.14}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &6465341535326088197
 CanvasRenderer:
@@ -1886,7 +1888,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: 100
+  m_Text: 
 --- !u!1 &3643599743558775910
 GameObject:
   m_ObjectHideFlags: 0

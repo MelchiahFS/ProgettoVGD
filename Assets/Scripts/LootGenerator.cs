@@ -190,14 +190,14 @@ public class LootGenerator : MonoBehaviour {
 					//se non è l'ultimo livello sull'altare apparirà un'arma
 					if (GameStats.stats.levelNumber < 5)
 					{
-						Vector2 pos = actualRoom.freePositions[0];
+						Vector2 pos = actualRoom.altarPos;
 						pos = new Vector2(pos.x, pos.y + 0.4f);
 						InstantiateWeapon(pos);
 					}
 					//altrimenti apparirà l'oggetto che farà finire il gioco
 					else
 					{
-						Vector2 pos = actualRoom.freePositions[0];
+						Vector2 pos = actualRoom.altarPos;
 						pos = new Vector2(pos.x, pos.y + 0.6f);
 						GameObject writings = Instantiate(writingsPrefab, pos, Quaternion.identity) as GameObject;
 						Color c = Color.red;
@@ -209,8 +209,8 @@ public class LootGenerator : MonoBehaviour {
 				}
 				else
 				{
-					//ho il 70% di ottenere una ricompensa
-					if (rnd.Next(100) < 70)
+					//ho il 75% di ottenere una ricompensa
+					if (rnd.Next(100) < 75)
 					{
 						//se spawna la ricompensa, imposto una probabilità per deciderne il tipo
 						if (rnd.Next(100) < 25)
@@ -220,8 +220,8 @@ public class LootGenerator : MonoBehaviour {
 							//ho il 40% di generare un consumable
 							if (rnd.Next(100) < 40)
 							{
-								//ho il 15% di probabilità di generare un hpUp
-								if (rnd.Next(100) < 15)
+								//ho il 25% di probabilità di generare un hpUp
+								if (rnd.Next(100) < 25)
 									InstantiateHpUp(actualRoom.freePositions[rnd.Next(actualRoom.freePositions.Count)]);
 								else
 									InstantiateConsumable(actualRoom.freePositions[rnd.Next(actualRoom.freePositions.Count)]);
@@ -345,17 +345,17 @@ public class LootGenerator : MonoBehaviour {
 		//la probabilità di spawnare una ricompensa alta è minore
 		if (rnd.Next(100) < 70)
 		{
-			si.Info.moneyAmount = 5;
+			si.Info.moneyAmount = 10;
 			si.Info.sprite = select.money[rnd.Next(0,3)];
 		}
 		else if (rnd.Next(100) < 70)
 		{
-			si.Info.moneyAmount = 10;
+			si.Info.moneyAmount = 20;
 			si.Info.sprite = select.money[rnd.Next(3,6)];
 		}
 		else
 		{
-			si.Info.moneyAmount = 20;
+			si.Info.moneyAmount = 50;
 			si.Info.sprite = select.money[rnd.Next(6,9)];
 		}
 		si.GetComponent<SpriteRenderer>().sprite = si.Info.sprite;

@@ -113,10 +113,6 @@ public class LevelManager : MonoBehaviour {
             room.obsLayout = ObstacleLayout.GetBossLayout();
         else
             room.obsLayout = ObstacleLayout.GetRandomLayout();
-        //if (room.shopRoom)
-        //    room.obsLayout = ObstacleLayout.GetShopLayout();
-        //else
-        //    room.obsLayout = ObstacleLayout.GetLayoutZero();
 
         for (int i = roomSizeY - 1; i >= 0; i--)
         {
@@ -153,6 +149,8 @@ public class LevelManager : MonoBehaviour {
 					{
 						//nella bossRoom istanzio altare e ricompensa finale nella posizione con valore 3
 						if (room.obsLayout[i, j] == 3)
+							room.altarPos = drawPos;
+						else
 							room.freePositions.Add(drawPos);
 					}
 					//se è una stanza normale spawno ricompense ovunque nella stanza
@@ -1084,15 +1082,13 @@ public class LevelManager : MonoBehaviour {
 		}
 		else if (room.bossRoom)
 		{
-			room.enemyCounter = rnd.Next(4, 7);
+			room.enemyCounter = rnd.Next(3, 5);
 			room.enemyWaves = 3;
 		}
 		else
 		{
-			//room.enemyCounter = rnd.Next(3, 5);
-			//room.enemyWaves = 1;
-			room.enemyCounter = 0;
-			room.enemyWaves = 0;
+			room.enemyCounter = rnd.Next(3, 5);
+			room.enemyWaves = 1;
 		}
 	}
 

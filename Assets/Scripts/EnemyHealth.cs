@@ -107,8 +107,12 @@ public class EnemyHealth : MonoBehaviour
 
 		}
 
+		startingHealth = (float)Math.Truncate(startingHealth * 10) / 10;
+		damage = (float)Math.Truncate(damage * 10) / 10;
+		bulletDamage = (float)Math.Truncate(bulletDamage * 10) / 10;
+
 		//imposto i punti vita iniziali
-        slider.minValue = 0;
+		slider.minValue = 0;
         slider.maxValue = startingHealth;
         slider.value = startingHealth;
         currentHealth = startingHealth;

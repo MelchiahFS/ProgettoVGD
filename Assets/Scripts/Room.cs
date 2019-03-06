@@ -19,6 +19,7 @@ public class Room
     public List<GameObject> passageUpTiles = null;
     public List<GameObject> passageDownTiles = null;
 
+	public Vector2 altarPos;
     public List<Vector2> spawnPoints = null; //lista delle posizioni di spawn dei nemici
     public List<Vector2> freePositions = null; //lista delle posizioni di spawn delle ricompense
 

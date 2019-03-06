@@ -8,7 +8,7 @@ public class LevelGenerator
 {
     Vector2Int worldSize;
     private Room[,] rooms;
-    List<Vector2Int> takenPositions = new List<Vector2Int>(); //lista delle posizioni occupate dalle stanze generate
+	private List<Vector2Int> takenPositions; //lista delle posizioni occupate dalle stanze generate
     int gridSizeX, gridSizeY;
     private int roomSizeX, roomSizeY; //dimensione in x e y delle stanze
     public int distRoomX = 6, distRoomY = 6; //distanza tra le stanze (utile alla generazione dei corridoi)
@@ -50,22 +50,22 @@ public class LevelGenerator
     {
         //crea una matrice Room che rappresenta la griglia delle stanze
         rooms = new Room[gridSizeX * 2, gridSizeY * 2];
-
-        //crea una stanza al centro della griglia e la imposta come stanza iniziale
-        rooms[gridSizeX, gridSizeY] = new Room(Vector2Int.zero);
+		takenPositions = new List<Vector2Int>();
+		//crea una stanza al centro della griglia e la imposta come stanza iniziale
+		rooms[gridSizeX, gridSizeY] = new Room(Vector2Int.zero);
         rooms[gridSizeX, gridSizeY].startRoom = true;
 
         //inserisce nella lista delle posizioni visitate la posizione della stanza attuale
         takenPositions.Insert(0, Vector2Int.zero);
         Vector2Int checkPos = Vector2Int.zero;
 
-        float randomCompare = 0.2f, randomCompareStart = 0.2f, randomCompareEnd = 0.1f;
+        float randomCompare, randomCompareStart = 0.2f, randomCompareEnd = 0.1f;
 
         //tolgo una stanza perché ho già creato la stanza iniziale
         for (int i = 0; i < numberOfRooms - 1; i++)
         {
-            //restituisce un valore inizialmente piccolo, che cresce a ogni iterazione
-            float randomPerc = ((float)i) / ((float)numberOfRooms - 1);
+            //restituisce un valore che cresce da 0 a fino a raggiungere 1 all'ultima iterazione
+            float randomPerc = i / ((float)numberOfRooms - 1);
             //ottengo un valore casuale dipendente dal valore precedentemente calcolato
             randomCompare = Mathf.Lerp(randomCompareStart, randomCompareEnd, randomPerc);
 
@@ -117,16 +117,16 @@ public class LevelGenerator
 			if (upDown) 
 			{
                 if (positive)
-                    y += roomSizeY + distRoomY;
+                    y += (roomSizeY + distRoomY);
                 else
-                    y -= roomSizeY + distRoomY;
+                    y -= (roomSizeY + distRoomY);
             }
 			else
 			{
                 if (positive)
-                    x += roomSizeX + distRoomX;
+                    x += (roomSizeX + distRoomX);
                 else
-                    x -= roomSizeX + distRoomX;
+                    x -= (roomSizeX + distRoomX);
             }
             checkingPos = new Vector2Int(x, y);
 
